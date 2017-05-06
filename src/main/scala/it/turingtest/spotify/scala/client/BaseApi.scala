@@ -19,11 +19,6 @@ import scala.util.{Failure, Success, Try}
 @Singleton
 class BaseApi @Inject()(configuration: play.api.Configuration, ws: WSClient) extends AccessLogging {
 
-  /* TODO read main application.conf from client
-  val BASE_URL: String = configuration.underlying.getString("API_BASE_URL")
-  val AUTHORIZE_ENDPOINT = configuration.underlying.getString("AUTHORIZE_ENDPOINT")
-  val TOKEN_ENDPOINT = configuration.underlying.getString("TOKEN_ENDPOINT")
-  */
   val BASE_URL = "https://api.spotify.com/v1"
   val AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize"
   val TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token"
@@ -78,15 +73,6 @@ class BaseApi @Inject()(configuration: play.api.Configuration, ws: WSClient) ext
     }
     loop(page, page.items)
   }
-
-  /*
-  def getList[T](endpoints: List[String])(implicit fmt: Reads[T]): Future[List[T]] = {
-    val list: List[Future[T]] = endpoints map (e => get[T](e))
-    val listTry: List[Future[Try[T]]] = list.map(futureToFutureTry)
-    // TODO log failures
-    Future.sequence(listTry).map(_.collect { case Success(x) => x })
-  }
-  */
 
   def validate[T](f: Future[WSResponse])(implicit fmt: Reads[T]): Future[T] = {
     f map { response =>
@@ -158,21 +144,25 @@ class BaseApi @Inject()(configuration: play.api.Configuration, ws: WSClient) ext
   @tailrec
   final def withAuthToken[T](authCode: Option[String] = None)(request: Token => Future[T]): Future[T] = {
     authorization_code match {
-      case Some(t) => t flatMap {
-        token => {
+      case Some(t) => t flatMap { token => {
           authorization_code = { if (token.expired) Some(refresh(token)) else authorization_code }
           request(token)
         }
       }
       case None =>
-        accessLogger.debug(s"NONE! authorization_code = $authorization_code.isDefined")
         authorization_code = Some(access(authCode.getOrElse(throw new Exception("Authorization code not provided"))))
         withAuthToken(authCode)(request)
     }
   }
 
   private def refresh(oldToken: Token): Future[Token] = refresh(oldToken.refresh_token.get) map {
-    newToken => Token(oldToken.access_token, newToken.token_type, newToken.scope, newToken.expires_in, oldToken.refresh_token)
+    newToken => Token(
+      oldToken.access_token,
+      newToken.token_type,
+      newToken.scope,
+      newToken.expires_in,
+      oldToken.refresh_token
+    )
   }
 
   private def access(code: String): Future[Token] = validate[Token] { logResponse { accessToken(code) } }

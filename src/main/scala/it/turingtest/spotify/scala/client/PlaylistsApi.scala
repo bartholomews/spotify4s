@@ -4,7 +4,6 @@ import javax.inject.Inject
 
 import it.turingtest.spotify.scala.client.entities.{FullPlaylist, Page, PlaylistTrack, SimplePlaylist}
 import it.turingtest.spotify.scala.client.logging.AccessLogging
-import play.api.Logger
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -15,8 +14,6 @@ import scala.concurrent.Future
   */
 class PlaylistsApi @Inject()(configuration: play.api.Configuration, ws: WSClient,
                              api: BaseApi, profiles: ProfilesApi) extends AccessLogging {
-
-  val logger = Logger("application")
 
   // ===================================================================================================================
 

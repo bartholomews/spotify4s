@@ -3,11 +3,7 @@ package it.turingtest.spotify.scala.client.entities
 import play.api.libs.json.{JsPath, Reads}
 import play.api.libs.functional.syntax._
 
-case class NewReleases
-(
-  albums: Page[SimpleAlbum],
-  message: Option[String]
-)
+case class NewReleases(albums: Page[SimpleAlbum], message: Option[String])
 
 object NewReleases {
 

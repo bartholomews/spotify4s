@@ -4,7 +4,6 @@ import javax.inject.Inject
 
 import it.turingtest.spotify.scala.client.entities.FeaturedPlaylists
 import it.turingtest.spotify.scala.client.logging.AccessLogging
-import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc.{Action, AnyContent, Result}
 
@@ -16,10 +15,7 @@ import scala.concurrent.Future
   */
 class BrowseApi @Inject()(configuration: play.api.Configuration, ws: WSClient, api: BaseApi) extends AccessLogging {
 
-  private val BASE_URL = configuration.underlying.getString("API_BASE_URL")
-  private val BROWSE = s"$BASE_URL/browse"
-
-  val logger = Logger("application")
+  private val BROWSE = s"${api.BASE_URL}/browse"
 
   // =====================================================================================================================
   /**

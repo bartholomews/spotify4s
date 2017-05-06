@@ -4,7 +4,6 @@ import javax.inject.Inject
 
 import it.turingtest.spotify.scala.client.entities.{AudioFeatures, Page, PlaylistTrack, Track}
 import it.turingtest.spotify.scala.client.logging.AccessLogging
-import play.api.Logger
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -15,26 +14,22 @@ import scala.concurrent.Future
   */
 class TracksApi @Inject()(configuration: play.api.Configuration, ws: WSClient, api: BaseApi) extends AccessLogging {
 
-  private final def ENDPOINT(id: String) = s"${api.BASE_URL}/tracks/$id"
-
-  val logger = Logger("application")
+  private final def TRACKS(id: String) = s"${api.BASE_URL}/tracks/$id"
 
   // =====================================================================================================================
   /**
     * https://developer.spotify.com/web-api/get-track/
     */
-  def getTrack(id: String): Future[Track] = api.get[Track](ENDPOINT(id))
+  def getTrack(id: String): Future[Track] = api.get[Track](TRACKS(id))
 
   def getPlaylistTracks(href: String): Future[Page[PlaylistTrack]] = {
     api.getWithOAuth[Page[PlaylistTrack]](href)
   }
 
-  def allTracks(href: String): Future[List[Track]] = allPlaylistTracks(href) map {
-    p => p.map(pt => pt.track)
-  }
+  def allTracks(href: String): Future[List[Track]] = allPlaylistTracks(href) map { p => p.map(pt => pt.track) }
 
   def allPlaylistTracks(href: String): Future[List[PlaylistTrack]] = {
-    api.getAll[PlaylistTrack](href => getPlaylistTracks(href))(ENDPOINT(href))
+    api.getAll[PlaylistTrack](href => getPlaylistTracks(href))(TRACKS(href))
   }
 
   // ===================================================================================================================
