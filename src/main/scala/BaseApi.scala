@@ -1,5 +1,3 @@
-package it.turingtest.spotify.scala.client
-
 /**
   * Spotify API Scala Play wrapper
   */
@@ -8,7 +6,7 @@ import javax.inject.{Inject, Singleton}
 import it.turingtest.spotify.scala.client.entities._
 import it.turingtest.spotify.scala.client.logging.AccessLogging
 import it.turingtest.spotify.scala.client.utils.ConversionUtils
-import play.api.data.validation.ValidationError
+import play.api.Configuration
 import play.api.libs.json.{JsError, _}
 import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
 
@@ -18,7 +16,8 @@ import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
 @Singleton
-class BaseApi @Inject()(configuration: play.api.Configuration, ws: WSClient) extends AccessLogging {
+class BaseApi(configuration: Configuration, ws: WSClient, baseUrl: String) extends AccessLogging {
+  @Inject() def this(conf: Configuration, ws: WSClient) = this(conf, ws, "https://api.spotify.com/v1")
 
   val BASE_URL = "https://api.spotify.com/v1"
   val AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize"
@@ -79,20 +78,18 @@ class BaseApi @Inject()(configuration: play.api.Configuration, ws: WSClient) ext
     f map { response =>
       response.json.validate[T](fmt) match {
         case JsSuccess(obj, _) => obj
-        case JsError(e) => throw webApiException(response.json, e)
+        case JsError(_) => throw webApiException(response.json)
       }
     } recoverWith { case ex => Future.failed(ex) }
   }
 
-  private def webApiException(json: JsValue, e: Seq[(JsPath, Seq[ValidationError])]): WebApiException = {
+  private def webApiException(json: JsValue): WebApiException = {
     accessLogger.debug(json.toString)
     json.validate[RegularError] match {
       case JsSuccess(obj, _) => obj
       case JsError(_) => json.validate[AuthError] match {
         case JsSuccess(obj, _) => obj
-        case JsError(_) => {
-          throw new Exception(s"Unknown exception: ${e.toString}")
-        }
+        case JsError(_) => throw new Exception(s"Unknown exception: ${json.toString}")
       }
     }
   }

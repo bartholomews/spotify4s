@@ -8,10 +8,10 @@ object UserReads {
   val publicUser = {
     (JsPath \ "display_name").readNullable[String] and
       (JsPath \ "external_urls").read[ExternalURL] and
-      (JsPath \ "followers").read[Followers] and
+      (JsPath \ "followers").readNullable[Followers] and
       (JsPath \ "href").read[String] and
       (JsPath \ "id").read[String] and
-      (JsPath \ "images").read[List[Image]] and
+      (JsPath \ "images").readNullable[List[Image]] and
       (JsPath \ "type").read[String] and
       (JsPath \ "uri").read[String]
   }
@@ -51,10 +51,10 @@ case class User
 (
   display_name: Option[String],
   external_urls: ExternalURL,
-  followers: Followers,
+  followers: Option[Followers],
   href: String,
   id: String,
-  images: List[Image],
+  images: Option[List[Image]],
   objectType: String,
   uri: String
 )
@@ -103,10 +103,10 @@ case class UserPrivate
 (
   display_name: Option[String],
   external_urls: ExternalURL,
-  followers: Followers,
+  followers: Option[Followers],
   href: String,
   id: String,
-  images: List[Image],
+  images: Option[List[Image]],
   objectType: String,
   uri: String,
   birthdate: Option[String],

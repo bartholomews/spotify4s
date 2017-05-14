@@ -1,13 +1,10 @@
 package it.turingtest.spotify.scala.client.entities
 
-import play.api.libs.json.{JsPath, Reads}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Reads}
 
-case class FeaturedPlaylists
-  (
-    message: String,
-    playlists: Page[SimplePlaylist]
-    )
+case class FeaturedPlaylists(message: String, playlists: Page[SimplePlaylist])
+
   extends SpotifyObject { override val objectType = "featuredPlaylists" }
 
 object FeaturedPlaylists {
