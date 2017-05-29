@@ -16,7 +16,7 @@ libraryDependencies ++=Seq(
   "org.scalatest" %% "scalatest" % "2.2.4" % "test"
 )
 
-libraryDependencies += "ch.qos.logback" % "logback-core" % "1.1.3"
+// libraryDependencies += "ch.qos.logback" % "logback-core" % "1.1.3"
 
 publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath+"/.m2/repository")))
 
