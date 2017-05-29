@@ -4,7 +4,7 @@ organization := "it.turingtest"
 
 version := "0.0.2-SNAPSHOT"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.4",
@@ -28,7 +28,6 @@ resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releas
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.3")
 //addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.0.0")
 */
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.5")
 
 publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath+"/.m2/repository")))
 
