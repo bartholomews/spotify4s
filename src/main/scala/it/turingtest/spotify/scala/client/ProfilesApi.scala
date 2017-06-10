@@ -11,8 +11,7 @@ import scala.concurrent.Future
 /**
   * @see https://developer.spotify.com/web-api/user-profile-endpoints/
   */
-class ProfilesApi @Inject()(configuration: play.api.Configuration,
-                            ws: WSClient, api: BaseApi) extends AccessLogging {
+class ProfilesApi @Inject()(ws: WSClient, api: BaseApi) extends AccessLogging {
 
   private final val ME = s"${api.BASE_URL}/me"
 

@@ -12,8 +12,7 @@ import scala.concurrent.Future
 /**
   * @see https://developer.spotify.com/web-api/playlist-endpoints/
   */
-class PlaylistsApi @Inject()(configuration: play.api.Configuration, ws: WSClient,
-                             api: BaseApi, profiles: ProfilesApi) extends AccessLogging {
+class PlaylistsApi @Inject()(ws: WSClient, api: BaseApi, profiles: ProfilesApi) extends AccessLogging {
 
   // ===================================================================================================================
 

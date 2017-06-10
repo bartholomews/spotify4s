@@ -12,7 +12,7 @@ import scala.concurrent.Future
 /**
   * @see https://developer.spotify.com/web-api/track-endpoints/
   */
-class TracksApi @Inject()(configuration: play.api.Configuration, ws: WSClient, api: BaseApi) extends AccessLogging {
+class TracksApi @Inject()(api: BaseApi) extends AccessLogging {
 
   private final def TRACKS(id: String) = s"${api.BASE_URL}/tracks/$id"
 

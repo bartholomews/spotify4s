@@ -1,3 +1,5 @@
+package it.turingtest.spotify.scala.client
+
 /**
   *
   */
