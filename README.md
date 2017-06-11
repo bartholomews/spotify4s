@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/bartholomews/spotify-scala-client.svg?branch=master)](https://travis-ci.org/bartholomews/spotify-scala-client)
 [![codecov](https://codecov.io/gh/bartholomews/spotify-scala-client/branch/master/graph/badge.svg)](https://codecov.io/gh/bartholomews/spotify-scala-client)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/bartholomews/spotify-scala-client/blob/master/LICENSE)
 
 # spotify-scala-client
 *Asynchronous Spotify Web API Scala Client/Wrapper*.
