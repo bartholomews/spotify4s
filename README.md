@@ -5,26 +5,26 @@
 # spotify-scala-client
 *Asynchronous Spotify Web API Scala Client/Wrapper*.
  
-#### Endpoints Task list
+### Endpoints Task list
  
-- [ ] Albums
+- [ ] **Albums**
     - [ ] Get an Album
     - [ ] Get Several Albums
     - [ ] Get an Album's Tracks
-- [ ] Artist
+- [ ] **Artist**
     - [ ] Get an Artist
     - [ ] Get Several Artists
     - [ ] Get an Artist's Albums
     - [ ] Get an Artist's Top Tracks
     - [ ] Get an Artist's Related Artists
-- [ ] Browse endpoint
+- [ ] **Browse endpoint**
     - [x] Get a List of Featured Playlists
     - [x] Get a List of New Releases
     - [ ] Get a List of Categories
     - [ ] Get a Category
     - [ ] Get a Category's Playlists
     - [ ] Get Recommendations Based on Seeds
-- [ ] Follow
+- [ ] **Follow**
     - [ ] Get User's Followed Artists
     - [ ] Follow Artists or Users
     - [ ] Unfollow Artists or Users
@@ -34,7 +34,7 @@
     - [ ] Check if Users Follow a Playlist
 
 **(MORE TODO)**
- 
+
 #### Usage
 
 #### - Setup in *application.conf*
