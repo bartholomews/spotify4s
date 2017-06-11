@@ -22,6 +22,7 @@ class SpotifyClientSpec extends FunSpec with SpotifyWebMock with Matchers with S
           token.access_token shouldBe "some-access-token"
         }
       }
+
     }
 
     describe("Base Api") {
@@ -41,18 +42,6 @@ class SpotifyClientSpec extends FunSpec with SpotifyWebMock with Matchers with S
         withTracksApi { tracksApi =>
           val result = await { tracksApi.getTrack("3n3Ppam7vgaVa1iaRUc9Lp") }
           result.id shouldBe Some("3n3Ppam7vgaVa1iaRUc9Lp")
-        }
-      }
-
-    }
-
-    describe("Browse Api") {
-
-      it("should retrieve a FeaturedPlaylist object") {
-
-        withBrowseApi { browseApi =>
-          val result = await { browseApi.featuredPlaylists }
-          result.message shouldBe "Hur är ditt torsdagshumör?"
         }
       }
 

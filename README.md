@@ -1,18 +1,46 @@
 [![Build Status](https://travis-ci.org/bartholomews/spotify-scala-client.svg?branch=master)](https://travis-ci.org/bartholomews/spotify-scala-client)
 [![codecov](https://codecov.io/gh/bartholomews/spotify-scala-client/branch/master/graph/badge.svg)](https://codecov.io/gh/bartholomews/spotify-scala-client)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # spotify-scala-client
 *Asynchronous Spotify Web API Scala Client/Wrapper*.
  
-**NOTE -** *This project is a work in progress at an early stage 
-and will be updated soon, in the meantime if you have any question/suggestion please get in touch, thanks.*
+#### Endpoints Task list
+ 
+- [ ] Albums
+    - [ ] Get an Album
+    - [ ] Get Several Albums
+    - [ ] Get an Album's Tracks
+- [ ] Artist
+    - [ ] Get an Artist
+    - [ ] Get Several Artists
+    - [ ] Get an Artist's Albums
+    - [ ] Get an Artist's Top Tracks
+    - [ ] Get an Artist's Related Artists
+- [ ] Browse endpoint
+    - [x] Get a List of Featured Playlists
+    - [x] Get a List of New Releases
+    - [ ] Get a List of Categories
+    - [ ] Get a Category
+    - [ ] Get a Category's Playlists
+    - [ ] Get Recommendations Based on Seeds
+- [ ] Follow
+    - [ ] Get User's Followed Artists
+    - [ ] Follow Artists or Users
+    - [ ] Unfollow Artists or Users
+    - [ ] Check if Current User Follows Artists or Users
+    - [ ] Follow a Playlist
+    - [ ] Unfollow a Playlist
+    - [ ] Check if Users Follow a Playlist
+
+**(MORE TODO)**
  
 #### Usage
 
-#### - Setup in***Application.conf***
+#### - Setup in *application.conf*
 
 In your `application.conf` add your application client id, secret and redirect uri.  
-If you don't have them yet, get these[here](https://developer.spotify.com/my-applications/#!/).
+If you don't have them yet, get these [here](https://developer.spotify.com/my-applications/#!/).
 ```
 CLIENT_ID = "my-client-id"  
 CLIENT_SECRET = "my-client-secret"  
@@ -20,32 +48,30 @@ REDIRECT_URI = "http://localhost:9000/my-callback-endpoint"
 ```
 (remember to ignore the *conf* file from version control if your application is public)
 
-#### - Inject the wrapper's endpoints that you need
+#### - Inject the endpoints that you need
 
-In your Controller:
+In your Controller (e.g. with *Play Framework*):
 
 ```
 import play.api.mvc._  
 
 import com.google.inject.Inject
 import it.turingtest.spotify.scala.client.entities._
-import it.turingtest.spotify.scala.client.{it.turingtest.spotify.scala.client.BaseApi, it.turingtest.spotify.scala.client.PlaylistsApi, it.turingtest.spotify.scala.client.ProfilesApi, it.turingtest.spotify.scala.client.TracksApi}
+import it.turingtest.spotify.scala.client.{BaseApi, AuthApi, PlaylistsApi, ProfilesApi, TracksApi}
  
 import scala.concurrent.Future  
 import scala.concurrent.ExecutionContext.Implicits.global
 
  
-class MyController @Inject() (api: it.turingtest.spotify.scala.client.BaseApi,
-                              playlistsApi: it.turingtest.spotify.scala.client.PlaylistsApi,
-                              profilesApi: it.turingtest.spotify.scala.client.ProfilesApi,
-                              tracksApi: it.turingtest.spotify.scala.client.TracksApi) extends Controller {
+class MyController @Inject() (api: BaseApi,
+                              auth: AuthApi,
+                              playlistsApi: PlaylistsApi,
+                              profilesApi: ProfilesApi,
+                              tracksApi: TracksApi) extends Controller {
 
- 
-  // profilesApi.me returns a Future[UserPrivate]
-  // in general, all the entities are mapping 
-  // the official Spotify api, so most of the docs are similar.
-  def hello = profilesApi.me map {
-        me => Ok(views.html.myview(s"Hello, ${me.id}"))
+   def hello = {
+    val user: Future[UserPrivate] = profilesApi.me 
+    user map { me => Ok(views.html.myview(s"Hello, ${me.id}")) }
   }
  
   
@@ -73,41 +99,28 @@ This wrapper will automatically use either the client credentials flow (if the r
 need user's permissions) or Authorisation Code Grant (which requires
  a code that is returned to your "redirect-uri" after the user granted permissions).   
 
-For the latter, you can call `it.turingtest.spotify.scala.client.AuthApi`'s `authoriseURL` which returns the Spotify URL
+For the latter, you can call `AuthApi`'s `authoriseURL` which returns the Spotify URL
 where your user can grant permissions. For instance in your Controller:
 ```
-  /**
-    * Redirect a user to authenticate with Spotify and grant permissions to the application.
-    * @return a Redirect Action (play.api.mvc.Action type is a wrapper around the type `Request[A] => Result`,
-    */
   def auth = Action {
-    // authApi is an injected instance of it.turingtest.spotify.scala.client.it.turingtest.spotify.scala.client.AuthApi
     Redirect(authApi.authoriseURL(state = Some("state"), scopes = List(PLAYLIST_READ_PRIVATE), showDialog = true))
   }
 ```
 
-And in your view:
-
-```
-<form action = "@routes.MyController.auth" method = "get">
-<button class="btn btn-success btn-lg" id="login-button">Login with Spotify</button>
-</form>
-```
-
-The page will be redirected to the redirect url which you have set
-for your app as first step. The request will return the authorisation code
-which the wrapper needs in order to do oAuth calls. You can feed this code calling  a setter, or 
-if you want to return an Action and render a view, you can call it.turingtest.spotify.scala.client.BaseApi's callback
-method. For instance:
+The page will be redirected to `redirect url` (which you have set
+for your app as first step).  
+The request will return the authorisation code
+which the wrapper needs in order to do *oAuth* calls.  
+Give this code to `BaseApi` with a setter (**TODO**)  
+otherwise you can call `callback(code)` and perform an `Action` straight away.
+For instance, here callback will set the authorisation code and call the `hello()` action:
 
 ```
   def callback: Action[AnyContent] = Action.async {
     request =>
       request.getQueryString("code") match {
-       // callback uses a function which takes a Token (unused in this case, 
-       // so left with underscore) and return a Future[Result], in this case hello().
        // If the user rejected the permissions, or some other error occurred,
-       // the request should contain an "error" querystring instead of a "code".
+       // request should contain an "error" querystring instead of a "code".
         case Some(code) => api.callback(code) { _ => hello() }
         case None => request.getQueryString("error") match {
           case Some("access_denied") => Future(BadRequest("You need to authorize permissions in order to use the App."))
@@ -119,16 +132,14 @@ method. For instance:
 
 ```
 
-If you don't feed the wrapper with an authorisation code, either via the `callback` or with a setter (TODO), you will get an error such as "Authorisation code not provided" if 
-you make an Oauth request. After you have given the auth code, this client will
-automatically retrieve and refresh tokens, you don't have to worry about them.
-Still, you can access the Token which is used on each oAuth request if you call the it.turingtest.spotify.scala.client.BaseApi
-methods. For instance, callback above takes a Token and returns a 
-Future[Result]. Other endpoints such as it.turingtest.spotify.scala.client.ProfilesApi and it.turingtest.spotify.scala.client.TracksApi use it.turingtest.spotify.scala.client.BaseApi underneath to make requests, so you can stay at a  higher-level and keep it simple.
+If you don't set the authorisation code you will get an error such as "Authorisation code not provided" 
+if you make an *oAuth* request. Once this is set, the client will automatically take care 
+of refreshing future tokens.  
 
- All the endpoints should be documented so if you decide not to use the Auth Credential Flow, make
- sure that you check the wrapper's function you use do not require it.
-
+Some endpoints don't need *oAuth*, so you can still call them if you don't set it.
+Just read the docs of the endpoint you need to make sure it doesn't require authorisation.
+For non-*oAuth* requests, the client will use the *client credentials* flow in order to
+benefit of higher rates.
 
 Read more about [Spotify Web API Authorisation](https://developer.spotify.com/web-api/authorization-guide/).
 

@@ -2,15 +2,19 @@ package it.turingtest.spotify.scala.client
 
 import javax.inject.Inject
 
-import it.turingtest.spotify.scala.client.entities.FeaturedPlaylists
+import it.turingtest.spotify.scala.client.entities.{FeaturedPlaylists, NewReleases}
 import it.turingtest.spotify.scala.client.logging.AccessLogging
+import it.turingtest.spotify.scala.client.utils.ConversionUtils
+import org.apache.commons.lang3.time.DateUtils
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.{DateTime, LocalDateTime}
 import play.api.mvc.{Action, AnyContent, Result}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 /**
-  *
+  * @see https://developer.spotify.com/web-api/browse-endpoints/
   */
 class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
 
@@ -28,37 +32,33 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
 
   def featuredPlaylists: Future[FeaturedPlaylists] = api.get[FeaturedPlaylists](FEATURED_PLAYLISTS)
 
+  def featuredPlaylists(locale: Option[String] = None, country: Option[String] = None,
+                        timestamp: Option[LocalDateTime] = None,
+                        limit: Int = 20, offset: Int = 0): Future[FeaturedPlaylists] = {
+
+    val query = ConversionUtils.seq(
+      ("locale", locale), ("country", country), ("timestamp", timestamp)
+    ) ++ Seq(("limit", limit.toString), ("offset", offset.toString))
+
+    api.get[FeaturedPlaylists](FEATURED_PLAYLISTS, query.toList: _*)
+  }
+
   // ===================================================================================================================
   /**
     * https://developer.spotify.com/web-api/get-list-new-releases/
     */
   private final val NEW_RELEASES = s"$BROWSE/new-releases"
 
-  /*
-  def newReleases: Future[List[SimpleAlbum]] = {
-    def loop(call: String, acc: List[SimpleAlbum]): Future[List[SimpleAlbum]] = {
-      api.get[NewReleases](call) flatMap {
-        p: NewReleases =>
-          p.albums.next match {
-          case None => Future(p.albums.items ::: acc)
-          case Some(href) => loop(href, p.albums.items ::: acc)
-        }
-      }
-    }
-    loop(NEW_RELEASES, List())
-  }
-  */
+  def newReleases: Future[NewReleases] = api.get[NewReleases](NEW_RELEASES)
 
-  /*
-  private def getNewReleasesList(token: String, query: Option[String] = None): Future[WSResponse] = {
-    ws.url(query.getOrElse(NEW_RELEASES))
-      .withHeaders(auth_bearer(token))
-      .withQueryString(
-        "" -> "" // TODO
-      )
-      .get()
+  def newReleases(country: Option[String] = None, limit: Int = 20, offset: Int = 0): Future[NewReleases] = {
+    val query: Seq[(String, String)] = Seq(
+      country.map(c => ("country", c)),
+      Some("limit", limit.toString),
+      Some("offset", offset.toString)).flatten
+
+    api.get[NewReleases](NEW_RELEASES, query.toList: _*)
   }
-  */
 
   // ===================================================================================================================
 

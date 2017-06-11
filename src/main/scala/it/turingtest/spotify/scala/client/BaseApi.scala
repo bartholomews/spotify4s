@@ -21,21 +21,23 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
 
   val BASE_URL = baseUrl
 
-  def get[T](endpoint: String)(implicit fmt: Reads[T]): Future[T] = {
+  def get[T](endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
     withToken[T](t => validate[T] {
       logResponse {
         ws.url(endpoint)
           .withHeaders(auth.bearer(t.access_token))
+          .withQueryString(parameters.toList: _*)
           .get()
       }
     }(fmt))
   }
 
-  def getWithOAuth[T](endpoint: String)(implicit fmt: Reads[T]): Future[T] = {
+  def getWithOAuth[T](endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
     withAuthToken()(t => validate[T] {
       logResponse {
         ws.url(endpoint)
           .withHeaders(auth.bearer(t.access_token))
+          .withQueryString(parameters.toList: _*)
           .get()
       }
     }(fmt))
@@ -81,6 +83,7 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
     } recoverWith { case ex => Future.failed(ex) }
   }
 
+  // TODO rate-limiting object from Retry-after header (@see https://developer.spotify.com/web-api/user-guide/#rate-limiting)
   private def webApiException(json: JsValue): WebApiException = {
     accessLogger.debug(json.toString)
     json.validate[RegularError] match {

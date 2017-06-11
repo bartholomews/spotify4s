@@ -1,0 +1,6 @@
+{
+  "access_token": "some-access-token",
+  "token_type": "Bearer",
+  "scope": "user-read-private user-read-email",
+  "expires_in": 3600
+}

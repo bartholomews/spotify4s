@@ -1,0 +1,312 @@
+{
+  "message" : "Celebrating Pride and Black Music Month!",
+  "playlists" : {
+    "href" : "https://api.spotify.com/v1/browse/featured-playlists?country=US&timestamp=2014-10-23T15%3A00%3A00&offset=2&limit=20",
+    "items" : [ {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWWwaxRea1LWS"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWWwaxRea1LWS",
+      "id" : "37i9dQZF1DWWwaxRea1LWS",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/b3e49d033e37b5bc7b068936c422fd08010d53e0",
+        "width" : 300
+      } ],
+      "name" : "#ThrowbackThursday",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "Vtx+QT9wKOg740nvBhrNDO1FJmxWBWtOfF64BfadnbouGuADaY3Fn3xo55Y8EXAacoEScnjPEjY=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWWwaxRea1LWS/tracks",
+        "total" : 55
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWWwaxRea1LWS"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWUNIrSzKgQbP"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWUNIrSzKgQbP",
+      "id" : "37i9dQZF1DWUNIrSzKgQbP",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/3c85aec4f5afabc734b295b629d9340e7b37002f",
+        "width" : 300
+      } ],
+      "name" : "Acoustic Summer",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "KrkRNyrCyde/t9tZK0a5fMEhAGcNRJA44s8DCnYELyTTiUX5XDjdKn+2fxWGS8m9Bwl2KAbJ6d8=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWUNIrSzKgQbP/tracks",
+        "total" : 58
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWUNIrSzKgQbP"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX3PIPIT6lEg5"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX3PIPIT6lEg5",
+      "id" : "37i9dQZF1DX3PIPIT6lEg5",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/a69569f07f7586b5b5ace3abebc73e5ef6926f8c",
+        "width" : 300
+      } ],
+      "name" : "chill.out.brain",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "ueAO+Iqfo57+4J8wm7OkI2mYR7cMZqnlJOa9B5iwNWXpUkGeHSeYl8zVoYI8PVZnZRsS0P9y8bQ=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX3PIPIT6lEg5/tracks",
+        "total" : 140
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX3PIPIT6lEg5"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXcBWIGoYBM5M"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXcBWIGoYBM5M",
+      "id" : "37i9dQZF1DXcBWIGoYBM5M",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/9a2eff3277bb267302c2326d11c313aa1774d591",
+        "width" : 300
+      } ],
+      "name" : "Today's Top Hits",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "wY8WgE/pB6q6Z2+omLmwqAinJKDrOQSqlW+I+fb+LTN/vZbsv+yJhmXKIaJ7CodgUejwkGE9crs=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks",
+        "total" : 50
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXcBWIGoYBM5M"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWY7IeIP1cdjF"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWY7IeIP1cdjF",
+      "id" : "37i9dQZF1DWY7IeIP1cdjF",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/2d17f8a30fe22071193c51fd85ace73e8b043c63",
+        "width" : 300
+      } ],
+      "name" : "Baila Reggaeton",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "n1nzgXhgaEEH9GxatW6nRHXXv41K565NxjZfon08nufZK1iHNa9nh6Z/MLgpFEqqojgrLhzPVww=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWY7IeIP1cdjF/tracks",
+        "total" : 50
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWY7IeIP1cdjF"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWUzFXarNiofw"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWUzFXarNiofw",
+      "id" : "37i9dQZF1DWUzFXarNiofw",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/5a12e819935475368b0447a1b9d1bfc46bb34a84",
+        "width" : 300
+      } ],
+      "name" : "The Newness",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "16LS5xghZqnR550O6zmsSFtCkfjH71x1o+PC9PQKCN5c9GGRlG6iwD3fwgdXPxbDbYhERybQDFc=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWUzFXarNiofw/tracks",
+        "total" : 50
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWUzFXarNiofw"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX5mB2C8gBeUM"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX5mB2C8gBeUM",
+      "id" : "37i9dQZF1DX5mB2C8gBeUM",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/7526ec88ae54e7418200adfb7fbb964fa802ccc6",
+        "width" : 300
+      } ],
+      "name" : "Wild Country",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "k7x02Z25F3YKrHPiA3iXY5GTTrFsadHqX44AAiyP6SrZDLMlaPsTjvO+tJHm5TkiXBPoUF1LsVc=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX5mB2C8gBeUM/tracks",
+        "total" : 70
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX5mB2C8gBeUM"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXcF6B6QPhFDv"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXcF6B6QPhFDv",
+      "id" : "37i9dQZF1DXcF6B6QPhFDv",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/e301ab6ed2ee3eb1656ded94228daa1c28392ed0",
+        "width" : 300
+      } ],
+      "name" : "Rock This",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "97msbMU3SCQz9N5uLx+fCS7NtSfAuZ2ejI/hZkYATgRLqNE2/l1dqt9uhhrLyHE/9zxqFQGlZ1M=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXcF6B6QPhFDv/tracks",
+        "total" : 50
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXcF6B6QPhFDv"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWY4xHQp97fN6"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWY4xHQp97fN6",
+      "id" : "37i9dQZF1DWY4xHQp97fN6",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/2421ab5358aae6d3efa369fb0af2de22b7133cb5",
+        "width" : 300
+      } ],
+      "name" : "Get Turnt",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "NbIb96K1Xa/NlcNz+HfDr2mjK5uagxIaV7W39EPwjo/fJCpSm2JzzUweRGoaVg0x1cqyQg22mlA=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWY4xHQp97fN6/tracks",
+        "total" : 70
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWY4xHQp97fN6"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX7MTlMMRl0MD"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7MTlMMRl0MD",
+      "id" : "37i9dQZF1DX7MTlMMRl0MD",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/9ef40f4599183992611c50c7596e5dfd784f2c29",
+        "width" : 300
+      } ],
+      "name" : "Bachata Lovers",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "+o2eZzkKIKTC1V+v3ry/Yp0zpIynlDB1Si3Olmvjv5/P1Ba+SNzDz4i1zZmAo4jgF3xRh/qV/7Y=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7MTlMMRl0MD/tracks",
+        "total" : 60
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX7MTlMMRl0MD"
+    } ],
+    "limit" : 20,
+    "next" : null,
+    "offset" : 2,
+    "previous" : "https://api.spotify.com/v1/browse/featured-playlists?country=US&timestamp=2014-10-23T15%3A00%3A00&offset=0&limit=20",
+    "total" : 12
+  }
+}

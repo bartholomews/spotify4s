@@ -4,4 +4,5 @@
 /project/project/
 /project/target/
 /target/
-.idea/*
+.idea/
+src/main/main.iml

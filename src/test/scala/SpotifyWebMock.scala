@@ -26,14 +26,30 @@ trait SpotifyWebMock extends {
     case POST(p"/api/token") => Action { // TODO more specific depending on body, also for failures and oAuth
       Results.Ok.sendResource("auth/client_credentials.json")
     }
-    case GET(p"/tracks/3n3Ppam7vgaVa1iaRUc9Lp") => Action {
-      Results.Ok.sendResource("tracks/3n3Ppam7vgaVa1iaRUc9Lp.json")
+    case GET(endpoint) => Action { sendResource(endpoint) }
+    case _ => Action { Results.BadRequest }
+  }
+
+  /**
+    * Json resources should map the real Spotify endpoints with packages as paths
+    * and filename mapping the full request, including querystring,
+    * just escaping question mark with "%3F"; e.g. the following request:
+    * "/browse/featured-playlists?country=SE&limit=2&offset=20" will look for a json file at:
+    * "test/resources/browse/featured-playlists%3Fcountry=SE&limit=2&offset=0.json"
+    *
+    * NOTE: remember that if a request has default values, those need to be included in
+    * the resource filename even if not explicitly defined by the test call
+    * (e.g. BrowseApi.featuredPlaylists once called with a parameter will set limit to 20 and offset to 0)
+    */
+  private def sendResource(endpoint: RequestHeader) = {
+    try {Results.Ok.sendResource(
+      s"${endpoint.uri.drop(1)
+        .replace("?", "%3F")
+        .replaceAll("%3A", ":")
+      }.json")
     }
-    case GET(p"/browse/featured-playlists") => Action {
-      Results.Ok.sendResource("browse/featured-playlists.json")
-    }
-    case _ => Action {
-      Results.BadRequest
+    catch { // TODO see why when not found it still throws a fasterxml JsonParseException
+      case _: Throwable => throw new Exception(s"No resource found for endpoint $endpoint")
     }
   }
 

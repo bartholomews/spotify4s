@@ -1,20 +1,20 @@
 {
-  "message" : "Hur är ditt torsdagshumör?",
+  "message" : "Easy like Sunday morning.",
   "playlists" : {
-    "href" : "https://api.spotify.com/v1/browse/featured-playlists?country=SE&locale=sv_se&timestamp=2014-10-23T09%3A00%3A00&offset=0&limit=20",
+    "href" : "https://api.spotify.com/v1/browse/featured-playlists?timestamp=2017-06-11T11%3A40%3A28&offset=0&limit=20",
     "items" : [ {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWVqfgj8NZEp1"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX2qoqnLKTfcQ"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVqfgj8NZEp1",
-      "id" : "37i9dQZF1DWVqfgj8NZEp1",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX2qoqnLKTfcQ",
+      "id" : "37i9dQZF1DX2qoqnLKTfcQ",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/23daf65c6e6516dcbfae24e1cd4e94cdd1d2ae55",
+        "url" : "https://i.scdn.co/image/116cbb491ccd71b7ba61a8bcc274c77a05368e5f",
         "width" : 300
       } ],
-      "name" : "Coffee Table Jazz",
+      "name" : "The Weekend Wind Down",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -25,26 +25,26 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "ueAO+Iqfo560OmRmza9DEEBWnqDIBW0OpI1f56gNzpRoJ8WGlYfwmtYTFA0J0Vs/WivbXUCVz98=",
+      "snapshot_id" : "Ovl0wR8YIE+1ZgJ6QQBgnCtp7sv2M7bsBisHyOwj+RKjGa3RKp8LLThvkx/6wI90AzAh1thaktc=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVqfgj8NZEp1/tracks",
-        "total" : 66
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX2qoqnLKTfcQ/tracks",
+        "total" : 49
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWVqfgj8NZEp1"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX2qoqnLKTfcQ"
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWX4OQBd6GoaY"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXcBWIGoYBM5M"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWX4OQBd6GoaY",
-      "id" : "37i9dQZF1DWX4OQBd6GoaY",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXcBWIGoYBM5M",
+      "id" : "37i9dQZF1DXcBWIGoYBM5M",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/cc6fb841a14f2a0988703f5ea6564f4946ead7ce",
+        "url" : "https://i.scdn.co/image/9a2eff3277bb267302c2326d11c313aa1774d591",
         "width" : 300
       } ],
-      "name" : "Sommarhits 2017",
+      "name" : "Today's Top Hits",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -55,26 +55,26 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "QaMge9Mx2tm8AKOZU6bmkRWlPcwra6DGTBbmhSiA/K+q56Fcse3IiZhVSGXMhrkBIet5f/pBmDo=",
+      "snapshot_id" : "wY8WgE/pB6q6Z2+omLmwqAinJKDrOQSqlW+I+fb+LTN/vZbsv+yJhmXKIaJ7CodgUejwkGE9crs=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWX4OQBd6GoaY/tracks",
-        "total" : 68
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks",
+        "total" : 50
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWX4OQBd6GoaY"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXcBWIGoYBM5M"
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWTVIaV4KJYuq"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX5KpP2LN299J"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWTVIaV4KJYuq",
-      "id" : "37i9dQZF1DWTVIaV4KJYuq",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX5KpP2LN299J",
+      "id" : "37i9dQZF1DX5KpP2LN299J",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/591e9cdfb74241ab935787b03f25036f23dec6b3",
+        "url" : "https://i.scdn.co/image/36425aa4a7220c8c517f2eb01659a08192ad1248",
         "width" : 300
       } ],
-      "name" : "Acoustic Covers | Hits & Mashups",
+      "name" : "This Is: Taylor Swift",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -85,26 +85,26 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "sXyJOZ1gtx0JylxLh6waoLkYq6629XdixsGK0xxOZp6ErBIxX9Dg4BruyCUlAr14/CvTPmX5i4k=",
+      "snapshot_id" : "Vuym8N0WNe5Fjz6I/0CmZy7aQjV/FxpJWkkPSDiarMN90yv2VFRKZxjkH3AsqIYQ1QqTfxb/7Tk=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWTVIaV4KJYuq/tracks",
-        "total" : 82
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX5KpP2LN299J/tracks",
+        "total" : 30
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWTVIaV4KJYuq"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX5KpP2LN299J"
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWVYbG09tMAve"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWY8U6Zq7nvbE"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVYbG09tMAve",
-      "id" : "37i9dQZF1DWVYbG09tMAve",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWY8U6Zq7nvbE",
+      "id" : "37i9dQZF1DWY8U6Zq7nvbE",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/37342f53c1df6fd560be94efd5ddafa50698824a",
+        "url" : "https://i.scdn.co/image/6945ca32f598409dcff5781841575becaa5e9b66",
         "width" : 300
       } ],
-      "name" : "One Love Manchester",
+      "name" : "Hot Acoustic Covers",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -115,13 +115,283 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "dSLICmNGKsu6dxsEKVx8meX/4YCLey/r0P76C+0EWCroZJ6XYhKGRU2MWm3UrpXNOtigQltSEJo=",
+      "snapshot_id" : "XYZnLZpsA7RednI20mVJNUBWnqDIBW0Or+5Ue4hSI9KRiPj7frT6i6DnaF+4zKLQas4aSvOGXpI=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVYbG09tMAve/tracks",
-        "total" : 39
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWY8U6Zq7nvbE/tracks",
+        "total" : 53
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWVYbG09tMAve"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWY8U6Zq7nvbE"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXb1Pd8XAlALS"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXb1Pd8XAlALS",
+      "id" : "37i9dQZF1DXb1Pd8XAlALS",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/5bd888e73fe2bcf526f89e50f795492c82fd12f1",
+        "width" : 300
+      } ],
+      "name" : "Spin",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "Uag8LrUOnrvW2E6qSLqBuRyunIWSfPrmskH0i4EQUWAjvVDgeeT+5CIULtJ2ljwC1lOoCEKd1js=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXb1Pd8XAlALS/tracks",
+        "total" : 47
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXb1Pd8XAlALS"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX4WYpdgoIcn6"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX4WYpdgoIcn6",
+      "id" : "37i9dQZF1DX4WYpdgoIcn6",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/2b02b0d1acef58f2e65b4155d7888835a379561a",
+        "width" : 300
+      } ],
+      "name" : "Chill Hits",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "xiPVXpoR22BJyHF8AXtliWsDmkZXoOrBZRR+F1hike8uVOo/bGx7VNrqhc34Pcb+KhuTkS+uhic=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX4WYpdgoIcn6/tracks",
+        "total" : 95
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX4WYpdgoIcn6"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXc5e2bJhV6pu"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXc5e2bJhV6pu",
+      "id" : "37i9dQZF1DXc5e2bJhV6pu",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/95112fcace768b32cf5ed7be504dd8839a2ce3cf",
+        "width" : 300
+      } ],
+      "name" : "Morning Motivation",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "1hnU3XPC0XW8AKOZU6bmkc8o+yrsOOS0TjWgxCop4IbjalIPvN7Axkjav31re8gzWWur1mcUaV0=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXc5e2bJhV6pu/tracks",
+        "total" : 60
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXc5e2bJhV6pu"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWSXBu5naYCM9"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWSXBu5naYCM9",
+      "id" : "37i9dQZF1DWSXBu5naYCM9",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/31db41bbac17e3234be8c402c5d0c2aea7042b9c",
+        "width" : 300
+      } ],
+      "name" : "A Perfect Day",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "1Vh5Gm0XPNPpWIJPe4Nb7Stp7sv2M7bsrF/JDBfr9xqjrTnIzJAXKOTNJrbiG5n2974gBBcwLfs=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWSXBu5naYCM9/tracks",
+        "total" : 80
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWSXBu5naYCM9"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXdd3gw5QVjt9"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXdd3gw5QVjt9",
+      "id" : "37i9dQZF1DXdd3gw5QVjt9",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/57a975c62318ea9c083c9feaf056338c6c623f56",
+        "width" : 300
+      } ],
+      "name" : "Morning Acoustic",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "6JMUB0rtgYc8qIHW8uf4QGocsUw2pMoegyhzLOkkLDHCIEZAtcIk9LOYo80tFUnVN5KFq07wxkI=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXdd3gw5QVjt9/tracks",
+        "total" : 50
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXdd3gw5QVjt9"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWZKxDdpAkEjR"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWZKxDdpAkEjR",
+      "id" : "37i9dQZF1DWZKxDdpAkEjR",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/2c7518a8d7806220f60b2fa84a1c0a1e0cab4a9e",
+        "width" : 300
+      } ],
+      "name" : "Summer Hits",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "u4c1uN/F523ldOVWWEu1hj8r+Yso12NDoE8f6I5SAl+r7BydfYzZiNmhN1ShURoNTrZMgaQZ040=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWZKxDdpAkEjR/tracks",
+        "total" : 71
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWZKxDdpAkEjR"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWXIFKBoyoLJJ"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWXIFKBoyoLJJ",
+      "id" : "37i9dQZF1DWXIFKBoyoLJJ",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/78c20322f29a51e4d51283b1520d55ad770b4af4",
+        "width" : 300
+      } ],
+      "name" : "Tropical Morning",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "DUya1rpNiLLC1V+v3ry/YhyunIWSfPrm30Lq5Y0xJ0EqQfMtO8KZBwZG+X/t7esrLyUqi4hFVoA=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWXIFKBoyoLJJ/tracks",
+        "total" : 70
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWXIFKBoyoLJJ"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWSXWSaQmvWOB"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWSXWSaQmvWOB",
+      "id" : "37i9dQZF1DWSXWSaQmvWOB",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/c91012be898cea275f26455db94776aafcff1a02",
+        "width" : 300
+      } ],
+      "name" : "Soul 'n' The City",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "29MOF7+u62AcGQ6GiObcWCkHKtb6TZt5eQ3eUA2hV5p0WhtMoU+3KxPwnqCAmkfpaazmJSMHVRA=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWSXWSaQmvWOB/tracks",
+        "total" : 100
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWSXWSaQmvWOB"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWVIzZt2GAU4X"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVIzZt2GAU4X",
+      "id" : "37i9dQZF1DWVIzZt2GAU4X",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/3a11bec31a2e02eceab96237f762fc08880c2266",
+        "width" : 300
+      } ],
+      "name" : "Piano Ballads",
+      "owner" : {
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "wa38IYVCsj74k+Bo1Eeunfoez6/jzvt9DcEgLQHEoVpf+oUI9HPCYKo8umr6nyYVEXUYx64Oc20=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVIzZt2GAU4X/tracks",
+        "total" : 74
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWVIzZt2GAU4X"
     }, {
       "collaborative" : false,
       "external_urls" : {
@@ -155,16 +425,16 @@
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXcwkNsfYPDPQ"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX4SO57lOJWRB"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXcwkNsfYPDPQ",
-      "id" : "37i9dQZF1DXcwkNsfYPDPQ",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX4SO57lOJWRB",
+      "id" : "37i9dQZF1DX4SO57lOJWRB",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/add0a9128670e5acab8b213ac52a017cea63526a",
+        "url" : "https://i.scdn.co/image/eef9f032c028c3ab7c610cb9a55ee892c2f3e14b",
         "width" : 300
       } ],
-      "name" : "Feeling good låtar!",
+      "name" : "HIIT-Pop",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -175,26 +445,26 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "5qREKVfaDKa0OmRmza9DEByunIWSfPrmv5HKpSY6c7c7e8heQSTyVaerfDo3HRUzF3GgpXC4KEk=",
+      "snapshot_id" : "3kjy1aO1Hp0l9GxOVxCIUIiKCDnMVtXmftfDhdqtf7GWLAbId+By8BWWZhQ58Hpjj5xU2+TA3ls=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXcwkNsfYPDPQ/tracks",
-        "total" : 60
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX4SO57lOJWRB/tracks",
+        "total" : 55
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXcwkNsfYPDPQ"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX4SO57lOJWRB"
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX4Umko6nOmN7"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX0MLFaUdXnjA"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX4Umko6nOmN7",
-      "id" : "37i9dQZF1DX4Umko6nOmN7",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX0MLFaUdXnjA",
+      "id" : "37i9dQZF1DX0MLFaUdXnjA",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/23a95e2694259d7e1c03b7b09dfd255a7c7f9328",
+        "url" : "https://i.scdn.co/image/ffb9b49a4c2ef7e415e4af6f6a52f43992b47924",
         "width" : 300
       } ],
-      "name" : "Lugnt & Skönt",
+      "name" : "Everyday Favorites",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -205,26 +475,26 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "8k448cS2dNMGScL/YiGdWqU0GKCUQajkZsTewHbI+1Ufa+xsZTPXQANBiDuXRZ0uCQzDT8G+QZA=",
+      "snapshot_id" : "oavABSCSC/Gm3QLruWgJ8Fez6VUsVc4dAizWTkd5UfpAuDsXOsmwXXbnaYGJs8KowArkQSoks4w=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX4Umko6nOmN7/tracks",
-        "total" : 62
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX0MLFaUdXnjA/tracks",
+        "total" : 55
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX4Umko6nOmN7"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX0MLFaUdXnjA"
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWVUxkQFrGCkK"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX6xOPeSOGone"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVUxkQFrGCkK",
-      "id" : "37i9dQZF1DWVUxkQFrGCkK",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX6xOPeSOGone",
+      "id" : "37i9dQZF1DX6xOPeSOGone",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/847a4f0ded5799cf9164a2ddecc91c022968d1df",
+        "url" : "https://i.scdn.co/image/c273fbfab88a05617de77cb87d9b71b368c7867c",
         "width" : 300
       } ],
-      "name" : "Tropisk House",
+      "name" : "Soft Rock",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -235,26 +505,26 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "fMkl9nyppUwz9N5uLx+fCUUPlMY4QLDRfaF5ntbcJGQXRabvy47XxoYzY3VinFsUBdLvX8xNn54=",
+      "snapshot_id" : "8dyGgGfmFn+GzINopoorqUBWnqDIBW0OHcvix1IfFaVmmbHIIYrBtkMN1mGj/VI2rUH6UBtx0oc=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVUxkQFrGCkK/tracks",
-        "total" : 100
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX6xOPeSOGone/tracks",
+        "total" : 119
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWVUxkQFrGCkK"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX6xOPeSOGone"
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWYf3km3E2aMS"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX9OZisIoJQhG"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWYf3km3E2aMS",
-      "id" : "37i9dQZF1DWYf3km3E2aMS",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX9OZisIoJQhG",
+      "id" : "37i9dQZF1DX9OZisIoJQhG",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/dfd2eaa1e26b1cf3bee520bc0824b4cb2b9b24aa",
+        "url" : "https://i.scdn.co/image/bba2bdff8c2b4f9c0bb9b9fc7ed936d4b10a568d",
         "width" : 300
       } ],
-      "name" : "Svenska Favoriter",
+      "name" : "Morning Classical",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -265,26 +535,26 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "xM32G13jY/HT+Xmzh/6Nc+X/4YCLey/r8cIoF+6Ntya23Wr2JfzAQYq03xjJF3hnUZPiiJmTsbY=",
+      "snapshot_id" : "SsJWYkzJp7v+4J8wm7OkI+X/4YCLey/roCsR0PyRgjwItDPqnFhWMLPrA4WB0/nEUpYBccOoAvs=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWYf3km3E2aMS/tracks",
-        "total" : 60
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX9OZisIoJQhG/tracks",
+        "total" : 50
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWYf3km3E2aMS"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX9OZisIoJQhG"
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX0jgyAiPl8Af"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX6ziVCJnEm59"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX0jgyAiPl8Af",
-      "id" : "37i9dQZF1DX0jgyAiPl8Af",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX6ziVCJnEm59",
+      "id" : "37i9dQZF1DX6ziVCJnEm59",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/cdda3f0bf42371399e5e7a8c4277d551ceb08d2c",
+        "url" : "https://i.scdn.co/image/08eaf527cfb7211b86b726936a34f7670fb02099",
         "width" : 300
       } ],
-      "name" : "Peaceful Guitar",
+      "name" : "Your Favorite Coffeehouse",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -295,26 +565,26 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "RtxVmGGg7yPT+Xmzh/6Nc8EhAGcNRJA4TJBCW2EyltBJlygmyD3N/UJvRLHVZiiIzcH43wIIuXA=",
+      "snapshot_id" : "dA5QiFpXEVHvfogXzEAiY98sGBFuHC3ZfUEN1MT2vuluauWcMFO9XZuQSR6Rk0Ihdo0klMlRhS8=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX0jgyAiPl8Af/tracks",
-        "total" : 60
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX6ziVCJnEm59/tracks",
+        "total" : 83
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX0jgyAiPl8Af"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX6ziVCJnEm59"
     }, {
       "collaborative" : false,
       "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWTMYgB8TqtmR"
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXdgz8ZB7c2CP"
       },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWTMYgB8TqtmR",
-      "id" : "37i9dQZF1DWTMYgB8TqtmR",
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXdgz8ZB7c2CP",
+      "id" : "37i9dQZF1DXdgz8ZB7c2CP",
       "images" : [ {
         "height" : 300,
-        "url" : "https://i.scdn.co/image/4c99cc3c147e4921dfb1dfbc853e222024dd7325",
+        "url" : "https://i.scdn.co/image/15f3d26eeed6a4568a87ec21e077f023f9c2081c",
         "width" : 300
       } ],
-      "name" : "Hits idag",
+      "name" : "indietronic",
       "owner" : {
         "external_urls" : {
           "spotify" : "http://open.spotify.com/user/spotify"
@@ -325,288 +595,18 @@
         "uri" : "spotify:user:spotify"
       },
       "public" : null,
-      "snapshot_id" : "TRjpX/z7OTEvu+FziqYOBOcFOuQk/+Hnf9pvPW94zy7/7QIVh3anyeaJgHfG12ydLmGxFyFmuIA=",
+      "snapshot_id" : "7ztHd49fGbryVZQNTY3pT8EhAGcNRJA4G6nAJ2KxjPHmtKa60x56bF9L6NstUB2Pd3zrMxxF1bI=",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWTMYgB8TqtmR/tracks",
-        "total" : 49
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXdgz8ZB7c2CP/tracks",
+        "total" : 70
       },
       "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWTMYgB8TqtmR"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX7CB1M7sBt21"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7CB1M7sBt21",
-      "id" : "37i9dQZF1DX7CB1M7sBt21",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/831e9c18e5ab2809a540faa0093aba29ed0b39b8",
-        "width" : 300
-      } ],
-      "name" : "Pepplåtar till träningspasset",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "IITK3na4PKcFaCxEPj192EBWnqDIBW0OXn8qCCRg26lfEsL0lMd0r4Yso+WlhCohIX1XrN6ftk4=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7CB1M7sBt21/tracks",
-        "total" : 42
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX7CB1M7sBt21"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX7K31D69s4M1"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7K31D69s4M1",
-      "id" : "37i9dQZF1DX7K31D69s4M1",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/8e41b9e65e524399236160c309e2131b666024e7",
-        "width" : 300
-      } ],
-      "name" : "Piano in the Background",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "8Q1lVgXCeLQcGQ6GiObcWC7NtSfAuZ2emEiZTX9FAPLDOogcuOvQsEdxqSQapPcIZpoi7uuKVVQ=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7K31D69s4M1/tracks",
-        "total" : 141
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX7K31D69s4M1"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWXfgo3OOonqa"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWXfgo3OOonqa",
-      "id" : "37i9dQZF1DWXfgo3OOonqa",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/9e58c375033885948e23de30288c01161891a879",
-        "width" : 300
-      } ],
-      "name" : "Ord och inga visor",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "f3hNog9AAM+vT12EyufmkpGTTrFsadHqy1V3V49/x4xutgiu5cmJPzi7H5iFg4p6+xEn4rXZZlA=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWXfgo3OOonqa/tracks",
-        "total" : 64
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWXfgo3OOonqa"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXc4CrXgl8cum"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXc4CrXgl8cum",
-      "id" : "37i9dQZF1DXc4CrXgl8cum",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/2994e34fa5f42be4a982ca39a7f117c3b226d6ad",
-        "width" : 300
-      } ],
-      "name" : "Get Your Hits Together",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "p6I9kSs0q10/1xhU0V2CAqk9gwG4oADROz2/nHOO+p5SiT2/nYAKPIXDZ3jLo9un3O4yGJcHe8A=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXc4CrXgl8cum/tracks",
-        "total" : 72
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXc4CrXgl8cum"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX1BNoP9erXlf"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX1BNoP9erXlf",
-      "id" : "37i9dQZF1DX1BNoP9erXlf",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/446f20c17f9b829a081ffbd95df5ee3a8da2c50a",
-        "width" : 300
-      } ],
-      "name" : "Liiit",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "jr7vChWPGA1jypmG3UAc6S7NtSfAuZ2esRqmLjXHSTVesxbAojsMGjw8o6YNCygoP5yT0NXZjdA=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX1BNoP9erXlf/tracks",
-        "total" : 64
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX1BNoP9erXlf"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX0XYoY9uUkXA"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX0XYoY9uUkXA",
-      "id" : "37i9dQZF1DX0XYoY9uUkXA",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/3d2984d75b9ff7b2549dcc455efefcfddaf35d7e",
-        "width" : 300
-      } ],
-      "name" : "Main Stage",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "SxkU/Mmk5vY8qIHW8uf4QFtCkfjH71x11yU7L4alM3DQCH2Ro20utlbaebB4zt1TwfBw7WyrGdc=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX0XYoY9uUkXA/tracks",
-        "total" : 115
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX0XYoY9uUkXA"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX7FV7CCq9byu"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7FV7CCq9byu",
-      "id" : "37i9dQZF1DX7FV7CCq9byu",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/532b84a78bf1f7502686b7269ed34702ba06474e",
-        "width" : 300
-      } ],
-      "name" : "Ny pop",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "ZhriEPQTQh0J5jo+rmXv7iEZEEU3zB3cInuaDnW6e/9y+91Pnt3gMU/0bYGgDJjwjuZgo+uuPWA=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7FV7CCq9byu/tracks",
-        "total" : 47
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX7FV7CCq9byu"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWWGRfB2jBjnV"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWWGRfB2jBjnV",
-      "id" : "37i9dQZF1DWWGRfB2jBjnV",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/83a0b13df3004fab3dfb9dd1147cef9db3b6a43e",
-        "width" : 300
-      } ],
-      "name" : "Akustisk Sommar",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "t2tPUe06/s1esRLJfiUir8EhAGcNRJA4ZI8GYk1KpsUErXRI1Y0R/uA4KRpwzta9HLFw90+ZE7E=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWWGRfB2jBjnV/tracks",
-        "total" : 69
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWWGRfB2jBjnV"
-    }, {
-      "collaborative" : false,
-      "external_urls" : {
-        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXdiF2k2CLnQA"
-      },
-      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXdiF2k2CLnQA",
-      "id" : "37i9dQZF1DXdiF2k2CLnQA",
-      "images" : [ {
-        "height" : 300,
-        "url" : "https://i.scdn.co/image/1120a631e7fd95179a9d9c2ec907d660d6ef415c",
-        "width" : 300
-      } ],
-      "name" : "Rock idag",
-      "owner" : {
-        "external_urls" : {
-          "spotify" : "http://open.spotify.com/user/spotify"
-        },
-        "href" : "https://api.spotify.com/v1/users/spotify",
-        "id" : "spotify",
-        "type" : "user",
-        "uri" : "spotify:user:spotify"
-      },
-      "public" : null,
-      "snapshot_id" : "oA3MXCejErudftC5NY8zXFtCkfjH71x15lgkrexYGqzbl0m1x84jFCyphJSH9NKKkvwt0Y/Y6Ec=",
-      "tracks" : {
-        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXdiF2k2CLnQA/tracks",
-        "total" : 46
-      },
-      "type" : "playlist",
-      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXdiF2k2CLnQA"
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXdgz8ZB7c2CP"
     } ],
     "limit" : 20,
-    "next" : "https://api.spotify.com/v1/browse/featured-playlists?country=SE&locale=sv_se&timestamp=2014-10-23T09%3A00%3A00&offset=20&limit=20",
+    "next" : "https://api.spotify.com/v1/browse/featured-playlists?timestamp=2017-06-11T11%3A40%3A28&offset=20&limit=20",
     "offset" : 0,
     "previous" : null,
-    "total" : 23
+    "total" : 25
   }
 }
