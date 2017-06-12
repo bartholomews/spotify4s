@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/bartholomews/spotify-scala-client/blob/master/LICENSE)
 
 # spotify-scala-client
-*Asynchronous Spotify Web API Scala Client/Wrapper*.
+*Asynchronous Spotify Web API Scala Client/Wrapper*
  
 ### Endpoints Task list
  
@@ -69,7 +69,7 @@ class MyController @Inject() (api: BaseApi,
                               profilesApi: ProfilesApi,
                               tracksApi: TracksApi) extends Controller {
 
-   def hello = {
+   def hello() = {
     val user: Future[UserPrivate] = profilesApi.me 
     user map { me => Ok(views.html.myview(s"Hello, ${me.id}")) }
   }
@@ -129,6 +129,11 @@ For instance, here callback will set the authorisation code and call the `hello(
         }
       }
   }
+  
+  def hello() = {
+   val user: Future[UserPrivate] = profilesApi.me 
+   user map { me => Ok(views.html.myview(s"Hello, ${me.id}")) }
+ }
 
 ```
 
@@ -153,15 +158,15 @@ in this state variable, you can validate the response to additionally ensure tha
 request and response originated in the same browser. This provides protection against 
 attacks such as cross-site request forgery.*
 
-+ **scopes**: a List of `Scope` case objects, such as PLAYLIST-MODIFY-PUBLIC or USER-READ-EMAIL.
++ **scopes**: a List of `Scope` case objects, such as `PLAYLIST_MODIFY_PUBLIC` or `USER_READ_EMAIL`.
   These are basically the permissions that you need from the users of your app. Read more about scopes [here](https://developer.spotify.com/web-api/using-scopes/)
     
 + **show_dialog** Whether or not to force the user to approve the app again if they’ve already done so.
-It defaults to true.
+It defaults to true here.
 
 You can call `authoriseURL` without parameters 
 if you want; but it will be a request with empty state, no scopes and show_dialog set to true.
 (If no scope is specified, access is permitted only to publicly available information, and you
-might get a response error... [TODO])
+might get a response error... (*TO BE CONTINUED*)
 
 ***
