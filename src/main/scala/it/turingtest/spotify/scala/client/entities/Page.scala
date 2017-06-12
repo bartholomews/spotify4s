@@ -11,7 +11,7 @@ next: Option[String],
 offset: Int,
 previous: Option[String],
 total: Int,
-items: List[T]
+items: Seq[T]
 )
 
 object Page {
@@ -26,23 +26,23 @@ object Page {
   }
 
   implicit val featuredPlaylistsReads: Reads[Page[SimplePlaylist]] = (
-    jsPage and (JsPath \ "items").read[List[SimplePlaylist]]
+    jsPage and (JsPath \ "items").lazyRead(Reads.seq[SimplePlaylist](SimplePlaylist.simplePlaylistReads))
     ) (Page.apply[SimplePlaylist] _)
 
   implicit val simpleTracksReads: Reads[Page[SimpleTrack]] = (
-    jsPage and (JsPath \ "items").read[List[SimpleTrack]]
+    jsPage and (JsPath \ "items").lazyRead(Reads.seq[SimpleTrack](SimpleTrack.simpleTrackReads))
     ) (Page.apply[SimpleTrack] _)
 
   implicit val albumReads: Reads[Page[SimpleAlbum]] = (
-    jsPage and (JsPath \ "items").read[List[SimpleAlbum]]
+    jsPage and (JsPath \ "items").lazyRead(Reads.seq[SimpleAlbum](SimpleAlbum.simpleAlbumReads))
     ) (Page.apply[SimpleAlbum] _)
 
   implicit val trackReads: Reads[Page[Track]] = (
-    jsPage and (JsPath \ "items").read[List[Track]]
+    jsPage and (JsPath \ "items").lazyRead(Reads.seq[Track](Track.trackReads))
     ) (Page.apply[Track] _)
 
   implicit val playlistTrackReads: Reads[Page[PlaylistTrack]] = (
-    jsPage and (JsPath \ "items").read[List[PlaylistTrack]]
+    jsPage and (JsPath \ "items").lazyRead(Reads.seq[PlaylistTrack](PlaylistTrack.playlistTrackReads))
     ) (Page.apply[PlaylistTrack] _)
 
   /*

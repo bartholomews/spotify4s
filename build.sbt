@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
 )
 libraryDependencies ++=Seq(
   "com.typesafe.play" % "play-test_2.11" % "2.5.14",
-  "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.3" % "test",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % "test"
 )
 
 // libraryDependencies += "ch.qos.logback" % "logback-core" % "1.1.3"

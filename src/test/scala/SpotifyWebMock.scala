@@ -1,6 +1,5 @@
 import it.turingtest.spotify.scala.client.{AuthApi, BaseApi, BrowseApi, TracksApi}
 import play.api.Configuration
-import play.api.libs.json.Json
 import play.api.mvc.{Action, Handler, RequestHeader, Results}
 import play.api.test.WsTestClient
 import play.core.server.Server
@@ -12,9 +11,7 @@ import scala.concurrent.duration._
 /**
   * @see https://www.playframework.com/documentation/2.5.x/ScalaTestingWebServiceClients
   */
-trait SpotifyWebMock extends {
-
-  def await[T](block: Awaitable[T]): T = Await.result(block, 3.seconds)
+trait SpotifyWebMock {
 
   private val config = Configuration.apply(
     ("CLIENT_ID", "some-client-id"),
@@ -31,7 +28,7 @@ trait SpotifyWebMock extends {
   }
 
   /**
-    * Json resources should map the real Spotify endpoints with packages as paths
+    * Json resources should map the real Spotify endpoints with relative path
     * and filename mapping the full request, including querystring,
     * just escaping question mark with "%3F"; e.g. the following request:
     * "/browse/featured-playlists?country=SE&limit=2&offset=20" will look for a json file at:
@@ -52,6 +49,8 @@ trait SpotifyWebMock extends {
       case _: Throwable => throw new Exception(s"No resource found for endpoint $endpoint")
     }
   }
+
+  def await[T](block: Awaitable[T]): T = Await.result(block, 3.seconds)
 
   def withAuthApi[T](block: AuthApi => T):  T = {
     Server.withRouter() { routes } { implicit port =>

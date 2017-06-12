@@ -8,7 +8,7 @@ case class NewReleases(albums: Page[SimpleAlbum], message: Option[String])
 object NewReleases {
 
   implicit val newReleasesReads: Reads[NewReleases] = (
-    (JsPath \ "albums").read[Page[SimpleAlbum]] and
+    (JsPath \ "albums").lazyRead[Page[SimpleAlbum]](Page.albumReads) and
       (JsPath \ "message").readNullable[String]
     ) (NewReleases.apply _)
 

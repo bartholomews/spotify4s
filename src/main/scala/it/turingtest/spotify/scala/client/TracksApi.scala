@@ -4,7 +4,6 @@ import javax.inject.Inject
 
 import it.turingtest.spotify.scala.client.entities.{AudioFeatures, Page, PlaylistTrack, Track}
 import it.turingtest.spotify.scala.client.logging.AccessLogging
-import play.api.libs.ws.WSClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

@@ -35,7 +35,7 @@
 
 **(MORE TODO)**
 
-#### Usage
+### Usage
 
 #### - Setup in *application.conf*
 
@@ -79,7 +79,7 @@ class MyController @Inject() (api: BaseApi,
 
 ```
 
-#### - Logging
+### Logging
 
 In your *conf/logback.xml*:
 
@@ -92,7 +92,7 @@ In your *conf/logback.xml*:
 **WARN** is currently doing nothing.  
 **INFO** is currently doing nothing.
 
-#### 2. ***Authorisation***
+### **oAuth**
 
 
 This wrapper will automatically use either the client credentials flow (if the request doesn't 

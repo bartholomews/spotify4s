@@ -51,12 +51,12 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
         case Some(href) =>
           val future: Future[Page[T]] = call(href)
           future flatMap {
-            p => loop(p, acc ::: p.items)
+            p => loop(p, acc ::: p.items.toList)
           }
       }
     }
     call(endpoint) flatMap {
-      p => loop(p, p.items)
+      p => loop(p, p.items.toList)
     }
   }
 
@@ -67,11 +67,11 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
         case Some(href) =>
           val future: Future[Page[T]] = call(href)
           future flatMap {
-            p => loop(p, acc ::: p.items)
+            p => loop(p, acc ::: p.items.toList)
           }
       }
     }
-    loop(page, page.items)
+    loop(page, page.items.toList)
   }
 
   def validate[T](f: Future[WSResponse])(implicit fmt: Reads[T]): Future[T] = {

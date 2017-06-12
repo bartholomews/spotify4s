@@ -5,9 +5,7 @@ import javax.inject.Inject
 import it.turingtest.spotify.scala.client.entities.{FeaturedPlaylists, NewReleases}
 import it.turingtest.spotify.scala.client.logging.AccessLogging
 import it.turingtest.spotify.scala.client.utils.ConversionUtils
-import org.apache.commons.lang3.time.DateUtils
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.{DateTime, LocalDateTime}
+import org.joda.time.LocalDateTime
 import play.api.mvc.{Action, AnyContent, Result}
 
 import scala.concurrent.ExecutionContext.Implicits.global

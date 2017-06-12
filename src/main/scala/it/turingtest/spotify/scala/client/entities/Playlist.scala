@@ -59,7 +59,7 @@ object SimplePlaylist {
   }
 }
 
-object PlaylistReads {
+private object PlaylistReads {
   val playlistFields = {
     (JsPath \ "collaborative").read[Boolean] and
       (JsPath \ "external_urls").read[ExternalURL] and
