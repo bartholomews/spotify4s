@@ -24,10 +24,6 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
     */
   private final val FEATURED_PLAYLISTS = s"$BROWSE/featured-playlists"
 
-  def featuredPlaylists(action: FeaturedPlaylists => Result): Action[AnyContent] = Action.async {
-    featuredPlaylists map { p: FeaturedPlaylists => action(p) }
-  }
-
   def featuredPlaylists: Future[FeaturedPlaylists] = api.get[FeaturedPlaylists](FEATURED_PLAYLISTS)
 
   def featuredPlaylists(locale: Option[String] = None, country: Option[String] = None,

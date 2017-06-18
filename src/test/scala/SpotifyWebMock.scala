@@ -1,6 +1,9 @@
+import java.nio.charset.StandardCharsets
+import java.util.Base64
+
 import it.turingtest.spotify.scala.client.{AuthApi, BaseApi, BrowseApi, TracksApi}
 import play.api.Configuration
-import play.api.mvc.{Action, Handler, RequestHeader, Results}
+import play.api.mvc._
 import play.api.test.WsTestClient
 import play.core.server.Server
 import play.api.routing.sird._
@@ -13,18 +16,54 @@ import scala.concurrent.duration._
   */
 trait SpotifyWebMock {
 
-  private val config = Configuration.apply(
-    ("CLIENT_ID", "some-client-id"),
-    ("CLIENT_SECRET", "some-client-secret"),
-    ("REDIRECT_URI", "some-redirect-uri")
+  val CLIENT_ID = "some-client-id"
+  val CLIENT_SECRET = "some-client-secret"
+  val REDIRECT_URI = "some-redirect-uri"
+
+  implicit val config = Configuration.apply(
+    ("CLIENT_ID", CLIENT_ID),
+    ("CLIENT_SECRET", CLIENT_SECRET),
+    ("REDIRECT_URI", REDIRECT_URI)
   )
 
   private val routes: PartialFunction[RequestHeader, Handler] = {
-    case POST(p"/api/token") => Action { // TODO more specific depending on body, also for failures and oAuth
-      Results.Ok.sendResource("auth/client_credentials.json")
+    case POST(p"/api/token") => Action(BodyParsers.parse.tolerantFormUrlEncoded) { request =>
+      authError(request.headers).getOrElse(
+        request.body get "grant_type" match {
+          case Some(Seq("client_credentials")) => Results.Ok.sendResource("auth/client_credentials.json")
+          case Some(Seq("authorization_code")) => authCodeResponse(request.body)
+          case Some(Seq("refresh_token")) => refreshTokenResponse(request.body)
+          case _ => Results.BadRequest.sendResource("auth/unsupported_grant.json")
+        }
+      )
     }
     case GET(endpoint) => Action { sendResource(endpoint) }
     case _ => Action { Results.BadRequest }
+  }
+
+  private def authError(headers: Headers): Option[Result] = {
+    headers.get("Authorization") match {
+      case None => Some(Results.BadRequest.sendResource("auth/invalid_client_no_authorization_header.json"))
+      case Some(client) =>
+        val result = new String(Base64.getDecoder.decode(client.drop(6).getBytes(StandardCharsets.UTF_8)))
+        result.split(":") match {
+          case Array(CLIENT_ID, CLIENT_SECRET) => None
+          case Array(CLIENT_ID, _) => Some(Results.BadRequest.sendResource("auth/invalid_client_secret.json"))
+          case _ => Some(Results.BadRequest.sendResource("auth/invalid_client.json"))
+        }
+      }
+  }
+
+  private def authCodeResponse(body: Map[String, Seq[String]]) = body get "code" match {
+    case Some(Seq("valid_code")) => Results.Ok.sendResource("auth/authorization_access.json")
+    case Some(_) => Results.BadRequest.sendResource("auth/authorization_invalid_code.json")
+    case None => Results.BadRequest.sendResource("auth/authorization_no_code.json")
+  }
+
+  private def refreshTokenResponse(body: Map[String, Seq[String]]) = body get "refresh_token" match {
+    case Some(Seq("refresh-token")) => Results.Ok.sendResource("auth/authorization_refresh.json")
+    case Some(_) => Results.BadRequest.sendResource("auth/authorization_refresh_invalid_token.json")
+    case None => Results.BadRequest.sendResource("auth/authorization_refresh_no_token.json")
   }
 
   /**
@@ -52,7 +91,7 @@ trait SpotifyWebMock {
 
   def await[T](block: Awaitable[T]): T = Await.result(block, 3.seconds)
 
-  def withAuthApi[T](block: AuthApi => T):  T = {
+  def withAuthApi[T](block: AuthApi => T)(implicit config: Configuration):  T = {
     Server.withRouter() { routes } { implicit port =>
       WsTestClient.withClient { client =>
         block(new AuthApi(config, client, ""))

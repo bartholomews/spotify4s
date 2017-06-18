@@ -61,7 +61,7 @@ class AuthApi(configuration: Configuration, ws: WSClient, baseUrl: String) exten
 
   def authoriseURL: String = authoriseURL()
 
-  def authoriseURL(state: Option[String] = None, scopes: List[Scope] = List(), showDialog: Boolean = true): String = {
+  def authoriseURL(state: Option[String] = None, scopes: List[Scope] = Nil, showDialog: Boolean = true): String = {
     requestAuthoriseURL(CLIENT_ID, REDIRECT_URI, state, scopes, showDialog).uri.toString
   }
 

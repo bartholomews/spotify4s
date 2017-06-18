@@ -1,0 +1,4 @@
+{
+  "error": "unsupported_grant_type",
+  "error_description": "grant_type must be client_credentials, authorization_code or refresh_token"
+}

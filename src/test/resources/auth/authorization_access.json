@@ -3,5 +3,5 @@
   "token_type": "Bearer",
   "scope": "user-read-private user-read-email",
   "expires_in": 3600,
-  "refresh_token": "some-refresh-token"
+  "refresh_token": "refresh-token"
 }
