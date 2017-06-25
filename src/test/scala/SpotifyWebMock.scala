@@ -88,7 +88,7 @@ trait SpotifyWebMock {
       }.json")
   }
 
-  def await[T](block: Awaitable[T]): T = Await.result(block, 3.seconds)
+  def await[T](block: Awaitable[T]): T = Await.result(block, 5.seconds)
 
   def withAuthApi[T](block: AuthApi => T)(implicit config: Configuration):  T = {
     Server.withRouter() { routes } { implicit port =>

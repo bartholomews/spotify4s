@@ -89,7 +89,7 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
     f map { response =>
       response.json.validate[T](fmt) match {
         case JsSuccess(obj, _) => obj
-        case JsError(error) => throw new Exception(error.head.toString)
+        // case JsError(error) => throw new Exception(error.head.toString)
         case JsError(_) => throw webApiException(response.json)
       }
     } recoverWith { case ex => Future.failed(ex) }
@@ -99,7 +99,6 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
     f map { response =>
       (response.json \ read).validate[T](fmt) match {
         case JsSuccess(obj, _) => obj
-        // case JsError(error) => throw new Exception(error.head._2.head.toString)
         case JsError(_) => throw webApiException(response.json)
       }
     } recoverWith { case ex => Future.failed(ex) }
