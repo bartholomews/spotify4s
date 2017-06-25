@@ -14,7 +14,7 @@ case class FullPlaylist
   external_urls: ExternalURL,
   href: String,
   id: String,
-  images: Option[List[Image]],
+  images: Seq[Image],
   name: String,
   owner: User,
   public: Option[Boolean],
@@ -44,7 +44,7 @@ case class SimplePlaylist
   external_urls: ExternalURL,
   href: String,
   id: String,
-  images: Option[List[Image]],
+  images: Seq[Image],
   name: String,
   owner: User,
   public: Option[Boolean],
@@ -65,7 +65,7 @@ private object PlaylistReads {
       (JsPath \ "external_urls").read[ExternalURL] and
       (JsPath \ "href").read[String] and
       (JsPath \ "id").read[String] and
-      (JsPath \ "images").readNullable[List[Image]] and
+      ((JsPath \ "images").read[Seq[Image]] or Reads.pure(Seq.empty[Image])) and
       (JsPath \ "name").read[String] and
       (JsPath \ "owner").read[User] and
       (JsPath \ "public").readNullable[Boolean] and

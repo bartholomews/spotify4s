@@ -11,7 +11,7 @@ object UserReads {
       (JsPath \ "followers").readNullable[Followers] and
       (JsPath \ "href").read[String] and
       (JsPath \ "id").read[String] and
-      (JsPath \ "images").readNullable[List[Image]] and
+      ((JsPath \ "images").read[Seq[Image]] or Reads.pure(Seq.empty[Image])) and
       (JsPath \ "type").read[String] and
       (JsPath \ "uri").read[String]
   }
@@ -54,7 +54,7 @@ case class User
   followers: Option[Followers],
   href: String,
   id: String,
-  images: Option[List[Image]],
+  images: Seq[Image],
   objectType: String,
   uri: String
 )
@@ -106,7 +106,7 @@ case class UserPrivate
   followers: Option[Followers],
   href: String,
   id: String,
-  images: Option[List[Image]],
+  images: Seq[Image],
   objectType: String,
   uri: String,
   birthdate: Option[String],

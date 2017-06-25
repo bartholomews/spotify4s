@@ -32,6 +32,12 @@
     - [ ] Follow a Playlist
     - [ ] Unfollow a Playlist
     - [ ] Check if Users Follow a Playlist
+- [x] **Tracks**
+    - [x] Get audio analysis for a track
+    - [x] Get audio features for a track
+    - [x] Get audio features for several tracks
+    - [x] Get a track
+    - [x] Get several tracks 
 
 **(MORE TODO)**
 

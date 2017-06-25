@@ -28,7 +28,7 @@ case class Track
 (
   album: SimpleAlbum,
   artists: List[SimpleArtist],
-  available_markets: Option[List[String]],
+  available_markets: Seq[String],
   disc_number: Int,
   duration_ms: Int,
   explicit: Option[Boolean],
@@ -50,7 +50,7 @@ object Track {
   implicit val trackReads: Reads[Track] = (
     (JsPath \ "album").read[SimpleAlbum] and
       (JsPath \ "artists").read[List[SimpleArtist]] and
-      (JsPath \ "available_markets").readNullable[List[String]] and
+      ((JsPath \ "available_markets").read[Seq[String]] or Reads.pure(Seq.empty[String])) and
       (JsPath \ "disc_number").read[Int] and
       (JsPath \ "duration_ms").read[Int] and
       (JsPath \ "explicit").readNullable[Boolean] and

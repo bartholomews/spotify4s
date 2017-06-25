@@ -54,7 +54,7 @@ case class FullAlbum
 (
   album_type: Option[String],
   artists: List[SimpleArtist],
-  available_markets: List[String],
+  available_markets: Seq[String],
   external_urls: ExternalURL,
   href: Option[String],
   id: Option[String],
@@ -107,7 +107,7 @@ case class SimpleAlbum
 (
   album_type: Option[String],
   artists: List[SimpleArtist],
-  available_markets: List[String],
+  available_markets: Seq[String],
   external_urls: ExternalURL,
   href: Option[String],
   id: Option[String],
@@ -126,7 +126,7 @@ object AlbumReads {
   val simpleAlbum = {
     (JsPath \ "album_type").readNullable[String] and
       (JsPath \ "artists").read[List[SimpleArtist]] and
-      (JsPath \ "available_markets").read[List[String]] and
+      ((JsPath \ "available_markets").read[Seq[String]] or Reads.pure(Seq.empty[String])) and
       (JsPath \ "external_urls").read[ExternalURL] and
       (JsPath \ "href").readNullable[String] and
       (JsPath \ "id").readNullable[String] and

@@ -3,6 +3,7 @@ package it.turingtest.spotify.scala.client.utils
 import java.nio.charset.StandardCharsets
 import java.util.Base64
 
+import com.vitorsvieira.iso.ISOCountry.ISOCountry
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -18,6 +19,8 @@ object ConversionUtils {
       case Some(datetime: LocalDateTime) =>
         val formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss")
         Option(key, datetime.toString(formatter))
+
+      case Some(country: ISOCountry) => Option(key, country.value)
 
       case _ => value.map(v => (key, v.toString)) }
     }

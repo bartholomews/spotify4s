@@ -37,6 +37,7 @@ trait SpotifyWebMock {
         }
       )
     }
+      // TODO should validate headers for authError depending on endpoint
     case GET(endpoint) => Action { sendResource(endpoint) }
     case _ => Action { Results.BadRequest }
   }
@@ -78,15 +79,13 @@ trait SpotifyWebMock {
     * (e.g. BrowseApi.featuredPlaylists once called with a parameter will set limit to 20 and offset to 0)
     */
   private def sendResource(endpoint: RequestHeader) = {
-    try {Results.Ok.sendResource(
-      s"${endpoint.uri.drop(1)
-        .replace("?", "%3F")
-        .replaceAll("%3A", ":")
+    Results.Ok.sendResource(
+      s"${
+        endpoint.uri.drop(1)
+          .replace("?", "%3F")
+          .replaceAll("%3A", ":")
+          .replaceAll("%2C", ",")
       }.json")
-    }
-    catch { // TODO see why when not found it still throws a fasterxml JsonParseException
-      case _: Throwable => throw new Exception(s"No resource found for endpoint $endpoint")
-    }
   }
 
   def await[T](block: Awaitable[T]): T = Await.result(block, 3.seconds)

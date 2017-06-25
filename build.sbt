@@ -11,6 +11,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" % "play-ws_2.11" % "2.5.14",
   "com.typesafe.play" % "play-json_2.11" % "2.5.14"
 )
+
+libraryDependencies += "com.vitorsvieira" %% "scala-iso" % "0.1.2"
+
 libraryDependencies ++=Seq(
   "com.typesafe.play" % "play-test_2.11" % "2.5.14",
   "org.scalatest" %% "scalatest" % "3.0.3" % "test",

@@ -1,7 +1,9 @@
+import it.turingtest.spotify.scala.client.AuthApi
 import it.turingtest.spotify.scala.client.entities.{AuthError, Token, USER_READ_BIRTHDATE, USER_READ_EMAIL}
 import org.scalatest.{FunSpec, Matchers}
 import org.scalatestplus.play.guice.GuiceOneServerPerTest
 import play.api.Configuration
+import play.api.test.WsTestClient
 
 /**
   * @see https://www.playframework.com/documentation/2.5.x/ScalaTestingWebServiceClients
@@ -9,6 +11,14 @@ import play.api.Configuration
 class AuthApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest with SpotifyWebMock {
 
   describe("Auth Api") {
+
+    it("should have a constructor with default uri to api endpoints") {
+      WsTestClient.withClient { client =>
+        val authApi = new AuthApi(config, client)
+        authApi.AUTHORIZE_ENDPOINT shouldBe "https://accounts.spotify.com/authorize"
+        authApi.TOKEN_ENDPOINT shouldBe "https://accounts.spotify.com/api/token"
+      }
+    }
 
     val WRONG_CLIENT_ID = Configuration.apply(
       ("CLIENT_ID", "some-wrong-id"),

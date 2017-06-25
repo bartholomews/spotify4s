@@ -2,10 +2,10 @@ package it.turingtest.spotify.scala.client
 
 import javax.inject.Inject
 
-import it.turingtest.spotify.scala.client.entities.{AudioFeatures, Page, PlaylistTrack, Track}
+import com.vitorsvieira.iso.ISOCountry.ISOCountry
+import it.turingtest.spotify.scala.client.entities._
 import it.turingtest.spotify.scala.client.logging.AccessLogging
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 /**
@@ -13,78 +13,61 @@ import scala.concurrent.Future
   */
 class TracksApi @Inject()(api: BaseApi) extends AccessLogging {
 
-  private final def TRACKS(id: String) = s"${api.BASE_URL}/tracks/$id"
+  private final val TRACKS = s"${api.BASE_URL}/tracks"
+  private final val AUDIO_FEATURES = s"${api.BASE_URL}/audio-features"
+  private final val AUDIO_ANALYSIS = s"${api.BASE_URL}/audio-analysis"
 
   // =====================================================================================================================
-  /**
-    * https://developer.spotify.com/web-api/get-track/
-    */
-  def getTrack(id: String): Future[Track] = api.get[Track](TRACKS(id))
-
-  def getPlaylistTracks(href: String): Future[Page[PlaylistTrack]] = {
-    api.getWithOAuth[Page[PlaylistTrack]](href)
-  }
-
-  def allTracks(href: String): Future[List[Track]] = allPlaylistTracks(href) map { p => p.map(pt => pt.track) }
-
-  def allPlaylistTracks(href: String): Future[List[PlaylistTrack]] = {
-    api.getAll[PlaylistTrack](href => getPlaylistTracks(href))(TRACKS(href))
-  }
-
-  // ===================================================================================================================
-  /*
-  private def getNewReleasesList(token: String, query: Option[String] = None): Future[WSResponse] = {
-    ws.url(query.getOrElse(NEW_RELEASES))
-      .withHeaders(auth_bearer(token))
-      .withQueryString(
-        "" -> "" // TODO
-      )
-      .get()
-  }
-  */
-
-  // ===================================================================================================================
 
   /**
-    *
-    * @param track_id the Spotify ID for a track
-    *           (@see https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids)
-    *
-    * @return an AudioFeatures object for the track
+    * @see https://developer.spotify.com/web-api/get-audio-analysis/
+    * @param id The Spotify ID for the track.
+    * @return an `AudioAnalysis` object
     */
-  def getAudioFeatures(track_id: String): Future[AudioFeatures] = {
-    api.getWithOAuth[AudioFeatures](s"${api.BASE_URL}/audio-features/$track_id")
-  }
+  def getAudioAnalysis(id: String): Future[AudioAnalysis] = api.get[AudioAnalysis](s"$AUDIO_ANALYSIS/$id")
+
+  /**
+    * @see https://developer.spotify.com/web-api/get-audio-features/
+    * @param id The Spotify ID for the track.
+    * @return an `AudioFeatures` object
+    */
+  def getAudioFeatures(id: String): Future[AudioFeatures] = api.get[AudioFeatures](s"$AUDIO_FEATURES/$id")
 
   /**
     * @see https://developer.spotify.com/web-api/get-several-audio-features/
-    *
-    * @param tracks A list of the Spotify IDs for the tracks. Maximum: 100 IDs.
-    *
-    * @return On success, the HTTP status code in the response header is 200 OK
-    *         and the response body contains an object whose key is "audio_features"
-    *         and whose value is an array of audio features objects in JSON format.
-    *         Objects are returned in the order requested.
-    *         If an object is not found, a null value is returned in the appropriate position.
-    *         Duplicate ids in the query will result in duplicate objects in the response.
-    *         On error, the header status code is an error code and the response body contains an error object.
-    *
-    *
+    * @param ids The Spotify IDs for the tracks. Maximum: 50 IDs.
+    * @return a sequence of `AudioFeatures` objects
     */
-  /* TODO maybe better to create a method zipping Seq(Track, Option[AudioFeatures])
-  def getAudioFeatures(tracks: List[String]): Future[List[Option[AudioFeatures]]] = {
-    api.withAuthToken()(t => {
-      ws.url(s"${api.BASE_URL}/audio-features/?ids=${tracks.mkString(",")}")
-        .withHeaders(api.auth_bearer(t.access_token))
-        .get()
-    } map { response =>
-      val array = (response.json \ "audio_features").as[JsArray]
-      val seq: Seq[Option[AudioFeatures]] = array.value.map(jsValue => {
-        // case _: JsUndefined => None
-        jsValue.validate[AudioFeatures].asOpt
-      })
-    })
+  def getAudioFeatures(ids: Seq[String]): Future[Seq[AudioFeatures]] = {
+    println(ids.mkString(","))
+    api.get[Seq[AudioFeatures]]("audio_features", s"$AUDIO_FEATURES/", ("ids", ids.mkString(",")))
   }
-  */
+
+  /**
+    * @see https://developer.spotify.com/web-api/get-track/
+    * @param id The Spotify ID for the track.
+    * @param market Optional. An ISO 3166-1 alpha-2 country code.
+    *               Provide this parameter if you want to apply Track Relinking.
+    * @return a `Track` object
+    */
+  def getTrack(id: String, market: Option[ISOCountry] = None): Future[Track] = market match {
+    case Some(country) => api.get[Track](s"$TRACKS/$id", ("market", country.value))
+    case None => api.get[Track](s"$TRACKS/$id")
+  }
+
+  /**
+    * @see https://developer.spotify.com/web-api/get-several-tracks/
+    * @param ids The Spotify IDs for the tracks. Maximum: 50 IDs.
+    * @param market Optional. An ISO 3166-1 alpha-2 country code.
+    *               Provide this parameter if you want to apply Track Relinking.
+    * @return a sequence of `Track` objects
+    */
+  def getTracks(ids: Seq[String], market: Option[ISOCountry] = None): Future[Seq[Track]] = {
+    val query = ("ids", ids.mkString(","))
+    market match {
+      case Some(country) => api.get[Seq[Track]]("tracks", s"$TRACKS/", query, ("market", country.value))
+      case None => api.get[Seq[Track]]("tracks", s"$TRACKS/", query)
+    }
+  }
 
 }

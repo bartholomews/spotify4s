@@ -1,3 +1,4 @@
+import com.vitorsvieira.iso.ISOCountry
 import it.turingtest.spotify.scala.client.entities._
 import org.joda.time.LocalDateTime
 import org.scalatest.{FunSpec, Matchers}
@@ -23,7 +24,7 @@ class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
       withBrowseApi { browseApi =>
         val result = await {
           browseApi.featuredPlaylists(
-            country = Some("SE"),
+            country = Some(ISOCountry.SWEDEN),
             limit = 2
           )
         }
@@ -36,7 +37,7 @@ class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
       withBrowseApi { browseApi =>
         val result = await {
           browseApi.featuredPlaylists(
-            country = Some("US"),
+            country = Some(ISOCountry.UNITED_STATES),
             timestamp = Some(new LocalDateTime(2014, 10, 23, 15, 0, 0)),
             offset = 2
           )
@@ -64,7 +65,7 @@ class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
         withBrowseApi { browseApi =>
           val result = await {
             browseApi.newReleases(
-              country = Some("GB"),
+              country = Some(ISOCountry.UNITED_KINGDOM),
               limit = 2,
               offset = 1
             )

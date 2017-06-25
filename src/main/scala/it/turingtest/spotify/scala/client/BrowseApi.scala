@@ -2,13 +2,12 @@ package it.turingtest.spotify.scala.client
 
 import javax.inject.Inject
 
+import com.vitorsvieira.iso.ISOCountry.ISOCountry
 import it.turingtest.spotify.scala.client.entities.{FeaturedPlaylists, NewReleases}
 import it.turingtest.spotify.scala.client.logging.AccessLogging
 import it.turingtest.spotify.scala.client.utils.ConversionUtils
 import org.joda.time.LocalDateTime
-import play.api.mvc.{Action, AnyContent, Result}
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 /**
@@ -26,7 +25,7 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
 
   def featuredPlaylists: Future[FeaturedPlaylists] = api.get[FeaturedPlaylists](FEATURED_PLAYLISTS)
 
-  def featuredPlaylists(locale: Option[String] = None, country: Option[String] = None,
+  def featuredPlaylists(locale: Option[String] = None, country: Option[ISOCountry] = None,
                         timestamp: Option[LocalDateTime] = None,
                         limit: Int = 20, offset: Int = 0): Future[FeaturedPlaylists] = {
 
@@ -45,11 +44,9 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
 
   def newReleases: Future[NewReleases] = api.get[NewReleases](NEW_RELEASES)
 
-  def newReleases(country: Option[String] = None, limit: Int = 20, offset: Int = 0): Future[NewReleases] = {
-    val query: Seq[(String, String)] = Seq(
-      country.map(c => ("country", c)),
-      Some("limit", limit.toString),
-      Some("offset", offset.toString)).flatten
+  def newReleases(country: Option[ISOCountry] = None, limit: Int = 20, offset: Int = 0): Future[NewReleases] = {
+    val query: Seq[(String, String)] = ConversionUtils.seq(
+      ("country", country)) ++ Seq(Some("limit", limit.toString), Some("offset", offset.toString)).flatten
 
     api.get[NewReleases](NEW_RELEASES, query.toList: _*)
   }
