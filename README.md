@@ -6,6 +6,13 @@
 # spotify-scala-client
 *Asynchronous Spotify Web API Scala Client/Wrapper*
  
+### Add to your *build.sbt*
+
+```
+"it.turingtest" %% "spotify-scala-client" % "0.0.1",
+resolvers += Resolver.bintrayRepo("bartholomews","maven")
+```
+
 ### Endpoints Task list
  
 - [ ] **Albums**
