@@ -1,10 +1,18 @@
 [![Build Status](https://travis-ci.org/bartholomews/spotify-scala-client.svg?branch=master)](https://travis-ci.org/bartholomews/spotify-scala-client)
 [![codecov](https://codecov.io/gh/bartholomews/spotify-scala-client/branch/master/graph/badge.svg)](https://codecov.io/gh/bartholomews/spotify-scala-client)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/bartholomews/spotify-scala-client/blob/master/LICENSE)
+[ ![Download](https://api.bintray.com/packages/bartholomews/maven/spotify-scala-client/images/download.svg) ](https://bintray.com/bartholomews/maven/spotify-scala-client/_latestVersion)
 
 # spotify-scala-client
 *Asynchronous Spotify Web API Scala Client/Wrapper*
  
+### Add to your *build.sbt*
+
+```
+"it.turingtest" %% "spotify-scala-client" % "0.0.1",
+resolvers += Resolver.bintrayRepo("bartholomews","maven")
+```
+
 ### Endpoints Task list
  
 - [ ] **Albums**
@@ -52,7 +60,6 @@ CLIENT_ID = "my-client-id"
 CLIENT_SECRET = "my-client-secret"  
 REDIRECT_URI = "http://localhost:9000/my-callback-endpoint"
 ```
-(remember to ignore the *conf* file from version control if your application is public)
 
 #### - Inject the endpoints that you need
 
@@ -198,3 +205,5 @@ In your *conf/logback.xml*:
 **INFO** is currently doing nothing.
 
 ### (*TO BE CONTINUED*)
+
+***
