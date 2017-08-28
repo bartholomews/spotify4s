@@ -70,15 +70,18 @@ trait SpotifyWebMock {
   /**
     * Json resources should map the real Spotify endpoints with relative path
     * and filename mapping the full request, including querystring,
-    * just escaping question mark with "%3F"; e.g. the following request:
+    * just escaping question mark with "%3F" and further slashes ; e.g. the following request:
     * "/browse/featured-playlists?country=SE&limit=2&offset=20" will look for a json file at:
     * "test/resources/browse/featured-playlists%3Fcountry=SE&limit=2&offset=0.json"
     *
     * NOTE: remember that if a request has default values, those need to be included in
     * the resource filename even if not explicitly defined by the test call
     * (e.g. BrowseApi.featuredPlaylists once called with a parameter will set limit to 20 and offset to 0)
+    * Also, with this approach unfortunately the order of the query parameters have to match, so you should construct
+    * test resources filenames with parameters in the order created by the specific method call.
     */
   private def sendResource(endpoint: RequestHeader) = {
+    println(endpoint.toString)
     Results.Ok.sendResource(
       s"${
         endpoint.uri.drop(1)

@@ -1,0 +1,228 @@
+{
+  "playlists" : {
+    "href" : "https://api.spotify.com/v1/browse/categories/party/playlists?offset=10&limit=20",
+    "items" : [ {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX0d48cgAWUSF"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX0d48cgAWUSF",
+      "id" : "37i9dQZF1DX0d48cgAWUSF",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/a869208aecb42a1b9353e836c88b95876a1f16b9",
+        "width" : 300
+      } ],
+      "name" : "Party Starter",
+      "owner" : {
+        "display_name" : "Spotify",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "Zya2W9u/zW8FaCxEPj192C7aQjV/FxpJpZW/7rweDq0QF5QxMryZlaWVv+68Hg6t+zRWWDlJrng=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX0d48cgAWUSF/tracks",
+        "total" : 26
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX0d48cgAWUSF"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX7F6T2n2fegs"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7F6T2n2fegs",
+      "id" : "37i9dQZF1DX7F6T2n2fegs",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/8b2a671449318791c2fe4070c8496a21fa83ea89",
+        "width" : 300
+      } ],
+      "name" : "Throwback Party",
+      "owner" : {
+        "display_name" : "Spotify",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "+Fi7WxfQTjQH9GxatW6nRGyVMPUX6aTtzPtfaxg3k4FziEf8KejaqJP8M96HH4gAHbt1veSX5Co=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX7F6T2n2fegs/tracks",
+        "total" : 65
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX7F6T2n2fegs"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXab8DipvnuNU"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXab8DipvnuNU",
+      "id" : "37i9dQZF1DXab8DipvnuNU",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/0c868febe92cbbd9c12ebbd5d675592dbfc76930",
+        "width" : 300
+      } ],
+      "name" : "The Cookout",
+      "owner" : {
+        "display_name" : "Spotify",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "us5aHAGQOwOhysGQeGNjB37SncBiWWI7SIYMsbZ92O6nZ9d+1KrDl+ppFMlrpZ4QEogw8TRtRmM=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXab8DipvnuNU/tracks",
+        "total" : 47
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXab8DipvnuNU"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWVcbzTgVpNRm"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVcbzTgVpNRm",
+      "id" : "37i9dQZF1DWVcbzTgVpNRm",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/6d64de0cff490a1688cb91e07c0c291fe6326bd2",
+        "width" : 300
+      } ],
+      "name" : "DespaSummer",
+      "owner" : {
+        "display_name" : "Spotify",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "zWdZdAvjqhk8qIHW8uf4QLcl32fYH+kiJ7Lfv7MqHj/J/wXV+94a+uyW/imo0XUkvqcMXolf4cM=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWVcbzTgVpNRm/tracks",
+        "total" : 61
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWVcbzTgVpNRm"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DXdgnLr18vPvu"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXdgnLr18vPvu",
+      "id" : "37i9dQZF1DXdgnLr18vPvu",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/d812faf294932fcdf475834c68a6d3f99b539172",
+        "width" : 300
+      } ],
+      "name" : "Tailgate Party",
+      "owner" : {
+        "display_name" : "Spotify",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "iTB3i/+2FltednI20mVJNT1VShV/CCFG/h9wUIIxShaXHgJrHJO9beliTLd/rBOcy1OywhCGbq0=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DXdgnLr18vPvu/tracks",
+        "total" : 54
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DXdgnLr18vPvu"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DWTLrNDPW5co2"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWTLrNDPW5co2",
+      "id" : "37i9dQZF1DWTLrNDPW5co2",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/a7d6a64c3d76ae83f3ec9b1959cd23963e946fb5",
+        "width" : 300
+      } ],
+      "name" : "In Electric Dreams",
+      "owner" : {
+        "display_name" : "Spotify",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "CpLZoIAlHzPkolfo2vNFtU6oOaaMlcdH4IuR5JS4ZQdgXwj/E2Zc1hNxOiVynJv24oCQjFBKpkk=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DWTLrNDPW5co2/tracks",
+        "total" : 68
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DWTLrNDPW5co2"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spinninrecordsofficial/playlist/0gItKQkvyow5SfEmxXRoG5"
+      },
+      "href" : "https://api.spotify.com/v1/users/spinninrecordsofficial/playlists/0gItKQkvyow5SfEmxXRoG5",
+      "id" : "0gItKQkvyow5SfEmxXRoG5",
+      "images" : [ {
+        "height" : null,
+        "url" : "https://pl.scdn.co/images/pl/default/b6048348da285529eaf1ed5a210d7d4008619cc1",
+        "width" : null
+      } ],
+      "name" : "Here Comes The Weekend! - by Spinnin' Records",
+      "owner" : {
+        "display_name" : "Spinnin' Records",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spinninrecordsofficial"
+        },
+        "href" : "https://api.spotify.com/v1/users/spinninrecordsofficial",
+        "id" : "spinninrecordsofficial",
+        "type" : "user",
+        "uri" : "spotify:user:spinninrecordsofficial"
+      },
+      "public" : null,
+      "snapshot_id" : "uj8I6Gi1VUf5JKQYqa7tj6mbx1fcj7z/aOGFva56B0lTK2RugFVM49D4o9Xdk9cD",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spinninrecordsofficial/playlists/0gItKQkvyow5SfEmxXRoG5/tracks",
+        "total" : 65
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spinninrecordsofficial:playlist:0gItKQkvyow5SfEmxXRoG5"
+    } ],
+    "limit" : 20,
+    "next" : null,
+    "offset" : 10,
+    "previous" : "https://api.spotify.com/v1/browse/categories/party/playlists?offset=0&limit=20",
+    "total" : 17
+  }
+}

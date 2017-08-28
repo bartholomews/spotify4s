@@ -1,3 +1,5 @@
+import java.util.Locale
+
 import com.vitorsvieira.iso.ISOCountry
 import it.turingtest.spotify.scala.client.entities._
 import org.joda.time.LocalDateTime
@@ -9,6 +11,9 @@ import org.scalatestplus.play.guice.GuiceOneServerPerTest
   */
 class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest with SpotifyWebMock {
 
+  /**
+    * FEATURED PLAYLISTS ===============================================================================================
+    */
   describe("Featured Playlists endpoint") {
 
     it("should retrieve a FeaturedPlaylist object") {
@@ -48,6 +53,9 @@ class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
       }
     }
 
+    /**
+      * NEW RELEASES ===================================================================================================
+      */
     describe("New Releases endpoint") {
 
       it("should get a list of new releases with default parameters") {
@@ -79,7 +87,124 @@ class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
       }
     }
 
-  }
+    /**
+      * CATEGORIES =====================================================================================================
+      */
+    describe("Categories endpoint") {
 
+      it("should get a list of Categories with default parameters") {
+        withBrowseApi { browseApi =>
+          val result = await {
+            browseApi.categories()
+          }
+          result.items.head.id shouldBe "toplists"
+        }
+      }
+
+      it("should get a list of Categories with the specified parameters") {
+        withBrowseApi { browseApi =>
+          val result = await {
+            browseApi.categories(
+              locale = Some(new Locale("sv", ISOCountry.SWEDEN.value)),
+              country = Some(ISOCountry.SWEDEN),
+              limit = 10,
+              offset = 5
+            )
+          }
+          result.offset shouldBe 5
+          result.total shouldBe 36
+        }
+      }
+
+      it("should get a category with a specific id") {
+        withBrowseApi { browseApi =>
+          val result = await {
+            browseApi.category("dinner")
+          }
+          result.name shouldBe "Dinner"
+          result.id shouldBe "dinner"
+          result.icons.head.height shouldBe Some(274)
+        }
+      }
+
+      it("should get a category with a specific id, country and locale") {
+        withBrowseApi { browseApi =>
+          val result = await {
+            browseApi.category(
+              "dinner",
+              Some(ISOCountry.SWEDEN),
+              Some(new Locale("sv", ISOCountry.SWEDEN.value)))
+          }
+          result.name shouldBe "Middag"
+          result.id shouldBe "dinner"
+          result.icons.head.height shouldBe Some(274)
+        }
+      }
+
+      it("should get playlists for a category id with offset") {
+        withBrowseApi { browseApi =>
+          val result = await {
+            browseApi.categoryPlaylists(
+              "party",
+              offset = 10)
+          }
+          result.total shouldBe 17
+          result.limit shouldBe 20
+          result.offset shouldBe 10
+          result.items.last.name shouldBe "Here Comes The Weekend! - by Spinnin' Records"
+        }
+      }
+
+      it("should get playlists for a category id, country and limit") {
+        withBrowseApi { browseApi =>
+          val result = await {
+            browseApi.categoryPlaylists(
+              "party",
+              Some(ISOCountry.BRAZIL), limit = 2)
+          }
+          result.total shouldBe 52
+          result.limit shouldBe 2
+          result.items.last.name shouldBe "Sexta"
+        }
+      }
+    }
+
+    /**
+      * RECOMMENDATIONS ================================================================================================
+      */
+      // TODO fix unmarshaling error
+    describe("Recommendations endpoint") {
+
+      ignore("should get recommendations with market, seed_artists and seed_tracks") {
+        withBrowseApi { browseApi =>
+          val result = await {
+            browseApi.getRecommendation(
+              seed_tracks = Seq("0c6xIDDpzE81m2q797ordA"),
+              market = Some(ISOCountry.UNITED_STATES),
+              seed_artists = Seq("4NHQUGzhtTLFvgF5SZesLK")
+            )
+          }
+          result.seeds.size shouldBe 1
+        }
+      }
+
+      ignore("should get recommendations with min_popularity, min_energy, seed_tracks, market and seed_artists") {
+        withBrowseApi { browseApi =>
+          val result = await {
+            browseApi.getRecommendation(
+              popularity_range = (Some(50), None, None),
+              energy_range = (Some(0.4f), None, None),
+              seed_tracks = Seq("0c6xIDDpzE81m2q797ordA"),
+              market = Some(ISOCountry.UNITED_STATES),
+              seed_artists = Seq("4NHQUGzhtTLFvgF5SZesLK")
+            )
+          }
+          result.seeds.size shouldBe 1
+        }
+      }
+
+    }
+
+  }
 
 }

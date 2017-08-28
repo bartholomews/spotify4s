@@ -45,6 +45,10 @@ object Page {
     jsPage and (JsPath \ "items").lazyRead(Reads.seq[PlaylistTrack](PlaylistTrack.playlistTrackReads))
     ) (Page.apply[PlaylistTrack] _)
 
+  implicit val categoriesReads: Reads[Page[Category]] = (
+    jsPage and (JsPath \ "items").lazyRead(Reads.seq[Category](Category.categoryReads))
+  ) (Page.apply[Category] _)
+
   /*
   implicit def pageReads[T](implicit fmt: Reads[T]): Reads[Page[T]] = new Reads[Page[T]] {
     override def reads(json: JsValue): JsResult[Page[T]] = JsSuccess(new Page[T](

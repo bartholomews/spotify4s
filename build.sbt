@@ -1,8 +1,10 @@
 name := "Spotify Scala Client"
 
-organization := "it.turingtest"
+organization := "com.github.bartholomews"
 
-version := "0.0.4-SNAPSHOT"
+version := "0.0.1"
+
+licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
 scalaVersion := "2.11.8"
 
@@ -22,18 +24,12 @@ libraryDependencies ++=Seq(
 
 // libraryDependencies += "ch.qos.logback" % "logback-core" % "1.1.3"
 
-// @see https://rwlive.wordpress.com/2016/02/21/setting-up-travis-ci-coveralls-codacy-and-bintray-for-your-sbt-based-github-project/
-
 /*
-resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
 resolvers += Classpaths.sbtPluginReleases
 resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/"
-
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.3")
-//addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.0.0")
 */
 
-publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath+"/.m2/repository")))
+// publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath+"/.m2/repository")))
 
 
 

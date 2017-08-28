@@ -1,0 +1,73 @@
+{
+  "playlists" : {
+    "href" : "https://api.spotify.com/v1/browse/categories/party/playlists?country=BR&offset=0&limit=2",
+    "items" : [ {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX8vpLK1FoEw3"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX8vpLK1FoEw3",
+      "id" : "37i9dQZF1DX8vpLK1FoEw3",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/ce01defbfc64ca488f1049f02fc0d21794b2ea8f",
+        "width" : 300
+      } ],
+      "name" : "Lista VIP",
+      "owner" : {
+        "display_name" : "Spotify",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "gtPl0URyJ4EE5TTVLTLQhS0HpWc1jmAQZL4TQB0Fk/x4/0/0VCNUJh693eylbwb1+FtnhijEfv4=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX8vpLK1FoEw3/tracks",
+        "total" : 50
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX8vpLK1FoEw3"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX8mBRYewE6or"
+      },
+      "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX8mBRYewE6or",
+      "id" : "37i9dQZF1DX8mBRYewE6or",
+      "images" : [ {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/f78dc9bec27b1ff0a166340a33cd958c0bc0b3ad",
+        "width" : 300
+      } ],
+      "name" : "Sexta",
+      "owner" : {
+        "display_name" : "Spotify",
+        "external_urls" : {
+          "spotify" : "http://open.spotify.com/user/spotify"
+        },
+        "href" : "https://api.spotify.com/v1/users/spotify",
+        "id" : "spotify",
+        "type" : "user",
+        "uri" : "spotify:user:spotify"
+      },
+      "public" : null,
+      "snapshot_id" : "sjn1wzHXNTgcGQ6GiObcWI3QnnlM0EtXrT2DjJKSnSNutgiu5cmJP4NkM2wlVSkgrsW4gqf61ac=",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX8mBRYewE6or/tracks",
+        "total" : 50
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:spotify:playlist:37i9dQZF1DX8mBRYewE6or"
+    } ],
+    "limit" : 2,
+    "next" : "https://api.spotify.com/v1/browse/categories/party/playlists?country=BR&offset=2&limit=2",
+    "offset" : 0,
+    "previous" : null,
+    "total" : 52
+  }
+}

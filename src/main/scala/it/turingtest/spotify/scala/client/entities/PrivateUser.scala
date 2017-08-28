@@ -13,7 +13,7 @@ case class PrivateUser
   followers: Followers,
   href: String,
   id: String,
-  images: List[Image],
+  images: Seq[Image],
   product: String,
   objectType: String,
   uri: String
@@ -29,7 +29,7 @@ object PrivateUser {
       (JsPath \ "followers").read[Followers] and
       (JsPath \ "href").read[String] and
       (JsPath \ "id").read[String] and
-      (JsPath \ "images").read[List[Image]] and
+      (JsPath \ "images").read[Seq[Image]] and
       (JsPath \ "product").read[String] and
       (JsPath \ "type").read[String] and
       (JsPath \ "uri").read[String]

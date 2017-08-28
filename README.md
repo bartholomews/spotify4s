@@ -17,7 +17,7 @@
     - [ ] Get an Artist's Albums
     - [ ] Get an Artist's Top Tracks
     - [ ] Get an Artist's Related Artists
-- [ ] **Browse endpoint**
+- [ ] [**Browse**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/BrowseApi.scala)
     - [x] Get a List of Featured Playlists
     - [x] Get a List of New Releases
     - [ ] Get a List of Categories
@@ -32,7 +32,7 @@
     - [ ] Follow a Playlist
     - [ ] Unfollow a Playlist
     - [ ] Check if Users Follow a Playlist
-- [x] **Tracks**
+- [x] [**Tracks**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/TracksApi.scala)
     - [x] Get audio analysis for a track
     - [x] Get audio features for a track
     - [x] Get audio features for several tracks
@@ -70,8 +70,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
  
 class MyController @Inject() (api: BaseApi,
-                              auth: AuthApi,
-                              playlistsApi: PlaylistsApi,
                               profilesApi: ProfilesApi,
                               tracksApi: TracksApi) extends Controller {
 
@@ -84,6 +82,107 @@ class MyController @Inject() (api: BaseApi,
 }
 
 ```
+
+### **oAuth**
+
+For requests which don't need user permissions, this client will use the *client credentials flow*.
+Otherwise you need to set up the *Authorization Code Grant*: 
+
+```
+import it.turingtest.spotify.scala.client.AuthApi
+
+def auth = Action {
+    Redirect(authApi.authoriseURL(state = Some("state"), scopes = List(PLAYLIST_READ_PRIVATE), showDialog = true))
+}
+```
+
+In this example, the controller action redirects the user to the Spotify Authorization page
+where he needs to grant the permissions listed in the `scopes` parameter (e.g. here to read private
+playlists).
+
+The parameters of `authoriseURL` are:
++ **state**: an optional String of your choice, default is empty. You can generate a random string
+or encode the hash of some client state (e.g. a cookie) and validate the response to make sure 
+it is genuine and prevent attacks such as CSRF.
++ **scopes**: a List of `Scope` case objects, such as `PLAYLIST_MODIFY_PUBLIC` or `USER_READ_EMAIL`.
+  These are basically the permissions that you need from the users of your app. Read more about scopes [here](https://developer.spotify.com/web-api/using-scopes/).
++ **show_dialog** Whether or not to force the user to approve the app again if they’ve already done so.
+It defaults to true here.
+
+You can call `authoriseURL` without parameters 
+if you want; but it will be a request with empty state, no scopes and show_dialog set to true.
+(If no scope is specified, access is permitted only to publicly available information, and you
+might get a response error.
+
+After the user has granted or rejected permissions, he is redirected to the url value defined in 
+your `application.conf` under `REDIRECT_URL`. The request's should contain a 'code' querystring,
+which you need to give to the wrapper in order to set up oAuth.
+
+For instance, if you want to perform an action straight away after the user has granted
+permissions:
+
+In your `conf/application.conf`:
+```
+REDIRECT_URI = "http://localhost:9000/callbackEndpoint"
+```
+
+In your `conf/routes`:
+
+```
+GET /callbackEndpoint   controllers.MyController.callbackAction
+```
+
+In your controller:
+
+```
+
+import play.api.mvc._  
+
+import com.google.inject.Inject
+import it.turingtest.spotify.scala.client.entities._
+import it.turingtest.spotify.scala.client.{AuthApi, ProfilesApi}
+ 
+import scala.concurrent.Future  
+import scala.concurrent.ExecutionContext.Implicits.global
+
+ 
+class MyController @Inject() (authApi: AuthApi,
+                              profilesApi: ProfilesApi) extends Controller {
+
+   def hello() = {
+    val user: Future[UserPrivate] = profilesApi.me 
+    user map { me => Ok(views.html.myview(s"Hello, ${me.id}")) }
+  }
+ 
+  def callbackAction: Action[AnyContent] = Action.async {
+    request =>
+      request.getQueryString("code") match {
+       // If the user rejected the permissions, or some other error occurred,
+       // request should contain an "error" querystring instead of a "code".
+        case Some(code) => api.callback(code) { _ => hello() }
+        case None => request.getQueryString("error") match {
+          case Some("access_denied") => Future(BadRequest("You need to authorize permissions in order to use the App."))
+          case Some(error) => Future(BadRequest(error))
+          case _ => Future(BadRequest("Something went wrong."))
+        }
+      }
+  }
+  
+}
+
+```
+
+After you call `authApi.callback(code)`, you have set *oAuth* and can make user-specific requests.
+If you don't set the authorisation code you will get an error such as "Authorisation code not provided" 
+if you make an *oAuth* request. Once this is set, the client will automatically take care 
+of refreshing future tokens.  
+
+Some endpoints don't need *oAuth*, so you can still call them if you don't set it.
+Just read the docs of the endpoint you need to make sure it doesn't require authorisation.
+For non-*oAuth* requests, the client will use the *client credentials* flow in order to
+benefit of higher rates.
+
+Read more about [Spotify Web API Authorisation](https://developer.spotify.com/web-api/authorization-guide/).
 
 ### Logging
 
@@ -98,81 +197,4 @@ In your *conf/logback.xml*:
 **WARN** is currently doing nothing.  
 **INFO** is currently doing nothing.
 
-### **oAuth**
-
-
-This wrapper will automatically use either the client credentials flow (if the request doesn't 
-need user's permissions) or Authorisation Code Grant (which requires
- a code that is returned to your "redirect-uri" after the user granted permissions).   
-
-For the latter, you can call `AuthApi`'s `authoriseURL` which returns the Spotify URL
-where your user can grant permissions. For instance in your Controller:
-```
-  def auth = Action {
-    Redirect(authApi.authoriseURL(state = Some("state"), scopes = List(PLAYLIST_READ_PRIVATE), showDialog = true))
-  }
-```
-
-The page will be redirected to `redirect url` (which you have set
-for your app as first step).  
-The request will return the authorisation code
-which the wrapper needs in order to do *oAuth* calls.  
-Give this code to `BaseApi` with a setter (**TODO**)  
-otherwise you can call `callback(code)` and perform an `Action` straight away.
-For instance, here callback will set the authorisation code and call the `hello()` action:
-
-```
-  def callback: Action[AnyContent] = Action.async {
-    request =>
-      request.getQueryString("code") match {
-       // If the user rejected the permissions, or some other error occurred,
-       // request should contain an "error" querystring instead of a "code".
-        case Some(code) => api.callback(code) { _ => hello() }
-        case None => request.getQueryString("error") match {
-          case Some("access_denied") => Future(BadRequest("You need to authorize permissions in order to use the App."))
-          case Some(error) => Future(BadRequest(error))
-          case _ => Future(BadRequest("Something went wrong."))
-        }
-      }
-  }
-  
-  def hello() = {
-   val user: Future[UserPrivate] = profilesApi.me 
-   user map { me => Ok(views.html.myview(s"Hello, ${me.id}")) }
- }
-
-```
-
-If you don't set the authorisation code you will get an error such as "Authorisation code not provided" 
-if you make an *oAuth* request. Once this is set, the client will automatically take care 
-of refreshing future tokens.  
-
-Some endpoints don't need *oAuth*, so you can still call them if you don't set it.
-Just read the docs of the endpoint you need to make sure it doesn't require authorisation.
-For non-*oAuth* requests, the client will use the *client credentials* flow in order to
-benefit of higher rates.
-
-Read more about [Spotify Web API Authorisation](https://developer.spotify.com/web-api/authorization-guide/).
-
-The parameters of `authoriseURL` are:
-+ **state**: an optional String of your choice, default is empty. As the official Spotify documentation says, 
-*The state can be useful for correlating requests and responses. 
-Because your redirect_uri can be guessed, using a state value can increase your assurance 
-that an incoming connection is the result of an authentication request. 
-If you generate a random string or encode the hash of some client state (e.g., a cookie) 
-in this state variable, you can validate the response to additionally ensure that the 
-request and response originated in the same browser. This provides protection against 
-attacks such as cross-site request forgery.*
-
-+ **scopes**: a List of `Scope` case objects, such as `PLAYLIST_MODIFY_PUBLIC` or `USER_READ_EMAIL`.
-  These are basically the permissions that you need from the users of your app. Read more about scopes [here](https://developer.spotify.com/web-api/using-scopes/)
-    
-+ **show_dialog** Whether or not to force the user to approve the app again if they’ve already done so.
-It defaults to true here.
-
-You can call `authoriseURL` without parameters 
-if you want; but it will be a request with empty state, no scopes and show_dialog set to true.
-(If no scope is specified, access is permitted only to publicly available information, and you
-might get a response error... (*TO BE CONTINUED*)
-
-***
+### (*TO BE CONTINUED*)
