@@ -35,8 +35,8 @@ import play.api.libs.functional.syntax._
   */
 case class SimpleTrack
 (
-artists: List[SimpleArtist],
-available_markets: List[String],  // ISO 3166-1 alpha-2 code
+artists: Seq[SimpleArtist],
+available_markets: Seq[String],  // ISO 3166-1 alpha-2 code
 disc_number: Int = 1,
 duration_ms: Int,
 explicit: Boolean,
@@ -55,8 +55,8 @@ uri: String
 object SimpleTrack {
 
   implicit val simpleTrackReads: Reads[SimpleTrack] = (
-    (JsPath \ "artists").read[List[SimpleArtist]] and
-      (JsPath \ "available_markets").read[List[String]] and
+    (JsPath \ "artists").read[Seq[SimpleArtist]] and
+      (JsPath \ "available_markets").read[Seq[String]].orElse(Reads.pure(Nil)) and
       (JsPath \ "disc_number").read[Int] and
       (JsPath \ "duration_ms").read[Int] and
       (JsPath \ "explicit").read[Boolean] and

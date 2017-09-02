@@ -10,7 +10,7 @@
 
 ```
 "it.turingtest" %% "spotify-scala-client" % "0.0.1",
-resolvers += Resolver.bintrayRepo("bartholomews","maven")
+resolvers += Resolver.jcenterRepo // you might have this already
 ```
 
 ### Endpoints Task list
@@ -25,13 +25,13 @@ resolvers += Resolver.bintrayRepo("bartholomews","maven")
     - [ ] Get an Artist's Albums
     - [ ] Get an Artist's Top Tracks
     - [ ] Get an Artist's Related Artists
-- [ ] [**Browse**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/BrowseApi.scala)
+- [x] [**Browse**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/BrowseApi.scala)
     - [x] Get a List of Featured Playlists
     - [x] Get a List of New Releases
-    - [ ] Get a List of Categories
-    - [ ] Get a Category
-    - [ ] Get a Category's Playlists
-    - [ ] Get Recommendations Based on Seeds
+    - [x] Get a List of Categories
+    - [x] Get a Category
+    - [x] Get a Category's Playlists
+    - [x] Get Recommendations Based on Seeds
 - [ ] **Follow**
     - [ ] Get User's Followed Artists
     - [ ] Follow Artists or Users

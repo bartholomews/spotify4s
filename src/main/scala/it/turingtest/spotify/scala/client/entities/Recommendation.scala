@@ -34,7 +34,7 @@ object RecommendationSeed {
       (JsPath \ "id").read[String] and
       (JsPath \ "initialPoolSize").read[Int] and
       // @see https://stackoverflow.com/a/29948007
-      (JsPath \ "seedType").read[String].collect(ValidationError(""))(
+      (JsPath \ "type").read[String].collect(ValidationError(""))(
         Function.unlift(s => Try(SeedType.valueOf(s)).toOption)
       )
     )(RecommendationSeed.apply _)
@@ -43,7 +43,7 @@ object RecommendationSeed {
 sealed trait SeedType
 
 object SeedType {
-  def valueOf(value: String): SeedType = value match {
+  def valueOf(value: String): SeedType = value.toLowerCase match {
     case "artist" => ArtistSeed
     case "track" => TrackSeed
     case "genre" => GenreSeed

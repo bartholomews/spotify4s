@@ -89,8 +89,7 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
     f map { response =>
       response.json.validate[T](fmt) match {
         case JsSuccess(obj, _) => obj
-        // case JsError(error) => throw new Exception(error.head.toString)
-        case JsError(_) => throw webApiException(response.json)
+        case JsError(errors) => throw webApiException(response.json, errors.head.toString)
       }
     } recoverWith { case ex => Future.failed(ex) }
   }
@@ -99,19 +98,19 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
     f map { response =>
       (response.json \ read).validate[T](fmt) match {
         case JsSuccess(obj, _) => obj
-        case JsError(_) => throw webApiException(response.json)
+        case JsError(errors) => throw webApiException(response.json, errors.head.toString)
       }
     } recoverWith { case ex => Future.failed(ex) }
   }
 
   // TODO rate-limiting object from Retry-after header (@see https://developer.spotify.com/web-api/user-guide/#rate-limiting)
-  private def webApiException(json: JsValue): WebApiException = {
+  private def webApiException(json: JsValue, error: String): WebApiException = {
     accessLogger.debug(json.toString)
     json.validate[RegularError] match {
       case JsSuccess(obj, _) => obj
       case JsError(_) => json.validate[AuthError] match {
         case JsSuccess(obj, _) => obj
-        case JsError(_) => throw new Exception(s"Unknown exception: ${json.toString}")
+        case JsError(_) => throw new Exception(s"$error")
       }
     }
   }

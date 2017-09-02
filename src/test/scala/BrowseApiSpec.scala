@@ -172,10 +172,9 @@ class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
     /**
       * RECOMMENDATIONS ================================================================================================
       */
-      // TODO fix unmarshaling error
     describe("Recommendations endpoint") {
 
-      ignore("should get recommendations with market, seed_artists and seed_tracks") {
+      it("should get recommendations with market, seed_artists and seed_tracks") {
         withBrowseApi { browseApi =>
           val result = await {
             browseApi.getRecommendation(
@@ -184,11 +183,13 @@ class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
               seed_artists = Seq("4NHQUGzhtTLFvgF5SZesLK")
             )
           }
-          result.seeds.size shouldBe 1
+          result.tracks.head.id shouldBe "4nS1sut0R2mgmFitKIShVe"
+          result.seeds.head.seedType shouldBe ArtistSeed
+          result.seeds.size shouldBe 2
         }
       }
 
-      ignore("should get recommendations with min_popularity, min_energy, seed_tracks, market and seed_artists") {
+      it("should get recommendations with min_popularity, min_energy, seed_tracks, market and seed_artists") {
         withBrowseApi { browseApi =>
           val result = await {
             browseApi.getRecommendation(
@@ -199,7 +200,8 @@ class BrowseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
               seed_artists = Seq("4NHQUGzhtTLFvgF5SZesLK")
             )
           }
-          result.seeds.size shouldBe 1
+          result.tracks.head.id shouldBe "0h5dlQuJLbRQkKn5RBl78e"
+          result.seeds.size shouldBe 2
         }
       }
 
