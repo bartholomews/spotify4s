@@ -21,8 +21,8 @@ trait AccessLogging {
 
   def logResponse(call: Future[WSResponse]): Future[WSResponse] = {
     call map { response: WSResponse =>
-      accessLogger.info(s"${response.status}, ${response.statusText}")
-      accessLogger.debug(response.body)
+      accessLogger.debug(s"${response.status}, ${response.statusText}")
+      // accessLogger.debug(response.body)
       response
     }
   }

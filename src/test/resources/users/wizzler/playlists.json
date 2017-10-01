@@ -1,0 +1,195 @@
+{
+  "href" : "https://api.spotify.com/v1/users/wizzler/playlists?offset=0&limit=20",
+  "items" : [ {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "http://open.spotify.com/user/wizzler/playlist/3FJd21jWvCjGCLx7eKrext"
+    },
+    "href" : "https://api.spotify.com/v1/users/wizzler/playlists/3FJd21jWvCjGCLx7eKrext",
+    "id" : "3FJd21jWvCjGCLx7eKrext",
+    "images" : [ {
+      "height" : 300,
+      "url" : "https://i.scdn.co/image/15858d38fdac4af890dcc634f4946c5bf83c0915",
+      "width" : 300
+    } ],
+    "name" : "Video Game Masterpieces",
+    "owner" : {
+      "display_name" : "Ronald Pompa",
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/wizzler"
+      },
+      "href" : "https://api.spotify.com/v1/users/wizzler",
+      "id" : "wizzler",
+      "type" : "user",
+      "uri" : "spotify:user:wizzler"
+    },
+    "public" : true,
+    "snapshot_id" : "ByhsqLXwkpclrkVoZiNDlUR3H4gMFOa185lNhb0acGiS21XkEXINc0Hdn1vDe1Gm",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/users/wizzler/playlists/3FJd21jWvCjGCLx7eKrext/tracks",
+      "total" : 38
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:wizzler:playlist:3FJd21jWvCjGCLx7eKrext"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "http://open.spotify.com/user/wizzler/playlist/6cWcjjZlVb8UGW1ZiMKf3l"
+    },
+    "href" : "https://api.spotify.com/v1/users/wizzler/playlists/6cWcjjZlVb8UGW1ZiMKf3l",
+    "id" : "6cWcjjZlVb8UGW1ZiMKf3l",
+    "images" : [ {
+      "height" : 300,
+      "url" : "https://i.scdn.co/image/ade607dfc9a2e1a8d84206b4a067697cded33dc1",
+      "width" : 300
+    } ],
+    "name" : "Retro Made Modern",
+    "owner" : {
+      "display_name" : "Ronald Pompa",
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/wizzler"
+      },
+      "href" : "https://api.spotify.com/v1/users/wizzler",
+      "id" : "wizzler",
+      "type" : "user",
+      "uri" : "spotify:user:wizzler"
+    },
+    "public" : true,
+    "snapshot_id" : "YRrOyZfO8RrsFGsS56xZfqRDM7LdxW8E4gtjZT42u0YjOgRVhMhQDqhlUJejfQ3q",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/users/wizzler/playlists/6cWcjjZlVb8UGW1ZiMKf3l/tracks",
+      "total" : 51
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:wizzler:playlist:6cWcjjZlVb8UGW1ZiMKf3l"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "http://open.spotify.com/user/wizzler/playlist/00wHcTN0zQiun4xri9pmvX"
+    },
+    "href" : "https://api.spotify.com/v1/users/wizzler/playlists/00wHcTN0zQiun4xri9pmvX",
+    "id" : "00wHcTN0zQiun4xri9pmvX",
+    "images" : [ {
+      "height" : 300,
+      "url" : "https://i.scdn.co/image/418ce596327dc3a0f4d377db80421bffb3b94a9a",
+      "width" : 300
+    } ],
+    "name" : "Movie Soundtrack Masterpieces",
+    "owner" : {
+      "display_name" : "Ronald Pompa",
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/wizzler"
+      },
+      "href" : "https://api.spotify.com/v1/users/wizzler",
+      "id" : "wizzler",
+      "type" : "user",
+      "uri" : "spotify:user:wizzler"
+    },
+    "public" : true,
+    "snapshot_id" : "DWtJewYnSnv5VtFhwnzb/5zrnlorghErUgCEmqvh/gImOLIaUmBE7Unax7hEMgie",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/users/wizzler/playlists/00wHcTN0zQiun4xri9pmvX/tracks",
+      "total" : 57
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:wizzler:playlist:00wHcTN0zQiun4xri9pmvX"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "http://open.spotify.com/user/wizzler/playlist/6JJndiJHFTLBoth7aUrvTt"
+    },
+    "href" : "https://api.spotify.com/v1/users/wizzler/playlists/6JJndiJHFTLBoth7aUrvTt",
+    "id" : "6JJndiJHFTLBoth7aUrvTt",
+    "images" : [ {
+      "height" : 300,
+      "url" : "https://i.scdn.co/image/4a8f35da1e9b3252d096c6b33d528a6e68ba1da6",
+      "width" : 300
+    } ],
+    "name" : "Blue Mountain State",
+    "owner" : {
+      "display_name" : "Ronald Pompa",
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/wizzler"
+      },
+      "href" : "https://api.spotify.com/v1/users/wizzler",
+      "id" : "wizzler",
+      "type" : "user",
+      "uri" : "spotify:user:wizzler"
+    },
+    "public" : true,
+    "snapshot_id" : "9HPZH9A6cTjJzdwbjhptIJuuMcubKo3iKNz1xItxuTmcOlqHn5GdBifpo+FWocmd",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/users/wizzler/playlists/6JJndiJHFTLBoth7aUrvTt/tracks",
+      "total" : 67
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:wizzler:playlist:6JJndiJHFTLBoth7aUrvTt"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "http://open.spotify.com/user/wizzler/playlist/2LZYIzBoCXAdx8buWmUwQe"
+    },
+    "href" : "https://api.spotify.com/v1/users/wizzler/playlists/2LZYIzBoCXAdx8buWmUwQe",
+    "id" : "2LZYIzBoCXAdx8buWmUwQe",
+    "images" : [ {
+      "height" : 300,
+      "url" : "https://i.scdn.co/image/7c715d15f0d58d3676b69c7871a915922f4dbf73",
+      "width" : 300
+    } ],
+    "name" : "Barney's Get Psyched Mix",
+    "owner" : {
+      "display_name" : "Ronald Pompa",
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/wizzler"
+      },
+      "href" : "https://api.spotify.com/v1/users/wizzler",
+      "id" : "wizzler",
+      "type" : "user",
+      "uri" : "spotify:user:wizzler"
+    },
+    "public" : true,
+    "snapshot_id" : "2YZ51yYeLimg0+XYqETn3fkLLg8tTEnJKqAED8WNmZ1vyyhz2hpnLqD7XPsygR1P",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/users/wizzler/playlists/2LZYIzBoCXAdx8buWmUwQe/tracks",
+      "total" : 11
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:wizzler:playlist:2LZYIzBoCXAdx8buWmUwQe"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "http://open.spotify.com/user/martin.danielson/playlist/2HiFqdXD3KVfFS4GeOGS06"
+    },
+    "href" : "https://api.spotify.com/v1/users/martin.danielson/playlists/2HiFqdXD3KVfFS4GeOGS06",
+    "id" : "2HiFqdXD3KVfFS4GeOGS06",
+    "images" : [ {
+      "height" : 300,
+      "url" : "https://i.scdn.co/image/9018bd818affd75e915efb8a373060ef7e72b831",
+      "width" : 300
+    } ],
+    "name" : "Death Valley 2013",
+    "owner" : {
+      "display_name" : "Martin Danielson",
+      "external_urls" : {
+        "spotify" : "http://open.spotify.com/user/martin.danielson"
+      },
+      "href" : "https://api.spotify.com/v1/users/martin.danielson",
+      "id" : "martin.danielson",
+      "type" : "user",
+      "uri" : "spotify:user:martin.danielson"
+    },
+    "public" : true,
+    "snapshot_id" : "o1PQs/t644hoeUicDstibAhw1Py6ADfpHoXGlabxvPJAJEGQuBirkMGOfnzFoUHp",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/users/martin.danielson/playlists/2HiFqdXD3KVfFS4GeOGS06/tracks",
+      "total" : 27
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:martin.danielson:playlist:2HiFqdXD3KVfFS4GeOGS06"
+  } ],
+  "limit" : 20,
+  "next" : null,
+  "offset" : 0,
+  "previous" : null,
+  "total" : 6
+}

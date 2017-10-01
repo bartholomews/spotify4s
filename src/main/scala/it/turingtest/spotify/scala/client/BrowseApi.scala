@@ -19,13 +19,25 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
   private val BROWSE = s"${api.BASE_URL}/browse"
 
   // =====================================================================================================================
-  /**
-    * @see https://developer.spotify.com/web-api/get-list-featured-playlists/
-    */
+
   private final val FEATURED_PLAYLISTS = s"$BROWSE/featured-playlists"
 
+  /**
+    * Get a list of featured playlists
+    * @see https://developer.spotify.com/web-api/get-list-featured-playlists/
+    */
   def featuredPlaylists: Future[FeaturedPlaylists] = api.get[FeaturedPlaylists](FEATURED_PLAYLISTS)
 
+  /**
+    * Get a list of featured playlists
+    * @see https://developer.spotify.com/web-api/get-list-featured-playlists/
+    * @param locale
+    * @param country
+    * @param timestamp
+    * @param limit
+    * @param offset
+    * @return
+    */
   def featuredPlaylists(locale: Option[String] = None, country: Option[ISOCountry] = None,
                         timestamp: Option[LocalDateTime] = None,
                         limit: Int = 20, offset: Int = 0): Future[FeaturedPlaylists] = {
@@ -57,6 +69,16 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
   private final val CATEGORIES = s"$BROWSE/categories"
 
   /**
+    * Get a category
+    * @see https://developer.spotify.com/web-api/get-category/
+    */
+  def category(id: String, country: Option[ISOCountry] = None, locale: Option[Locale] = None): Future[Category] = {
+    val query = ConversionUtils.seq(("country", country), ("locale", locale))
+    api.get[Category](s"$CATEGORIES/$id", query.toList: _*)
+  }
+
+  /**
+    * Get a list of categories
     * @see https://developer.spotify.com/web-api/get-list-categories/
     * TODO could poll and keep a list of CATEGORY_ID objects instead of free strings
     * to be used in categoryPlaylist(category_id)
@@ -71,14 +93,7 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
   }
 
   /**
-    * @see https://developer.spotify.com/web-api/get-category/
-    */
-  def category(id: String, country: Option[ISOCountry] = None, locale: Option[Locale] = None): Future[Category] = {
-    val query = ConversionUtils.seq(("country", country), ("locale", locale))
-    api.get[Category](s"$CATEGORIES/$id", query.toList: _*)
-  }
-
-  /**
+    * Get a category's playlists
     * @see https://developer.spotify.com/web-api/get-categorys-playlists/
     */
   def categoryPlaylists(category_id: String, country: Option[ISOCountry] = None,
@@ -90,13 +105,34 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
 
   // ===================================================================================================================
 
-  /**
-    * @see https://developer.spotify.com/web-api/get-recommendations/
-    */
   private final val RECOMMENDATIONS = s"$BROWSE/recommendations"
 
-  val NONE_3 = (None, None, None)
+  private val NONE_3 = (None, None, None)
 
+  /**
+    * Get recommendations based on seeds
+    * @see https://developer.spotify.com/web-api/get-recommendations/
+    * @param limit
+    * @param market
+    * @param acousticness_range
+    * @param danceability_range
+    * @param duration_ms_range
+    * @param energy_range
+    * @param instrumentalness_range
+    * @param key_range
+    * @param liveness_range
+    * @param loudness_range
+    * @param mode_range
+    * @param popularity_range
+    * @param speechiness_range
+    * @param tempo_range
+    * @param time_signature_range
+    * @param valence_range
+    * @param seed_artists
+    * @param seed_genres
+    * @param seed_tracks
+    * @return
+    */
   def getRecommendation(limit: Int = 20,
                         market: Option[ISOCountry] = None,
                         acousticness_range: (Option[Float], Option[Float], Option[Float]) = NONE_3,

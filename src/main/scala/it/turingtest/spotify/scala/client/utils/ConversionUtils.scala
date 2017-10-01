@@ -14,7 +14,10 @@ object ConversionUtils {
   }
 
   def seq(query: (String, Option[Any])*): Seq[(String, String)] = {
+
     query.flatMap { case (key, value) => value match {
+
+      case None => None
 
       case Some(datetime: LocalDateTime) =>
         val formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss")
@@ -25,6 +28,7 @@ object ConversionUtils {
       case Some(country: ISOCountry) => Option(key, country.value)
 
       case _ => value.map(v => (key, v.toString)) }
+
     }
   }
 

@@ -1,7 +1,7 @@
 import java.nio.charset.StandardCharsets
 import java.util.Base64
 
-import it.turingtest.spotify.scala.client.{AuthApi, BaseApi, BrowseApi, TracksApi}
+import it.turingtest.spotify.scala.client._
 import play.api.Configuration
 import play.api.mvc._
 import play.api.test.WsTestClient
@@ -20,7 +20,7 @@ trait SpotifyWebMock {
   val CLIENT_SECRET = "some-client-secret"
   val REDIRECT_URI = "some-redirect-uri"
 
-  implicit val config = Configuration.apply(
+  implicit val config: Configuration = Configuration.apply(
     ("CLIENT_ID", CLIENT_ID),
     ("CLIENT_SECRET", CLIENT_SECRET),
     ("REDIRECT_URI", REDIRECT_URI)
@@ -70,7 +70,7 @@ trait SpotifyWebMock {
   /**
     * Json resources should map the real Spotify endpoints with relative path
     * and filename mapping the full request, including querystring,
-    * just escaping question mark with "%3F" and further slashes ; e.g. the following request:
+    * just escaping question mark with "%3F" and further slashes; e.g. the following request:
     * "/browse/featured-playlists?country=SE&limit=2&offset=20" will look for a json file at:
     * "test/resources/browse/featured-playlists%3Fcountry=SE&limit=2&offset=0.json"
     *
@@ -86,8 +86,11 @@ trait SpotifyWebMock {
       s"${
         endpoint.uri.drop(1)
           .replace("?", "%3F")
+          .replace(".", "%2E")
           .replaceAll("%3A", ":")
           .replaceAll("%2C", ",")
+          .replaceAll("%28", "(")
+          .replaceAll("%29", ")")
       }.json")
   }
 
@@ -110,22 +113,34 @@ trait SpotifyWebMock {
     }
   }
 
-  def withTracksApi[T](block: TracksApi => T): T = {
-    Server.withRouter() { routes } { implicit port =>
-      WsTestClient.withClient { client =>
-        val authApi = new AuthApi(config, client, "")
-        val baseApi = new BaseApi(client, authApi, "")
-        block(new TracksApi(baseApi))
-      }
-    }
-  }
-
   def withBrowseApi[T](block: BrowseApi => T): T = {
     Server.withRouter() { routes } { implicit port =>
       WsTestClient.withClient { client =>
         val authApi = new AuthApi(config, client, "")
         val baseApi = new BaseApi(client, authApi, "")
         block(new BrowseApi(baseApi))
+      }
+    }
+  }
+
+  def withPlaylistsApi[T](block: PlaylistsApi => T): T = {
+    Server.withRouter() { routes } { implicit port =>
+      WsTestClient.withClient { client =>
+        val authApi = new AuthApi(config, client, "")
+        val baseApi = new BaseApi(client, authApi, "")
+        baseApi.setAuth("valid_code") // set valid oAuth
+        val profilesApi = new ProfilesApi(client, baseApi)
+        block(new PlaylistsApi(client, baseApi, profilesApi))
+      }
+    }
+  }
+
+  def withTracksApi[T](block: TracksApi => T): T = {
+    Server.withRouter() { routes } { implicit port =>
+      WsTestClient.withClient { client =>
+        val authApi = new AuthApi(config, client, "")
+        val baseApi = new BaseApi(client, authApi, "")
+        block(new TracksApi(baseApi))
       }
     }
   }

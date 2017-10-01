@@ -16,10 +16,8 @@ import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
 @Singleton
-class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLogging {
+class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessLogging {
   @Inject() def this(ws: WSClient, auth: AuthApi) = this(ws, auth, "https://api.spotify.com/v1")
-
-  val BASE_URL = baseUrl
 
   def get[T](endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
     withToken[T](t => validate[T] {
@@ -52,37 +50,6 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
           .get()
       }
     }(fmt))
-  }
-
-  def getAll[T](call: String => Future[Page[T]])(endpoint: String): Future[List[T]] = {
-    def loop(p: Page[T], acc: List[T]): Future[List[T]] = {
-      p.next match {
-        case null => Future(acc)
-        case None => Future(acc)
-        case Some(href) =>
-          val future: Future[Page[T]] = call(href)
-          future flatMap {
-            p => loop(p, acc ::: p.items.toList)
-          }
-      }
-    }
-    call(endpoint) flatMap {
-      p => loop(p, p.items.toList)
-    }
-  }
-
-  def getAll[T](page: Page[T])(call: String => Future[Page[T]]): Future[List[T]] = {
-    def loop(p: Page[T], acc: List[T]): Future[List[T]] = {
-      p.next match {
-        case None => Future(acc)
-        case Some(href) =>
-          val future: Future[Page[T]] = call(href)
-          future flatMap {
-            p => loop(p, acc ::: p.items.toList)
-          }
-      }
-    }
-    loop(page, page.items.toList)
   }
 
   def validate[T](f: Future[WSResponse])(implicit fmt: Reads[T]): Future[T] = {
@@ -133,7 +100,6 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
     f.map(Success(_)).recover({case e => Failure(e) })
   }
 
-
   @volatile private var authorization_code: Option[Future[Token]] = None
   @volatile private var client_credentials: Option[Future[Token]] = None
 
@@ -150,10 +116,16 @@ class BaseApi(ws: WSClient, auth: AuthApi, baseUrl: String) extends AccessLoggin
 
   private def refresh: Future[Token] = validate[Token] { logResponse { auth.clientCredentials } }
 
-  def callback[T](authCode: String)(request: Token => Future[T]): Future[T] = {
-    authorization_code = Some(access(authCode))
+  def setAuth(code: String): Future[Token] = {
+    val token = access(code)
+    authorization_code = Some(token)
+    token
+  }
+
+  def setAuthAndThen[T](code: String)(request: Token => Future[T]): Future[T] = {
+    authorization_code = Some(access(code))
     accessLogger.debug(s"authorization_code = ${authorization_code.isDefined}")
-    withAuthToken(Some(authCode))(request)
+    withAuthToken(Some(code))(request)
   }
 
   @tailrec

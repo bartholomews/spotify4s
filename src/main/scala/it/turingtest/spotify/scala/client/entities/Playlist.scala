@@ -1,5 +1,6 @@
 package it.turingtest.spotify.scala.client.entities
 
+import play.api.libs.functional.FunctionalBuilder
 import play.api.libs.json.{JsPath, Reads}
 import play.api.libs.functional.syntax._
 
@@ -60,7 +61,8 @@ object SimplePlaylist {
 }
 
 private object PlaylistReads {
-  val playlistFields = {
+
+  val playlistFields: FunctionalBuilder[Reads]#CanBuild11[Boolean, ExternalURL, String, String, Seq[Image], String, User, Option[Boolean], String, String, String] = {
     (JsPath \ "collaborative").read[Boolean] and
       (JsPath \ "external_urls").read[ExternalURL] and
       (JsPath \ "href").read[String] and

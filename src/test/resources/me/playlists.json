@@ -1,0 +1,467 @@
+{
+  "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists?offset=0&limit=20",
+  "items": [
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/%7Bf_%7D/playlist/0iTCb0ltuKTt8Whv6tNzjl"
+      },
+      "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/0iTCb0ltuKTt8Whv6tNzjl",
+      "id": "0iTCb0ltuKTt8Whv6tNzjl",
+      "images": [],
+      "name": "John Frusciante",
+      "owner": {
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/%7Bf_%7D"
+        },
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+        "id": "{f_}",
+        "type": "user",
+        "uri": "spotify:user:%7Bf_%7D"
+      },
+      "public": true,
+      "snapshot_id": "0ulIvuYJnV2B5kDFCGE52AfQcry/7bGU3HFaykTPgiP09RsLMUSzGZZbkkwKnVId",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/0iTCb0ltuKTt8Whv6tNzjl/tracks",
+        "total": 91
+      },
+      "type": "playlist",
+      "uri": "spotify:user:%7Bf_%7D:playlist:0iTCb0ltuKTt8Whv6tNzjl"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/%7Bf_%7D/playlist/1vqnPxkeVpbOXglvGCrrhD"
+      },
+      "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/1vqnPxkeVpbOXglvGCrrhD",
+      "id": "1vqnPxkeVpbOXglvGCrrhD",
+      "images": [],
+      "name": "RZA – Music from the Motion Picture - Ghost Dog: The Way of The Samurai",
+      "owner": {
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/%7Bf_%7D"
+        },
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+        "id": "{f_}",
+        "type": "user",
+        "uri": "spotify:user:%7Bf_%7D"
+      },
+      "public": true,
+      "snapshot_id": "ICf9b/ho3tTetCMGshntplGHKzXS7UlaQv+jBV6uRiOQdbOAkbBtGq9pgMHdgvan",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/1vqnPxkeVpbOXglvGCrrhD/tracks",
+        "total": 16
+      },
+      "type": "playlist",
+      "uri": "spotify:user:%7Bf_%7D:playlist:1vqnPxkeVpbOXglvGCrrhD"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/%7Bf_%7D/playlist/61tKzyx9MNhfKretnLBYil"
+      },
+      "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/61tKzyx9MNhfKretnLBYil",
+      "id": "61tKzyx9MNhfKretnLBYil",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://i.scdn.co/image/753767de769b8477336983b24063f342c8527e0e",
+          "width": 640
+        }
+      ],
+      "name": "A Clockwork Orange OST",
+      "owner": {
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/%7Bf_%7D"
+        },
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+        "id": "{f_}",
+        "type": "user",
+        "uri": "spotify:user:%7Bf_%7D"
+      },
+      "public": true,
+      "snapshot_id": "4ZH7JDheIU/3xLbxVgF8TUxkkDGMenDUYA6vYPTDU8sIu0z7N/GD/6XtuPgpnme3",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/61tKzyx9MNhfKretnLBYil/tracks",
+        "total": 14
+      },
+      "type": "playlist",
+      "uri": "spotify:user:%7Bf_%7D:playlist:61tKzyx9MNhfKretnLBYil"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/%7Bf_%7D/playlist/7Ay64nYKQPPUAe35T56Qvl"
+      },
+      "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/7Ay64nYKQPPUAe35T56Qvl",
+      "id": "7Ay64nYKQPPUAe35T56Qvl",
+      "images": [],
+      "name": "Aphex Twin – Melodies from Mars",
+      "owner": {
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/%7Bf_%7D"
+        },
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+        "id": "{f_}",
+        "type": "user",
+        "uri": "spotify:user:%7Bf_%7D"
+      },
+      "public": true,
+      "snapshot_id": "I+e+CPRRo6dFrZOd99uDulssBNrWs961NFEwISlQoRg/WfYrcXMibfOH+B/Mm6Ns",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/7Ay64nYKQPPUAe35T56Qvl/tracks",
+        "total": 12
+      },
+      "type": "playlist",
+      "uri": "spotify:user:%7Bf_%7D:playlist:7Ay64nYKQPPUAe35T56Qvl"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/hherbzilla/playlist/1v2lOhxJEo0vGWIjBZr0Fd"
+      },
+      "href": "https://api.spotify.com/v1/users/hherbzilla/playlists/1v2lOhxJEo0vGWIjBZr0Fd",
+      "id": "1v2lOhxJEo0vGWIjBZr0Fd",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://mosaic.scdn.co/640/195566f205735d9243c3355e0e80eabcd4d234e275673d5b278777c5c88adb9e9562c8a73df704f60beb85a35a4ef3242432207f1a323151db693bce636e23d3aead9dc1b9d21050e3b8b939035519ce",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://mosaic.scdn.co/300/195566f205735d9243c3355e0e80eabcd4d234e275673d5b278777c5c88adb9e9562c8a73df704f60beb85a35a4ef3242432207f1a323151db693bce636e23d3aead9dc1b9d21050e3b8b939035519ce",
+          "width": 300
+        },
+        {
+          "height": 60,
+          "url": "https://mosaic.scdn.co/60/195566f205735d9243c3355e0e80eabcd4d234e275673d5b278777c5c88adb9e9562c8a73df704f60beb85a35a4ef3242432207f1a323151db693bce636e23d3aead9dc1b9d21050e3b8b939035519ce",
+          "width": 60
+        }
+      ],
+      "name": "Silicon Valley -Music from the HBO Series",
+      "owner": {
+        "display_name": "Herb Hernandez",
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/hherbzilla"
+        },
+        "href": "https://api.spotify.com/v1/users/hherbzilla",
+        "id": "hherbzilla",
+        "type": "user",
+        "uri": "spotify:user:hherbzilla"
+      },
+      "public": true,
+      "snapshot_id": "5G0ZmpM4GmZoi9N+6pzQ3ILElwRoE7zHvazZzdsfcgPZkCu7GqfzRqVazGuFdeeC",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/hherbzilla/playlists/1v2lOhxJEo0vGWIjBZr0Fd/tracks",
+        "total": 64
+      },
+      "type": "playlist",
+      "uri": "spotify:user:hherbzilla:playlist:1v2lOhxJEo0vGWIjBZr0Fd"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/optimusalive/playlist/71vi23XAag8ogqQaAVjuOo"
+      },
+      "href": "https://api.spotify.com/v1/users/optimusalive/playlists/71vi23XAag8ogqQaAVjuOo",
+      "id": "71vi23XAag8ogqQaAVjuOo",
+      "images": [
+        {
+          "height": null,
+          "url": "https://pl.scdn.co/images/pl/default/be884c378d39994fd103d65ee2ae5da571283a56",
+          "width": null
+        }
+      ],
+      "name": "NOS Alive '17",
+      "owner": {
+        "display_name": "NOS Alive",
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/optimusalive"
+        },
+        "href": "https://api.spotify.com/v1/users/optimusalive",
+        "id": "optimusalive",
+        "type": "user",
+        "uri": "spotify:user:optimusalive"
+      },
+      "public": true,
+      "snapshot_id": "HjmfI5Ak74JdZdTQtVS5CKq6NLYrvrJcBB/S2kBca/sl7KclqUWrJEmZvxXTIJBT",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/optimusalive/playlists/71vi23XAag8ogqQaAVjuOo/tracks",
+        "total": 112
+      },
+      "type": "playlist",
+      "uri": "spotify:user:optimusalive:playlist:71vi23XAag8ogqQaAVjuOo"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/%7Bf_%7D/playlist/1kZ3sw7dXPbQYmjn5TF1W9"
+      },
+      "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/1kZ3sw7dXPbQYmjn5TF1W9",
+      "id": "1kZ3sw7dXPbQYmjn5TF1W9",
+      "images": [
+        {
+          "height": null,
+          "url": "https://pl.scdn.co/images/pl/default/b3f11524ab0083a7598361ca911a1e60a10e6ab7",
+          "width": null
+        }
+      ],
+      "name": "Gangsta Rap",
+      "owner": {
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/%7Bf_%7D"
+        },
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+        "id": "{f_}",
+        "type": "user",
+        "uri": "spotify:user:%7Bf_%7D"
+      },
+      "public": true,
+      "snapshot_id": "GK2kP18bmbbvCnF7UNZHTixymdheHFBZviF9CVxnLO2LQKJGPPowBklAhXcTSO9g",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/1kZ3sw7dXPbQYmjn5TF1W9/tracks",
+        "total": 42
+      },
+      "type": "playlist",
+      "uri": "spotify:user:%7Bf_%7D:playlist:1kZ3sw7dXPbQYmjn5TF1W9"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/silvatooth/playlist/3ftdMiG5IgUoGUZLy4DGbm"
+      },
+      "href": "https://api.spotify.com/v1/users/silvatooth/playlists/3ftdMiG5IgUoGUZLy4DGbm",
+      "id": "3ftdMiG5IgUoGUZLy4DGbm",
+      "images": [
+        {
+          "height": null,
+          "url": "https://pl.scdn.co/images/pl/default/b2aeb9171dfe1608fa17b5409d4ee19f3dc527e6",
+          "width": null
+        }
+      ],
+      "name": "ASMR Electronic",
+      "owner": {
+        "display_name": "Evan Silva",
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/silvatooth"
+        },
+        "href": "https://api.spotify.com/v1/users/silvatooth",
+        "id": "silvatooth",
+        "type": "user",
+        "uri": "spotify:user:silvatooth"
+      },
+      "public": true,
+      "snapshot_id": "5vpI5Q2evNOk4KTpoMaWSbaIYowslvvw3xMOko/sLm/DoSVBfqemafa487rBxEwo",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/silvatooth/playlists/3ftdMiG5IgUoGUZLy4DGbm/tracks",
+        "total": 104
+      },
+      "type": "playlist",
+      "uri": "spotify:user:silvatooth:playlist:3ftdMiG5IgUoGUZLy4DGbm"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/spotify/playlist/37i9dQZF1DX6J5NfMJS675"
+      },
+      "href": "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX6J5NfMJS675",
+      "id": "37i9dQZF1DX6J5NfMJS675",
+      "images": [
+        {
+          "height": 300,
+          "url": "https://i.scdn.co/image/b54d1b97d76f5e3280504160e45a4746e714d83a",
+          "width": 300
+        }
+      ],
+      "name": "Techno Bunker",
+      "owner": {
+        "display_name": "Spotify",
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/spotify"
+        },
+        "href": "https://api.spotify.com/v1/users/spotify",
+        "id": "spotify",
+        "type": "user",
+        "uri": "spotify:user:spotify"
+      },
+      "public": true,
+      "snapshot_id": "2c5nVF6Aeb7R550O6zmsSN8sGBFuHC3Z7Mk5+s6G4fP1wbKwsPe8tdQOrJqcSOQmF1cMfuqtqzY=",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/spotify/playlists/37i9dQZF1DX6J5NfMJS675/tracks",
+        "total": 60
+      },
+      "type": "playlist",
+      "uri": "spotify:user:spotify:playlist:37i9dQZF1DX6J5NfMJS675"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/%7Bf_%7D/playlist/3fBR5tEFSAfiBUpd3qTj5Y"
+      },
+      "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/3fBR5tEFSAfiBUpd3qTj5Y",
+      "id": "3fBR5tEFSAfiBUpd3qTj5Y",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://mosaic.scdn.co/640/8b16cee8c4d579aacf217ccc5dbe8156b1989dc78586bf0880f65eb27e7eb093f8359afbb7bb76b8f28518f248f92c43690f2b9f9e4229a4bf78090c0ecee6d7885e1e7cbe8ff5284706a3f0046d5748",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://mosaic.scdn.co/300/8b16cee8c4d579aacf217ccc5dbe8156b1989dc78586bf0880f65eb27e7eb093f8359afbb7bb76b8f28518f248f92c43690f2b9f9e4229a4bf78090c0ecee6d7885e1e7cbe8ff5284706a3f0046d5748",
+          "width": 300
+        },
+        {
+          "height": 60,
+          "url": "https://mosaic.scdn.co/60/8b16cee8c4d579aacf217ccc5dbe8156b1989dc78586bf0880f65eb27e7eb093f8359afbb7bb76b8f28518f248f92c43690f2b9f9e4229a4bf78090c0ecee6d7885e1e7cbe8ff5284706a3f0046d5748",
+          "width": 60
+        }
+      ],
+      "name": "Sleep",
+      "owner": {
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/%7Bf_%7D"
+        },
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+        "id": "{f_}",
+        "type": "user",
+        "uri": "spotify:user:%7Bf_%7D"
+      },
+      "public": true,
+      "snapshot_id": "syZqzVRaVCGnLG6mrDQXuuorEUe/QAs2B6kggGo6ioOmiKOgHYABF9oapdRe+5to",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/3fBR5tEFSAfiBUpd3qTj5Y/tracks",
+        "total": 46
+      },
+      "type": "playlist",
+      "uri": "spotify:user:%7Bf_%7D:playlist:3fBR5tEFSAfiBUpd3qTj5Y"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/fielddayfestival/playlist/6SCX9m1vzfsQ4vYab10hZs"
+      },
+      "href": "https://api.spotify.com/v1/users/fielddayfestival/playlists/6SCX9m1vzfsQ4vYab10hZs",
+      "id": "6SCX9m1vzfsQ4vYab10hZs",
+      "images": [
+        {
+          "height": null,
+          "url": "https://pl.scdn.co/images/pl/default/f230e14e754f377d14dfd43a74caa68e1d3dbee8",
+          "width": null
+        }
+      ],
+      "name": "Field Day 2017",
+      "owner": {
+        "display_name": "Field Day Festival",
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/fielddayfestival"
+        },
+        "href": "https://api.spotify.com/v1/users/fielddayfestival",
+        "id": "fielddayfestival",
+        "type": "user",
+        "uri": "spotify:user:fielddayfestival"
+      },
+      "public": true,
+      "snapshot_id": "iqJ2bBhMWy1g0tv4aQX39LneDxDH8mBYjfPztfBpWIdF06z5f6OYwYPxwx9uZzga",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/fielddayfestival/playlists/6SCX9m1vzfsQ4vYab10hZs/tracks",
+        "total": 59
+      },
+      "type": "playlist",
+      "uri": "spotify:user:fielddayfestival:playlist:6SCX9m1vzfsQ4vYab10hZs"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/1132201545/playlist/36UDdI3bm67SPgbKmdEsOO"
+      },
+      "href": "https://api.spotify.com/v1/users/1132201545/playlists/36UDdI3bm67SPgbKmdEsOO",
+      "id": "36UDdI3bm67SPgbKmdEsOO",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://mosaic.scdn.co/640/282df093e415bae1b0c6bea96684bf1a6594b9de4bb862270fbef9bd21978d2c97f28b9375ea52196dfeb992c32675d67f87d499b39259fa12be483dd8842fb44aadb8f34c944e385b2bff667e60c77a",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://mosaic.scdn.co/300/282df093e415bae1b0c6bea96684bf1a6594b9de4bb862270fbef9bd21978d2c97f28b9375ea52196dfeb992c32675d67f87d499b39259fa12be483dd8842fb44aadb8f34c944e385b2bff667e60c77a",
+          "width": 300
+        },
+        {
+          "height": 60,
+          "url": "https://mosaic.scdn.co/60/282df093e415bae1b0c6bea96684bf1a6594b9de4bb862270fbef9bd21978d2c97f28b9375ea52196dfeb992c32675d67f87d499b39259fa12be483dd8842fb44aadb8f34c944e385b2bff667e60c77a",
+          "width": 60
+        }
+      ],
+      "name": "Trip Hop / Abstract Hip Hop / Electro alternative",
+      "owner": {
+        "display_name": "Bastien Angelé",
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/1132201545"
+        },
+        "href": "https://api.spotify.com/v1/users/1132201545",
+        "id": "1132201545",
+        "type": "user",
+        "uri": "spotify:user:1132201545"
+      },
+      "public": true,
+      "snapshot_id": "dVhtMghQF4lGEpQCYXR0O4wj2RCBmW1JKZXVccbC2RLnPxfD1xQ1ew0w5/b3lyeU",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/1132201545/playlists/36UDdI3bm67SPgbKmdEsOO/tracks",
+        "total": 243
+      },
+      "type": "playlist",
+      "uri": "spotify:user:1132201545:playlist:36UDdI3bm67SPgbKmdEsOO"
+    },
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/%7Bf_%7D/playlist/4bDEVgtn0AWYqlPYSdszXu"
+      },
+      "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/4bDEVgtn0AWYqlPYSdszXu",
+      "id": "4bDEVgtn0AWYqlPYSdszXu",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://mosaic.scdn.co/640/11c0169bb3a3cbf5060055721b6acc170903a01b6a011da66db6974ef24e78b2d0256a3e4e7bf0855464792deeb1f1cdf846e61d5bc12cb4962c3285fccb67135d5608afc09b248a398fb4464df32241",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://mosaic.scdn.co/300/11c0169bb3a3cbf5060055721b6acc170903a01b6a011da66db6974ef24e78b2d0256a3e4e7bf0855464792deeb1f1cdf846e61d5bc12cb4962c3285fccb67135d5608afc09b248a398fb4464df32241",
+          "width": 300
+        },
+        {
+          "height": 60,
+          "url": "https://mosaic.scdn.co/60/11c0169bb3a3cbf5060055721b6acc170903a01b6a011da66db6974ef24e78b2d0256a3e4e7bf0855464792deeb1f1cdf846e61d5bc12cb4962c3285fccb67135d5608afc09b248a398fb4464df32241",
+          "width": 60
+        }
+      ],
+      "name": "Trip Hop",
+      "owner": {
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/%7Bf_%7D"
+        },
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+        "id": "{f_}",
+        "type": "user",
+        "uri": "spotify:user:%7Bf_%7D"
+      },
+      "public": true,
+      "snapshot_id": "UOhWXVBv/AdG4ewPmJmsccsYwO/3UJwIEqkLTbga54SXcfFKWLKQ/dFEk3YAt3vQ",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/%7Bf_%7D/playlists/4bDEVgtn0AWYqlPYSdszXu/tracks",
+        "total": 41
+      },
+      "type": "playlist",
+      "uri": "spotify:user:%7Bf_%7D:playlist:4bDEVgtn0AWYqlPYSdszXu"
+    }
+  ],
+  "limit": 20,
+  "next": null,
+  "offset": 0,
+  "previous": null,
+  "total": 13
+}

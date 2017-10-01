@@ -16,38 +16,79 @@ resolvers += Resolver.jcenterRepo // you might have this already
 ### Endpoints Task list
  
 - [ ] **Albums**
-    - [ ] Get an Album
-    - [ ] Get Several Albums
-    - [ ] Get an Album's Tracks
-- [ ] **Artist**
-    - [ ] Get an Artist
-    - [ ] Get Several Artists
-    - [ ] Get an Artist's Albums
-    - [ ] Get an Artist's Top Tracks
-    - [ ] Get an Artist's Related Artists
+    - [ ] Get an album
+    - [ ] Get several albums
+    - [ ] Get an album's tracks
+    - [ ] Search for an album
+- [ ] **Artists**
+    - [ ] Get an artist
+    - [ ] Get several artists
+    - [ ] Get an artist's albums
+    - [ ] Get an artist's top tracks
+    - [ ] Get an artist's related artists
+    - [ ] Search for an artist
 - [x] [**Browse**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/BrowseApi.scala)
-    - [x] Get a List of Featured Playlists
-    - [x] Get a List of New Releases
-    - [x] Get a List of Categories
-    - [x] Get a Category
-    - [x] Get a Category's Playlists
-    - [x] Get Recommendations Based on Seeds
-- [ ] **Follow**
-    - [ ] Get User's Followed Artists
-    - [ ] Follow Artists or Users
-    - [ ] Unfollow Artists or Users
-    - [ ] Check if Current User Follows Artists or Users
+    - [x] Get a list of featured playlists
+    - [x] Get a list of new releases
+    - [x] Get a list of categories
+    - [x] Get a category
+    - [x] Get a category's playlists
+    - [x] Get recommendations based on seeds
+- [ ] **Playlists**
+    - [x] Get a Playlist
+    - [x] Get a List of a User's Playlists
+    - [ ] Get a List of Current User's Playlists
     - [ ] Follow a Playlist
     - [ ] Unfollow a Playlist
-    - [ ] Check if Users Follow a Playlist
+    - [ ] Search for a Playlist
+    - [ ] Create a Playlist
+    - [ ] Change a Playlist's Details
+    - [ ] Check if Users follow a Playlist
+    - [ ] Upload a Custom Playlist Cover Image
+    - [ ] Get a Playlist's Tracks
+    - [ ] Add Tracks to a Playlist
+    - [ ] Remove Tracks from a Playlist
+    - [ ] Reorder a Playlist's Tracks
+    - [ ] Replace a Playlist's Tracks
+- [ ] **Player**
+    - [ ] Get a user's available devices
+    - [ ] Get information about the user's current playback
+    - [ ] Get the user's currently playing track
+    - [ ] Transfer a user's playback
+    - [ ] Start/resume a user's playback
+    - [ ] Pause a user's playback
+    - [ ] Skip user's playback to next track
+    - [ ] Seek to position in currently playing track
+    - [ ] Set repeat mode on user's playback
+    - [ ] Set volume for user's playback
+    - [ ] Toggle shuffle for user's playback
+- [ ] **Profiles**
+   - [ ] Get current user's profile
+   - [ ] Get a user's profile
+   - [ ] Get followed artists
+   - [ ] Follow artists or users
+   - [ ] Unfollow artists or users
+   - [ ] Check if user follows users or artists
+   - [ ] Get a user's top artists or tracks
+   - [ ] Get user's saved albums
+   - [ ] Save albums for user
+   - [ ] Remove user's saved albums
+   - [ ] Check user's saved albums
+   - [ ] Get user's saved albums
+   - [ ] Save albums for user
+   - [ ] Remove user's saved albums
+   - [ ] Check user's saved albums  
+   - [ ] Get user's saved tracks
+   - [ ] Save tracks for user
+   - [ ] Remove user's saved tracks
+   - [ ] Check user's saved tracks
+   - [ ] Get current user's recently played tracks
 - [x] [**Tracks**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/TracksApi.scala)
     - [x] Get audio analysis for a track
     - [x] Get audio features for a track
     - [x] Get audio features for several tracks
     - [x] Get a track
     - [x] Get several tracks 
-
-**(MORE TODO)**
 
 ### Usage
 
@@ -125,7 +166,9 @@ After the user has granted or rejected permissions, he is redirected to the url 
 your `application.conf` under `REDIRECT_URL`. The request's should contain a 'code' querystring,
 which you need to give to the wrapper in order to set up oAuth.
 
-For instance, if you want to perform an action straight away after the user has granted
+To set oAuth you can either use `authApi.setAuth(code: String)` 
+or `authApi.setAuthAndThen(code: String)(request: Token => Future[T])`
+which lets you declare an action straight away after the user has granted
 permissions:
 
 In your `conf/application.conf`:
@@ -166,7 +209,7 @@ class MyController @Inject() (authApi: AuthApi,
       request.getQueryString("code") match {
        // If the user rejected the permissions, or some other error occurred,
        // request should contain an "error" querystring instead of a "code".
-        case Some(code) => api.callback(code) { _ => hello() }
+        case Some(code) => api.setAuthAndThen(code) { _ => hello() }
         case None => request.getQueryString("error") match {
           case Some("access_denied") => Future(BadRequest("You need to authorize permissions in order to use the App."))
           case Some(error) => Future(BadRequest(error))
@@ -179,10 +222,10 @@ class MyController @Inject() (authApi: AuthApi,
 
 ```
 
-After you call `authApi.callback(code)`, you have set *oAuth* and can make user-specific requests.
+After you call `authApi.setAuth` or `authApi.setAuthAndThen`, you have set *oAuth* and can make user-specific requests.
 If you don't set the authorisation code you will get an error such as "Authorisation code not provided" 
 if you make an *oAuth* request. Once this is set, the client will automatically take care 
-of refreshing future tokens.  
+of refreshing future tokens.
 
 Some endpoints don't need *oAuth*, so you can still call them if you don't set it.
 Just read the docs of the endpoint you need to make sure it doesn't require authorisation.
