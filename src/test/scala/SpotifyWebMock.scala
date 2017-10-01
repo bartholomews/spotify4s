@@ -86,11 +86,11 @@ trait SpotifyWebMock {
       s"${
         endpoint.uri.drop(1)
           .replace("?", "%3F")
-          .replace(".", "%2E")
           .replaceAll("%3A", ":")
           .replaceAll("%2C", ",")
           .replaceAll("%28", "(")
           .replaceAll("%29", ")")
+          .replaceAll("%C3%B1", "ñ")
       }.json")
   }
 
@@ -135,6 +135,16 @@ trait SpotifyWebMock {
     }
   }
 
+  def withProfilesApi[T](block: ProfilesApi => T): T = {
+    Server.withRouter() { routes } { implicit port =>
+      WsTestClient.withClient { client =>
+        val authApi = new AuthApi(config, client, "")
+        val baseApi = new BaseApi(client, authApi, "")
+        baseApi.setAuth("valid_code") // set valid oAuth
+        block(new ProfilesApi(client, baseApi))
+      }
+    }
+  }
   def withTracksApi[T](block: TracksApi => T): T = {
     Server.withRouter() { routes } { implicit port =>
       WsTestClient.withClient { client =>

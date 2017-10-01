@@ -77,21 +77,12 @@ class PlaylistsApi @Inject()(ws: WSClient, api: BaseApi, profiles: ProfilesApi) 
   }
 
   /**
-    * Get a list of the current user's playlists
-    * @see https://developer.spotify.com/web-api/get-a-list-of-current-users-playlists/
-    * @return
-    */
-  def myPlaylists: Future[Page[SimplePlaylist]] = {
-    api.getWithOAuth[Page[SimplePlaylist]](s"${api.BASE_URL}/me/playlists")
-  }
-
-  /**
     * TODO
     * Follow a playlist
     * @see https://developer.spotify.com/web-api/follow-playlist/
     * @return
     */
-  def follow() = ???
+  // def follow() = ???
 
   /**
     * TODO
@@ -99,7 +90,7 @@ class PlaylistsApi @Inject()(ws: WSClient, api: BaseApi, profiles: ProfilesApi) 
     * @see https://developer.spotify.com/web-api/unfollow-playlist/
     * @return
     */
-  def unfollow() = ???
+  // def unfollow() = ???
 
   /**
     * TODO
@@ -107,7 +98,7 @@ class PlaylistsApi @Inject()(ws: WSClient, api: BaseApi, profiles: ProfilesApi) 
     * @see https://developer.spotify.com/web-api/search-item/
     * @return
     */
-  def search() = ???
+ // def search() = ???
 
   /**
     * TODO
@@ -115,25 +106,25 @@ class PlaylistsApi @Inject()(ws: WSClient, api: BaseApi, profiles: ProfilesApi) 
     * @see https://developer.spotify.com/web-api/create-playlist/
     * @return
     */
-  def create() = ???
+  // def create() = ???
 
   /**
     * Change a playlist's details
     * @see https://developer.spotify.com/web-api/change-playlist-details/
     */
-  def changeDetails() = ???
+  // def changeDetails() = ???
 
   /**
     * Check if Users follow a playlist
     * @see https://developer.spotify.com/web-api/check-user-following-playlist/
     */
-  def isFollowing: Future[Boolean] = ???
+  // def isFollowing: Future[Boolean] = ???
 
   /**
     * Upload a Custom playlist cover image
     * @see https://developer.spotify.com/web-api/upload-a-custom-playlist-cover-image/
     */
-  def uploadCoverImage() = ???
+  // def uploadCoverImage() = ???
 
   // ===================================================================================================================
   // PLAYLIST TRACKS
@@ -141,8 +132,20 @@ class PlaylistsApi @Inject()(ws: WSClient, api: BaseApi, profiles: ProfilesApi) 
   /**
     * Get a playlist's tracks
     * @see https://developer.spotify.com/web-api/get-playlists-tracks/
+    *
     * @param user_id The user's Spotify user ID.
+    *
     * @param playlist_id The Spotify ID for the playlist.
+    *
+    * @param limit Optional. The maximum number of tracks to return.
+    *              Default: 100. Minimum: 1. Maximum: 100.
+    *
+    * @param offset Optional. The index of the first track to return.
+    *               Default: 0 (the first object).
+    *
+    * @param market Optional. An ISO 3166-1 alpha-2 country code.
+    *               Provide this parameter if you want to apply Track Relinking.
+    *
     * @return On success, the response body contains an array of playlist track objects
     *         (wrapped in a paging object) in JSON format
     *         and the HTTP status code in the response header is 200 OK.
@@ -150,33 +153,36 @@ class PlaylistsApi @Inject()(ws: WSClient, api: BaseApi, profiles: ProfilesApi) 
     *         and the response body contains an error object.
     *         Requesting playlists that you do not have the user’s authorization to access returns error 403 Forbidden.
     */
-  def tracks(user_id: String, playlist_id: String): Future[Page[PlaylistTrack]] = {
-    api.getWithOAuth[Page[PlaylistTrack]](s"${api.BASE_URL}/users/$user_id/playlists/$playlist_id/tracks")
+  def tracks(user_id: String, playlist_id: String, limit: Option[Int] = None,
+             offset: Option[Int] = None, market: Option[ISOCountry] = None): Future[Page[PlaylistTrack]] = {
+
+    val query = ConversionUtils.seq(("limit", limit), ("offset", offset), ("market", market))
+    api.getWithOAuth[Page[PlaylistTrack]](s"${api.BASE_URL}/users/$user_id/playlists/$playlist_id/tracks", query: _*)
   }
 
   /**
     * Add tracks to a playlist
     * @see https://developer.spotify.com/web-api/add-tracks-to-playlist/
     */
-  def addTracks() = ???
+  // def addTracks() = ???
 
   /**
     * Remove tracks from a playlist
     * @see https://developer.spotify.com/web-api/remove-tracks-playlist/
     */
-  def removeTracks() = ???
+ // def removeTracks() = ???
 
   /**
     * Reorder a playlist's tracks
     * @see https://developer.spotify.com/web-api/reorder-playlists-tracks/
     */
-  def reorderTracks() = ???
+ // def reorderTracks() = ???
 
   /**
     * Replace a playlist's tracks
     * @see https://developer.spotify.com/web-api/replace-playlists-tracks/
     */
-  def replaceTracks() = ???
+//  def replaceTracks() = ???
 
   // ===================================================================================================================
 

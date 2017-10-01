@@ -37,7 +37,6 @@ resolvers += Resolver.jcenterRepo // you might have this already
 - [ ] **Playlists**
     - [x] Get a Playlist
     - [x] Get a List of a User's Playlists
-    - [ ] Get a List of Current User's Playlists
     - [ ] Follow a Playlist
     - [ ] Unfollow a Playlist
     - [ ] Search for a Playlist
@@ -63,8 +62,9 @@ resolvers += Resolver.jcenterRepo // you might have this already
     - [ ] Set volume for user's playback
     - [ ] Toggle shuffle for user's playback
 - [ ] **Profiles**
-   - [ ] Get current user's profile
-   - [ ] Get a user's profile
+   - [x] Get current user's profile
+   - [x] Get a user's profile
+   - [x] Get a list of current user's playlists
    - [ ] Get followed artists
    - [ ] Follow artists or users
    - [ ] Unfollow artists or users
