@@ -1,9 +1,7 @@
 import com.vitorsvieira.iso.ISOCountry
-import it.turingtest.spotify.scala.client.{AuthApi, BaseApi}
 import it.turingtest.spotify.scala.client.entities.{RegularError, Track, WebApiException}
 import org.scalatest.{FunSpec, Matchers}
 import org.scalatestplus.play.guice.GuiceOneServerPerTest
-import play.api.test.WsTestClient
 
 /**
   * @see https://www.playframework.com/documentation/2.5.x/ScalaTestingWebServiceClients

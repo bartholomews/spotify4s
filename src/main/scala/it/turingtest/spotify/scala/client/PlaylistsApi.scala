@@ -38,7 +38,7 @@ class PlaylistsApi @Inject()(ws: WSClient, api: BaseApi, profiles: ProfilesApi) 
   def playlist(user_id: String, playlist_id: String, market: Option[ISOCountry] = None): Future[FullPlaylist] = {
 
     val query: Seq[(String, String)] = ConversionUtils.seq(("market", market))
-    api.get[FullPlaylist](s"${api.BASE_URL}/users/$user_id/playlists/$playlist_id", query: _*)
+    api.getWithToken[FullPlaylist](s"${api.BASE_URL}/users/$user_id/playlists/$playlist_id", query: _*)
   }
 
   /**

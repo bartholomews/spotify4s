@@ -123,6 +123,17 @@ trait SpotifyWebMock {
     }
   }
 
+  def withPlayerApi[T](block: PlayerApi => T): T = {
+    Server.withRouter() { routes } { implicit port =>
+      WsTestClient.withClient { client =>
+        val authApi = new AuthApi(config, client, "")
+        val baseApi = new BaseApi(client, authApi, "")
+        baseApi.setAuth("valid_code") // set valid oAuth
+        block(new PlayerApi(client, baseApi))
+      }
+    }
+  }
+
   def withPlaylistsApi[T](block: PlaylistsApi => T): T = {
     Server.withRouter() { routes } { implicit port =>
       WsTestClient.withClient { client =>

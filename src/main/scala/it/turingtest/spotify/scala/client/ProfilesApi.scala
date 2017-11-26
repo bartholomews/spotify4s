@@ -46,7 +46,7 @@ class ProfilesApi @Inject()(ws: WSClient, api: BaseApi) extends AccessLogging {
     *         and the response body contains an error object (@see `ErrorDetails`)
     *         If a user with that user_id doesn’t exist, the status code is 404 NOT FOUND.
     */
-  def user(user_id: String): Future[User] = api.get[User](s"${api.BASE_URL}/users/$user_id")
+  def user(user_id: String): Future[User] = api.getWithToken[User](s"${api.BASE_URL}/users/$user_id")
 
   /**
     * Get a list of the current user's playlists

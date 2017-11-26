@@ -21,7 +21,7 @@ class BaseApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest with 
 
     it("should be able to get a resource") {
       withBaseApi { api =>
-        val result = await { api.get[Track]("/tracks/3n3Ppam7vgaVa1iaRUc9Lp") }
+        val result = await { api.getWithToken[Track]("/tracks/3n3Ppam7vgaVa1iaRUc9Lp") }
         result.id shouldBe Some("3n3Ppam7vgaVa1iaRUc9Lp")
       }
     }

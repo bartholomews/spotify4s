@@ -50,8 +50,8 @@ resolvers += Resolver.jcenterRepo // you might have this already
     - [ ] Reorder a Playlist's Tracks
     - [ ] Replace a Playlist's Tracks
 - [ ] **Player**
-    - [ ] Get a user's available devices
-    - [ ] Get information about the user's current playback
+    - [x] Get a user's available devices
+    - [x] Get information about the user's current playback
     - [ ] Get the user's currently playing track
     - [ ] Transfer a user's playback
     - [ ] Start/resume a user's playback

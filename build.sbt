@@ -9,9 +9,9 @@ licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.4",
+  "com.typesafe.play" % "play-json_2.11" % "2.5.14",
   "com.typesafe.play" % "play-ws_2.11" % "2.5.14",
-  "com.typesafe.play" % "play-json_2.11" % "2.5.14"
+  "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.4"
 )
 
 libraryDependencies += "com.vitorsvieira" %% "scala-iso" % "0.1.2"

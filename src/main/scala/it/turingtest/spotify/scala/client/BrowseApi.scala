@@ -26,7 +26,7 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
     * Get a list of featured playlists
     * @see https://developer.spotify.com/web-api/get-list-featured-playlists/
     */
-  def featuredPlaylists: Future[FeaturedPlaylists] = api.get[FeaturedPlaylists](FEATURED_PLAYLISTS)
+  def featuredPlaylists: Future[FeaturedPlaylists] = api.getWithToken[FeaturedPlaylists](FEATURED_PLAYLISTS)
 
   /**
     * Get a list of featured playlists
@@ -46,7 +46,7 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
       ("locale", locale), ("country", country), ("timestamp", timestamp)
     ) ++ Seq(("limit", limit.toString), ("offset", offset.toString))
 
-    api.get[FeaturedPlaylists](FEATURED_PLAYLISTS, query.toList: _*)
+    api.getWithToken[FeaturedPlaylists](FEATURED_PLAYLISTS, query.toList: _*)
   }
 
   // ===================================================================================================================
@@ -55,13 +55,13 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
     */
   private final val NEW_RELEASES = s"$BROWSE/new-releases"
 
-  def newReleases: Future[NewReleases] = api.get[NewReleases](NEW_RELEASES)
+  def newReleases: Future[NewReleases] = api.getWithToken[NewReleases](NEW_RELEASES)
 
   def newReleases(country: Option[ISOCountry] = None, limit: Int = 20, offset: Int = 0): Future[NewReleases] = {
     val query: Seq[(String, String)] = ConversionUtils.seq(
       ("country", country)) ++ Seq(Some("limit", limit.toString), Some("offset", offset.toString)).flatten
 
-    api.get[NewReleases](NEW_RELEASES, query.toList: _*)
+    api.getWithToken[NewReleases](NEW_RELEASES, query.toList: _*)
   }
 
   // ===================================================================================================================
@@ -74,7 +74,7 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
     */
   def category(id: String, country: Option[ISOCountry] = None, locale: Option[Locale] = None): Future[Category] = {
     val query = ConversionUtils.seq(("country", country), ("locale", locale))
-    api.get[Category](s"$CATEGORIES/$id", query.toList: _*)
+    api.getWithToken[Category](s"$CATEGORIES/$id", query.toList: _*)
   }
 
   /**
@@ -89,7 +89,7 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
     val query: Seq[(String, String)] = ConversionUtils.seq(
       ("country", country), ("locale", locale)) ++ Seq(Some("limit", limit.toString), Some("offset", offset.toString)).flatten
 
-    api.get[Page[Category]]("categories", CATEGORIES, query.toList: _*)
+    api.getWithToken[Page[Category]]("categories", CATEGORIES, query.toList: _*)
   }
 
   /**
@@ -100,7 +100,7 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
                         limit: Int = 20, offset: Int = 0): Future[Page[SimplePlaylist]] = {
 
     val query = ConversionUtils.seq(("country", country)) ++ Seq(Some("limit", limit.toString), Some("offset", offset.toString)).flatten
-    api.get[Page[SimplePlaylist]]("playlists", s"$CATEGORIES/$category_id/playlists", query.toList: _*)
+    api.getWithToken[Page[SimplePlaylist]]("playlists", s"$CATEGORIES/$category_id/playlists", query.toList: _*)
   }
 
   // ===================================================================================================================
@@ -183,6 +183,6 @@ class BrowseApi @Inject()(api: BaseApi) extends AccessLogging {
       attrs("mode", mode_range) ++
       attrs("popularity", popularity_range)
 
-    api.get[Recommendation](s"$RECOMMENDATIONS", query.toList: _*)
+    api.getWithToken[Recommendation](s"$RECOMMENDATIONS", query.toList: _*)
   }
 }

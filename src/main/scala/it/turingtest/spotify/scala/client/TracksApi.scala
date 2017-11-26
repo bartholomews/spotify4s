@@ -24,14 +24,14 @@ class TracksApi @Inject()(api: BaseApi) extends AccessLogging {
     * @param id The Spotify ID for the track.
     * @return an `AudioAnalysis` object
     */
-  def getAudioAnalysis(id: String): Future[AudioAnalysis] = api.get[AudioAnalysis](s"$AUDIO_ANALYSIS/$id")
+  def getAudioAnalysis(id: String): Future[AudioAnalysis] = api.getWithToken[AudioAnalysis](s"$AUDIO_ANALYSIS/$id")
 
   /**
     * @see https://developer.spotify.com/web-api/get-audio-features/
     * @param id The Spotify ID for the track.
     * @return an `AudioFeatures` object
     */
-  def getAudioFeatures(id: String): Future[AudioFeatures] = api.get[AudioFeatures](s"$AUDIO_FEATURES/$id")
+  def getAudioFeatures(id: String): Future[AudioFeatures] = api.getWithToken[AudioFeatures](s"$AUDIO_FEATURES/$id")
 
   /**
     * @see https://developer.spotify.com/web-api/get-several-audio-features/
@@ -40,7 +40,7 @@ class TracksApi @Inject()(api: BaseApi) extends AccessLogging {
     */
   def getAudioFeatures(ids: Seq[String]): Future[Seq[AudioFeatures]] = {
     println(ids.mkString(","))
-    api.get[Seq[AudioFeatures]]("audio_features", s"$AUDIO_FEATURES/", ("ids", ids.mkString(",")))
+    api.getWithToken[Seq[AudioFeatures]]("audio_features", s"$AUDIO_FEATURES/", ("ids", ids.mkString(",")))
   }
 
   /**
@@ -51,8 +51,8 @@ class TracksApi @Inject()(api: BaseApi) extends AccessLogging {
     * @return a `Track` object
     */
   def getTrack(id: String, market: Option[ISOCountry] = None): Future[Track] = market match {
-    case Some(country) => api.get[Track](s"$TRACKS/$id", ("market", country.value))
-    case None => api.get[Track](s"$TRACKS/$id")
+    case Some(country) => api.getWithToken[Track](s"$TRACKS/$id", ("market", country.value))
+    case None => api.getWithToken[Track](s"$TRACKS/$id")
   }
 
   /**
@@ -65,8 +65,8 @@ class TracksApi @Inject()(api: BaseApi) extends AccessLogging {
   def getTracks(ids: Seq[String], market: Option[ISOCountry] = None): Future[Seq[Track]] = {
     val query = ("ids", ids.mkString(","))
     market match {
-      case Some(country) => api.get[Seq[Track]]("tracks", s"$TRACKS/", query, ("market", country.value))
-      case None => api.get[Seq[Track]]("tracks", s"$TRACKS/", query)
+      case Some(country) => api.getWithToken[Seq[Track]]("tracks", s"$TRACKS/", query, ("market", country.value))
+      case None => api.getWithToken[Seq[Track]]("tracks", s"$TRACKS/", query)
     }
   }
 

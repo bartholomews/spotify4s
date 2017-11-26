@@ -19,55 +19,67 @@ import scala.util.{Failure, Success, Try}
 class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessLogging {
   @Inject() def this(ws: WSClient, auth: AuthApi) = this(ws, auth, "https://api.spotify.com/v1")
 
-  def get[T](endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
-    withToken[T](t => validate[T] {
-      logResponse {
-        ws.url(endpoint)
-          .withHeaders(auth.bearer(t.access_token))
-          .withQueryString(parameters.toList: _*)
-          .get()
-      }
-    }(fmt))
+  def getWithToken[T](endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
+    withToken[T](t => validate[T] { get(endpoint, parameters)(t) }(fmt))
   }
 
-  def get[T](read: String, endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
-    withToken[T](t => validate[T](read) {
-      logResponse {
-        ws.url(endpoint)
-          .withHeaders(auth.bearer(t.access_token))
-          .withQueryString(parameters.toList: _*)
-          .get()
-      }
-    }(fmt))
+  def getWithToken[T](read: String, endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
+    withToken[T](t => validate[T](read) { get(endpoint, parameters)(t) }(fmt))
   }
 
   def getWithOAuth[T](endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
-    withAuthToken()(t => validate[T] {
-      logResponse {
-        ws.url(endpoint)
-          .withHeaders(auth.bearer(t.access_token))
-          .withQueryString(parameters.toList: _*)
-          .get()
-      }
-    }(fmt))
+    withAuthToken()(t => validate[T] { get(endpoint, parameters)(t) }(fmt))
+  }
+
+  def getWithOAuth[T](read: String, endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[T] = {
+    withAuthToken()(t => validate[T](read) { get(endpoint, parameters)(t) }(fmt))
+  }
+
+  def getOptWithOAuth[T](endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[Option[T]] = {
+    withAuthToken()(t => validateOpt[T] { get(endpoint, parameters)(t) }(fmt))
+  }
+
+  def getOptWithOAuth[T](read: String, endpoint: String, parameters: (String, String)*)(implicit fmt: Reads[T]): Future[Option[T]] = {
+    withAuthToken()(t => validateOpt[T](read) { get(endpoint, parameters)(t) }(fmt))
+  }
+
+  def get(endpoint: String, parameters: Seq[(String, String)]): Token => Future[WSResponse] = {
+    t: Token => logResponse {
+      ws.url(endpoint)
+        .withHeaders(auth.bearer(t.access_token))
+        .withQueryString(parameters.toList: _*)
+        .get()
+    }
   }
 
   def validate[T](f: Future[WSResponse])(implicit fmt: Reads[T]): Future[T] = {
-    f map { response =>
-      response.json.validate[T](fmt) match {
-        case JsSuccess(obj, _) => obj
-        case JsError(errors) => throw webApiException(response.json, errors.head.toString)
-      }
-    } recoverWith { case ex => Future.failed(ex) }
+    f map { response => validateJson(JsDefined(response.json)) } recoverWith { case ex => Future.failed(ex) }
   }
 
   def validate[T](read: String)(f: Future[WSResponse])(implicit fmt: Reads[T]): Future[T] = {
-    f map { response =>
-      (response.json \ read).validate[T](fmt) match {
-        case JsSuccess(obj, _) => obj
-        case JsError(errors) => throw webApiException(response.json, errors.head.toString)
-      }
-    } recoverWith { case ex => Future.failed(ex) }
+    f map { response => validateJson(response.json \ read) } recoverWith { case ex => Future.failed(ex) }
+  }
+
+  def validateOpt[T](f: Future[WSResponse])(implicit fmt: Reads[T]): Future[Option[T]] = {
+    f map { response => validateJsonAsOpt(JsDefined(response.json)) } recoverWith { case ex => Future.failed(ex) }
+  }
+
+  def validateOpt[T](read: String)(f: Future[WSResponse])(implicit fmt: Reads[T]): Future[Option[T]] = {
+    f map { response => validateJsonAsOpt(response.json \ read) } recoverWith { case ex => Future.failed(ex) }
+  }
+
+  private def validateJson[T](json: JsLookupResult)(implicit fmt: Reads[T]): T = {
+    json.validate[T](fmt) match {
+      case JsSuccess(obj, _) => obj
+      case JsError(errors) => throw webApiException(json.as[JsValue], errors.head.toString)
+    }
+  }
+
+  private def validateJsonAsOpt[T](json: JsLookupResult)(implicit fmt: Reads[T]): Option[T] = {
+    json.validateOpt[T](fmt) match {
+      case JsSuccess(obj, _) => obj
+      case JsError(errors) => throw webApiException(json.as[JsValue], errors.head.toString)
+    }
   }
 
   // TODO rate-limiting object from Retry-after header (@see https://developer.spotify.com/web-api/user-guide/#rate-limiting)
@@ -80,24 +92,6 @@ class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessL
         case JsError(_) => throw new Exception(s"$error")
       }
     }
-  }
-
-  /**
-    * Collect disregarding failures
-    * @see http://stackoverflow.com/questions/20874186/scala-listfuture-to-futurelist-disregarding-failed-futures
-    * @param list
-    * @tparam T
-    * @return
-    */
-  def getFutureList[T](list: List[Future[T]]): Future[List[T]] = {
-    Future.sequence(
-      list.map(futureToFutureTry)
-    ).map(_.collect { case Success(x) => x })
-  }
-
-  // @see http://stackoverflow.com/a/20874404
-  private def futureToFutureTry[T](f: Future[T]): Future[Try[T]] = {
-    f.map(Success(_)).recover({case e => Failure(e) })
   }
 
   @volatile private var authorization_code: Option[Future[Token]] = None
