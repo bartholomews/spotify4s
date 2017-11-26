@@ -9,7 +9,7 @@
 ### Add to your *build.sbt*
 
 ```
-"it.turingtest" %% "spotify-scala-client" % "0.0.1",
+"it.turingtest" %% "spotify-scala-client" % "0.0.2",
 resolvers += Resolver.jcenterRepo // you might have this already
 ```
 
@@ -246,7 +246,5 @@ In your *conf/logback.xml*:
 **DEBUG** will log all the json responses.  
 **WARN** is currently doing nothing.  
 **INFO** is currently doing nothing.
-
-### (*TO BE CONTINUED*)
 
 ***
