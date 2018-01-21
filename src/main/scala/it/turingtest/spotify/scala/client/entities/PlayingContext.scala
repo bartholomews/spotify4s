@@ -1,10 +1,9 @@
 package it.turingtest.spotify.scala.client.entities
 
-import play.api.data.validation.ValidationError
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Reads}
-
 import scala.util.Try
+
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, JsonValidationError, Reads}
 
 
 case class PlayingContext(device: Device,
@@ -20,7 +19,7 @@ object PlayingContext {
   implicit val playingContextReads: Reads[PlayingContext] = (
     (JsPath \ "device").read[Device] and
       // @see https://stackoverflow.com/a/29948007
-      (JsPath \ "repeat_state").read[String].collect(ValidationError(""))(
+      (JsPath \ "repeat_state").read[String].collect(JsonValidationError(""))(
         Function.unlift(t => Try(RepeatState.valueOf(t)).toOption)) and
       (JsPath \ "shuffle_state").read[Boolean] and
       (JsPath \ "context").readNullable[Context] and

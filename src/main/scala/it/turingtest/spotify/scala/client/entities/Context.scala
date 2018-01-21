@@ -1,9 +1,9 @@
 package it.turingtest.spotify.scala.client.entities
 
-import play.api.data.validation.ValidationError
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Reads}
 import scala.util.Try
+
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, JsonValidationError, Reads}
 
 /**
   * @see https://developer.spotify.com/web-api/get-information-about-the-users-current-playback/
@@ -24,7 +24,7 @@ object Context {
       (JsPath \ "href").readNullable[String] and
       (JsPath \ "external_url").readNullable[ExternalURL] and
       // @see https://stackoverflow.com/a/29948007
-      (JsPath \ "type").read[String].collect(ValidationError(""))(
+      (JsPath \ "type").read[String].collect(JsonValidationError(""))(
         Function.unlift(t => Try(ContextType.valueOf(t)).toOption))
     )(Context.apply _)
 }

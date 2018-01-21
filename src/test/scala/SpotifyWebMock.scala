@@ -7,14 +7,21 @@ import play.api.mvc._
 import play.api.test.WsTestClient
 import play.core.server.Server
 import play.api.routing.sird._
-
 import scala.concurrent.{Await, Awaitable}
 import scala.concurrent.duration._
+
+import play.api.http.{DefaultFileMimeTypes, FileMimeTypes, FileMimeTypesConfiguration}
 
 /**
   * @see https://www.playframework.com/documentation/2.5.x/ScalaTestingWebServiceClients
   */
 trait SpotifyWebMock {
+
+  implicit val fileMimeTypes: FileMimeTypes =
+    new DefaultFileMimeTypes(FileMimeTypesConfiguration(Map(
+      "json" -> "application/json",
+      "xml" -> "application/xml"
+    )))
 
   val CLIENT_ID = "some-client-id"
   val CLIENT_SECRET = "some-client-secret"
@@ -55,10 +62,12 @@ trait SpotifyWebMock {
       }
   }
 
-  private def authCodeResponse(body: Map[String, Seq[String]]) = body get "code" match {
-    case Some(Seq("valid_code")) => Results.Ok.sendResource("auth/authorization_access.json")
-    case Some(_) => Results.BadRequest.sendResource("auth/authorization_invalid_code.json")
-    case None => Results.BadRequest.sendResource("auth/authorization_no_code.json")
+  private def authCodeResponse(body: Map[String, Seq[String]]) = {
+    body get "code" match {
+      case Some(Seq("valid_code")) => Results.Ok.sendResource("auth/authorization_access.json")
+      case Some(_) => Results.BadRequest.sendResource("auth/authorization_invalid_code.json")
+      case None => Results.BadRequest.sendResource("auth/authorization_no_code.json")
+    }
   }
 
   private def refreshTokenResponse(body: Map[String, Seq[String]]) = body get "refresh_token" match {
