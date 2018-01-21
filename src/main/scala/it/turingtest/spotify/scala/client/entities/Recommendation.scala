@@ -1,10 +1,9 @@
 package it.turingtest.spotify.scala.client.entities
 
-import play.api.data.validation.ValidationError
-import play.api.libs.json.{JsPath, Reads}
-import play.api.libs.functional.syntax._
-
 import scala.util.Try
+
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, JsonValidationError, Reads}
 
 case class Recommendation(seeds: Seq[RecommendationSeed],
                           tracks: Seq[SimpleTrack])
@@ -34,7 +33,7 @@ object RecommendationSeed {
       (JsPath \ "id").read[String] and
       (JsPath \ "initialPoolSize").read[Int] and
       // @see https://stackoverflow.com/a/29948007
-      (JsPath \ "type").read[String].collect(ValidationError(""))(
+      (JsPath \ "type").read[String].collect(JsonValidationError(""))(
         Function.unlift(s => Try(SeedType.valueOf(s)).toOption)
       )
     )(RecommendationSeed.apply _)
