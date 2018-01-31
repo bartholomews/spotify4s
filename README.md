@@ -19,14 +19,14 @@ resolvers += Resolver.jcenterRepo // you might have this already
     - [ ] Get an album
     - [ ] Get several albums
     - [ ] Get an album's tracks
-    - [ ] Search for an album
+    - [x] Search for an album
 - [ ] **Artists**
     - [ ] Get an artist
     - [ ] Get several artists
     - [ ] Get an artist's albums
     - [ ] Get an artist's top tracks
     - [ ] Get an artist's related artists
-    - [ ] Search for an artist
+    - [x] Search for an artist
 - [x] [**Browse**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/BrowseApi.scala)
     - [x] Get a list of featured playlists
     - [x] Get a list of new releases
@@ -39,7 +39,7 @@ resolvers += Resolver.jcenterRepo // you might have this already
     - [x] Get a List of a User's Playlists
     - [ ] Follow a Playlist
     - [ ] Unfollow a Playlist
-    - [ ] Search for a Playlist
+    - [x] Search for a Playlist
     - [ ] Create a Playlist
     - [ ] Change a Playlist's Details
     - [ ] Check if Users follow a Playlist
@@ -89,6 +89,7 @@ resolvers += Resolver.jcenterRepo // you might have this already
     - [x] Get audio features for several tracks
     - [x] Get a track
     - [x] Get several tracks 
+    - [x] Search for a tracks
 
 ### Usage
 

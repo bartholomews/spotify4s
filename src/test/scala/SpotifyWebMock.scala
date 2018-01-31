@@ -90,7 +90,6 @@ trait SpotifyWebMock {
     * test resources filenames with parameters in the order created by the specific method call.
     */
   private def sendResource(endpoint: RequestHeader) = {
-    println(endpoint.toString)
     Results.Ok.sendResource(
       s"${
         endpoint.uri.drop(1)
@@ -165,6 +164,18 @@ trait SpotifyWebMock {
       }
     }
   }
+
+  def withSearchApi[T](block: SearchApi => T): T = {
+    Server.withRouter() { routes } { implicit port =>
+      WsTestClient.withClient { client =>
+        val authApi = new AuthApi(config, client, "")
+        val baseApi = new BaseApi(client, authApi, "")
+        baseApi.setAuth("valid_code") // set valid oAuth
+        block(new SearchApi(baseApi))
+      }
+    }
+  }
+
   def withTracksApi[T](block: TracksApi => T): T = {
     Server.withRouter() { routes } { implicit port =>
       WsTestClient.withClient { client =>

@@ -13,7 +13,6 @@ import play.api.libs.ws.{WSClient, WSResponse}
 import scala.annotation.tailrec
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{Failure, Success, Try}
 
 @Singleton
 class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessLogging {
