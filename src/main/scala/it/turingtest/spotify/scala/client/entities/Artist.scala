@@ -1,6 +1,5 @@
 package it.turingtest.spotify.scala.client.entities
 
-import it.turingtest.spotify.scala.client.SearchApi._
 import play.api.libs.json.{Json, Reads}
 
 case class Artist(

@@ -6,7 +6,6 @@ import scala.concurrent.Future
 import com.vitorsvieira.iso.ISOCountry.ISOCountry
 import it.turingtest.spotify.scala.client.entities._
 import it.turingtest.spotify.scala.client.logging.AccessLogging
-import play.api.libs.json.{JsError, JsString, JsSuccess, Json, Reads}
 
 class SearchApi @Inject()(api: BaseApi) extends AccessLogging {
 
@@ -28,11 +27,11 @@ class SearchApi @Inject()(api: BaseApi) extends AccessLogging {
    */
   def search(
     q: String,
-    itemType: SearchApi.ItemType,
+    itemType: ItemType,
     market: Option[ISOCountry] = None,
     limit: Option[Int] = None,
     offset: Option[Int] = None
-  ): Future[SearchApi.SearchResults] = {
+  ): Future[SearchResults] = {
     val query: Seq[(String, String)] = Seq(
       "q" -> q,
       "type" -> itemType.value,
@@ -40,60 +39,15 @@ class SearchApi @Inject()(api: BaseApi) extends AccessLogging {
       "offset" -> offset.toString
     )
     itemType match {
-      case SearchApi.ItemType.Album =>
-        api.getWithToken[SearchApi.AlbumSearchResult](SEARCH, query.toList: _*)
-      case SearchApi.ItemType.Artist =>
-        api.getWithToken[SearchApi.ArtistSearchResult](SEARCH, query.toList: _*)
-      case SearchApi.ItemType.Playlist =>
-        api.getWithToken[SearchApi.PlaylistSearchResult](SEARCH, query.toList: _*)
-      case SearchApi.ItemType.Track =>
-        api.getWithToken[SearchApi.TrackSearchResult](SEARCH, query.toList: _*)
+      case ItemType.Album =>
+        api.getWithToken[AlbumSearchResult](SEARCH, query.toList: _*)
+      case ItemType.Artist =>
+        api.getWithToken[ArtistSearchResult](SEARCH, query.toList: _*)
+      case ItemType.Playlist =>
+        api.getWithToken[PlaylistSearchResult](SEARCH, query.toList: _*)
+      case ItemType.Track =>
+        api.getWithToken[TrackSearchResult](SEARCH, query.toList: _*)
     }
-  }
-
-}
-
-object SearchApi {
-
-  sealed trait ItemType {
-    def value: String
-  }
-
-  object ItemType {
-    case object Album extends ItemType { def value: String = "album" }
-    case object Artist extends ItemType { def value: String = "artist" }
-    case object Playlist extends ItemType { def value: String = "playlist" }
-    case object Track extends ItemType { def value: String = "track" }
-    
-    implicit val reader: Reads[ItemType] = {
-      case JsString("album") => JsSuccess(ItemType.Album)
-      case JsString("artist") => JsSuccess(ItemType.Artist)
-      case JsString("playlist") => JsSuccess(ItemType.Playlist)
-      case JsString("track") => JsSuccess(ItemType.Track)
-      case other => JsError(s"Cannot parse ItemType from json '$other'")
-    }
-  }
-
-  sealed trait SearchResults
-
-  case class AlbumSearchResult(albums: Page[SimpleAlbum]) extends SearchResults
-  object AlbumSearchResult {
-    implicit val reader: Reads[AlbumSearchResult] = Json.reads[AlbumSearchResult]
-  }
-
-  case class ArtistSearchResult(artists: Page[SimpleArtist]) extends SearchResults
-  object ArtistSearchResult {
-    implicit val reader: Reads[ArtistSearchResult] = Json.reads[ArtistSearchResult]
-  }
-
-  case class PlaylistSearchResult(playlists: Page[SimplePlaylist]) extends SearchResults
-  object PlaylistSearchResult {
-    implicit val reader: Reads[PlaylistSearchResult] = Json.reads[PlaylistSearchResult]
-  }
-
-  case class TrackSearchResult(tracks: Page[Track]) extends SearchResults
-  object TrackSearchResult {
-    implicit val reader: Reads[TrackSearchResult] = Json.reads[TrackSearchResult]
   }
 
 }

@@ -1,4 +1,4 @@
-import it.turingtest.spotify.scala.client.SearchApi
+import it.turingtest.spotify.scala.client.entities.{AlbumSearchResult, ArtistSearchResult, ItemType, PlaylistSearchResult, TrackSearchResult}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FunSpec, Matchers}
 import org.scalatestplus.play.guice.GuiceOneServerPerTest
@@ -13,9 +13,9 @@ class SearchApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
     it("should retrieve and parse search result for an album given a simple string") {
       withSearchApi { searchApi =>
         await {
-          searchApi.search("tania bowra", SearchApi.ItemType.Album)
+          searchApi.search("tania bowra", ItemType.Album)
         } match {
-          case SearchApi.AlbumSearchResult(albumPage) =>
+          case AlbumSearchResult(albumPage) =>
             assert(albumPage.items.lengthCompare(1) == 0)
             assert(albumPage.items.head.name == "Place In The Sun")
             assert(albumPage.items.head.artists.lengthCompare(1) == 0)
@@ -30,9 +30,9 @@ class SearchApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
     it("should retrieve and parse search result for an artist given a simple string") {
       withSearchApi { searchApi =>
         await {
-          searchApi.search("tania bowra", SearchApi.ItemType.Artist)
+          searchApi.search("tania bowra", ItemType.Artist)
         } match {
-          case SearchApi.ArtistSearchResult(artistPage) =>
+          case ArtistSearchResult(artistPage) =>
             assert(artistPage.items.lengthCompare(1) == 0)
             assert(artistPage.items.head.name == "Tania Bowra")
             assert(artistPage.items.head.external_urls.spotify.contains(
@@ -48,9 +48,9 @@ class SearchApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
       withSearchApi { searchApi =>
         await {
           // Poor Tania Bowra does not appear in a single playlist search...
-          searchApi.search("ghibli", SearchApi.ItemType.Playlist)
+          searchApi.search("ghibli", ItemType.Playlist)
         } match {
-          case SearchApi.PlaylistSearchResult(playlistPage) =>
+          case PlaylistSearchResult(playlistPage) =>
             assert(playlistPage.items.lengthCompare(20) == 0)
             assert(playlistPage.items.head.name == "Studio Ghibli (relaxing)")
             assert(playlistPage.items.head.owner.id == "lancer369")
@@ -65,9 +65,9 @@ class SearchApiSpec extends FunSpec with Matchers with GuiceOneServerPerTest wit
     it("should retrieve and parse search result for tracks given a simple string") {
       withSearchApi { searchApi =>
         await {
-          searchApi.search("tania bowra", SearchApi.ItemType.Track)
+          searchApi.search("tania bowra", ItemType.Track)
         } match {
-          case SearchApi.TrackSearchResult(tracksPage) =>
+          case TrackSearchResult(tracksPage) =>
             assert(tracksPage.items.lengthCompare(Math.min(tracksPage.total, tracksPage.limit)) == 0)
             assert(tracksPage.items.head.name == "All I Want")
             assert(tracksPage.items.head.popularity == 8)
