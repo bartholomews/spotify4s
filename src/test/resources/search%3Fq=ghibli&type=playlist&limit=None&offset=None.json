@@ -1,0 +1,719 @@
+{
+  "playlists" : {
+    "href" : "https://api.spotify.com/v1/search?query=ghibli&type=playlist&market=FR&offset=0&limit=20",
+    "items" : [ {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/lancer369/playlist/7HNR1AUudlcThId6yVsutg"
+      },
+      "href" : "https://api.spotify.com/v1/users/lancer369/playlists/7HNR1AUudlcThId6yVsutg",
+      "id" : "7HNR1AUudlcThId6yVsutg",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/6dd651e76baa43a88e57092dfce44b06f2f8b712462472fc82bfc6b4958de8f924688a2416c83ab0ec1e3f53b9898dba38e0cb535109a537bb1d7b367ee40fe7bb4cd9090bbc67b32be57881c1eb4060",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/6dd651e76baa43a88e57092dfce44b06f2f8b712462472fc82bfc6b4958de8f924688a2416c83ab0ec1e3f53b9898dba38e0cb535109a537bb1d7b367ee40fe7bb4cd9090bbc67b32be57881c1eb4060",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/6dd651e76baa43a88e57092dfce44b06f2f8b712462472fc82bfc6b4958de8f924688a2416c83ab0ec1e3f53b9898dba38e0cb535109a537bb1d7b367ee40fe7bb4cd9090bbc67b32be57881c1eb4060",
+        "width" : 60
+      } ],
+      "name" : "Studio Ghibli (relaxing)",
+      "owner" : {
+        "display_name" : null,
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/lancer369"
+        },
+        "href" : "https://api.spotify.com/v1/users/lancer369",
+        "id" : "lancer369",
+        "type" : "user",
+        "uri" : "spotify:user:lancer369"
+      },
+      "public" : null,
+      "snapshot_id" : "mIbgg9VSxPWJW9vPT60RmNPt9usPptV4RinqzQISbR4G4lFEXGPLO49EkPV1wMD+",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/lancer369/playlists/7HNR1AUudlcThId6yVsutg/tracks",
+        "total" : 64
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:lancer369:playlist:7HNR1AUudlcThId6yVsutg"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/215c7u6kdwf4ul2e7qx7fk5sa/playlist/7HvdTsG0qe45ce48Dq7WqC"
+      },
+      "href" : "https://api.spotify.com/v1/users/215c7u6kdwf4ul2e7qx7fk5sa/playlists/7HvdTsG0qe45ce48Dq7WqC",
+      "id" : "7HvdTsG0qe45ce48Dq7WqC",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/b7049ed5ac4d4ce079743e4284a5cf8dabf10c1a462472fc82bfc6b4958de8f924688a2416c83ab0d2137f3fdcbf7428a684b10957c5de7534de842a4a3d20b017ee5304b373122f6ac12a91b6f85768",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/b7049ed5ac4d4ce079743e4284a5cf8dabf10c1a462472fc82bfc6b4958de8f924688a2416c83ab0d2137f3fdcbf7428a684b10957c5de7534de842a4a3d20b017ee5304b373122f6ac12a91b6f85768",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/b7049ed5ac4d4ce079743e4284a5cf8dabf10c1a462472fc82bfc6b4958de8f924688a2416c83ab0d2137f3fdcbf7428a684b10957c5de7534de842a4a3d20b017ee5304b373122f6ac12a91b6f85768",
+        "width" : 60
+      } ],
+      "name" : "Ghibli Piano (For Sleep)",
+      "owner" : {
+        "display_name" : "Melanie Chan",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/215c7u6kdwf4ul2e7qx7fk5sa"
+        },
+        "href" : "https://api.spotify.com/v1/users/215c7u6kdwf4ul2e7qx7fk5sa",
+        "id" : "215c7u6kdwf4ul2e7qx7fk5sa",
+        "type" : "user",
+        "uri" : "spotify:user:215c7u6kdwf4ul2e7qx7fk5sa"
+      },
+      "public" : null,
+      "snapshot_id" : "91wzhTZIWrseGDZjxN738zvyh0diVWr7ZQ8FvDBnWpVt0t1tFuWJD1VfKmdiVT5m",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/215c7u6kdwf4ul2e7qx7fk5sa/playlists/7HvdTsG0qe45ce48Dq7WqC/tracks",
+        "total" : 41
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:215c7u6kdwf4ul2e7qx7fk5sa:playlist:7HvdTsG0qe45ce48Dq7WqC"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/1173407485/playlist/72890LPeUhD0otr1tHKQ9e"
+      },
+      "href" : "https://api.spotify.com/v1/users/1173407485/playlists/72890LPeUhD0otr1tHKQ9e",
+      "id" : "72890LPeUhD0otr1tHKQ9e",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 60
+      } ],
+      "name" : "Ghibli soundtrack",
+      "owner" : {
+        "display_name" : "Sarina Iwabuchi",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/1173407485"
+        },
+        "href" : "https://api.spotify.com/v1/users/1173407485",
+        "id" : "1173407485",
+        "type" : "user",
+        "uri" : "spotify:user:1173407485"
+      },
+      "public" : null,
+      "snapshot_id" : "5V+jAGiwNo1bEDRcvHuY5FDBxdpJ/ZF33BaIn0j48pTtHKQKi4bOMcuhxQpcV8ak",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/1173407485/playlists/72890LPeUhD0otr1tHKQ9e/tracks",
+        "total" : 49
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:1173407485:playlist:72890LPeUhD0otr1tHKQ9e"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/1274726868/playlist/0dX6pmsDizoY72gPO29Hwj"
+      },
+      "href" : "https://api.spotify.com/v1/users/1274726868/playlists/0dX6pmsDizoY72gPO29Hwj",
+      "id" : "0dX6pmsDizoY72gPO29Hwj",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/91d79afc80a2a5e3a8c17a07275275d19135f40e6695e3679c8ce160a188eef493a44c3624ac8c21384f74c210b8c9289f88b8a2c3b74548f3f1d5026b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/91d79afc80a2a5e3a8c17a07275275d19135f40e6695e3679c8ce160a188eef493a44c3624ac8c21384f74c210b8c9289f88b8a2c3b74548f3f1d5026b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/91d79afc80a2a5e3a8c17a07275275d19135f40e6695e3679c8ce160a188eef493a44c3624ac8c21384f74c210b8c9289f88b8a2c3b74548f3f1d5026b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 60
+      } ],
+      "name" : "Miyazaki/Studio Ghibli",
+      "owner" : {
+        "display_name" : "Emily Marie McSwain",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/1274726868"
+        },
+        "href" : "https://api.spotify.com/v1/users/1274726868",
+        "id" : "1274726868",
+        "type" : "user",
+        "uri" : "spotify:user:1274726868"
+      },
+      "public" : null,
+      "snapshot_id" : "/anVKLn4/JiKQNm10cSrpI6KD2xiMqcUcnOExV4QjxPCtM4iQTzI4Kx7AEMRKTFU",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/1274726868/playlists/0dX6pmsDizoY72gPO29Hwj/tracks",
+        "total" : 263
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:1274726868:playlist:0dX6pmsDizoY72gPO29Hwj"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/11120198786/playlist/2sNc0hyLfMxIkxWCD429fk"
+      },
+      "href" : "https://api.spotify.com/v1/users/11120198786/playlists/2sNc0hyLfMxIkxWCD429fk",
+      "id" : "2sNc0hyLfMxIkxWCD429fk",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/6695e3679c8ce160a188eef493a44c3624ac8c2103e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/6695e3679c8ce160a188eef493a44c3624ac8c2103e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/6695e3679c8ce160a188eef493a44c3624ac8c2103e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 60
+      } ],
+      "name" : "GHIBLI, Myazaki, Hisaishi",
+      "owner" : {
+        "display_name" : "Karolis Trakas",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/11120198786"
+        },
+        "href" : "https://api.spotify.com/v1/users/11120198786",
+        "id" : "11120198786",
+        "type" : "user",
+        "uri" : "spotify:user:11120198786"
+      },
+      "public" : null,
+      "snapshot_id" : "0VvJ89i89BeDtCoKlIk3s0MAaJ/qfgi8oJqvw5sCl/XnitKpon7vs0ykMUTXvSx0",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/11120198786/playlists/2sNc0hyLfMxIkxWCD429fk/tracks",
+        "total" : 37
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:11120198786:playlist:2sNc0hyLfMxIkxWCD429fk"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/1288269782/playlist/6eyPkbnj6umhnPbAx2CC61"
+      },
+      "href" : "https://api.spotify.com/v1/users/1288269782/playlists/6eyPkbnj6umhnPbAx2CC61",
+      "id" : "6eyPkbnj6umhnPbAx2CC61",
+      "images" : [ {
+        "height" : null,
+        "url" : "https://pl.scdn.co/images/pl/default/d9b0fa348a493a43fc28fd4f04d18e4dca24fe33",
+        "width" : null
+      } ],
+      "name" : "ghibli // study",
+      "owner" : {
+        "display_name" : null,
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/1288269782"
+        },
+        "href" : "https://api.spotify.com/v1/users/1288269782",
+        "id" : "1288269782",
+        "type" : "user",
+        "uri" : "spotify:user:1288269782"
+      },
+      "public" : null,
+      "snapshot_id" : "zCwJ+1mV0j5nymb2E1rut09QyEpESwznpGJ6OfpZIv4BwPxYY+ePBo0aFT0kva+1",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/1288269782/playlists/6eyPkbnj6umhnPbAx2CC61/tracks",
+        "total" : 59
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:1288269782:playlist:6eyPkbnj6umhnPbAx2CC61"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/1298278804/playlist/4ifEr7Yw5Ec4lSM85DR0ci"
+      },
+      "href" : "https://api.spotify.com/v1/users/1298278804/playlists/4ifEr7Yw5Ec4lSM85DR0ci",
+      "id" : "4ifEr7Yw5Ec4lSM85DR0ci",
+      "images" : [ {
+        "height" : null,
+        "url" : "https://pl.scdn.co/images/pl/default/fbacc845bd7760e7665b27747add25a5de1f490f",
+        "width" : null
+      } ],
+      "name" : "lowfi hip hop",
+      "owner" : {
+        "display_name" : null,
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/1298278804"
+        },
+        "href" : "https://api.spotify.com/v1/users/1298278804",
+        "id" : "1298278804",
+        "type" : "user",
+        "uri" : "spotify:user:1298278804"
+      },
+      "public" : null,
+      "snapshot_id" : "1yPzdxInVk8n33P5NWoN0ziZ0a7LjvDb49mZuWLg1D+739uksavvq6WIhxphjduh",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/1298278804/playlists/4ifEr7Yw5Ec4lSM85DR0ci/tracks",
+        "total" : 232
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:1298278804:playlist:4ifEr7Yw5Ec4lSM85DR0ci"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/1217654579/playlist/3OuXxyBNmAqzxYNzyJJk9T"
+      },
+      "href" : "https://api.spotify.com/v1/users/1217654579/playlists/3OuXxyBNmAqzxYNzyJJk9T",
+      "id" : "3OuXxyBNmAqzxYNzyJJk9T",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/6dd651e76baa43a88e57092dfce44b06f2f8b712b622331bbb7df904a90bb8a54a3aa6d7b5ca09ee5299f484abbf1ccd5fb223779afd97d4d44c7d7d9276fcc0ce221583b239bd562537473486cbfe27",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/6dd651e76baa43a88e57092dfce44b06f2f8b712b622331bbb7df904a90bb8a54a3aa6d7b5ca09ee5299f484abbf1ccd5fb223779afd97d4d44c7d7d9276fcc0ce221583b239bd562537473486cbfe27",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/6dd651e76baa43a88e57092dfce44b06f2f8b712b622331bbb7df904a90bb8a54a3aa6d7b5ca09ee5299f484abbf1ccd5fb223779afd97d4d44c7d7d9276fcc0ce221583b239bd562537473486cbfe27",
+        "width" : 60
+      } ],
+      "name" : "Ghibli Music Box",
+      "owner" : {
+        "display_name" : "Melanie Johnson",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/1217654579"
+        },
+        "href" : "https://api.spotify.com/v1/users/1217654579",
+        "id" : "1217654579",
+        "type" : "user",
+        "uri" : "spotify:user:1217654579"
+      },
+      "public" : null,
+      "snapshot_id" : "xp5i4OKdGXHri6SEFw//w1Tn4eVlFl98qjUgJMTksG+moiuaCNs6umtovK1vl3La",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/1217654579/playlists/3OuXxyBNmAqzxYNzyJJk9T/tracks",
+        "total" : 28
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:1217654579:playlist:3OuXxyBNmAqzxYNzyJJk9T"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/hellogust/playlist/4MkVUEMPsjA08q6ta8YWA6"
+      },
+      "href" : "https://api.spotify.com/v1/users/hellogust/playlists/4MkVUEMPsjA08q6ta8YWA6",
+      "id" : "4MkVUEMPsjA08q6ta8YWA6",
+      "images" : [ {
+        "height" : null,
+        "url" : "https://pl.scdn.co/images/pl/default/2cb1feb709f5468c3454204f5fb89781307a8d3f",
+        "width" : null
+      } ],
+      "name" : "Ghibli Jazz",
+      "owner" : {
+        "display_name" : "Gustavo Pantoja",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/hellogust"
+        },
+        "href" : "https://api.spotify.com/v1/users/hellogust",
+        "id" : "hellogust",
+        "type" : "user",
+        "uri" : "spotify:user:hellogust"
+      },
+      "public" : null,
+      "snapshot_id" : "ym2DmMgdN93EsU6u//EFyRfVDCDqFiBRjJBOL+QAOFueaw7lqrE7PoaO5A3xQ+TK",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/hellogust/playlists/4MkVUEMPsjA08q6ta8YWA6/tracks",
+        "total" : 86
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:hellogust:playlist:4MkVUEMPsjA08q6ta8YWA6"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/melkyboo/playlist/122UPh6wJP020a7KdnW1t5"
+      },
+      "href" : "https://api.spotify.com/v1/users/melkyboo/playlists/122UPh6wJP020a7KdnW1t5",
+      "id" : "122UPh6wJP020a7KdnW1t5",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 60
+      } ],
+      "name" : "Studio Ghibli / Hayao Miyazaki / Joe Hisaishi",
+      "owner" : {
+        "display_name" : "Melissa Viernes",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/melkyboo"
+        },
+        "href" : "https://api.spotify.com/v1/users/melkyboo",
+        "id" : "melkyboo",
+        "type" : "user",
+        "uri" : "spotify:user:melkyboo"
+      },
+      "public" : null,
+      "snapshot_id" : "d4wG0ipYDtNwYyjQh7AlkzXRXCVzih2q2ojjfl6JQGglBY0+q2/uerdBmGHzT83O",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/melkyboo/playlists/122UPh6wJP020a7KdnW1t5/tracks",
+        "total" : 471
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:melkyboo:playlist:122UPh6wJP020a7KdnW1t5"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/12154301688/playlist/1mnipyMP8YkOKrzPdKOpFQ"
+      },
+      "href" : "https://api.spotify.com/v1/users/12154301688/playlists/1mnipyMP8YkOKrzPdKOpFQ",
+      "id" : "1mnipyMP8YkOKrzPdKOpFQ",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/384f74c210b8c9289f88b8a2c3b74548f3f1d5026695e3679c8ce160a188eef493a44c3624ac8c21153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/384f74c210b8c9289f88b8a2c3b74548f3f1d5026695e3679c8ce160a188eef493a44c3624ac8c21153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/384f74c210b8c9289f88b8a2c3b74548f3f1d5026695e3679c8ce160a188eef493a44c3624ac8c21153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec",
+        "width" : 60
+      } ],
+      "name" : "Estudio Ghibli",
+      "owner" : {
+        "display_name" : "Reymundo Pastor Fuentes",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/12154301688"
+        },
+        "href" : "https://api.spotify.com/v1/users/12154301688",
+        "id" : "12154301688",
+        "type" : "user",
+        "uri" : "spotify:user:12154301688"
+      },
+      "public" : null,
+      "snapshot_id" : "0aDWLLSrcHH+F6n2hcw93hnNvwPnIaYqnfJzuTSW3uoNwdXYboXCDwBbMX2wtLtS",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/12154301688/playlists/1mnipyMP8YkOKrzPdKOpFQ/tracks",
+        "total" : 22
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:12154301688:playlist:1mnipyMP8YkOKrzPdKOpFQ"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/tommy0839/playlist/17KsY3IOMquuLpi1h6bk9j"
+      },
+      "href" : "https://api.spotify.com/v1/users/tommy0839/playlists/17KsY3IOMquuLpi1h6bk9j",
+      "id" : "17KsY3IOMquuLpi1h6bk9j",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://i.scdn.co/image/d2137f3fdcbf7428a684b10957c5de7534de842a",
+        "width" : 640
+      } ],
+      "name" : "Studio Ghibli Relaxing Piano Collection",
+      "owner" : {
+        "display_name" : "Relax A Wave",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/tommy0839"
+        },
+        "href" : "https://api.spotify.com/v1/users/tommy0839",
+        "id" : "tommy0839",
+        "type" : "user",
+        "uri" : "spotify:user:tommy0839"
+      },
+      "public" : null,
+      "snapshot_id" : "UE5gvCuLqXtxbV+tGDt3Vys0A7tsdDp1X49I3ukZTvMc5jQW/48VZH8qcynnXgat",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/tommy0839/playlists/17KsY3IOMquuLpi1h6bk9j/tracks",
+        "total" : 34
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:tommy0839:playlist:17KsY3IOMquuLpi1h6bk9j"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/thebadpete/playlist/0ShvTMNLKSCfbcw5ri3i30"
+      },
+      "href" : "https://api.spotify.com/v1/users/thebadpete/playlists/0ShvTMNLKSCfbcw5ri3i30",
+      "id" : "0ShvTMNLKSCfbcw5ri3i30",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://i.scdn.co/image/6700acf9fed5472ad16e1cbd31ef0671ec9fbea4",
+        "width" : 640
+      } ],
+      "name" : "Hayao Miyazaki / Studio Ghibli Films",
+      "owner" : {
+        "display_name" : "Peter Cheung",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/thebadpete"
+        },
+        "href" : "https://api.spotify.com/v1/users/thebadpete",
+        "id" : "thebadpete",
+        "type" : "user",
+        "uri" : "spotify:user:thebadpete"
+      },
+      "public" : null,
+      "snapshot_id" : "wHIEgWAJ/KhYWt+jnkTyND12NBO8pwvunxTQ9Xp02shorIlD5BZCXMIRx9ZlLqGn",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/thebadpete/playlists/0ShvTMNLKSCfbcw5ri3i30/tracks",
+        "total" : 566
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:thebadpete:playlist:0ShvTMNLKSCfbcw5ri3i30"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/joerego/playlist/5Iw1fwlHdERNKHldrvsQoZ"
+      },
+      "href" : "https://api.spotify.com/v1/users/joerego/playlists/5Iw1fwlHdERNKHldrvsQoZ",
+      "id" : "5Iw1fwlHdERNKHldrvsQoZ",
+      "images" : [ {
+        "height" : null,
+        "url" : "https://pl.scdn.co/images/pl/default/31a869d608f75b1c756934b621e118618b725868",
+        "width" : null
+      } ],
+      "name" : "Studio Ghibli",
+      "owner" : {
+        "display_name" : "Joe R. G. Mutesnol",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/joerego"
+        },
+        "href" : "https://api.spotify.com/v1/users/joerego",
+        "id" : "joerego",
+        "type" : "user",
+        "uri" : "spotify:user:joerego"
+      },
+      "public" : null,
+      "snapshot_id" : "RHROHfH1kNLq5ACzA7KyhmiSqGh+MXY5xsirBeeOZx2U/KTRTog/6pnyqAZ+m9Mn",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/joerego/playlists/5Iw1fwlHdERNKHldrvsQoZ/tracks",
+        "total" : 42
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:joerego:playlist:5Iw1fwlHdERNKHldrvsQoZ"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/wljet/playlist/3vFiyNxUxAys1987hDShmD"
+      },
+      "href" : "https://api.spotify.com/v1/users/wljet/playlists/3vFiyNxUxAys1987hDShmD",
+      "id" : "3vFiyNxUxAys1987hDShmD",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/462472fc82bfc6b4958de8f924688a2416c83ab0d2137f3fdcbf7428a684b10957c5de7534de842a4a3d20b017ee5304b373122f6ac12a91b6f857686f3e4ab43fdc2b8b8dd211703e2fc9ddf6e2cc76",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/462472fc82bfc6b4958de8f924688a2416c83ab0d2137f3fdcbf7428a684b10957c5de7534de842a4a3d20b017ee5304b373122f6ac12a91b6f857686f3e4ab43fdc2b8b8dd211703e2fc9ddf6e2cc76",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/462472fc82bfc6b4958de8f924688a2416c83ab0d2137f3fdcbf7428a684b10957c5de7534de842a4a3d20b017ee5304b373122f6ac12a91b6f857686f3e4ab43fdc2b8b8dd211703e2fc9ddf6e2cc76",
+        "width" : 60
+      } ],
+      "name" : "Studio Ghibli Piano",
+      "owner" : {
+        "display_name" : "Franklin Wang",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/wljet"
+        },
+        "href" : "https://api.spotify.com/v1/users/wljet",
+        "id" : "wljet",
+        "type" : "user",
+        "uri" : "spotify:user:wljet"
+      },
+      "public" : null,
+      "snapshot_id" : "uvdfyvk08rBIJHtoPaiqCwC+zOlw0TmEdTzD/Cn4eg6k4NJrMMXaFOBqjd2xbHdL",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/wljet/playlists/3vFiyNxUxAys1987hDShmD/tracks",
+        "total" : 249
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:wljet:playlist:3vFiyNxUxAys1987hDShmD"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/lia.cleimara/playlist/1kLp8FXc4tidYIRwA5qjTY"
+      },
+      "href" : "https://api.spotify.com/v1/users/lia.cleimara/playlists/1kLp8FXc4tidYIRwA5qjTY",
+      "id" : "1kLp8FXc4tidYIRwA5qjTY",
+      "images" : [ {
+        "height" : null,
+        "url" : "https://pl.scdn.co/images/pl/default/f27289eaac897d9295c75ab3a4aa0a0bd809f326",
+        "width" : null
+      } ],
+      "name" : "Studio Ghibli",
+      "owner" : {
+        "display_name" : null,
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/lia.cleimara"
+        },
+        "href" : "https://api.spotify.com/v1/users/lia.cleimara",
+        "id" : "lia.cleimara",
+        "type" : "user",
+        "uri" : "spotify:user:lia.cleimara"
+      },
+      "public" : null,
+      "snapshot_id" : "76fdgibmjo6UEiPPToTa48jsiyFOypzL2W7att+LmjHB8+IjyYTeX1M1uQ+6e0UG",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/lia.cleimara/playlists/1kLp8FXc4tidYIRwA5qjTY/tracks",
+        "total" : 87
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:lia.cleimara:playlist:1kLp8FXc4tidYIRwA5qjTY"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/1231417499/playlist/7kJRlCywPunl2i0cKIVzP9"
+      },
+      "href" : "https://api.spotify.com/v1/users/1231417499/playlists/7kJRlCywPunl2i0cKIVzP9",
+      "id" : "7kJRlCywPunl2i0cKIVzP9",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://i.scdn.co/image/42ba7fd9fb8124d50c6e92b90b6c7f89df130dea",
+        "width" : 640
+      } ],
+      "name" : "Studio Ghibli Jazz",
+      "owner" : {
+        "display_name" : "Lam-Ha Dang",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/1231417499"
+        },
+        "href" : "https://api.spotify.com/v1/users/1231417499",
+        "id" : "1231417499",
+        "type" : "user",
+        "uri" : "spotify:user:1231417499"
+      },
+      "public" : null,
+      "snapshot_id" : "GJmJaKnrKWY4BxtsizgUmQ7RypfPrOwxxCXchYv3hmvSO5at4uzzEz1yttJz3uji",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/1231417499/playlists/7kJRlCywPunl2i0cKIVzP9/tracks",
+        "total" : 26
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:1231417499:playlist:7kJRlCywPunl2i0cKIVzP9"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/kincannonli/playlist/7GDCAmna4GVNgODFkYmVLq"
+      },
+      "href" : "https://api.spotify.com/v1/users/kincannonli/playlists/7GDCAmna4GVNgODFkYmVLq",
+      "id" : "7GDCAmna4GVNgODFkYmVLq",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/bdaa146ddd4004f02bf80e28e70bb821a2a720ddb7049ed5ac4d4ce079743e4284a5cf8dabf10c1af8d217fc9738c9df225694b5876c3e13f2b67077964013157fad3c085ffc1bef3b76113815fde544",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/bdaa146ddd4004f02bf80e28e70bb821a2a720ddb7049ed5ac4d4ce079743e4284a5cf8dabf10c1af8d217fc9738c9df225694b5876c3e13f2b67077964013157fad3c085ffc1bef3b76113815fde544",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/bdaa146ddd4004f02bf80e28e70bb821a2a720ddb7049ed5ac4d4ce079743e4284a5cf8dabf10c1af8d217fc9738c9df225694b5876c3e13f2b67077964013157fad3c085ffc1bef3b76113815fde544",
+        "width" : 60
+      } ],
+      "name" : "Studio Ghibli/ Joe Hisaishi",
+      "owner" : {
+        "display_name" : null,
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/kincannonli"
+        },
+        "href" : "https://api.spotify.com/v1/users/kincannonli",
+        "id" : "kincannonli",
+        "type" : "user",
+        "uri" : "spotify:user:kincannonli"
+      },
+      "public" : null,
+      "snapshot_id" : "mYslXx0MLDPhYW078/TtgXF95g7vBg9ogWepUUa9qKli+kBmYWhuo3eLE9Zb3qr/",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/kincannonli/playlists/7GDCAmna4GVNgODFkYmVLq/tracks",
+        "total" : 42
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:kincannonli:playlist:7GDCAmna4GVNgODFkYmVLq"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/hashicrea/playlist/7w8WrDEfNbUqwa5Rci2pbh"
+      },
+      "href" : "https://api.spotify.com/v1/users/hashicrea/playlists/7w8WrDEfNbUqwa5Rci2pbh",
+      "id" : "7w8WrDEfNbUqwa5Rci2pbh",
+      "images" : [ {
+        "height" : null,
+        "url" : "https://pl.scdn.co/images/pl/default/149b3f6165532f7caa7749192842f3befb9938cc",
+        "width" : null
+      } ],
+      "name" : "Ghibli ジブリの 歌",
+      "owner" : {
+        "display_name" : null,
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/hashicrea"
+        },
+        "href" : "https://api.spotify.com/v1/users/hashicrea",
+        "id" : "hashicrea",
+        "type" : "user",
+        "uri" : "spotify:user:hashicrea"
+      },
+      "public" : null,
+      "snapshot_id" : "vr5j8/9QuX4orF/aEpQa+FGxWuj1IgV+G16jyYkg19PExfjLewI8Sx1/Sav7zw56",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/hashicrea/playlists/7w8WrDEfNbUqwa5Rci2pbh/tracks",
+        "total" : 81
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:hashicrea:playlist:7w8WrDEfNbUqwa5Rci2pbh"
+    }, {
+      "collaborative" : false,
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/darkaeon/playlist/0rnqVyvvw5fTz6pyyKCfHv"
+      },
+      "href" : "https://api.spotify.com/v1/users/darkaeon/playlists/0rnqVyvvw5fTz6pyyKCfHv",
+      "id" : "0rnqVyvvw5fTz6pyyKCfHv",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://mosaic.scdn.co/640/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://mosaic.scdn.co/300/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 300
+      }, {
+        "height" : 60,
+        "url" : "https://mosaic.scdn.co/60/03e53ef5a4cb6279e542798e9b4aeb652e8bd76c153347a49e09c5ff5a6c1e9eb8f39f7cff6e74396b90a689c58cfc4c9832a8be2e0987a596723dec384f74c210b8c9289f88b8a2c3b74548f3f1d502",
+        "width" : 60
+      } ],
+      "name" : "The Studio Ghibli Collection",
+      "owner" : {
+        "display_name" : "Gari Wellingham",
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/user/darkaeon"
+        },
+        "href" : "https://api.spotify.com/v1/users/darkaeon",
+        "id" : "darkaeon",
+        "type" : "user",
+        "uri" : "spotify:user:darkaeon"
+      },
+      "public" : null,
+      "snapshot_id" : "9/7SxzwWune+nGWuXaca2jRyd1nr0b2x9E7niXP/iC/JM75zhjVZ8MmIqg9CwPZR",
+      "tracks" : {
+        "href" : "https://api.spotify.com/v1/users/darkaeon/playlists/0rnqVyvvw5fTz6pyyKCfHv/tracks",
+        "total" : 160
+      },
+      "type" : "playlist",
+      "uri" : "spotify:user:darkaeon:playlist:0rnqVyvvw5fTz6pyyKCfHv"
+    } ],
+    "limit" : 20,
+    "next" : "https://api.spotify.com/v1/search?query=ghibli&type=playlist&market=FR&offset=20&limit=20",
+    "offset" : 0,
+    "previous" : null,
+    "total" : 1272
+  }
+}

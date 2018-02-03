@@ -9,6 +9,6 @@ case class FeaturedPlaylists(message: String, playlists: Page[SimplePlaylist])
 object FeaturedPlaylists {
   implicit val featuredPlaylistsReads: Reads[FeaturedPlaylists] = (
     (JsPath \ "message").read[String] and
-      (JsPath \ "playlists").lazyRead[Page[SimplePlaylist]](Page.featuredPlaylistsReads)
+      (JsPath \ "playlists").lazyRead[Page[SimplePlaylist]](Page.reads[SimplePlaylist])
     )(FeaturedPlaylists.apply _)
 }
