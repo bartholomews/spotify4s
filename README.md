@@ -9,7 +9,7 @@
 ### Add to your *build.sbt*
 
 ```
-"it.turingtest" %% "spotify-scala-client" % "0.0.2",
+"it.turingtest" %% "spotify-scala-client" % "0.0.4",
 resolvers += Resolver.jcenterRepo // you might have this already
 ```
 
