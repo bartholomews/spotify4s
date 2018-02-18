@@ -26,13 +26,13 @@ class AuthApi(configuration: Configuration, ws: WSClient, baseUrl: String) exten
 
   def clientCredentials: Future[WSResponse] = {
     ws.url(TOKEN_ENDPOINT)
-      .withHeaders(auth_headers)
+      .withHttpHeaders(auth_headers)
       .post(Map("grant_type" -> Seq("client_credentials")))
   }
 
   def accessToken(code: String): Future[WSResponse] = {
     ws.url(TOKEN_ENDPOINT)
-      .withHeaders(auth_headers)
+      .withHttpHeaders(auth_headers)
       .post(Map(
         "grant_type" -> Seq("authorization_code"),
         "code" -> Seq(code),
@@ -42,7 +42,7 @@ class AuthApi(configuration: Configuration, ws: WSClient, baseUrl: String) exten
 
   def refreshToken(refreshToken: String): Future[WSResponse] = {
     ws.url(TOKEN_ENDPOINT)
-      .withHeaders(auth_headers)
+      .withHttpHeaders(auth_headers)
       .post(Map(
         "grant_type" -> Seq("refresh_token"),
         "refresh_token" -> Seq(refreshToken)
@@ -103,8 +103,8 @@ class AuthApi(configuration: Configuration, ws: WSClient, baseUrl: String) exten
                                   scopes: List[Scope], show_dialog: Boolean): WSRequest = {
 
     ws.url(AUTHORIZE_ENDPOINT)
-      .withHeaders(auth_headers)
-      .withQueryString(
+      .withHttpHeaders(auth_headers)
+      .withQueryStringParameters(
         "client_id" -> client_id,
         "response_type" -> "code",
         "redirect_uri" -> REDIRECT_URI,

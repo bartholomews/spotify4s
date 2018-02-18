@@ -43,12 +43,11 @@ class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessL
   }
 
   def get(endpoint: String, parameters: Seq[(String, String)]): Token => Future[WSResponse] = {
-    t: Token => logResponse {
+    t: Token => logRequest {
       ws.url(endpoint)
         .withHeaders(auth.bearer(t.access_token))
-        .withQueryString(parameters.toList: _*)
-        .get()
-    }
+        .withQueryStringParameters(parameters.toList: _*)
+    }.get()
   }
 
   def validate[T](f: Future[WSResponse])(implicit fmt: Reads[T]): Future[T] = {
@@ -107,7 +106,7 @@ class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessL
     }
   }
 
-  private def refresh: Future[Token] = validate[Token] { logResponse { auth.clientCredentials } }
+  private def refresh: Future[Token] = validate[Token] { auth.clientCredentials }
 
   def setAuth(code: String): Future[Token] = {
     val token = access(code)
@@ -121,17 +120,20 @@ class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessL
     withAuthToken(Some(code))(request)
   }
 
-  @tailrec
   final def withAuthToken[T](authCode: Option[String] = None)(request: Token => Future[T]): Future[T] = {
     authorization_code match {
+
       case Some(t) => t flatMap { token => {
           authorization_code = { if (token.expired) Some(refresh(token)) else authorization_code }
           request(token)
         }
       }
+
       case None =>
-        authorization_code = Some(access(authCode.getOrElse(throw new Exception("Authorization code not provided"))))
-        withAuthToken(authCode)(request)
+        authCode.map(code => {
+          authorization_code = Some(access(code))
+          withAuthToken(authCode)(request)
+        }).getOrElse(Future.failed(new Exception("Authorization code not provided")))
     }
   }
 
@@ -145,8 +147,8 @@ class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessL
     )
   }
 
-  private def access(code: String): Future[Token] = validate[Token] { logResponse { auth.accessToken(code) } }
-  private def refresh(code: String): Future[Token] = validate[Token] { logResponse { auth.refreshToken(code) } }
+  private def access(code: String): Future[Token] = validate[Token] { auth.accessToken(code) }
+  private def refresh(code: String): Future[Token] = validate[Token] { auth.refreshToken(code) }
 
 }
 
