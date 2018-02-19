@@ -15,14 +15,6 @@ libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
 )
 
-//libraryDependencies := {
-//  CrossVersion.partialVersion(scalaVersion.value) match {
-//    case Some((2, scalaMajor)) if scalaMajor == 12 => libraryDependencies.value ++ Seq()
-//    case Some((2, scalaMajor)) if scalaMajor == 11 => libraryDependencies.value ++ Seq()
-//    case _ => Seq()
-//  }
-//}
-
 libraryDependencies += "com.vitorsvieira" %% "scala-iso" % "0.1.2"
 
 libraryDependencies ++= Seq(
@@ -30,9 +22,3 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.4" % "test",
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % "test"
 )
-
-// libraryDependencies += "ch.qos.logback" % "logback-core" % "1.1.3"
-// publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath + "/.m2/repository")))
-
-//resolvers += Classpaths.sbtPluginReleases
-//resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/"

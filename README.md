@@ -5,6 +5,8 @@
 
 # spotify-scala-client
 *Asynchronous Spotify Web API Scala Client/Wrapper*
+
+It is built on **Play 2.6** and supports both Scala 2.11 and 2.12
  
 ### Add to your *build.sbt*
 
@@ -240,12 +242,10 @@ Read more about [Spotify Web API Authorisation](https://developer.spotify.com/we
 In your *conf/logback.xml*:
 
 ```
-  <logger name="spotify-scala-client" level="DEBUG"/>
+  <logger name="spotify-scala-client" level="INFO"/>
 
 ```
 
-**DEBUG** will log all the json responses.  
-**WARN** is currently doing nothing.  
-**INFO** is currently doing nothing.
-
+**INFO** will log all the requests.  
+**DEBUG** will log all the responses.  
 ***

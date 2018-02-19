@@ -43,11 +43,11 @@ class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessL
   }
 
   def get(endpoint: String, parameters: Seq[(String, String)]): Token => Future[WSResponse] = {
-    t: Token => logRequest {
+    t: Token => withLogger {
       ws.url(endpoint)
-        .withHeaders(auth.bearer(t.access_token))
+        .withHttpHeaders(auth.bearer(t.access_token))
         .withQueryStringParameters(parameters.toList: _*)
-    }.get()
+    }
   }
 
   def validate[T](f: Future[WSResponse])(implicit fmt: Reads[T]): Future[T] = {
@@ -82,7 +82,6 @@ class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessL
 
   // TODO rate-limiting object from Retry-after header (@see https://developer.spotify.com/web-api/user-guide/#rate-limiting)
   private def webApiException(json: JsValue, error: String): WebApiException = {
-    accessLogger.debug(json.toString)
     json.validate[RegularError] match {
       case JsSuccess(obj, _) => obj
       case JsError(_) => json.validate[AuthError] match {
@@ -116,7 +115,6 @@ class BaseApi(ws: WSClient, auth: AuthApi, val BASE_URL: String) extends AccessL
 
   def setAuthAndThen[T](code: String)(request: Token => Future[T]): Future[T] = {
     authorization_code = Some(access(code))
-    accessLogger.debug(s"authorization_code = ${authorization_code.isDefined}")
     withAuthToken(Some(code))(request)
   }
 
