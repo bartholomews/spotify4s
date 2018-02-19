@@ -11,7 +11,7 @@ It is built on **Play 2.6** and supports both Scala 2.11 and 2.12
 ### Add to your *build.sbt*
 
 ```
-"it.turingtest" %% "spotify-scala-client" % "0.0.4",
+"it.turingtest" %% "spotify-scala-client" % "0.0.5",
 resolvers += Resolver.jcenterRepo // you might have this already
 ```
 

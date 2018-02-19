@@ -2,7 +2,7 @@ name := "Spotify Scala Client"
 
 organization := "it.turingtest"
 
-version := "0.0.4"
+version := "0.0.5"
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
