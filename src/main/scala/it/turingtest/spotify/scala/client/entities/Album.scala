@@ -65,7 +65,7 @@ case class FullAlbum
   copyrights: List[Copyright],
   external_ids: ExternalID,
   genres: List[String],
-  label: String,
+  label: Option[String],
   popularity: Int,
   release_date: String,
   release_date_precision: String,
@@ -138,7 +138,7 @@ object AlbumReads {
   val fullAlbum = {
     simpleAlbum and (JsPath \ "copyrights").read[List[Copyright]] and
       (JsPath \ "external_ids").read[ExternalID] and (JsPath \ "genres").read[List[String]] and
-      (JsPath \ "label").read[String] and (JsPath \ "popularity").read[Int] and
+      (JsPath \ "label").readNullable[String] and (JsPath \ "popularity").read[Int] and
       (JsPath \ "release_date").read[String] and
       (JsPath \ "release_date_precision").read[String] and
       (JsPath \ "tracks").read[Page[SimpleTrack]]

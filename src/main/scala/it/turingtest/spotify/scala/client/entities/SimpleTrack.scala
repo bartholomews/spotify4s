@@ -43,7 +43,7 @@ explicit: Boolean,
 external_urls: ExternalURL,
 href: String,
 id: String,
-is_playable: Boolean,
+is_playable: Option[Boolean],
 linked_from: Option[TrackLink],
 name: String,
 preview_url: Option[String],
@@ -63,7 +63,7 @@ object SimpleTrack {
       (JsPath \ "external_urls").read[ExternalURL] and
       (JsPath \ "href").read[String] and
       (JsPath \ "id").read[String] and
-      (JsPath \ "is_playable").read[Boolean] and
+      (JsPath \ "is_playable").readNullable[Boolean] and
       (JsPath \ "linked_from").readNullable[TrackLink] and
       (JsPath \ "name").read[String] and
       (JsPath \ "preview_url").readNullable[String] and

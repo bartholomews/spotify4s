@@ -17,18 +17,16 @@ resolvers += Resolver.jcenterRepo // you might have this already
 
 ### Endpoints Task list
  
-- [ ] **Albums**
-    - [ ] Get an album
-    - [ ] Get several albums
-    - [ ] Get an album's tracks
-    - [x] Search for an album
+- [x] [**Albums**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/AlbumsApi.scala)
+    - [x] Get an album
+    - [x] Get several albums
+    - [x] Get an album's tracks
 - [ ] **Artists**
     - [ ] Get an artist
     - [ ] Get several artists
     - [ ] Get an artist's albums
     - [ ] Get an artist's top tracks
     - [ ] Get an artist's related artists
-    - [x] Search for an artist
 - [x] [**Browse**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/BrowseApi.scala)
     - [x] Get a list of featured playlists
     - [x] Get a list of new releases
@@ -41,7 +39,6 @@ resolvers += Resolver.jcenterRepo // you might have this already
     - [x] Get a List of a User's Playlists
     - [ ] Follow a Playlist
     - [ ] Unfollow a Playlist
-    - [x] Search for a Playlist
     - [ ] Create a Playlist
     - [ ] Change a Playlist's Details
     - [ ] Check if Users follow a Playlist
@@ -85,13 +82,17 @@ resolvers += Resolver.jcenterRepo // you might have this already
    - [ ] Remove user's saved tracks
    - [ ] Check user's saved tracks
    - [ ] Get current user's recently played tracks
+- [x] [**Search**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/SearchApi.scala)
+   - [x] Search for an album
+   - [x] Search for an artist
+   - [x] Search for a playlist
+   - [x] Search for a tracks
 - [x] [**Tracks**](https://github.com/bartholomews/spotify-scala-client/blob/master/src/main/scala/it/turingtest/spotify/scala/client/TracksApi.scala)
-    - [x] Get audio analysis for a track
-    - [x] Get audio features for a track
-    - [x] Get audio features for several tracks
-    - [x] Get a track
-    - [x] Get several tracks 
-    - [x] Search for a tracks
+   - [x] Get audio analysis for a track
+   - [x] Get audio features for a track
+   - [x] Get audio features for several tracks
+   - [x] Get a track
+   - [x] Get several tracks 
 
 ### Usage
 
