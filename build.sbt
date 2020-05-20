@@ -1,24 +1,29 @@
-name := "Spotify Scala Client"
+import Dependencies._
 
-organization := "it.turingtest"
+name := "spotify4s"
 
-version := "0.0.5"
+organization := "io.bartholomews"
+
+version := "0.1.0-SNAPSHOT"
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
-scalaVersion := "2.12.4"
-crossScalaVersions := Seq("2.11.12", "2.12.4")
+scalaVersion := "2.13.1"
+crossScalaVersions := Seq("2.12.10")
 
-libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-json" % "2.6.8",
-  "com.typesafe.play" %% "play-ws" % "2.6.11",
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
-)
+// TODO move options in a plugin
+scalacOptions += "-Ymacro-annotations" // https://github.com/circe/circe/issues/975
 
-libraryDependencies += "com.vitorsvieira" %% "scala-iso" % "0.1.2"
+resolvers += "Sonatype OSS Snapshots".at("https://oss.sonatype.org/content/repositories/snapshots")
 
-libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-test" % "2.6.11" % "test",
-  "org.scalatest" %% "scalatest" % "3.0.4" % "test",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % "test"
-)
+libraryDependencies ++= dependencies ++ testDependencies
+
+addCommandAlias("test-coverage", ";coverage ;test ;coverageReport")
+addCommandAlias("test-fast", "testOnly * -l org.scalatest.tags.Slow")
+
+coverageMinimum := 86.89 // FIXME
+coverageFailOnMinimum := true
+
+// http://www.scalatest.org/user_guide/using_scalatest_with_sbt
+logBuffered in Test := false
+parallelExecution in Test := false
