@@ -1,0 +1,92 @@
+{
+  "href": "https://api.spotify.com/v1/users/wizzler/playlists?offset=5&limit=2",
+  "items": [
+    {
+      "collaborative": false,
+      "description": "Get psyched for your night out. The best tunes hand-picked by Barney Stinson himself. It's going to be legen... wait for it.... daaaaary!",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/2LZYIzBoCXAdx8buWmUwQe"
+      },
+      "href": "https://api.spotify.com/v1/playlists/2LZYIzBoCXAdx8buWmUwQe",
+      "id": "2LZYIzBoCXAdx8buWmUwQe",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://mosaic.scdn.co/640/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://mosaic.scdn.co/300/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653",
+          "width": 300
+        },
+        {
+          "height": 60,
+          "url": "https://mosaic.scdn.co/60/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653",
+          "width": 60
+        }
+      ],
+      "name": "Barney's Get Psyched Mix",
+      "owner": {
+        "display_name": "Ronald Pompa",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/user/wizzler"
+        },
+        "href": "https://api.spotify.com/v1/users/wizzler",
+        "id": "wizzler",
+        "type": "user",
+        "uri": "spotify:user:wizzler"
+      },
+      "primary_color": null,
+      "public": true,
+      "snapshot_id": "MzEsYjJiMWU4ZTlmZTU2MTcwYmNjZTMzMjdiMmQ4YjQwMTU1N2UzMjJhYg==",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/playlists/2LZYIzBoCXAdx8buWmUwQe/tracks",
+        "total": 11
+      },
+      "type": "playlist",
+      "uri": "spotify:playlist:2LZYIzBoCXAdx8buWmUwQe"
+    },
+    {
+      "collaborative": false,
+      "description": "For medicinal use only!",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/7K0UB4wqdztK4jc3nrw9an"
+      },
+      "href": "https://api.spotify.com/v1/playlists/7K0UB4wqdztK4jc3nrw9an",
+      "id": "7K0UB4wqdztK4jc3nrw9an",
+      "images": [
+        {
+          "height": null,
+          "url": "https://i.scdn.co/image/ab67706c0000da849899faadb08d52ace2662432",
+          "width": null
+        }
+      ],
+      "name": "😗👌💨",
+      "owner": {
+        "display_name": "Ronald Pompa",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/user/wizzler"
+        },
+        "href": "https://api.spotify.com/v1/users/wizzler",
+        "id": "wizzler",
+        "type": "user",
+        "uri": "spotify:user:wizzler"
+      },
+      "primary_color": null,
+      "public": true,
+      "snapshot_id": "MjEsNTIzM2ZlOWU4YzZmYWYzZjgxOTFlMTEzOTA1YmFjN2E2OTlmYzRjNg==",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/playlists/7K0UB4wqdztK4jc3nrw9an/tracks",
+        "total": 14
+      },
+      "type": "playlist",
+      "uri": "spotify:playlist:7K0UB4wqdztK4jc3nrw9an"
+    }
+  ],
+  "limit": 2,
+  "next": "https://api.spotify.com/v1/users/wizzler/playlists?offset=7&limit=2",
+  "offset": 5,
+  "previous": "https://api.spotify.com/v1/users/wizzler/playlists?offset=3&limit=2",
+  "total": 8
+}

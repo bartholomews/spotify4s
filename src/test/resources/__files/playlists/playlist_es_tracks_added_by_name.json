@@ -1,0 +1,48 @@
+{
+  "description": "A playlist for testing pourposes",
+  "href": "https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n?fields=href,description,tracks.items(added_by(id),track(name))",
+  "tracks": {
+    "items": [
+      {
+        "added_by": {
+          "id": "jmperezperez"
+        },
+        "track": {
+          "name": "Api"
+        }
+      },
+      {
+        "added_by": {
+          "id": "jmperezperez"
+        },
+        "track": {
+          "name": "Is"
+        }
+      },
+      {
+        "added_by": {
+          "id": "jmperezperez"
+        },
+        "track": {
+          "name": "All I Want"
+        }
+      },
+      {
+        "added_by": {
+          "id": "jmperezperez"
+        },
+        "track": {
+          "name": "Endpoints"
+        }
+      },
+      {
+        "added_by": {
+          "id": "jmperezperez"
+        },
+        "track": {
+          "name": "You Are So Beautiful"
+        }
+      }
+    ]
+  }
+}

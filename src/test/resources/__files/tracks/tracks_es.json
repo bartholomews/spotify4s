@@ -1,0 +1,156 @@
+{
+  "tracks": [
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/0C0XlULifJtAgn6ZNCW2eu"
+            },
+            "href": "https://api.spotify.com/v1/artists/0C0XlULifJtAgn6ZNCW2eu",
+            "id": "0C0XlULifJtAgn6ZNCW2eu",
+            "name": "The Killers",
+            "type": "artist",
+            "uri": "spotify:artist:0C0XlULifJtAgn6ZNCW2eu"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/4OHNH3sDzIxnmUADXzv2kT"
+        },
+        "href": "https://api.spotify.com/v1/albums/4OHNH3sDzIxnmUADXzv2kT",
+        "id": "4OHNH3sDzIxnmUADXzv2kT",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2739c284a6855f4945dc5a3cd73",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e029c284a6855f4945dc5a3cd73",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048519c284a6855f4945dc5a3cd73",
+            "width": 64
+          }
+        ],
+        "name": "Hot Fuss",
+        "release_date": "2004-06-15",
+        "release_date_precision": "day",
+        "total_tracks": 14,
+        "type": "album",
+        "uri": "spotify:album:4OHNH3sDzIxnmUADXzv2kT"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/0C0XlULifJtAgn6ZNCW2eu"
+          },
+          "href": "https://api.spotify.com/v1/artists/0C0XlULifJtAgn6ZNCW2eu",
+          "id": "0C0XlULifJtAgn6ZNCW2eu",
+          "name": "The Killers",
+          "type": "artist",
+          "uri": "spotify:artist:0C0XlULifJtAgn6ZNCW2eu"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 222200,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "GBFFP0300052"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/3n3Ppam7vgaVa1iaRUc9Lp"
+      },
+      "href": "https://api.spotify.com/v1/tracks/3n3Ppam7vgaVa1iaRUc9Lp",
+      "id": "3n3Ppam7vgaVa1iaRUc9Lp",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Mr. Brightside",
+      "popularity": 71,
+      "preview_url": "https://p.scdn.co/mp3-preview/4839b070015ab7d6de9fec1756e1f3096d908fba?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 2,
+      "type": "track",
+      "uri": "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp"
+    },
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/0C0XlULifJtAgn6ZNCW2eu"
+            },
+            "href": "https://api.spotify.com/v1/artists/0C0XlULifJtAgn6ZNCW2eu",
+            "id": "0C0XlULifJtAgn6ZNCW2eu",
+            "name": "The Killers",
+            "type": "artist",
+            "uri": "spotify:artist:0C0XlULifJtAgn6ZNCW2eu"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/4OHNH3sDzIxnmUADXzv2kT"
+        },
+        "href": "https://api.spotify.com/v1/albums/4OHNH3sDzIxnmUADXzv2kT",
+        "id": "4OHNH3sDzIxnmUADXzv2kT",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2739c284a6855f4945dc5a3cd73",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e029c284a6855f4945dc5a3cd73",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048519c284a6855f4945dc5a3cd73",
+            "width": 64
+          }
+        ],
+        "name": "Hot Fuss",
+        "release_date": "2004-06-15",
+        "release_date_precision": "day",
+        "total_tracks": 14,
+        "type": "album",
+        "uri": "spotify:album:4OHNH3sDzIxnmUADXzv2kT"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/0C0XlULifJtAgn6ZNCW2eu"
+          },
+          "href": "https://api.spotify.com/v1/artists/0C0XlULifJtAgn6ZNCW2eu",
+          "id": "0C0XlULifJtAgn6ZNCW2eu",
+          "name": "The Killers",
+          "type": "artist",
+          "uri": "spotify:artist:0C0XlULifJtAgn6ZNCW2eu"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 197280,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "GBFFP0300054"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/3twNvmDtFQtAd5gMKedhLD"
+      },
+      "href": "https://api.spotify.com/v1/tracks/3twNvmDtFQtAd5gMKedhLD",
+      "id": "3twNvmDtFQtAd5gMKedhLD",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Somebody Told Me",
+      "popularity": 64,
+      "preview_url": "https://p.scdn.co/mp3-preview/34470fdacaec1a5e9265d3d7c00c84804a9b564a?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 4,
+      "type": "track",
+      "uri": "spotify:track:3twNvmDtFQtAd5gMKedhLD"
+    }
+  ]
+}
