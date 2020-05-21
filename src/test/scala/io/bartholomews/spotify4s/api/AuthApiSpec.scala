@@ -45,10 +45,11 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
             case FsResponse(_, _, Right(authorizationCode)) =>
               authorizationCode should matchTo(
                 AuthorizationCode(
+                  generatedAt = 1L,
                   accessToken = AccessToken("some-access-token"),
                   tokenType = "Bearer",
                   expiresIn = 3600L,
-                  refreshToken = RefreshToken("refresh-token"),
+                  refreshToken = Some(RefreshToken("refresh-token")),
                   scope = Scope(List("user-read-private", "user-read-email", "unknown-scope"))
                 )
               )
@@ -126,10 +127,11 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
           case FsResponse(_, _, Right(authorizationCode)) =>
             authorizationCode should matchTo(
               AuthorizationCode(
+                generatedAt = 1L,
                 accessToken = AccessToken("some-access-token"),
                 tokenType = "Bearer",
                 expiresIn = 3600L,
-                refreshToken = RefreshToken("refresh-token"),
+                refreshToken = Some(RefreshToken("refresh-token")),
                 scope = Scope(List("user-read-private", "user-read-email", "unknown-scope"))
               )
             )
@@ -162,6 +164,7 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
           case FsResponse(_, _, Right(token)) =>
             token should matchTo(
               NonRefreshableToken(
+                generatedAt = 1L,
                 accessToken = AccessToken("some-access-token"),
                 tokenType = "bearer",
                 expiresIn = 3600L,
