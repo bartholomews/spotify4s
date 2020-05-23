@@ -3,8 +3,8 @@ import sbt._
 object Dependencies {
   object Versions {
     val refined = "0.9.13"
-    val fsClient = "0.1.0-SNAPSHOT"
-    val scalaIso = "0.1.0-SNAPSHOT"
+    val fsClient = "0.0.2"
+    val scalaIso = "0.1.0"
   }
 
   val dependencies: Seq[ModuleID] = Seq(
