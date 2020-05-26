@@ -7,6 +7,6 @@ import io.circe.generic.extras.ConfiguredJsonCodec
 case class LinkedTrack(
   externalUrls: ExternalResourceUrl,
   href: String,
-  id: SpotifyUserId,
+  id: SpotifyId,
   uri: String
 )

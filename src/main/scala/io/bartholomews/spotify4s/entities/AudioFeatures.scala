@@ -19,7 +19,7 @@ case class AudioFeatures(
   speechiness: Confidence,
   valence: Confidence,
   tempo: Double,
-  id: SpotifyUserId,
+  id: SpotifyId,
   uri: SpotifyUri,
   trackHref: Uri,
   analysisUrl: Uri

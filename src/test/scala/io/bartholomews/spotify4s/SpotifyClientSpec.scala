@@ -1,7 +1,7 @@
 package io.bartholomews.spotify4s
 
 import io.bartholomews.spotify4s.client.ClientData._
-import io.bartholomews.testudo.WireWordSpec
+import io.bartholomews.scalatestudo.WireWordSpec
 
 class SpotifyClientSpec extends WireWordSpec {
   "SpotifyClient" when {

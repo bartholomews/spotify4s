@@ -1,0 +1,44 @@
+{
+  "audio_features": [
+    {
+      "danceability": 0.355,
+      "energy": 0.918,
+      "key": 1,
+      "loudness": -4.36,
+      "mode": 1,
+      "speechiness": 0.0746,
+      "acousticness": 0.00119,
+      "instrumentalness": 0,
+      "liveness": 0.0971,
+      "valence": 0.24,
+      "tempo": 148.114,
+      "type": "audio_features",
+      "id": "3n3Ppam7vgaVa1iaRUc9Lp",
+      "uri": "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp",
+      "track_href": "https://api.spotify.com/v1/tracks/3n3Ppam7vgaVa1iaRUc9Lp",
+      "analysis_url": "https://api.spotify.com/v1/audio-analysis/3n3Ppam7vgaVa1iaRUc9Lp",
+      "duration_ms": 222200,
+      "time_signature": 4
+    },
+    {
+      "danceability": 0.502,
+      "energy": 0.972,
+      "key": 10,
+      "loudness": -3.96,
+      "mode": 0,
+      "speechiness": 0.0793,
+      "acousticness": 0.0000678,
+      "instrumentalness": 0.000702,
+      "liveness": 0.0627,
+      "valence": 0.729,
+      "tempo": 138.019,
+      "type": "audio_features",
+      "id": "3twNvmDtFQtAd5gMKedhLD",
+      "uri": "spotify:track:3twNvmDtFQtAd5gMKedhLD",
+      "track_href": "https://api.spotify.com/v1/tracks/3twNvmDtFQtAd5gMKedhLD",
+      "analysis_url": "https://api.spotify.com/v1/audio-analysis/3twNvmDtFQtAd5gMKedhLD",
+      "duration_ms": 197280,
+      "time_signature": 4
+    }
+  ]
+}

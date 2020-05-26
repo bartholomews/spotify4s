@@ -7,8 +7,8 @@ import io.bartholomews.fsclient.entities.FsResponse
 import io.bartholomews.fsclient.entities.oauth.NonRefreshableToken
 import io.bartholomews.spotify4s.client.ClientData.sampleClient
 import io.bartholomews.spotify4s.entities.SpotifyUserId
-import io.bartholomews.testudo.WireWordSpec
-import io.bartholomews.testudo.data.TestudoFsClientData.OAuthV2
+import io.bartholomews.scalatestudo.WireWordSpec
+import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 
 class UsersApiSpec extends WireWordSpec with ServerBehaviours {
   implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken

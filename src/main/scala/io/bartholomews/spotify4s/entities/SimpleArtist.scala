@@ -7,7 +7,7 @@ import io.circe.generic.extras.ConfiguredJsonCodec
 case class SimpleArtist(
   externalUrls: ExternalResourceUrl,
   href: String,
-  id: SpotifyUserId,
+  id: SpotifyId,
   name: String,
   uri: String // FIXME `SpotifyUri`
 )

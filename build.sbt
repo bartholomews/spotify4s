@@ -21,7 +21,7 @@ libraryDependencies ++= dependencies ++ testDependencies
 addCommandAlias("test-coverage", ";coverage ;test ;coverageReport")
 addCommandAlias("test-fast", "testOnly * -l org.scalatest.tags.Slow")
 
-coverageMinimum := 86.89 // FIXME
+coverageMinimum := 87.00 // FIXME
 coverageFailOnMinimum := true
 
 // http://www.scalatest.org/user_guide/using_scalatest_with_sbt

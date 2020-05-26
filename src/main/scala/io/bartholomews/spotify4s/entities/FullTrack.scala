@@ -18,7 +18,7 @@ case class FullTrack(
   externalIds: ExternalIds,
   externalUrls: ExternalResourceUrl,
   href: String,
-  id: SpotifyUserId,
+  id: SpotifyId,
   isPlayable: Option[Boolean],
   linkedFrom: Option[LinkedTrack],
   restrictions: Option[Restrictions],
@@ -42,7 +42,7 @@ object FullTrack extends FsJsonResponsePipe[FullTrack] {
       externalIds <- c.downField("external_ids").as[ExternalIds]
       externalUrls <- c.downField("external_urls").as[ExternalResourceUrl]
       href <- c.downField("href").as[String]
-      id <- c.downField("id").as[SpotifyUserId]
+      id <- c.downField("id").as[SpotifyId]
       isPlayable <- c.downField("is_playable").as[Option[Boolean]]
       linkedFrom <- c.downField("linked_from").as[Option[LinkedTrack]]
       restrictions <- c.downField("restrictions").as[Option[Restrictions]]

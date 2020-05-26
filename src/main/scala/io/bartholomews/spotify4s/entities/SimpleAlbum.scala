@@ -57,7 +57,7 @@ case class SimpleAlbum(
   availableMarkets: List[CountryCodeAlpha2],
   externalUrls: ExternalResourceUrl,
   href: Uri,
-  id: SpotifyUserId,
+  id: SpotifyId,
   images: List[SpotifyImage],
   name: String,
   releaseDate: ReleaseDate,
@@ -74,7 +74,7 @@ object SimpleAlbum {
       availableMarkets <- c.downField("available_markets").as[Option[List[CountryCodeAlpha2]]]
       externalUrls <- c.downField("external_urls").as[ExternalResourceUrl]
       href <- c.downField("href").as[Uri]
-      id <- c.downField("id").as[SpotifyUserId]
+      id <- c.downField("id").as[SpotifyId]
       images <- c.downField("images").as[List[SpotifyImage]]
       name <- c.downField("name").as[String]
       releaseDate <- c.downField("release_date").as[ReleaseDate]

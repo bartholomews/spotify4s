@@ -51,7 +51,7 @@ case class FullPlaylist(
   externalUrls: ExternalResourceUrl,
   followers: Followers,
   href: Uri,
-  id: SpotifyUserId,
+  id: SpotifyId,
   images: List[SpotifyImage],
   name: String,
   owner: PublicUser,

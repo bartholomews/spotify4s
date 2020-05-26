@@ -1,6 +1,5 @@
 package io.bartholomews.spotify4s.api
 
-import cats.data.NonEmptyList
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -8,6 +7,8 @@ import io.bartholomews.fsclient.entities.FsResponse
 import io.bartholomews.fsclient.entities.oauth.NonRefreshableToken
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.scalatestudo.WireWordSpec
+import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 import io.bartholomews.spotify4s.client.ClientData.{sampleClient, sampleSpotifyId}
 import io.bartholomews.spotify4s.entities.{
   AudioAnalysis,
@@ -21,11 +22,9 @@ import io.bartholomews.spotify4s.entities.{
   IsoCountry,
   Modality,
   PitchClass,
-  SpotifyUri,
-  SpotifyUserId
+  SpotifyId,
+  SpotifyUri
 }
-import io.bartholomews.testudo.WireWordSpec
-import io.bartholomews.testudo.data.TestudoFsClientData.OAuthV2
 import org.http4s.Uri
 import org.scalatest.BeforeAndAfterEach
 
@@ -76,7 +75,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
     }
   }
 
-  "`getAudioFeatures`" should {
+  "`getAudioFeatures` for a track" should {
     def getAudioFeaturesEndpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-features/${sampleSpotifyId.value}"))
     val request: IOResponse[AudioFeatures] = sampleClient.tracks.getAudioFeatures(sampleSpotifyId)
@@ -109,10 +108,80 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
           speechiness = Confidence(0.0461),
           valence = Confidence(0.636),
           tempo = 98.002,
-          id = SpotifyUserId("06AKEBrKUckW0KREUWRnvT"),
+          id = SpotifyId("06AKEBrKUckW0KREUWRnvT"),
           uri = SpotifyUri("spotify:track:06AKEBrKUckW0KREUWRnvT"),
           trackHref = Uri.unsafeFromString("https://api.spotify.com/v1/tracks/06AKEBrKUckW0KREUWRnvT"),
           analysisUrl = Uri.unsafeFromString("https://api.spotify.com/v1/audio-analysis/06AKEBrKUckW0KREUWRnvT")
+        )
+    }
+  }
+
+  "`getAudioFeatures` for several tracks" should {
+    def getAudioFeaturesEndpoint: MappingBuilder =
+      get(urlPathEqualTo(s"$basePath/audio-features"))
+    val request: IOResponse[List[AudioFeatures]] = sampleClient.tracks.getAudioFeatures(
+      Set(
+        SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
+        SpotifyId("3twNvmDtFQtAd5gMKedhLD")
+      )
+    )
+
+    behave like clientReceivingUnexpectedResponse(getAudioFeaturesEndpoint, request)
+
+    def stub: StubMapping =
+      stubFor(
+        getAudioFeaturesEndpoint
+          .willReturn(
+            aResponse()
+              .withStatus(200)
+              .withBodyFile("tracks/audio_features_list.json")
+          )
+      )
+
+    "return the correct entity" in matchResponse(stub, request) {
+      case FsResponse(_, _, Right(af1 :: af2 :: Nil)) =>
+        af1 should matchTo(
+          AudioFeatures(
+            durationMs = 222200,
+            key = PitchClass(1),
+            mode = Modality.Major,
+            timeSignature = 4,
+            acousticness = Confidence(0.00119),
+            danceability = Confidence(0.355),
+            energy = Confidence(0.918),
+            instrumentalness = Confidence(0),
+            liveness = Confidence(0.0971),
+            loudness = -4.36,
+            speechiness = Confidence(0.0746),
+            valence = Confidence(0.24),
+            tempo = 148.114,
+            id = SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
+            uri = SpotifyUri("spotify:track:3n3Ppam7vgaVa1iaRUc9Lp"),
+            trackHref = Uri.unsafeFromString("https://api.spotify.com/v1/tracks/3n3Ppam7vgaVa1iaRUc9Lp"),
+            analysisUrl = Uri.unsafeFromString("https://api.spotify.com/v1/audio-analysis/3n3Ppam7vgaVa1iaRUc9Lp")
+          )
+        )
+
+        af2 should matchTo(
+          AudioFeatures(
+            durationMs = 197280,
+            key = PitchClass(10),
+            mode = Modality.Minor,
+            timeSignature = 4,
+            acousticness = Confidence(0.0000678),
+            danceability = Confidence(0.502),
+            energy = Confidence(0.972),
+            instrumentalness = Confidence(0.000702),
+            liveness = Confidence(0.0627),
+            loudness = -3.96,
+            speechiness = Confidence(0.0793),
+            valence = Confidence(0.729),
+            tempo = 138.019,
+            id = SpotifyId("3twNvmDtFQtAd5gMKedhLD"),
+            uri = SpotifyUri("spotify:track:3twNvmDtFQtAd5gMKedhLD"),
+            trackHref = Uri.unsafeFromString("https://api.spotify.com/v1/tracks/3twNvmDtFQtAd5gMKedhLD"),
+            analysisUrl = Uri.unsafeFromString("https://api.spotify.com/v1/audio-analysis/3twNvmDtFQtAd5gMKedhLD")
+          )
         )
     }
   }
@@ -122,9 +191,9 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
 
     "market is not defined" should {
       val request: IOResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
-        ids = NonEmptyList.of(
-          SpotifyUserId("3n3Ppam7vgaVa1iaRUc9Lp"),
-          SpotifyUserId("3twNvmDtFQtAd5gMKedhLD")
+        ids = Set(
+          SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
+          SpotifyId("3twNvmDtFQtAd5gMKedhLD")
         ),
         market = None
       )
@@ -157,9 +226,9 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
 
     "market is defined" should {
       val request: IOResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
-        ids = NonEmptyList.of(
-          SpotifyUserId("3n3Ppam7vgaVa1iaRUc9Lp"),
-          SpotifyUserId("3twNvmDtFQtAd5gMKedhLD")
+        ids = Set(
+          SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
+          SpotifyId("3twNvmDtFQtAd5gMKedhLD")
         ),
         market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
       )
@@ -191,7 +260,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
   }
 
   "`getTrack`" when {
-    val sampleTrackId = SpotifyUserId("3n3Ppam7vgaVa1iaRUc9Lp")
+    val sampleTrackId = SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp")
     def getTrackEndpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks/${sampleTrackId.value}"))
 
     "market is not defined" should {

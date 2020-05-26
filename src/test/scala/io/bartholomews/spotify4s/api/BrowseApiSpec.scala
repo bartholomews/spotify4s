@@ -11,8 +11,8 @@ import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.client.ClientData.sampleClient
 import io.bartholomews.spotify4s.entities.{AlbumType, NewReleases, ReleaseDate}
-import io.bartholomews.testudo.WireWordSpec
-import io.bartholomews.testudo.data.TestudoFsClientData.OAuthV2
+import io.bartholomews.scalatestudo.WireWordSpec
+import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 
 class BrowseApiSpec extends WireWordSpec with ServerBehaviours {
   import eu.timepit.refined.auto.autoRefineV

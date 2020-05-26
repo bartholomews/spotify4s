@@ -34,7 +34,7 @@ case class FullEpisode(
   explicit: Boolean,
   externalUrls: ExternalResourceUrl,
   href: Uri,
-  id: SpotifyUserId,
+  id: SpotifyId,
   images: List[SpotifyImage],
   isExternallyHosted: Boolean,
   isPlayable: Boolean,

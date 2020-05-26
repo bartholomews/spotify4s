@@ -6,7 +6,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.entities.{ErrorBodyJson, ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.spotify4s.entities.{ApiError, AuthError}
-import io.bartholomews.testudo.WireWordSpec
+import io.bartholomews.scalatestudo.WireWordSpec
 import org.apache.http.entity.ContentType
 import org.http4s.Status
 

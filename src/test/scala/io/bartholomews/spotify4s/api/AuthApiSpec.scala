@@ -8,7 +8,7 @@ import io.bartholomews.fsclient.entities.oauth.{AuthorizationCode, NonRefreshabl
 import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.spotify4s.entities.SpotifyScope
-import io.bartholomews.testudo.WireWordSpec
+import io.bartholomews.scalatestudo.WireWordSpec
 import org.http4s.{Status, Uri}
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
