@@ -28,11 +28,11 @@ object ExternalIds {
               case ("ean", value) => value.as[String].map(EAN.apply)
               case ("upc", value) => value.as[String].map(UPC.apply)
               case (unknown, _) =>
-                Left(DecodingFailure(s"ExternalResourceId; unexpected resource standard code: [$unknown]", c.history))
+                Left(DecodingFailure(s"ExternalId; unexpected resource standard code: [$unknown]", c.history))
             }
 
-          case None =>
-            Left(DecodingFailure("ExternalResourceId; expected singleton object", c.history))
+          case _ =>
+            Left(DecodingFailure("ExternalId; expected singleton object", c.history))
         }
       }
 

@@ -2,12 +2,11 @@ package io.bartholomews.spotify4s.entities
 
 import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
 import io.bartholomews.iso_country.CountryCodeAlpha2
-import io.circe.generic.extras.ConfiguredJsonCodec
-import io.circe.{Decoder, HCursor}
+import io.circe.generic.extras.semiauto.deriveConfiguredEncoder
+import io.circe.{Decoder, Encoder, HCursor}
 import org.http4s.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/object-model/#track-object-full
-@ConfiguredJsonCodec
 case class FullTrack(
   album: SimpleAlbum,
   artists: List[SimpleArtist],
@@ -15,10 +14,10 @@ case class FullTrack(
   discNumber: Int,
   durationMs: Int,
   explicit: Boolean,
-  externalIds: ExternalIds,
-  externalUrls: ExternalResourceUrl,
-  href: String,
-  id: SpotifyId,
+  externalIds: Option[ExternalIds],
+  externalUrls: Option[ExternalResourceUrl],
+  href: Option[Uri],
+  id: Option[SpotifyId],
   isPlayable: Option[Boolean],
   linkedFrom: Option[LinkedTrack],
   restrictions: Option[Restrictions],
@@ -31,6 +30,7 @@ case class FullTrack(
 )
 
 object FullTrack extends FsJsonResponsePipe[FullTrack] {
+  implicit val encoder: Encoder[FullTrack] = deriveConfiguredEncoder
   implicit val decoder: Decoder[FullTrack] = (c: HCursor) =>
     for {
       album <- c.downField("album").as[SimpleAlbum](SimpleAlbum.decoder)
@@ -39,10 +39,10 @@ object FullTrack extends FsJsonResponsePipe[FullTrack] {
       discNumber <- c.downField("disc_number").as[Int]
       durationMs <- c.downField("duration_ms").as[Int]
       explicit <- c.downField("explicit").as[Boolean]
-      externalIds <- c.downField("external_ids").as[ExternalIds]
-      externalUrls <- c.downField("external_urls").as[ExternalResourceUrl]
-      href <- c.downField("href").as[String]
-      id <- c.downField("id").as[SpotifyId]
+      externalIds <- Right(c.downField("external_ids").as[ExternalIds].toOption)
+      externalUrls <- Right(c.downField("external_urls").as[ExternalResourceUrl].toOption)
+      href <- c.downField("href").as[Option[Uri]]
+      id <- c.downField("id").as[Option[SpotifyId]]
       isPlayable <- c.downField("is_playable").as[Option[Boolean]]
       linkedFrom <- c.downField("linked_from").as[Option[LinkedTrack]]
       restrictions <- c.downField("restrictions").as[Option[Restrictions]]

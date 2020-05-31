@@ -260,8 +260,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
   }
 
   "`getTrack`" when {
-    val sampleTrackId = SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp")
-    def getTrackEndpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks/${sampleTrackId.value}"))
+    val sampleTrackId: SpotifyId = SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp")
+    def getTrackEndpoint(trackId: SpotifyId): MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks/${trackId.value}"))
 
     "market is not defined" should {
       val request: IOResponse[FullTrack] = sampleClient.tracks.getTrack(
@@ -269,11 +269,11 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
         market = None
       )
 
-      behave like clientReceivingUnexpectedResponse(getTrackEndpoint, request)
+      behave like clientReceivingUnexpectedResponse(getTrackEndpoint(sampleTrackId), request)
 
       def stub: StubMapping =
         stubFor(
-          getTrackEndpoint
+          getTrackEndpoint(sampleTrackId)
             .willReturn(
               aResponse()
                 .withStatus(200)
@@ -293,11 +293,11 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
         market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
       )
 
-      behave like clientReceivingUnexpectedResponse(getTrackEndpoint, request)
+      behave like clientReceivingUnexpectedResponse(getTrackEndpoint(sampleTrackId), request)
 
       def stub: StubMapping =
         stubFor(
-          getTrackEndpoint
+          getTrackEndpoint(sampleTrackId)
             .withQueryParam("market", equalTo("ES"))
             .willReturn(
               aResponse()
@@ -318,11 +318,11 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
         market = Some(FromToken)
       )
 
-      behave like clientReceivingUnexpectedResponse(getTrackEndpoint, request)
+      behave like clientReceivingUnexpectedResponse(getTrackEndpoint(sampleTrackId), request)
 
       def stub: StubMapping = {
         stubFor(
-          getTrackEndpoint
+          getTrackEndpoint(sampleTrackId)
             .withQueryParam("market", equalTo("from_token"))
             .willReturn(
               aResponse()

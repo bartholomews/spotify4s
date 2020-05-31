@@ -6,12 +6,20 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.entities.FsResponse
 import io.bartholomews.fsclient.entities.oauth.NonRefreshableToken
-import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
+import io.bartholomews.fsclient.utils.HttpTypes.{HttpResponse, IOResponse}
 import io.bartholomews.iso_country.CountryCodeAlpha2
-import io.bartholomews.spotify4s.client.ClientData.sampleClient
-import io.bartholomews.spotify4s.entities.{IsoCountry, Page, SimplePlaylist, SpotifyId, SpotifyUserId}
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
+import io.bartholomews.spotify4s.client.ClientData.sampleClient
+import io.bartholomews.spotify4s.entities.{
+  FullPlaylist,
+  IsoCountry,
+  Page,
+  SimplePlaylist,
+  SpotifyId,
+  SpotifyUri,
+  SpotifyUserId
+}
 import io.circe.{Decoder, HCursor}
 import org.http4s.Uri
 
@@ -136,6 +144,30 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
               PartialTrack(addedBy = "jmperezperez", trackName = "You Are So Beautiful")
             )
           )
+      }
+    }
+
+    "entity has many null fields" should {
+      val customPlaylistId = SpotifyId("4YUV9hthjX0LOvg8Oe8w85")
+      val request: IOResponse[FullPlaylist] = sampleClient.playlists.getPlaylist(
+        customPlaylistId,
+        market = None
+      )
+
+      def stub: StubMapping = {
+        stubFor(
+          get(urlPathEqualTo(s"$basePath/playlists/4YUV9hthjX0LOvg8Oe8w85"))
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile(s"playlists/${customPlaylistId.value}.json")
+            )
+        )
+      }
+
+      "return the correct entity" in matchResponse(stub, request) {
+        case FsResponse(_, _, Right(playlist)) =>
+          playlist.uri.value should matchTo("spotify:playlist:4UV9hthjX0LOvg8Oe8w85")
       }
     }
   }

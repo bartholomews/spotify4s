@@ -52,34 +52,34 @@ import org.http4s.circe.decodeUri
 @ConfiguredJsonCodec(encodeOnly = true)
 case class SimpleAlbum(
   albumGroup: Option[AlbumGroup],
-  albumType: AlbumType,
+  albumType: Option[AlbumType],
   artists: List[SimpleArtist],
   availableMarkets: List[CountryCodeAlpha2],
-  externalUrls: ExternalResourceUrl,
-  href: Uri,
-  id: SpotifyId,
+  externalUrls: Option[ExternalResourceUrl],
+  href: Option[Uri],
+  id: Option[SpotifyId],
   images: List[SpotifyImage],
   name: String,
-  releaseDate: ReleaseDate,
+  releaseDate: Option[ReleaseDate],
   restrictions: Option[Restrictions],
-  uri: SpotifyUri
+  uri: Option[SpotifyUri]
 )
 
 object SimpleAlbum {
   implicit val decoder: Decoder[SimpleAlbum] = (c: HCursor) =>
     for {
       albumGroup <- c.downField("album_group").as[Option[AlbumGroup]]
-      albumType <- c.downField("album_type").as[AlbumType]
+      albumType <- c.downField("album_type").as[Option[AlbumType]]
       artists <- c.downField("artists").as[List[SimpleArtist]]
       availableMarkets <- c.downField("available_markets").as[Option[List[CountryCodeAlpha2]]]
-      externalUrls <- c.downField("external_urls").as[ExternalResourceUrl]
-      href <- c.downField("href").as[Uri]
-      id <- c.downField("id").as[SpotifyId]
+      externalUrls <- Right(c.downField("external_urls").as[ExternalResourceUrl].toOption)
+      href <- c.downField("href").as[Option[Uri]]
+      id <- c.downField("id").as[Option[SpotifyId]]
       images <- c.downField("images").as[List[SpotifyImage]]
       name <- c.downField("name").as[String]
-      releaseDate <- c.downField("release_date").as[ReleaseDate]
+      releaseDate <- c.downField("release_date").as[Option[ReleaseDate]]
       restrictions <- c.downField("restriction").as[Option[Restrictions]]
-      uri <- c.downField("uri").as[SpotifyUri]
+      uri <- c.downField("uri").as[Option[SpotifyUri]]
     } yield
       SimpleAlbum(
         albumGroup,

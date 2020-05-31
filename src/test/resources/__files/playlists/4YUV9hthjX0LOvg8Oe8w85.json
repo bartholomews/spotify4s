@@ -1,0 +1,436 @@
+{
+  "collaborative": false,
+  "description": "",
+  "external_urls": {
+    "spotify": "https://open.spotify.com/playlist/4YUV9hthjX0LOvg8Oe8w85"
+  },
+  "followers": {
+    "href": null,
+    "total": 0
+  },
+  "href": "https://api.spotify.com/v1/playlists/4YUV9hthjX0LOvg8Oe8w85",
+  "id": "4YUV9hthjX0LOvg8Oe8w85",
+  "images": [
+    {
+      "height": 640,
+      "url": "https://i.scdn.co/image/ab67616d0000b273e7393220928c6bb08f7cd079",
+      "width": 640
+    }
+  ],
+  "name": "Hip Hop Instrumental",
+  "owner": {
+    "display_name": "{f_}",
+    "external_urls": {
+      "spotify": "https://open.spotify.com/user/%7Bf_%7D"
+    },
+    "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+    "id": "{f_}",
+    "type": "user",
+    "uri": "spotify:user:%7Bf_%7D"
+  },
+  "primary_color": null,
+  "public": false,
+  "snapshot_id": "NSxmNGNmNGQ0OWRkYjlkZTU3NjAxZjI5NWNhY2UwMmVlMThlMmViNDVm",
+  "tracks": {
+    "href": "https://api.spotify.com/v1/playlists/4YUV9hthjX0LOvg8Oe8w85/tracks?offset=0&limit=100",
+    "items": [
+      {
+        "added_at": "2020-05-28T13:45:26Z",
+        "added_by": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/%7Bf_%7D"
+          },
+          "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+          "id": "{f_}",
+          "type": "user",
+          "uri": "spotify:user:%7Bf_%7D"
+        },
+        "is_local": false,
+        "primary_color": null,
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/4aMeIY7MkJoZg7O91cmDDd"
+                },
+                "href": "https://api.spotify.com/v1/artists/4aMeIY7MkJoZg7O91cmDDd",
+                "id": "4aMeIY7MkJoZg7O91cmDDd",
+                "name": "Adrian Younge",
+                "type": "artist",
+                "uri": "spotify:artist:4aMeIY7MkJoZg7O91cmDDd"
+              }
+            ],
+            "available_markets": [
+              "AD",
+              "AT",
+              "BE",
+              "BG",
+              "CH",
+              "CY",
+              "CZ",
+              "DE",
+              "DK",
+              "EE",
+              "ES",
+              "FI",
+              "FR",
+              "GB",
+              "GR",
+              "HU",
+              "IE",
+              "IS",
+              "IT",
+              "LI",
+              "LT",
+              "LU",
+              "LV",
+              "MC",
+              "MT",
+              "NL",
+              "NO",
+              "PL",
+              "PT",
+              "RO",
+              "SE",
+              "SK"
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/2V9oyB7iZPhv14Cr54fbqT"
+            },
+            "href": "https://api.spotify.com/v1/albums/2V9oyB7iZPhv14Cr54fbqT",
+            "id": "2V9oyB7iZPhv14Cr54fbqT",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b273e7393220928c6bb08f7cd079",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e02e7393220928c6bb08f7cd079",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d00004851e7393220928c6bb08f7cd079",
+                "width": 64
+              }
+            ],
+            "name": "Twelve Reasons to Die",
+            "release_date": "2014-08-18",
+            "release_date_precision": "day",
+            "total_tracks": 24,
+            "type": "album",
+            "uri": "spotify:album:2V9oyB7iZPhv14Cr54fbqT"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/4aMeIY7MkJoZg7O91cmDDd"
+              },
+              "href": "https://api.spotify.com/v1/artists/4aMeIY7MkJoZg7O91cmDDd",
+              "id": "4aMeIY7MkJoZg7O91cmDDd",
+              "name": "Adrian Younge",
+              "type": "artist",
+              "uri": "spotify:artist:4aMeIY7MkJoZg7O91cmDDd"
+            }
+          ],
+          "available_markets": [
+            "AD",
+            "AT",
+            "BE",
+            "BG",
+            "CH",
+            "CY",
+            "CZ",
+            "DE",
+            "DK",
+            "EE",
+            "ES",
+            "FI",
+            "FR",
+            "GB",
+            "GR",
+            "HU",
+            "IE",
+            "IS",
+            "IT",
+            "LI",
+            "LT",
+            "LU",
+            "LV",
+            "MC",
+            "MT",
+            "NL",
+            "NO",
+            "PL",
+            "PT",
+            "RO",
+            "SE",
+            "SK"
+          ],
+          "disc_number": 2,
+          "duration_ms": 198346,
+          "episode": false,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "QM9K31400102"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/458LTQbp2xTIIBtguCOFbU"
+          },
+          "href": "https://api.spotify.com/v1/tracks/458LTQbp2xTIIBtguCOFbU",
+          "id": "458LTQbp2xTIIBtguCOFbU",
+          "is_local": false,
+          "name": "Beware of the Stare - Instrumental",
+          "popularity": 9,
+          "preview_url": "https://p.scdn.co/mp3-preview/979a2b560865723eb5afda1d09a27501f4d3b571?cid=03a7e0fa2fc5465da84abdc0d696f40b",
+          "track": true,
+          "track_number": 1,
+          "type": "track",
+          "uri": "spotify:track:458LTQbp2xTIIBtguCOFbU"
+        },
+        "video_thumbnail": {
+          "url": null
+        }
+      },
+      {
+        "added_at": "2020-05-28T13:46:51Z",
+        "added_by": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/%7Bf_%7D"
+          },
+          "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+          "id": "{f_}",
+          "type": "user",
+          "uri": "spotify:user:%7Bf_%7D"
+        },
+        "is_local": false,
+        "primary_color": null,
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/4aMeIY7MkJoZg7O91cmDDd"
+                },
+                "href": "https://api.spotify.com/v1/artists/4aMeIY7MkJoZg7O91cmDDd",
+                "id": "4aMeIY7MkJoZg7O91cmDDd",
+                "name": "Adrian Younge",
+                "type": "artist",
+                "uri": "spotify:artist:4aMeIY7MkJoZg7O91cmDDd"
+              }
+            ],
+            "available_markets": [
+              "AD",
+              "AT",
+              "BE",
+              "BG",
+              "CH",
+              "CY",
+              "CZ",
+              "DE",
+              "DK",
+              "EE",
+              "ES",
+              "FI",
+              "FR",
+              "GB",
+              "GR",
+              "HU",
+              "IE",
+              "IS",
+              "IT",
+              "LI",
+              "LT",
+              "LU",
+              "LV",
+              "MC",
+              "MT",
+              "NL",
+              "NO",
+              "PL",
+              "PT",
+              "RO",
+              "SE",
+              "SK"
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/2V9oyB7iZPhv14Cr54fbqT"
+            },
+            "href": "https://api.spotify.com/v1/albums/2V9oyB7iZPhv14Cr54fbqT",
+            "id": "2V9oyB7iZPhv14Cr54fbqT",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b273e7393220928c6bb08f7cd079",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e02e7393220928c6bb08f7cd079",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d00004851e7393220928c6bb08f7cd079",
+                "width": 64
+              }
+            ],
+            "name": "Twelve Reasons to Die",
+            "release_date": "2014-08-18",
+            "release_date_precision": "day",
+            "total_tracks": 24,
+            "type": "album",
+            "uri": "spotify:album:2V9oyB7iZPhv14Cr54fbqT"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/4aMeIY7MkJoZg7O91cmDDd"
+              },
+              "href": "https://api.spotify.com/v1/artists/4aMeIY7MkJoZg7O91cmDDd",
+              "id": "4aMeIY7MkJoZg7O91cmDDd",
+              "name": "Adrian Younge",
+              "type": "artist",
+              "uri": "spotify:artist:4aMeIY7MkJoZg7O91cmDDd"
+            }
+          ],
+          "available_markets": [
+            "AD",
+            "AT",
+            "BE",
+            "BG",
+            "CH",
+            "CY",
+            "CZ",
+            "DE",
+            "DK",
+            "EE",
+            "ES",
+            "FI",
+            "FR",
+            "GB",
+            "GR",
+            "HU",
+            "IE",
+            "IS",
+            "IT",
+            "LI",
+            "LT",
+            "LU",
+            "LV",
+            "MC",
+            "MT",
+            "NL",
+            "NO",
+            "PL",
+            "PT",
+            "RO",
+            "SE",
+            "SK"
+          ],
+          "disc_number": 2,
+          "duration_ms": 209000,
+          "episode": false,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "QM9K31400109"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/2Eg21mDTQ3tk1OiPSnONwq"
+          },
+          "href": "https://api.spotify.com/v1/tracks/2Eg21mDTQ3tk1OiPSnONwq",
+          "id": "2Eg21mDTQ3tk1OiPSnONwq",
+          "is_local": false,
+          "name": "The Rise of the Ghostface Killah - Instrumental",
+          "popularity": 7,
+          "preview_url": "https://p.scdn.co/mp3-preview/5ee6cbd8275bafe9078eb3d704ea09628827c018?cid=03a7e0fa2fc5465da84abdc0d696f40b",
+          "track": true,
+          "track_number": 8,
+          "type": "track",
+          "uri": "spotify:track:2Eg21mDTQ3tk1OiPSnONwq"
+        },
+        "video_thumbnail": {
+          "url": null
+        }
+      },
+      {
+        "added_at": "2020-05-28T13:47:18Z",
+        "added_by": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/%7Bf_%7D"
+          },
+          "href": "https://api.spotify.com/v1/users/%7Bf_%7D",
+          "id": "{f_}",
+          "type": "user",
+          "uri": "spotify:user:%7Bf_%7D"
+        },
+        "is_local": true,
+        "primary_color": null,
+        "track": {
+          "album": {
+            "album_type": null,
+            "artists": [
+            ],
+            "available_markets": [
+            ],
+            "external_urls": {
+            },
+            "href": null,
+            "id": null,
+            "images": [
+            ],
+            "name": "Music from the Motion Picture - Ghost Dog: The Way of The Samurai",
+            "release_date": null,
+            "release_date_precision": null,
+            "type": "album",
+            "uri": null
+          },
+          "artists": [
+            {
+              "external_urls": {
+              },
+              "href": null,
+              "id": null,
+              "name": "RZA",
+              "type": "artist",
+              "uri": null
+            }
+          ],
+          "available_markets": [
+          ],
+          "disc_number": 0,
+          "duration_ms": 151000,
+          "explicit": false,
+          "external_ids": {
+          },
+          "external_urls": {
+          },
+          "href": null,
+          "id": null,
+          "is_local": true,
+          "name": "Funky Theme",
+          "popularity": 0,
+          "preview_url": null,
+          "track_number": 0,
+          "type": "track",
+          "uri": "spotify:local:RZA:Music+from+the+Motion+Picture+-+Ghost+Dog%3A+The+Way+of+The+Samurai:Funky+Theme:151"
+        },
+        "video_thumbnail": {
+          "url": null
+        }
+      }
+    ],
+    "limit": 100,
+    "next": null,
+    "offset": 0,
+    "previous": null,
+    "total": 3
+  },
+  "type": "playlist",
+  "uri": "spotify:playlist:4YUV9hthjX0LOvg8Oe8w85"
+}
