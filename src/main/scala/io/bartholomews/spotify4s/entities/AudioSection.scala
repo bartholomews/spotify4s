@@ -31,16 +31,15 @@ object AudioSection {
       modeConfidence <- c.downField("mode_confidence").as[Confidence]
       timeSignature <- c.downField("time_signature").as[Int]
       timeSignatureConfidence <- c.downField("time_signature_confidence").as[Confidence]
-    } yield
-      AudioSection(
-        start.getOrElse(0.0),
-        duration,
-        confidence,
-        loudness,
-        Tempo(tempo, tempoConfidence),
-        AudioKey(key, keyConfidence),
-        AudioMode(mode.getOrElse(Modality.NoResult), modeConfidence),
-        TimeSignature(timeSignature, timeSignatureConfidence)
+    } yield AudioSection(
+      start.getOrElse(0.0),
+      duration,
+      confidence,
+      loudness,
+      Tempo(tempo, tempoConfidence),
+      AudioKey(key, keyConfidence),
+      AudioMode(mode.getOrElse(Modality.NoResult), modeConfidence),
+      TimeSignature(timeSignature, timeSignatureConfidence)
     )
 }
 

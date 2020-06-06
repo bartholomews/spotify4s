@@ -32,11 +32,10 @@ object SpotifyClient {
       clientPassword <- ConfigSource.default
                          .at("spotify")
                          .load[ClientPassword]
-    } yield
-      new SpotifyClient(
-        new FsClientV2(
-          appConfig = FsClientConfig(userAgent, ClientPasswordBasicAuthenticationV2(clientPassword)),
-          clientPassword
-        )
-      )).orThrow
+    } yield new SpotifyClient(
+      new FsClientV2(
+        appConfig = FsClientConfig(userAgent, ClientPasswordBasicAuthenticationV2(clientPassword)),
+        clientPassword
+      )
+    )).orThrow
 }

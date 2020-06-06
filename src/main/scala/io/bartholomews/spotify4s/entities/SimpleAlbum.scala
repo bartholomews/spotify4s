@@ -80,19 +80,18 @@ object SimpleAlbum {
       releaseDate <- c.downField("release_date").as[Option[ReleaseDate]]
       restrictions <- c.downField("restriction").as[Option[Restrictions]]
       uri <- c.downField("uri").as[Option[SpotifyUri]]
-    } yield
-      SimpleAlbum(
-        albumGroup,
-        albumType,
-        artists,
-        availableMarkets.getOrElse(List.empty),
-        externalUrls,
-        href,
-        id,
-        images,
-        name,
-        releaseDate,
-        restrictions,
-        uri
+    } yield SimpleAlbum(
+      albumGroup,
+      albumType,
+      artists,
+      availableMarkets.getOrElse(List.empty),
+      externalUrls,
+      href,
+      id,
+      images,
+      name,
+      releaseDate,
+      restrictions,
+      uri
     )
 }

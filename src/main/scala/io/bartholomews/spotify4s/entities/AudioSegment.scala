@@ -25,14 +25,13 @@ object AudioSegment {
       loudnessEnd <- c.downField("loudness_end").as[Option[Double]]
       pitches <- c.downField("pitches").as[List[Double]]
       timbre <- c.downField("timbre").as[List[Double]]
-    } yield
-      AudioSegment(
-        start.getOrElse(0.0),
-        duration,
-        confidence,
-        Loudness(loudnessStart, loudnessMax, loudnessMaxTime, loudnessEnd),
-        pitches,
-        timbre
+    } yield AudioSegment(
+      start.getOrElse(0.0),
+      duration,
+      confidence,
+      Loudness(loudnessStart, loudnessMax, loudnessMaxTime, loudnessEnd),
+      pitches,
+      timbre
     )
 }
 

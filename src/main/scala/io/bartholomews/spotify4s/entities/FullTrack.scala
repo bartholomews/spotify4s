@@ -52,26 +52,25 @@ object FullTrack extends FsJsonResponsePipe[FullTrack] {
       trackNumber <- c.downField("track_number").as[Int]
       uri <- c.downField("uri").as[SpotifyUri]
       isLocal <- c.downField("is_local").as[Boolean]
-    } yield
-      FullTrack(
-        album,
-        artists,
-        availableMarkets.getOrElse(List.empty),
-        discNumber,
-        durationMs,
-        explicit,
-        externalIds,
-        externalUrls,
-        href,
-        id,
-        isPlayable,
-        linkedFrom,
-        restrictions,
-        name,
-        popularity,
-        previewUrl,
-        trackNumber,
-        uri,
-        isLocal
+    } yield FullTrack(
+      album,
+      artists,
+      availableMarkets.getOrElse(List.empty),
+      discNumber,
+      durationMs,
+      explicit,
+      externalIds,
+      externalUrls,
+      href,
+      id,
+      isPlayable,
+      linkedFrom,
+      restrictions,
+      name,
+      popularity,
+      previewUrl,
+      trackNumber,
+      uri,
+      isLocal
     )
 }

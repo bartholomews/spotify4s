@@ -18,7 +18,7 @@ case object SubscriptionLevel extends Enum[SubscriptionLevel] {
       case Some("premium") => Right(SubscriptionLevel.Premium)
       case Some("free") | Some("open") => Right(SubscriptionLevel.Free)
       case unknown => Right(SubscriptionLevel.Unknown(unknown))
-  }
+    }
 
   implicit val encoder: Encoder[SubscriptionLevel] = Encoder.instance {
     case _ @Premium => Json.fromString("premium")

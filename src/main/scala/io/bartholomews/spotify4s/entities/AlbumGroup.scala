@@ -6,7 +6,6 @@ import enumeratum._
 sealed trait AlbumGroup extends EnumEntry with Snakecase
 
 case object AlbumGroup extends Enum[AlbumGroup] with CirceEnum[AlbumGroup] {
-
   case object Album extends AlbumGroup
   case object Single extends AlbumGroup
   case object Compilation extends AlbumGroup

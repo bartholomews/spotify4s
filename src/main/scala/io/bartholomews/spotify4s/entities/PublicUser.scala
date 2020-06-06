@@ -35,14 +35,13 @@ object PublicUser {
       id <- c.downField("id").as[SpotifyUserId]
       images <- c.downField("images").as[Option[List[SpotifyImage]]]
       uri <- c.downField("uri").as[SpotifyUri]
-    } yield
-      PublicUser(
-        displayName,
-        externalUrls,
-        followers,
-        href,
-        id,
-        images.getOrElse(List.empty),
-        uri
+    } yield PublicUser(
+      displayName,
+      externalUrls,
+      followers,
+      href,
+      id,
+      images.getOrElse(List.empty),
+      uri
     )
 }
