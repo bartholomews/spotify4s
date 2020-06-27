@@ -6,3 +6,8 @@
 /target/
 .idea/
 src/main/main.iml
+# metals
+.bloop
+.metals
+project/metals.sbt
+ 
