@@ -11,14 +11,7 @@ import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 import io.bartholomews.spotify4s.client.ClientData.sampleClient
-import io.bartholomews.spotify4s.entities.{
-  FullPlaylist,
-  IsoCountry,
-  Page,
-  SimplePlaylist,
-  SpotifyId,
-  SpotifyUserId
-}
+import io.bartholomews.spotify4s.entities.{FullPlaylist, IsoCountry, Page, SimplePlaylist, SpotifyId, SpotifyUserId}
 import io.circe.{Decoder, HCursor}
 import org.http4s.Uri
 
