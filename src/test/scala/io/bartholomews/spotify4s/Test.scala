@@ -4,7 +4,12 @@ import cats.effect.{ContextShift, IO}
 import io.bartholomews.fsclient.client.FsClientV2
 import io.bartholomews.fsclient.config.{FsClientConfig, UserAgent}
 import io.bartholomews.fsclient.entities.oauth.v2.OAuthV2AuthorizationFramework._
-import io.bartholomews.fsclient.entities.oauth.{AuthorizationCode, ClientPasswordBasicAuthenticationV2, NonRefreshableToken, Scope}
+import io.bartholomews.fsclient.entities.oauth.{
+  AuthorizationCode,
+  ClientPasswordBasicAuthenticationV2,
+  NonRefreshableToken,
+  Scope
+}
 import io.bartholomews.fsclient.entities.{ErrorBodyJson, ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.iso_country.CountryCodeAlpha2
@@ -134,12 +139,11 @@ object UseAccessToken {
 
   def main(args: Array[String]): Unit = {
     prettyPrint {
-
       Test.client.tracks.getTracks(
         ids = Set(
           SpotifyId("458LTQbp2xTIIBtguCOFbU"),
           SpotifyId("2Eg21mDTQ3tk1OiPSnONwq"),
-          SpotifyId(""), // FIXME: I think SpotifyId needs to be nonEmpty otherwise troubles (400)
+          SpotifyId("") // FIXME: I think SpotifyId needs to be nonEmpty otherwise troubles (400)
         ),
         market = None
       )
