@@ -3,7 +3,6 @@ import sbt.Keys.organization
 
 name := "spotify4s"
 scalaVersion := "2.13.2"
-crossScalaVersions := Seq("2.12.10")
 
 lazy val root = (project in file("."))
   .settings(TestSettings())
