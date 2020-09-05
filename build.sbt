@@ -32,3 +32,6 @@ coverageFailOnMinimum := true
 // http://www.scalatest.org/user_guide/using_scalatest_with_sbt
 logBuffered in Test := false
 parallelExecution in Test := false
+
+resolvers +=
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"

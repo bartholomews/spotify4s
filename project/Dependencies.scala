@@ -15,6 +15,6 @@ object Dependencies {
   )
 
   lazy val testDependencies: Seq[ModuleID] = Seq(
-    "io.bartholomews" %% "scalatestudo" % "0.0.2"
+    "io.bartholomews" %% "scalatestudo" % "0.0.2+4-daf79e02-SNAPSHOT"
   ).map(_ % Test)
 }
