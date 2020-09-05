@@ -58,6 +58,5 @@ object SpotifyUserId {
   */
 case class SpotifyUrl(value: Uri) extends AnyVal
 object SpotifyUrl {
-  import org.http4s.circe.decodeUri
   implicit val codec: Codec[SpotifyUrl] = deriveUnwrappedCodec
 }
