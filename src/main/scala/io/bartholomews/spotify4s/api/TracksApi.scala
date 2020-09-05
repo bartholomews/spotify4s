@@ -5,8 +5,8 @@ import fs2.Pipe
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.AuthJsonRequest
-import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.spotify4s.api.SpotifyApi.apiUri
+import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.spotify4s.entities.{AudioAnalysis, AudioFeatures, FullTrack, Market, SpotifyId}
 import io.circe.Json
 import org.http4s.Uri
