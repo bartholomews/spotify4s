@@ -17,7 +17,6 @@ import io.bartholomews.spotify4s.entities.{
   Page,
   SimplePlaylist,
   SpotifyId,
-  SpotifyUri,
   SpotifyUserId
 }
 import io.circe.{Decoder, HCursor}
@@ -167,7 +166,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
 
       "return the correct entity" in matchResponse(stub, request) {
         case FsResponse(_, _, Right(playlist)) =>
-          playlist.uri.value should matchTo("spotify:playlist:4UV9hthjX0LOvg8Oe8w85")
+          playlist.uri.value shouldBe "spotify:playlist:4YUV9hthjX0LOvg8Oe8w85"
       }
     }
   }

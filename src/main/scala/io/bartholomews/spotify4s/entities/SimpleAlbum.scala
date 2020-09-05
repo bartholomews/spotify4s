@@ -4,7 +4,6 @@ import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.circe.generic.extras.ConfiguredJsonCodec
 import io.circe.{Decoder, HCursor}
 import org.http4s.Uri
-import org.http4s.circe.decodeUri
 
 /**
   * Album Object (simplified)

@@ -51,12 +51,14 @@ class BrowseApiSpec extends WireWordSpec with ServerBehaviours {
           albums.href shouldBe "https://api.spotify.com/v1/browse/new-releases?country=SE&offset=5&limit=2"
           albums.next shouldBe Some("https://api.spotify.com/v1/browse/new-releases?country=SE&offset=7&limit=2")
           albums.items.size shouldBe 2
-          albums.items.head.albumType shouldBe AlbumType.Single
+          albums.items.head.albumType shouldBe Some(AlbumType.Single)
           albums.items.head.availableMarkets.head shouldBe CountryCodeAlpha2.ANDORRA
-          albums.items.map(_.releaseDate).head shouldBe ReleaseDate(
-            year = 2020,
-            month = Some(Month.APRIL),
-            dayOfMonth = Some(17)
+          albums.items.map(_.releaseDate).head shouldBe Some(
+            ReleaseDate(
+              year = 2020,
+              month = Some(Month.APRIL),
+              dayOfMonth = Some(17)
+            )
           )
       }
     }
