@@ -4,7 +4,7 @@ object Dependencies {
   object Versions {
     val refined = "0.9.13"
     val fsClient = "0.0.2"
-    val scalaIso = "0.1.0"
+    val scalaIso = "0.1.1"
   }
 
   val dependencies: Seq[ModuleID] = Seq(
