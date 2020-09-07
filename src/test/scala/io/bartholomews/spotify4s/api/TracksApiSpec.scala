@@ -1,5 +1,6 @@
 package io.bartholomews.spotify4s.api
 
+import cats.data.NonEmptySet
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -120,7 +121,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
     def getAudioFeaturesEndpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-features"))
     val request: IOResponse[List[AudioFeatures]] = sampleClient.tracks.getAudioFeatures(
-      Set(
+      NonEmptySet.of(
         SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
         SpotifyId("3twNvmDtFQtAd5gMKedhLD")
       )
@@ -191,7 +192,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
 
     "market is not defined" should {
       val request: IOResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
-        ids = Set(
+        ids = NonEmptySet.of(
           SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
           SpotifyId("3twNvmDtFQtAd5gMKedhLD")
         ),
@@ -226,7 +227,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
 
     "market is defined" should {
       val request: IOResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
-        ids = Set(
+        ids = NonEmptySet.of(
           SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
           SpotifyId("3twNvmDtFQtAd5gMKedhLD")
         ),

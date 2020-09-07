@@ -1,5 +1,6 @@
 package io.bartholomews.spotify4s.entities
 
+import cats.Order
 import io.circe.Codec
 import io.circe.generic.extras.semiauto.deriveUnwrappedCodec
 import org.http4s.Uri
@@ -29,6 +30,7 @@ object SpotifyUri {
 case class SpotifyId(value: String) extends AnyVal
 object SpotifyId {
   implicit val codec: Codec[SpotifyId] = deriveUnwrappedCodec
+  implicit val order: Order[SpotifyId] = (x: SpotifyId, y: SpotifyId) => x.value.compareTo(y.value)
 }
 
 /**

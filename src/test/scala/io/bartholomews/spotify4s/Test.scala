@@ -1,5 +1,6 @@
 package io.bartholomews.spotify4s
 
+import cats.data.NonEmptySet
 import cats.effect.{ContextShift, IO}
 import io.bartholomews.fsclient.client.FsClientV2
 import io.bartholomews.fsclient.config.{FsClientConfig, UserAgent}
@@ -140,7 +141,7 @@ object UseAccessToken {
   def main(args: Array[String]): Unit = {
     prettyPrint {
       Test.client.tracks.getTracks(
-        ids = Set(
+        ids = NonEmptySet.of(
           SpotifyId("458LTQbp2xTIIBtguCOFbU"),
           SpotifyId("2Eg21mDTQ3tk1OiPSnONwq"),
           SpotifyId("") // FIXME: I think SpotifyId needs to be nonEmpty otherwise troubles (400)

@@ -1,12 +1,14 @@
 package io.bartholomews.spotify4s.api
 
+import cats.data.NonEmptySet
 import cats.effect.ConcurrentEffect
+import cats.implicits.catsKernelStdOrderForString
 import fs2.Pipe
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.AuthJsonRequest
-import io.bartholomews.spotify4s.api.SpotifyApi.apiUri
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
+import io.bartholomews.spotify4s.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.entities.{AudioAnalysis, AudioFeatures, FullTrack, Market, SpotifyId}
 import io.circe.Json
 import org.http4s.Uri
@@ -30,22 +32,22 @@ class TracksApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
     }.runWith(client)
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-audio-features/
-  def getAudioFeatures(ids: Set[SpotifyId])(implicit signer: SignerV2): F[HttpResponse[List[AudioFeatures]]] = {
+  def getAudioFeatures(ids: NonEmptySet[SpotifyId])(implicit signer: SignerV2): F[HttpResponse[List[AudioFeatures]]] = {
     implicit val pipeDecoder: Pipe[F, Json, List[AudioFeatures]] = decodeListAtKey[F, AudioFeatures]("audio_features")
     new AuthJsonRequest.Get[List[AudioFeatures]] {
       override val uri: Uri = (basePath / "audio-features")
-        .withQueryParam("ids", ids.map(_.value).toList.mkString(","))
+        .withQueryParam("ids", ids.value.map(_.value).toNonEmptyList.toList.mkString(","))
     }.runWith(client)
   }
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/
-  def getTracks(ids: Set[SpotifyId], market: Option[Market])(
+  def getTracks(ids: NonEmptySet[SpotifyId], market: Option[Market])(
     implicit signer: SignerV2
   ): F[HttpResponse[List[FullTrack]]] = {
     implicit val pipeDecoder: Pipe[F, Json, List[FullTrack]] = decodeListAtKey[F, FullTrack]("tracks")
     new AuthJsonRequest.Get[List[FullTrack]] {
       override val uri: Uri = (basePath / "tracks")
-        .withQueryParam("ids", ids.map(_.value).toList.mkString(","))
+        .withQueryParam("ids", ids.map(_.value).toNonEmptyList.toList.mkString(","))
         .withOptionQueryParam("market", market.map(_.value))
     }.runWith(client)
   }
