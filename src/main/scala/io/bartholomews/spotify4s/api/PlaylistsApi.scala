@@ -1,14 +1,12 @@
 package io.bartholomews.spotify4s.api
 
 import cats.effect.ConcurrentEffect
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.numeric.Interval
 import fs2.Pipe
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.AuthJsonRequest
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.apiUri
+import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset}
 import io.bartholomews.spotify4s.entities.{FullPlaylist, Market, Page, SimplePlaylist, SpotifyId, SpotifyUserId}
 import io.circe.{Decoder, Json}
 import org.http4s.Uri
@@ -19,9 +17,6 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   import io.bartholomews.fsclient.implicits.{deriveJsonPipe, emptyEntityEncoder, rawJsonPipe}
 
   private[api] val basePath: Uri = apiUri / "v1"
-
-  type Limit = Int Refined Interval.Closed[1, 50]
-  type Offset = Int Refined Interval.Closed[0, 100]
 
   /**
     * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-list-users-playlists
