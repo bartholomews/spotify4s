@@ -21,7 +21,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
   implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken
 
   "`getUserPlaylists`" when {
-    def getUserPlaylistsEndpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/users/wizzler/playlists"))
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/users/wizzler/playlists"))
 
     "`limits` and `offset` query parameters are defined" should {
       val request: IO[HttpResponse[Page[SimplePlaylist]]] = sampleClient.playlists.getUserPlaylists(
@@ -31,7 +31,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
       )
 
       val endpointRequest =
-        getUserPlaylistsEndpoint
+        endpoint
           .withQueryParam("limit", equalTo("2"))
           .withQueryParam("offset", equalTo("5"))
 
@@ -56,15 +56,15 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
   }
 
   "`getPlaylist`" when {
-    def getPlaylistEndpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/playlists/3cEYpjA9oz9GiPac4AsH4n"))
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/playlists/3cEYpjA9oz9GiPac4AsH4n"))
 
     "optional query parameters are not defined" should {
       val request = sampleClient.playlists.getPlaylist(playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"))
-      behave like clientReceivingUnexpectedResponse(getPlaylistEndpoint, request)
+      behave like clientReceivingUnexpectedResponse(endpoint, request)
 
       def stub: StubMapping =
         stubFor(
-          getPlaylistEndpoint
+          endpoint
             .willReturn(
               aResponse()
                 .withStatus(200)
@@ -105,7 +105,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
       )
 
       val endpointRequest =
-        getPlaylistEndpoint
+        endpoint
           .withQueryParam("fields", equalTo("href,description,tracks.items(added_by(id),track(name))"))
           .withQueryParam("market", equalTo("ES"))
 

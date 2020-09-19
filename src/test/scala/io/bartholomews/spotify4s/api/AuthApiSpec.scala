@@ -20,7 +20,7 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
     val sampleCode = "sample-oauth-code"
 
     "getting an authorization code" when {
-      def expectedTokenEndpointRequest: MappingBuilder = post(urlMatching("/accounts/api/token"))
+      def endpoint: MappingBuilder = post(urlMatching("/accounts/api/token"))
 
       def clientReceivingSuccessfulAuthorizationCode(
         request: IOResponse[AuthorizationCode]
@@ -28,7 +28,7 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
         "the server responds with the expected json message" should {
           def stub: StubMapping =
             stubFor(
-              expectedTokenEndpointRequest
+              endpoint
                 .withRequestBody(
                   equalTo(
                     "grant_type=authorization_code&code=sample-oauth-code&redirect_uri=https%3A%2F%2Fbartholomews.io%2Fcallback"
@@ -68,7 +68,7 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
         )
 
         behave like clientReceivingSuccessfulAuthorizationCode(request)
-        behave like clientReceivingUnexpectedResponse(expectedTokenEndpointRequest, request)
+        behave like clientReceivingUnexpectedResponse(endpoint, request)
       }
 
       "getting an authorization code from invalid uri response" in {
@@ -101,12 +101,12 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
         )
 
         behave like clientReceivingSuccessfulAuthorizationCode(request)
-        behave like clientReceivingUnexpectedResponse(expectedTokenEndpointRequest, request)
+        behave like clientReceivingUnexpectedResponse(endpoint, request)
       }
     }
 
     "getting a refresh token" when {
-      def expectedTokenEndpointRequest: MappingBuilder = post(urlMatching("/accounts/api/token"))
+      def endpoint: MappingBuilder = post(urlMatching("/accounts/api/token"))
       val request: IOResponse[AuthorizationCode] = sampleClient.auth.AuthorizationCode.refresh(
         OAuthV2.sampleRefreshToken
       )
@@ -114,7 +114,7 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
       "the server responds with the expected json message" should {
         def stub: StubMapping =
           stubFor(
-            expectedTokenEndpointRequest
+            endpoint
               .withRequestBody(equalTo(s"grant_type=refresh_token&refresh_token=${OAuthV2.sampleRefreshToken.value}"))
               .willReturn(
                 aResponse()
@@ -145,13 +145,13 @@ class AuthApiSpec extends WireWordSpec with ServerBehaviours {
 
     "clientCredentials" when {
       val request: IOResponse[NonRefreshableToken] = sampleClient.auth.clientCredentials()
-      def expectedTokenEndpointRequest: MappingBuilder = post(urlMatching("/accounts/api/token"))
-      behave like clientReceivingUnexpectedResponse(expectedTokenEndpointRequest, request)
+      def endpoint: MappingBuilder = post(urlMatching("/accounts/api/token"))
+      behave like clientReceivingUnexpectedResponse(endpoint, request)
 
       "the server responds with the expected json message" should {
         def stub: StubMapping =
           stubFor(
-            expectedTokenEndpointRequest
+            endpoint
               .withRequestBody(equalTo("grant_type=client_credentials"))
               .willReturn(
                 aResponse()

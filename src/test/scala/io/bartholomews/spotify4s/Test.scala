@@ -5,12 +5,7 @@ import cats.effect.{ContextShift, IO}
 import io.bartholomews.fsclient.client.FsClientV2
 import io.bartholomews.fsclient.config.{FsClientConfig, UserAgent}
 import io.bartholomews.fsclient.entities.oauth.v2.OAuthV2AuthorizationFramework._
-import io.bartholomews.fsclient.entities.oauth.{
-  AuthorizationCode,
-  ClientPasswordBasicAuthenticationV2,
-  NonRefreshableToken,
-  Scope
-}
+import io.bartholomews.fsclient.entities.oauth.{AuthorizationCode, ClientPasswordBasicAuthenticationV2, NonRefreshableToken, Scope}
 import io.bartholomews.fsclient.entities.{ErrorBodyJson, ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.iso_country.CountryCodeAlpha2

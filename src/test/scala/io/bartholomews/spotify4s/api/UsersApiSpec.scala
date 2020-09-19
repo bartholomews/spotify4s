@@ -14,16 +14,16 @@ class UsersApiSpec extends WireWordSpec with ServerBehaviours {
   implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken
 
   "`me`" when {
-    def currentUserProfileEndpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me"))
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me"))
 
     "successfully authenticated" should {
       val request = sampleClient.users.me
 
-      behave like clientReceivingUnexpectedResponse(currentUserProfileEndpoint, request)
+      behave like clientReceivingUnexpectedResponse(endpoint, request)
 
       def stub: StubMapping =
         stubFor(
-          currentUserProfileEndpoint
+          endpoint
             .willReturn(
               aResponse()
                 .withStatus(200)

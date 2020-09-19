@@ -20,7 +20,7 @@ class BrowseApiSpec extends WireWordSpec with ServerBehaviours {
   implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken
 
   "`getNewReleases`" when {
-    def getNewReleasesEndpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/new-releases"))
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/new-releases"))
 
     "country is defined" should {
       val request: IOResponse[NewReleases] = sampleClient.browse.getNewReleases(
@@ -30,7 +30,7 @@ class BrowseApiSpec extends WireWordSpec with ServerBehaviours {
       )
 
       val endpointRequest =
-        getNewReleasesEndpoint
+        endpoint
           .withQueryParam("limit", equalTo("2"))
           .withQueryParam("offset", equalTo("5"))
 

@@ -11,21 +11,7 @@ import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 import io.bartholomews.spotify4s.client.ClientData.{sampleClient, sampleSpotifyId}
-import io.bartholomews.spotify4s.entities.{
-  AudioAnalysis,
-  AudioFeatures,
-  AudioKey,
-  AudioMode,
-  Bar,
-  Confidence,
-  FromToken,
-  FullTrack,
-  IsoCountry,
-  Modality,
-  PitchClass,
-  SpotifyId,
-  SpotifyUri
-}
+import io.bartholomews.spotify4s.entities.{AudioAnalysis, AudioFeatures, AudioKey, AudioMode, Bar, Confidence, FromToken, FullTrack, IsoCountry, Modality, PitchClass, SpotifyId, SpotifyUri}
 import org.http4s.Uri
 import org.scalatest.BeforeAndAfterEach
 
@@ -33,15 +19,15 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
   implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken
 
   "`getAudioAnalysis`" should {
-    def getAudioAnalysisEndpoint: MappingBuilder =
+    def endpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-analysis/${sampleSpotifyId.value}"))
     val request: IOResponse[AudioAnalysis] = sampleClient.tracks.getAudioAnalysis(sampleSpotifyId)
 
-    behave like clientReceivingUnexpectedResponse(getAudioAnalysisEndpoint, request)
+    behave like clientReceivingUnexpectedResponse(endpoint, request)
 
     def stub: StubMapping =
       stubFor(
-        getAudioAnalysisEndpoint
+        endpoint
           .willReturn(
             aResponse()
               .withStatus(200)
@@ -77,15 +63,15 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
   }
 
   "`getAudioFeatures` for a track" should {
-    def getAudioFeaturesEndpoint: MappingBuilder =
+    def endpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-features/${sampleSpotifyId.value}"))
     val request: IOResponse[AudioFeatures] = sampleClient.tracks.getAudioFeatures(sampleSpotifyId)
 
-    behave like clientReceivingUnexpectedResponse(getAudioFeaturesEndpoint, request)
+    behave like clientReceivingUnexpectedResponse(endpoint, request)
 
     def stub: StubMapping =
       stubFor(
-        getAudioFeaturesEndpoint
+        endpoint
           .willReturn(
             aResponse()
               .withStatus(200)
@@ -118,8 +104,9 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
   }
 
   "`getAudioFeatures` for several tracks" should {
-    def getAudioFeaturesEndpoint: MappingBuilder =
+    def endpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-features"))
+
     val request: IOResponse[List[AudioFeatures]] = sampleClient.tracks.getAudioFeatures(
       NonEmptySet.of(
         SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
@@ -127,11 +114,11 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
       )
     )
 
-    behave like clientReceivingUnexpectedResponse(getAudioFeaturesEndpoint, request)
+    behave like clientReceivingUnexpectedResponse(endpoint, request)
 
     def stub: StubMapping =
       stubFor(
-        getAudioFeaturesEndpoint
+        endpoint
           .willReturn(
             aResponse()
               .withStatus(200)
@@ -188,7 +175,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
   }
 
   "`getTracks`" when {
-    def getTracksEndpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks"))
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks"))
 
     "market is not defined" should {
       val request: IOResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
@@ -200,7 +187,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
       )
 
       val endpointRequest =
-        getTracksEndpoint
+        endpoint
           .withQueryParam(
             "ids",
             equalTo("3n3Ppam7vgaVa1iaRUc9Lp,3twNvmDtFQtAd5gMKedhLD")
@@ -235,7 +222,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
       )
 
       val endpointRequest =
-        getTracksEndpoint
+        endpoint
           .withQueryParam("ids", equalTo("3n3Ppam7vgaVa1iaRUc9Lp,3twNvmDtFQtAd5gMKedhLD"))
           .withQueryParam("market", equalTo("ES"))
 
@@ -262,7 +249,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
 
   "`getTrack`" when {
     val sampleTrackId: SpotifyId = SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp")
-    def getTrackEndpoint(trackId: SpotifyId): MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks/${trackId.value}"))
+    def endpoint(trackId: SpotifyId): MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks/${trackId.value}"))
 
     "market is not defined" should {
       val request: IOResponse[FullTrack] = sampleClient.tracks.getTrack(
@@ -270,11 +257,11 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
         market = None
       )
 
-      behave like clientReceivingUnexpectedResponse(getTrackEndpoint(sampleTrackId), request)
+      behave like clientReceivingUnexpectedResponse(endpoint(sampleTrackId), request)
 
       def stub: StubMapping =
         stubFor(
-          getTrackEndpoint(sampleTrackId)
+          endpoint(sampleTrackId)
             .willReturn(
               aResponse()
                 .withStatus(200)
@@ -294,11 +281,11 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
         market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
       )
 
-      behave like clientReceivingUnexpectedResponse(getTrackEndpoint(sampleTrackId), request)
+      behave like clientReceivingUnexpectedResponse(endpoint(sampleTrackId), request)
 
       def stub: StubMapping =
         stubFor(
-          getTrackEndpoint(sampleTrackId)
+          endpoint(sampleTrackId)
             .withQueryParam("market", equalTo("ES"))
             .willReturn(
               aResponse()
@@ -319,11 +306,11 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
         market = Some(FromToken)
       )
 
-      behave like clientReceivingUnexpectedResponse(getTrackEndpoint(sampleTrackId), request)
+      behave like clientReceivingUnexpectedResponse(endpoint(sampleTrackId), request)
 
       def stub: StubMapping = {
         stubFor(
-          getTrackEndpoint(sampleTrackId)
+          endpoint(sampleTrackId)
             .withQueryParam("market", equalTo("from_token"))
             .willReturn(
               aResponse()
