@@ -7,7 +7,7 @@ import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.AuthJsonRequest
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset}
-import io.bartholomews.spotify4s.entities.{FullPlaylist, Market, Page, SimplePlaylist, SpotifyId, SpotifyUserId}
+import io.bartholomews.spotify4s.entities.{FullPlaylist, Market, Page, PlaylistRequest, SimplePlaylist, SpotifyId, SpotifyUserId}
 import io.circe.{Decoder, Json}
 import org.http4s.Uri
 
@@ -136,4 +136,61 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
         .withOptionQueryParam("market", market.map(_.value))
     }.runWith(client)
   }
+
+  /**
+    * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-create-playlist
+    *
+    * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+    * Creating a public playlist for a user requires authorization of the playlist-modify-public scope;
+    * creating a private playlist requires the playlist-modify-private scope.
+    *
+    * @param userId The user’s Spotify user ID.
+    * @param playlistName The name for the new playlist, for example "Your Coolest Playlist".
+    *                     This name does not need to be unique;
+    *                     a user may have several playlists with the same name.
+    *
+    * @param public Defaults to true.
+    *               If true the playlist will be public, if false it will be private.
+    *               To be able to create private playlists,
+    *               the user must have granted the playlist-modify-private scope.
+    *
+    * @param collaborative Defaults to false. If true the playlist will be collaborative.
+    *                      Note that to create a collaborative playlist
+    *                      you must also set public to false.
+    *                      To create collaborative playlists
+    *                      you must have granted playlist-modify-private
+    *                      and playlist-modify-public scopes.
+    *
+    * @param description value for playlist description as displayed
+    *                    in Spotify Clients and in the Web API.
+    *
+    * @param signer A valid access token from the Spotify Accounts service:
+    *               see the Web API Authorization Guide for details.
+    *               The access token must have been issued on behalf of the user.
+    *               Creating a public playlist for a user requires authorization
+    *               of the playlist-modify-public scope;
+    *               creating a private playlist requires the playlist-modify-private scope.
+    *
+    * @return On success, the response body contains the created playlist object in JSON format
+    *         and the HTTP status code in the response header is 200 OK or 201 Created.
+    *         There is also a Location response header
+    *         giving the Web API endpoint for the new playlist.
+    *         On error, the header status code is an error code
+    *         and the response body contains an error object.
+    *         Trying to create a playlist when you do not have the user’s authorization
+    *         returns error 403 Forbidden.
+    */
+  def createPlaylist(
+    userId: SpotifyUserId,
+    playlistName: String,
+    public: Boolean = true,
+    collaborative: Boolean = false,
+    description: Option[String] = None
+  )(
+    implicit signer: SignerV2
+  ): F[HttpResponse[FullPlaylist]] =
+    new AuthJsonRequest.Post[PlaylistRequest, FullPlaylist] {
+      override val uri: Uri = basePath / "users" / userId.value / "playlists"
+      override def entityBody: PlaylistRequest = PlaylistRequest(playlistName, public, collaborative, description)
+    }.runWith(client)
 }

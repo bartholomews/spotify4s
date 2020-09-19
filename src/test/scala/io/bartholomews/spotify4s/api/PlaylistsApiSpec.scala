@@ -163,4 +163,45 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
       }
     }
   }
+
+  "`createPlaylist`" when {
+    def endpoint: MappingBuilder =
+      post(urlPathEqualTo(s"$basePath/users/thelinmichael/playlists"))
+        .withRequestBody(equalToJson("""
+            |{
+            | "name": "A New Playlist",
+            | "public": false,
+            | "collaborative": false,
+            | "description": null
+            |}
+            |""".stripMargin))
+
+    "creating a private playlist with default parameters" should {
+      val request = sampleClient.playlists.createPlaylist(
+        userId = SpotifyUserId("thelinmichael"),
+        playlistName = "A New Playlist",
+        public = false
+      )
+
+      behave like clientReceivingUnexpectedResponse(endpoint, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpoint
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("playlists/create_playlist_response.json")
+            )
+        )
+
+      "return the correct entity" in matchResponse(stub, request) {
+        case FsResponse(_, _, Right(fullPlaylist)) =>
+          fullPlaylist.name shouldBe "A New Playlist"
+          fullPlaylist.description shouldBe None
+          fullPlaylist.owner.id shouldBe SpotifyUserId("thelinmichael")
+          fullPlaylist.tracks.items shouldBe List.empty
+      }
+    }
+  }
 }
