@@ -1,9 +1,18 @@
 package io.bartholomews.spotify4s.entities
 
 import cats.Order
+import cats.data.NonEmptyList
+import eu.timepit.refined.api.Validate
+import eu.timepit.refined.api.Validate.Plain
+import eu.timepit.refined.numeric.Interval
+import eu.timepit.refined.predicates.all.Size
+import eu.timepit.refined.predicates.collection.MaxSize
+import io.bartholomews.spotify4s.validators.maxSizeP
 import io.circe.Codec
 import io.circe.generic.extras.semiauto.deriveUnwrappedCodec
 import org.http4s.Uri
+import shapeless.Nat._0
+import shapeless.Witness
 /*
   https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids
  */
@@ -18,6 +27,14 @@ import org.http4s.Uri
 case class SpotifyUri(value: String) extends AnyVal
 object SpotifyUri {
   implicit val codec: Codec[SpotifyUri] = deriveUnwrappedCodec
+  implicit def validateSpotifyUris: Plain[NonEmptyList[SpotifyUri], MaxSize[100]] = {
+    Validate
+      .fromPredicate(
+        (d: NonEmptyList[SpotifyUri]) => d.length <= 100,
+        (_: NonEmptyList[SpotifyUri]) => "a maximum of 100 uris can be set in one request",
+        Size[Interval.Closed[_0, Witness.`100`.T]](maxSizeP)
+      )
+  }
 }
 
 /**

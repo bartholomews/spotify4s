@@ -20,6 +20,7 @@ import io.bartholomews.spotify4s.entities.{
   IsoCountry,
   Page,
   SimplePlaylist,
+  SnapshotId,
   SpotifyId,
   SpotifyUri,
   SpotifyUserId
@@ -37,8 +38,6 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
     def endpoint: MappingBuilder = put(urlPathEqualTo(s"$basePath/users/playlists"))
 
     "`uris` query parameter is correct" should {
-      import io.bartholomews.spotify4s.validators._
-
       val uri1 = SpotifyUri("spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
       val uri2 = SpotifyUri("spotify:episode:512ojhOuo1ktJprKbVcKyQ")
 
@@ -146,6 +145,58 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
 
       "return the correct entity" in matchResponse(stub, request) {
         case FsResponse(_, status, Right(())) => status shouldBe Status.Ok
+      }
+    }
+  }
+
+  "`addTracksToPlaylist`" when {
+    val uriTrack1 = SpotifyUri("spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
+    val uriTrack2 = SpotifyUri("spotify:track:1301WleyT98MSxVHPZCA6M")
+    val uriTrack3 = SpotifyUri("spotify:episode:512ojhOuo1ktJprKbVcKyQ")
+    def endpoint: MappingBuilder =
+      post(urlPathEqualTo(s"$basePath/playlists/2LZYIzBoCXAdx8buWmUwQe"))
+        .withRequestBody(equalToJson(s"""
+                                       |{
+                                       | "uris": [
+                                       |    "${uriTrack1.value}",
+                                       |    "${uriTrack2.value}",
+                                       |    "${uriTrack3.value}"
+                                       |  ],
+                                       |  "position": 1
+                                       |}
+                                       |""".stripMargin))
+
+    "adding tracks to a playlist at specified position" should {
+      val maybeUris: Either[Throwable, SpotifyUris] =
+        refineV[MaxSize[100]](NonEmptyList.of(uriTrack1, uriTrack2, uriTrack3))
+          .leftMap(msg => new Exception(msg))
+
+      val request: IO[HttpResponse[SnapshotId]] = IO
+        .fromEither(maybeUris)
+        .flatMap(
+          spotifyUris =>
+            sampleClient.playlists.addTracksToPlaylist(
+              playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+              uris = spotifyUris,
+              position = Some(1)
+            )
+        )
+
+      behave like clientReceivingUnexpectedResponse(endpoint, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpoint
+            .willReturn(
+              aResponse()
+                .withStatus(201)
+                .withBodyFile("playlists/add_tracks_to_playlist.json")
+            )
+        )
+
+      "return the correct entity" in matchResponse(stub, request) {
+        case FsResponse(_, _, Right(snapshotId)) =>
+          snapshotId shouldBe SnapshotId("JbtmHBDBAYu3/bt8BOXKjzKx3i0b6LCa/wVjyl6qQ2Yf6nFXkbmzuEa+ZI/U1yF+")
       }
     }
   }

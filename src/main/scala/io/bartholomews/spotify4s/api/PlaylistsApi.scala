@@ -5,14 +5,16 @@ import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.{FsAuth, FsAuthJson}
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset, SpotifyUris}
+import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset, SpotifyUris, TracksPosition}
 import io.bartholomews.spotify4s.entities.{
+  AddTracksToPlaylistRequest,
   CreatePlaylistRequest,
   FullPlaylist,
   Market,
   ModifyPlaylistRequest,
   Page,
   SimplePlaylist,
+  SnapshotId,
   SpotifyId,
   SpotifyUserId
 }
@@ -141,8 +143,51 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-reorder-playlists-tracks
   // TODO
 
-  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-add-tracks-to-playlist
-  // TODO
+  /**
+    * Add one or more items to a user’s playlist.
+    * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-add-tracks-to-playlist
+    *
+    * @param playlistId The Spotify ID for the playlist.
+    *
+    * @param uris     A list of Spotify URIs to add, can be track or episode URIs. For example:
+    *                 uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh,
+    *                 spotify:track:1301WleyT98MSxVHPZCA6M,
+    *                 spotify:episode:512ojhOuo1ktJprKbVcKyQ
+    *                 A maximum of 100 items can be added in one request.
+    *
+    * @param position The position to insert the items, a zero-based index.
+    *                 For example, to insert the items in the first position: position=0;
+    *                 to insert the items in the third position: position=2.
+    *                 If omitted, the items will be appended to the playlist.
+    *                 Items are added in the order they are listed in the query string or request body.
+    *
+    * @param signer   A valid access token from the Spotify Accounts service:
+    *                 see the Web API Authorization Guide for details.
+    *                 The access token must have been issued on behalf of the user.
+    *                 Adding items to the current user’s public playlists
+    *                 requires authorization of the playlist-modify-public scope;
+    *                 adding items to the current user’s private playlist
+    *                 (including collaborative playlists) requires the playlist-modify-private scope.
+    *
+    * @return On success, the HTTP status code in the response header is 201 Created.
+    *         The response body contains a snapshot_id in JSON format.
+    *         The snapshot_id can be used to identify your playlist version in future requests.
+    *         On error, the header status code is an error code
+    *         and the response body contains an error object.
+    *         Trying to add an item when you do not have the user’s authorization,
+    *         or when there are more than 10.000 items in the playlist, returns error 403 Forbidden.
+    */
+  def addTracksToPlaylist(
+    playlistId: SpotifyId,
+    uris: SpotifyUris,
+    position: Option[TracksPosition]
+  )(implicit signer: SignerV2): F[HttpResponse[SnapshotId]] = {
+    new FsAuthJson.Post[AddTracksToPlaylistRequest, SnapshotId] {
+      override val uri: Uri = basePath / "playlists" / playlistId.value
+      override def entityBody: AddTracksToPlaylistRequest =
+        AddTracksToPlaylistRequest(uris.value.toList.map(_.value), position.map(_.value))
+    }.runWith(client)
+  }
 
   // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-playlists-tracks
   // TODO
