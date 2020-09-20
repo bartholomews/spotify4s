@@ -12,7 +12,7 @@ final case class CreatePlaylistRequest(
 )
 
 object CreatePlaylistRequest extends FsJsonRequest[CreatePlaylistRequest] {
-  implicit val encoder: Encoder[CreatePlaylistRequest] = deriveConfiguredEncoder
+  implicit val encoder: Encoder[CreatePlaylistRequest] = dropNullValues(deriveConfiguredEncoder)
 }
 
 final case class ModifyPlaylistRequest(
@@ -23,5 +23,5 @@ final case class ModifyPlaylistRequest(
 )
 
 object ModifyPlaylistRequest extends FsJsonRequest[ModifyPlaylistRequest] {
-  implicit val encoder: Encoder[ModifyPlaylistRequest] = deriveConfiguredEncoder
+  implicit val encoder: Encoder[ModifyPlaylistRequest] = dropNullValues(deriveConfiguredEncoder)
 }

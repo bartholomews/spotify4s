@@ -1,24 +1,86 @@
 package io.bartholomews.spotify4s.api
 
+import cats.data.NonEmptyList
 import cats.effect.IO
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import eu.timepit.refined.collection.MaxSize
+import eu.timepit.refined.refineV
 import io.bartholomews.fsclient.entities.FsResponse
 import io.bartholomews.fsclient.entities.oauth.NonRefreshableToken
 import io.bartholomews.fsclient.utils.HttpTypes.{HttpResponse, IOResponse}
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
+import io.bartholomews.spotify4s.api.SpotifyApi.SpotifyUris
 import io.bartholomews.spotify4s.client.ClientData.sampleClient
-import io.bartholomews.spotify4s.entities.{FullPlaylist, IsoCountry, Page, SimplePlaylist, SpotifyId, SpotifyUserId}
+import io.bartholomews.spotify4s.entities.{
+  FullPlaylist,
+  IsoCountry,
+  Page,
+  SimplePlaylist,
+  SpotifyId,
+  SpotifyUri,
+  SpotifyUserId
+}
 import io.circe.{Decoder, HCursor}
-import org.http4s.Uri
+import org.http4s.{Status, Uri}
 
 class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
-  import eu.timepit.refined.auto.autoRefineV
+  import cats.implicits._
+  import eu.timepit.refined.auto._
 
   implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken
+
+  "`replacePlaylistItems`" when {
+    def endpoint: MappingBuilder = put(urlPathEqualTo(s"$basePath/users/playlists"))
+
+    "`uris` query parameter is correct" should {
+      import io.bartholomews.spotify4s.validators._
+
+      val uri1 = SpotifyUri("spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
+      val uri2 = SpotifyUri("spotify:episode:512ojhOuo1ktJprKbVcKyQ")
+
+      val maybeUris: Either[Throwable, SpotifyUris] =
+        refineV[MaxSize[100]](NonEmptyList.of(uri1, uri2)).leftMap(msg => new Exception(msg))
+
+      val request: IO[HttpResponse[Unit]] = IO
+        .fromEither(maybeUris)
+        .flatMap(
+          spotifyUris =>
+            sampleClient.playlists.replacePlaylistItems(
+              playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+              uris = spotifyUris
+            )
+        )
+
+      val endpointRequest =
+        endpoint
+          .withQueryParam("uris", equalTo(s"${uri1.value},${uri2.value}"))
+
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request, decodingBody = false)
+
+      def stub: StubMapping =
+        stubFor(endpointRequest.willReturn(aResponse().withStatus(201)))
+
+      "return the correct entity" in matchResponse(stub, request) {
+        case FsResponse(_, status, Right(())) => status shouldBe Status.Created
+      }
+    }
+
+    "`uris` parameter is too large" should {
+      import io.bartholomews.spotify4s.validators._
+
+      val tooManyUris: NonEmptyList[SpotifyUri] =
+        NonEmptyList.fromListUnsafe((1 to 101).map(_ => SpotifyUri("way too many")).toList)
+
+      "return a compile time error" in
+        inside(refineV[MaxSize[100]](tooManyUris)) {
+          case Left(error) => error shouldBe "Predicate failed: a maximum of 100 uris can be set in one request."
+        }
+    }
+  }
 
   "`getUserPlaylists`" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/users/wizzler/playlists"))
@@ -51,6 +113,39 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
         case FsResponse(_, _, Right(playlistsPage)) =>
           playlistsPage.items.size shouldBe 2
           playlistsPage.items(1).name shouldBe "😗👌💨"
+      }
+    }
+  }
+
+  "`changePlaylistDetails`" when {
+    def endpoint: MappingBuilder =
+      put(urlPathEqualTo(s"$basePath/playlists/2LZYIzBoCXAdx8buWmUwQe"))
+        .withRequestBody(equalToJson("""
+                                       |{
+                                       | "name": "New name for Playlist",
+                                       | "public": false
+                                       |}
+                                       |""".stripMargin))
+
+    "updating `name` and `public` fields" should {
+      val request = sampleClient.playlists.changePlaylistDetails(
+        playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+        playlistName = Some("New name for Playlist"),
+        public = Some(false),
+        collaborative = None,
+        description = None
+      )
+
+      behave like clientReceivingUnexpectedResponse(endpoint, request, decodingBody = false)
+
+      def stub: StubMapping =
+        stubFor(
+          endpoint
+            .willReturn(aResponse().withStatus(200))
+        )
+
+      "return the correct entity" in matchResponse(stub, request) {
+        case FsResponse(_, status, Right(())) => status shouldBe Status.Ok
       }
     }
   }
@@ -171,8 +266,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
             |{
             | "name": "A New Playlist",
             | "public": false,
-            | "collaborative": false,
-            | "description": null
+            | "collaborative": false
             |}
             |""".stripMargin))
 

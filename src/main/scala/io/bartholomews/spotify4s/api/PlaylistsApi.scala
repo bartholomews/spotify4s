@@ -5,7 +5,7 @@ import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.{FsAuth, FsAuthJson}
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset, OneToHundred}
+import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset, SpotifyUris}
 import io.bartholomews.spotify4s.entities.{
   CreatePlaylistRequest,
   FullPlaylist,
@@ -14,7 +14,6 @@ import io.bartholomews.spotify4s.entities.{
   Page,
   SimplePlaylist,
   SpotifyId,
-  SpotifyUri,
   SpotifyUserId
 }
 import io.circe.Decoder
@@ -53,12 +52,12 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
     *         Trying to set an item when you do not have the user’s authorization
     *         returns error 403 Forbidden.
     */
-  def replacePlaylistItems(playlistId: SpotifyId, uris: OneToHundred[SpotifyUri])(
+  def replacePlaylistItems(playlistId: SpotifyId, uris: SpotifyUris)(
     implicit signer: SignerV2
   ): F[HttpResponse[Unit]] =
     new FsAuth.PutEmpty {
       override val uri: Uri = (basePath / "users" / "playlists")
-        .withQueryParam(key = "uris", uris.value.toList.mkString(","))
+        .withQueryParam(key = "uris", uris.value.toList.map(_.value).mkString(","))
     }.runWith(client)
 
   /**
@@ -94,9 +93,35 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
         .withQueryParam("offset", offset.value)
     }.runWith(client)
 
-  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-change-playlist-details
-  // TODO
-
+  /**
+    * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-change-playlist-details
+    *
+    * @param playlistId   The Spotify ID for the playlist.
+    *
+    * @param playlistName The new name for the playlist, for example "My New Playlist Title".
+    *
+    * @param public If true the playlist will be public, if false it will be private.
+    *
+    * @param collaborative If true, the playlist will become collaborative and other users
+    *                      will be able to modify the playlist in their Spotify client.
+    *                      Note: You can only set collaborative to true on non-public playlists.
+    *
+    * @param description Value for playlist description
+    *                    as displayed in Spotify Clients and in the Web API.
+    *
+    * @param signer A valid access token from the Spotify Accounts service:
+    *               see the Web API Authorization Guide for details.
+    *               The access token must have been issued on behalf of the user.
+    *               Changing a public playlist for a user
+    *               requires authorization of the playlist-modify-public scope;
+    *               changing a private playlist requires the playlist-modify-private scope.
+    *
+    * @return On success the HTTP status code in the response header is 200 OK.
+    *         On error, the header status code is an error code
+    *         and the response body contains an error object.
+    *         Trying to change a playlist when you do not have the user’s authorization
+    *         returns error 403 Forbidden.
+    */
   def changePlaylistDetails(
     playlistId: SpotifyId,
     playlistName: Option[String],

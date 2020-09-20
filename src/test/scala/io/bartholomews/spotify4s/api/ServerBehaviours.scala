@@ -16,10 +16,15 @@ trait ServerBehaviours {
 
   val basePath = "/api/v1"
 
-  def clientReceivingUnexpectedResponse[A](expectedEndpoint: MappingBuilder, request: IOResponse[A]): Unit = {
+  def clientReceivingUnexpectedResponse[A](
+    expectedEndpoint: MappingBuilder,
+    request: IOResponse[A],
+    decodingBody: Boolean = true
+  ): Unit = {
     behave like clientReceivingAuthErrorResponse(expectedEndpoint, request)
     behave like clientReceivingApiErrorResponse(expectedEndpoint, request)
-    behave like clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request)
+    if (decodingBody)
+      behave like clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request)
   }
 
   private def clientReceivingAuthErrorResponse[A](expectedEndpoint: MappingBuilder, request: IOResponse[A]): Unit = {
