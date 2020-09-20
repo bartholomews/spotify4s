@@ -1,10 +1,8 @@
 package io.bartholomews.spotify4s.entities
 
-import io.circe.generic.extras.ConfiguredJsonCodec
 import io.circe.{Decoder, HCursor}
 
 // https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/#section-object
-@ConfiguredJsonCodec(encodeOnly = true)
 case class AudioSection(
   start: Double,
   duration: Double,
@@ -43,11 +41,10 @@ object AudioSection {
     )
 }
 
-@ConfiguredJsonCodec(encodeOnly = true)
 case class Tempo(value: Double, confidence: Confidence)
-@ConfiguredJsonCodec(encodeOnly = true)
+
 case class AudioKey(value: Option[PitchClass], confidence: Confidence)
-@ConfiguredJsonCodec(encodeOnly = true)
+
 case class AudioMode(value: Modality, confidence: Confidence)
-@ConfiguredJsonCodec(encodeOnly = true)
+
 case class TimeSignature(value: Double, confidence: Confidence)

@@ -1,7 +1,7 @@
 package io.bartholomews.spotify4s.entities
 
-import io.circe.Decoder
-import io.circe.generic.extras.ConfiguredJsonCodec
+import io.circe.{Codec, Decoder}
+import io.circe.generic.extras.semiauto.deriveConfiguredEncoder
 
 // https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/#time-interval-object
 sealed trait TimeInterval {
@@ -17,20 +17,17 @@ object TimeInterval {
     })
 }
 
-@ConfiguredJsonCodec(encodeOnly = true)
 case class Bar(start: Double, duration: Double, confidence: Confidence) extends TimeInterval
 object Bar {
-  implicit val decoder: Decoder[Bar] = TimeInterval.mkDecoder(Bar.apply)
+  implicit val codec: Codec[Bar] = Codec.from(TimeInterval.mkDecoder(Bar.apply), deriveConfiguredEncoder)
 }
 
-@ConfiguredJsonCodec(encodeOnly = true)
 case class Beat(start: Double, duration: Double, confidence: Confidence) extends TimeInterval
 object Beat {
-  implicit val decoder: Decoder[Beat] = TimeInterval.mkDecoder(Beat.apply)
+  implicit val codec: Codec[Beat] = Codec.from(TimeInterval.mkDecoder(Beat.apply), deriveConfiguredEncoder)
 }
 
-@ConfiguredJsonCodec(encodeOnly = true)
 case class Tatum(start: Double, duration: Double, confidence: Confidence) extends TimeInterval
 object Tatum {
-  implicit val decoder: Decoder[Tatum] = TimeInterval.mkDecoder(Tatum.apply)
+  implicit val codec: Codec[Tatum] = Codec.from(TimeInterval.mkDecoder(Tatum.apply), deriveConfiguredEncoder)
 }

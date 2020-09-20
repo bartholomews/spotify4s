@@ -6,7 +6,7 @@ import cats.implicits.catsKernelStdOrderForString
 import fs2.Pipe
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.requests.AuthJsonRequest
+import io.bartholomews.fsclient.requests.FsAuthJson
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.spotify4s.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.entities.{AudioAnalysis, AudioFeatures, FullTrack, Market, SpotifyId}
@@ -21,20 +21,20 @@ class TracksApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/
   def getAudioAnalysis(id: SpotifyId)(implicit signer: SignerV2): F[HttpResponse[AudioAnalysis]] =
-    new AuthJsonRequest.Get[AudioAnalysis] {
+    new FsAuthJson.Get[AudioAnalysis] {
       override val uri: Uri = basePath / "audio-analysis" / id.value
     }.runWith(client)
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/
   def getAudioFeatures(id: SpotifyId)(implicit signer: SignerV2): F[HttpResponse[AudioFeatures]] =
-    new AuthJsonRequest.Get[AudioFeatures] {
+    new FsAuthJson.Get[AudioFeatures] {
       override val uri: Uri = basePath / "audio-features" / id.value
     }.runWith(client)
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-audio-features/
   def getAudioFeatures(ids: NonEmptySet[SpotifyId])(implicit signer: SignerV2): F[HttpResponse[List[AudioFeatures]]] = {
     implicit val pipeDecoder: Pipe[F, Json, List[AudioFeatures]] = decodeListAtKey[F, AudioFeatures]("audio_features")
-    new AuthJsonRequest.Get[List[AudioFeatures]] {
+    new FsAuthJson.Get[List[AudioFeatures]] {
       override val uri: Uri = (basePath / "audio-features")
         .withQueryParam("ids", ids.value.map(_.value).toNonEmptyList.toList.mkString(","))
     }.runWith(client)
@@ -45,7 +45,7 @@ class TracksApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
     implicit signer: SignerV2
   ): F[HttpResponse[List[FullTrack]]] = {
     implicit val pipeDecoder: Pipe[F, Json, List[FullTrack]] = decodeListAtKey[F, FullTrack]("tracks")
-    new AuthJsonRequest.Get[List[FullTrack]] {
+    new FsAuthJson.Get[List[FullTrack]] {
       override val uri: Uri = (basePath / "tracks")
         .withQueryParam("ids", ids.map(_.value).toNonEmptyList.toList.mkString(","))
         .withOptionQueryParam("market", market.map(_.value))
@@ -56,7 +56,7 @@ class TracksApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
   def getTrack(id: SpotifyId, market: Option[Market])(
     implicit signer: SignerV2
   ): F[HttpResponse[FullTrack]] =
-    new AuthJsonRequest.Get[FullTrack] {
+    new FsAuthJson.Get[FullTrack] {
       override val uri: Uri = (basePath / "tracks" / id.value)
         .withOptionQueryParam("market", market.map(_.value))
     }.runWith(client)

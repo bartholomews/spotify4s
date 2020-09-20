@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.entities
 
-import io.circe.generic.extras.ConfiguredJsonCodec
+import io.circe.Decoder
+import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import org.http4s.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/object-model/#episode-object-full
@@ -26,7 +27,6 @@ type 	string 	The object type: "episode".
 uri 	string 	The Spotify ID for the episode.
  */
 
-@ConfiguredJsonCodec
 case class FullEpisode(
   audioPreviewUrl: Uri,
   description: String,
@@ -45,3 +45,8 @@ case class FullEpisode(
   //  show:
   uri: SpotifyUri
 )
+
+object FullEpisode {
+  implicit val decoder: Decoder[FullEpisode] = deriveConfiguredDecoder
+}
+

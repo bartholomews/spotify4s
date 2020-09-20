@@ -2,8 +2,8 @@ package io.bartholomews.spotify4s.entities
 
 import cats.effect.Sync
 import fs2.Pipe
-import io.circe.generic.extras.ConfiguredJsonCodec
-import io.circe.{Decoder, HCursor, Json}
+import io.circe.generic.extras.semiauto.deriveConfiguredEncoder
+import io.circe.{Decoder, Encoder, HCursor, Json}
 
 /**
   * href 	string 	A link to the Web API endpoint returning the full result of the request.
@@ -14,9 +14,8 @@ import io.circe.{Decoder, HCursor, Json}
   * previous 	string 	URL to the previous page of items. ( null if none)
   * total 	integer 	The maximum number of items available to return.
   *
-  * @tparam A
+  * @tparam A the page items type
   */
-@ConfiguredJsonCodec(encodeOnly = true)
 case class Page[A](
   href: String,
   items: List[A],
@@ -28,12 +27,13 @@ case class Page[A](
 )
 
 object Page {
-  def pipeDecoder[F[_]: Sync, A](
+  implicit def pipeDecoder[F[_]: Sync, A](
     implicit evidence: Sync[F],
     decode: Decoder[A]
   ): Pipe[F, Json, Page[A]] =
     io.circe.fs2.decoder[F, Page[A]](evidence, Page.decoder)
 
+  implicit def encoder[A](implicit encode: Encoder[A]): Encoder[Page[A]] = deriveConfiguredEncoder
   implicit def decoder[A](implicit decode: Decoder[A]): Decoder[Page[A]] =
     (c: HCursor) =>
       for {

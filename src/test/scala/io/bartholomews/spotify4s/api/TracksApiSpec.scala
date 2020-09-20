@@ -11,7 +11,7 @@ import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 import io.bartholomews.spotify4s.client.ClientData.{sampleClient, sampleSpotifyId}
-import io.bartholomews.spotify4s.entities.{AudioAnalysis, AudioFeatures, AudioKey, AudioMode, Bar, Confidence, FromToken, FullTrack, IsoCountry, Modality, PitchClass, SpotifyId, SpotifyUri}
+import io.bartholomews.spotify4s.entities.{AudioAnalysis, AudioFeatures, AudioKey, AudioMode, AudioSection, Bar, Confidence, FromToken, FullTrack, IsoCountry, Modality, PitchClass, SpotifyId, SpotifyUri, Tempo, TimeSignature}
 import org.http4s.Uri
 import org.scalatest.BeforeAndAfterEach
 
@@ -44,18 +44,23 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
             confidence = Confidence(0.057)
           )
         )
-        audioAnalysis.sections.head.key should matchTo(
-          AudioKey(
-            value = Some(PitchClass(7)),
-            confidence = Confidence(0.609)
+
+        audioAnalysis.sections.head should matchTo(
+          AudioSection(
+            start = 0.0,
+            duration = 23.33163,
+            confidence = Confidence(1.0),
+            loudness = -21.61,
+            tempo = Tempo(
+              value = 98.015,
+              confidence = Confidence(0.782)
+            ),
+            key = AudioKey(value = Some(PitchClass(7)), confidence = Confidence(0.609)),
+            mode = AudioMode(value = Modality.NoResult, confidence = Confidence(0.6)),
+            timeSignature = TimeSignature(value = 4, confidence = Confidence(1))
           )
         )
-        audioAnalysis.sections.head.mode should matchTo(
-          AudioMode(
-            value = Modality.NoResult,
-            confidence = Confidence(0.6)
-          )
-        )
+
         audioAnalysis.sections.last.mode should matchTo(
           AudioMode(value = Modality.Major, confidence = Confidence(0.566))
         )

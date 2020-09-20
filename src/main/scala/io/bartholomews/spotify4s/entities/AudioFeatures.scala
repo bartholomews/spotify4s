@@ -1,10 +1,10 @@
 package io.bartholomews.spotify4s.entities
 
 import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
-import io.circe.generic.extras.ConfiguredJsonCodec
+import io.circe.Decoder
+import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import org.http4s.Uri
 
-@ConfiguredJsonCodec
 case class AudioFeatures(
   durationMs: Int,
   key: PitchClass,
@@ -25,4 +25,6 @@ case class AudioFeatures(
   analysisUrl: Uri
 )
 
-object AudioFeatures extends FsJsonResponsePipe[AudioFeatures]
+object AudioFeatures extends FsJsonResponsePipe[AudioFeatures] {
+  implicit val decoder: Decoder[AudioFeatures] = deriveConfiguredDecoder
+}

@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.entities
 
-import io.circe.generic.extras.ConfiguredJsonCodec
+import io.circe.Decoder
+import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 
 /**
   * https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/
@@ -16,13 +17,16 @@ import io.circe.generic.extras.ConfiguredJsonCodec
   *
   * @param track  Information about the track.
   */
-@ConfiguredJsonCodec
 case class PlaylistTrack(
   addedAt: Option[String], // TODO: Timestamps are returned in ISO 8601 format as Coordinated Universal Time (UTC) with a zero offset: YYYY-MM-DDTHH:MM:SSZ. If the time is imprecise (for example, the date/time of an album release), an additional field indicates the precision; see for example, release_date in an album object.
   addedBy: Option[PublicUser],
   isLocal: Boolean,
   track: FullTrack
 )
+
+object PlaylistTrack {
+  implicit val decoder: Decoder[PlaylistTrack] = deriveConfiguredDecoder
+}
 
 /*
   additional_types 	Optional.

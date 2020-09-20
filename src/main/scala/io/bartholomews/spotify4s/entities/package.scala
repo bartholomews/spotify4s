@@ -6,5 +6,8 @@ import org.http4s.Uri
 
 package object entities {
   implicit val defaultConfig: Configuration = Configuration.default.withSnakeCaseMemberNames
-  implicit val uriCodec: Codec[Uri] = io.bartholomews.fsclient.implicits.uriCodec
+  implicit val uriCodec: Codec[Uri] = {
+    import org.http4s.circe.{decodeUri, encodeUri}
+    Codec.from(decodeUri, encodeUri)
+  }
 }

@@ -1,7 +1,6 @@
 package io.bartholomews.spotify4s.entities
 
 import io.bartholomews.iso_country.CountryCodeAlpha2
-import io.circe.generic.extras.ConfiguredJsonCodec
 import io.circe.{Decoder, HCursor}
 import org.http4s.Uri
 
@@ -48,7 +47,6 @@ import org.http4s.Uri
   * @param uri  The Spotify URI for the album.
   *              (https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids)
   */
-@ConfiguredJsonCodec(encodeOnly = true)
 case class SimpleAlbum(
   albumGroup: Option[AlbumGroup],
   albumType: Option[AlbumType],

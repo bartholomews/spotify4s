@@ -1,6 +1,5 @@
 package io.bartholomews.spotify4s.entities
 
-import io.circe.generic.extras.ConfiguredJsonCodec
 import io.circe.{Decoder, HCursor}
 import org.http4s.Uri
 
@@ -14,7 +13,6 @@ import org.http4s.Uri
   * @param images The user’s profile image.
   * @param uri  The Spotify URI for this user.
   */
-@ConfiguredJsonCodec(encodeOnly = true)
 case class PublicUser(
   displayName: Option[String],
   externalUrls: ExternalResourceUrl,

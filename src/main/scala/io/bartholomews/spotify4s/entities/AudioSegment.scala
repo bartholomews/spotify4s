@@ -1,9 +1,7 @@
 package io.bartholomews.spotify4s.entities
 
-import io.circe.generic.extras.ConfiguredJsonCodec
 import io.circe.{Decoder, HCursor}
 
-@ConfiguredJsonCodec(encodeOnly = true)
 case class AudioSegment(
   start: Double,
   duration: Double,
@@ -35,7 +33,6 @@ object AudioSegment {
     )
 }
 
-@ConfiguredJsonCodec(encodeOnly = true)
 case class Loudness(
   start: Double,
   max: Double,

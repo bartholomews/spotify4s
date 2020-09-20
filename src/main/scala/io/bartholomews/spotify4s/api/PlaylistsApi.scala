@@ -1,22 +1,65 @@
 package io.bartholomews.spotify4s.api
 
 import cats.effect.ConcurrentEffect
-import fs2.Pipe
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.requests.AuthJsonRequest
+import io.bartholomews.fsclient.requests.{FsAuth, FsAuthJson}
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset}
-import io.bartholomews.spotify4s.entities.{FullPlaylist, Market, Page, PlaylistRequest, SimplePlaylist, SpotifyId, SpotifyUserId}
-import io.circe.{Decoder, Json}
+import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset, OneToHundred}
+import io.bartholomews.spotify4s.entities.{
+  CreatePlaylistRequest,
+  FullPlaylist,
+  Market,
+  ModifyPlaylistRequest,
+  Page,
+  SimplePlaylist,
+  SpotifyId,
+  SpotifyUri,
+  SpotifyUserId
+}
+import io.circe.Decoder
 import org.http4s.Uri
 
 // https://developer.spotify.com/console/playlists/
 class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
+  import Page.pipeDecoder
   import eu.timepit.refined.auto.autoRefineV
-  import io.bartholomews.fsclient.implicits.{deriveJsonPipe, emptyEntityEncoder, rawJsonPipe}
+  import io.bartholomews.fsclient.implicits._
 
   private[api] val basePath: Uri = apiUri / "v1"
+
+  /**
+    * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-replace-playlists-tracks
+    *
+    * @param playlistId The Spotify ID for the playlist.
+    *
+    * @param uris A list of Spotify URIs to set, can be track or episode URIs.
+    *             For example:
+    *             uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:episode:512ojhOuo1ktJprKbVcKyQ
+    *             A maximum of 100 items can be set in one request.
+    *
+    * @param signer A valid access token from the Spotify Accounts service:
+    *               see the Web API Authorization Guide for details.
+    *               The access token must have been issued on behalf of the user.
+    *               Setting items in the current user’s public playlists
+    *               requires authorization of the playlist-modify-public scope;
+    *               setting items in the current user’s private playlist
+    *               (including collaborative playlists) requires the playlist-modify-private scope.
+    *
+    * @return On success, the HTTP status code in the response header is 201 Created.
+    *         On error, the header status code is an error code,
+    *         the response body contains an error object,
+    *         and the existing playlist is unmodified.
+    *         Trying to set an item when you do not have the user’s authorization
+    *         returns error 403 Forbidden.
+    */
+  def replacePlaylistItems(playlistId: SpotifyId, uris: OneToHundred[SpotifyUri])(
+    implicit signer: SignerV2
+  ): F[HttpResponse[Unit]] =
+    new FsAuth.PutEmpty {
+      override val uri: Uri = (basePath / "users" / "playlists")
+        .withQueryParam(key = "uris", uris.value.toList.mkString(","))
+    }.runWith(client)
 
   /**
     * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-list-users-playlists
@@ -44,14 +87,46 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
     */
   def getUserPlaylists(userId: SpotifyUserId, limit: Limit = 20, offset: Offset = 0)(
     implicit signer: SignerV2
-  ): F[HttpResponse[Page[SimplePlaylist]]] = {
-    implicit val pipeDecoder: Pipe[F, Json, Page[SimplePlaylist]] = Page.pipeDecoder
-    new AuthJsonRequest.Get[Page[SimplePlaylist]] {
+  ): F[HttpResponse[Page[SimplePlaylist]]] =
+    new FsAuthJson.Get[Page[SimplePlaylist]] {
       override val uri: Uri = (basePath / "users" / userId.value / "playlists")
         .withQueryParam("limit", limit.value)
         .withQueryParam("offset", offset.value)
     }.runWith(client)
-  }
+
+  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-change-playlist-details
+  // TODO
+
+  def changePlaylistDetails(
+    playlistId: SpotifyId,
+    playlistName: Option[String],
+    public: Option[Boolean],
+    collaborative: Option[Boolean],
+    description: Option[String]
+  )(implicit signer: SignerV2): F[HttpResponse[Unit]] =
+    new FsAuth.Put[ModifyPlaylistRequest] {
+      override val uri: Uri = basePath / "playlists" / playlistId.value
+      override def entityBody: ModifyPlaylistRequest =
+        ModifyPlaylistRequest(playlistName, public, collaborative, description)
+    }.runWith(client)
+
+  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-upload-custom-playlist-cover
+  // TODO
+
+  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-reorder-playlists-tracks
+  // TODO
+
+  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-add-tracks-to-playlist
+  // TODO
+
+  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-playlists-tracks
+  // TODO
+
+  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-playlist-cover
+  // TODO
+
+  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-remove-tracks-playlist
+  // TODO
 
   /**
     * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-playlist
@@ -82,7 +157,7 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   def getPlaylist(playlistId: SpotifyId, market: Option[Market] = None)(
     implicit signer: SignerV2
   ): F[HttpResponse[FullPlaylist]] =
-    new AuthJsonRequest.Get[FullPlaylist] {
+    new FsAuthJson.Get[FullPlaylist] {
       override val uri: Uri = (basePath / "playlists" / playlistId.value)
         .withOptionQueryParam("market", market.map(_.value))
     }.runWith(client)
@@ -128,14 +203,12 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   def getPlaylistFields[PartialPlaylist](playlistId: SpotifyId, fields: String, market: Option[Market] = None)(
     implicit signer: SignerV2,
     partialPlaylistDecoder: Decoder[PartialPlaylist]
-  ): F[HttpResponse[PartialPlaylist]] = {
-    implicit val pipeDecoder: Pipe[F, Json, PartialPlaylist] = deriveJsonPipe[F, PartialPlaylist]
-    new AuthJsonRequest.Get[PartialPlaylist] {
+  ): F[HttpResponse[PartialPlaylist]] =
+    new FsAuthJson.Get[PartialPlaylist] {
       override val uri: Uri = (basePath / "playlists" / playlistId.value)
         .withQueryParam("fields", fields)
         .withOptionQueryParam("market", market.map(_.value))
     }.runWith(client)
-  }
 
   /**
     * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-create-playlist
@@ -189,8 +262,9 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   )(
     implicit signer: SignerV2
   ): F[HttpResponse[FullPlaylist]] =
-    new AuthJsonRequest.Post[PlaylistRequest, FullPlaylist] {
+    new FsAuthJson.Post[CreatePlaylistRequest, FullPlaylist] {
       override val uri: Uri = basePath / "users" / userId.value / "playlists"
-      override def entityBody: PlaylistRequest = PlaylistRequest(playlistName, public, collaborative, description)
+      override def entityBody: CreatePlaylistRequest =
+        CreatePlaylistRequest(playlistName, public, collaborative, description)
     }.runWith(client)
 }

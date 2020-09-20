@@ -5,7 +5,7 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.{GreaterEqual, Interval}
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.requests.AuthJsonRequest
+import io.bartholomews.fsclient.requests.FsAuthJson
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.api.SpotifyApi.apiUri
@@ -15,7 +15,7 @@ import org.http4s.Uri
 // https://developer.spotify.com/documentation/web-api/reference/browse/
 class BrowseApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
-  import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, rawJsonPipe}
+  import io.bartholomews.fsclient.implicits._
 
   private[api] val basePath: Uri = apiUri / "v1" / "browse"
 
@@ -44,7 +44,7 @@ class BrowseApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
   def getNewReleases(country: Option[CountryCodeAlpha2], limit: Limit = 20, offset: Offset = 0)(
     implicit signer: SignerV2
   ): F[HttpResponse[NewReleases]] =
-    new AuthJsonRequest.Get[NewReleases] {
+    new FsAuthJson.Get[NewReleases] {
       override val uri: Uri = (basePath / "new-releases")
         .withOptionQueryParam("country", country.map(_.value))
         .withQueryParam("limit", limit.value)

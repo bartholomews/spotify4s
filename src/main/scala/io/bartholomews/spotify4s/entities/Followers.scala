@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.entities
 
-import io.circe.generic.extras.ConfiguredJsonCodec
+import io.circe.Decoder
+import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import org.http4s.Uri
 
 /**
@@ -10,5 +11,8 @@ import org.http4s.Uri
   *
   * @param total  The total number of followers.
   */
-@ConfiguredJsonCodec
 case class Followers(href: Option[Uri], total: Int)
+
+object Followers {
+  implicit val decoder: Decoder[Followers] = deriveConfiguredDecoder
+}

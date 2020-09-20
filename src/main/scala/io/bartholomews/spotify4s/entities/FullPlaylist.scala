@@ -1,7 +1,8 @@
 package io.bartholomews.spotify4s.entities
 
 import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
-import io.circe.generic.extras.ConfiguredJsonCodec
+import io.circe.Decoder
+import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import org.http4s.Uri
 
 /**
@@ -44,7 +45,6 @@ import org.http4s.Uri
   *
   * @param uri  The Spotify URI for the playlist.
   */
-@ConfiguredJsonCodec
 case class FullPlaylist(
   collaborative: Boolean,
   description: Option[String],
@@ -61,4 +61,6 @@ case class FullPlaylist(
   uri: SpotifyUri
 )
 
-object FullPlaylist extends FsJsonResponsePipe[FullPlaylist]
+object FullPlaylist extends FsJsonResponsePipe[FullPlaylist] {
+  implicit val decoder: Decoder[FullPlaylist] = deriveConfiguredDecoder
+}
