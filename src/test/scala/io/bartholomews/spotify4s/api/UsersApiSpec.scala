@@ -42,7 +42,6 @@ class UsersApiSpec extends WireWordSpec with ServerBehaviours {
   }
 
   "`getPlaylists`" when {
-
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me/playlists"))
 
     "`limits` and `offset` query parameters are defined" should {

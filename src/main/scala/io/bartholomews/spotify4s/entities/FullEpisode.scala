@@ -49,4 +49,3 @@ case class FullEpisode(
 object FullEpisode {
   implicit val decoder: Decoder[FullEpisode] = deriveConfiguredDecoder
 }
-

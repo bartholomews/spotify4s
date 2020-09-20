@@ -6,7 +6,7 @@ import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.FsAuthJson
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.{Limit, Offset, apiUri}
+import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset}
 import io.bartholomews.spotify4s.entities.{Page, PrivateUser, SimplePlaylist}
 import io.circe.Json
 import org.http4s.Uri

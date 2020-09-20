@@ -11,7 +11,24 @@ import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 import io.bartholomews.spotify4s.client.ClientData.{sampleClient, sampleSpotifyId}
-import io.bartholomews.spotify4s.entities.{AudioAnalysis, AudioFeatures, AudioKey, AudioMode, AudioSection, Bar, Confidence, FromToken, FullTrack, IsoCountry, Modality, PitchClass, SpotifyId, SpotifyUri, Tempo, TimeSignature}
+import io.bartholomews.spotify4s.entities.{
+  AudioAnalysis,
+  AudioFeatures,
+  AudioKey,
+  AudioMode,
+  AudioSection,
+  Bar,
+  Confidence,
+  FromToken,
+  FullTrack,
+  IsoCountry,
+  Modality,
+  PitchClass,
+  SpotifyId,
+  SpotifyUri,
+  Tempo,
+  TimeSignature
+}
 import org.http4s.Uri
 import org.scalatest.BeforeAndAfterEach
 
