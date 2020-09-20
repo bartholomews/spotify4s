@@ -5,19 +5,9 @@ import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.{FsAuth, FsAuthJson}
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset, SpotifyUris, TracksPosition}
-import io.bartholomews.spotify4s.entities.{
-  AddTracksToPlaylistRequest,
-  CreatePlaylistRequest,
-  FullPlaylist,
-  Market,
-  ModifyPlaylistRequest,
-  Page,
-  SimplePlaylist,
-  SnapshotId,
-  SpotifyId,
-  SpotifyUserId
-}
+import io.bartholomews.spotify4s.api.SpotifyApi.{Limit, Offset, SpotifyUris, TracksPosition, apiUri}
+import io.bartholomews.spotify4s.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
+import io.bartholomews.spotify4s.entities.{FullPlaylist, Market, Page, SimplePlaylist, SnapshotId, SpotifyId, SpotifyUserId}
 import io.circe.Decoder
 import org.http4s.Uri
 

@@ -1,5 +1,6 @@
-package io.bartholomews.spotify4s.entities
+package io.bartholomews.spotify4s.entities.requests
 
+import io.bartholomews.spotify4s.entities.dropNullValues
 import io.circe.Encoder
 import io.circe.generic.extras.semiauto.deriveConfiguredEncoder
 
