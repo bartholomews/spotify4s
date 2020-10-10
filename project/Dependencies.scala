@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
   object Versions {
     val refined = "0.9.13"
-    val fsClient = "0.0.2+64-a8796420-SNAPSHOT"
+    val fsClient = "0.0.2+70-8f427d82-SNAPSHOT"
     val scalaIso = "0.1.1"
   }
 
