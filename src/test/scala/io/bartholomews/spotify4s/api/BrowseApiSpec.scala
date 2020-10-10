@@ -13,6 +13,7 @@ import io.bartholomews.spotify4s.client.ClientData.sampleClient
 import io.bartholomews.spotify4s.entities.{AlbumType, NewReleases, ReleaseDate}
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
+import org.http4s.Uri
 
 class BrowseApiSpec extends WireWordSpec with ServerBehaviours {
   import eu.timepit.refined.auto.autoRefineV
@@ -48,7 +49,9 @@ class BrowseApiSpec extends WireWordSpec with ServerBehaviours {
 
       "return the correct entity" in matchResponse(stub, request) {
         case FsResponse(_, _, Right(NewReleases(albums))) =>
-          albums.href shouldBe "https://api.spotify.com/v1/browse/new-releases?country=SE&offset=5&limit=2"
+          albums.href shouldBe Uri.unsafeFromString(
+            "https://api.spotify.com/v1/browse/new-releases?country=SE&offset=5&limit=2"
+          )
           albums.next shouldBe Some("https://api.spotify.com/v1/browse/new-releases?country=SE&offset=7&limit=2")
           albums.items.size shouldBe 2
           albums.items.head.albumType shouldBe Some(AlbumType.Single)

@@ -1,26 +1,15 @@
 package io.bartholomews.spotify4s.api
 
 import cats.effect.ConcurrentEffect
+import fs2.Pipe
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.{FsAuth, FsAuthJson}
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset, SpotifyUris, TracksPosition}
-import io.bartholomews.spotify4s.entities.requests.{
-  AddTracksToPlaylistRequest,
-  CreatePlaylistRequest,
-  ModifyPlaylistRequest
-}
-import io.bartholomews.spotify4s.entities.{
-  FullPlaylist,
-  Market,
-  Page,
-  SimplePlaylist,
-  SnapshotId,
-  SpotifyId,
-  SpotifyUserId
-}
-import io.circe.Decoder
+import io.bartholomews.spotify4s.api.SpotifyApi.{Limit, Offset, SpotifyUris, TracksPosition, apiUri}
+import io.bartholomews.spotify4s.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
+import io.bartholomews.spotify4s.entities.{FullPlaylist, Market, Page, SimplePlaylist, SnapshotId, SpotifyId, SpotifyUserId}
+import io.circe.{Decoder, Json}
 import org.http4s.Uri
 
 // https://developer.spotify.com/console/playlists/
@@ -275,12 +264,14 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   def getPlaylistFields[PartialPlaylist](playlistId: SpotifyId, fields: String, market: Option[Market] = None)(
     implicit signer: SignerV2,
     partialPlaylistDecoder: Decoder[PartialPlaylist]
-  ): F[HttpResponse[PartialPlaylist]] =
+  ): F[HttpResponse[PartialPlaylist]] = {
+    implicit val jsonPipe: Pipe[F, Json, PartialPlaylist] = deriveJsonPipe[F, PartialPlaylist]
     new FsAuthJson.Get[PartialPlaylist] {
       override val uri: Uri = (basePath / "playlists" / playlistId.value)
         .withQueryParam("fields", fields)
         .withOptionQueryParam("market", market.map(_.value))
     }.runWith(client)
+  }
 
   /**
     * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-create-playlist
