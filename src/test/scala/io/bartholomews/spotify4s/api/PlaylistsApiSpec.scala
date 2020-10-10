@@ -69,7 +69,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
     }
 
     "`uris` parameter is too large" should {
-      import io.bartholomews.spotify4s.validators._
+      // FIXME: Add validators utils
+      // import io.bartholomews.spotify4s.validators._
 
       val tooManyUris: NonEmptyList[SpotifyUri] =
         NonEmptyList.fromListUnsafe((1 to 101).map(_ => SpotifyUri("way too many")).toList)
@@ -104,7 +105,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBodyFile("playlists/user_playlists.json")
+                .withBodyFile("playlists/get_user_playlists.json")
             )
         )
 
@@ -214,7 +215,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBodyFile("playlists/playlist.json")
+                .withBodyFile("playlists/get_playlist.json")
             )
         )
 
@@ -263,7 +264,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBodyFile("playlists/playlist_es_tracks_added_by_name.json")
+                .withBodyFile("playlists/get_playlist_fields_2.json")
             )
         )
 
@@ -298,7 +299,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBodyFile(s"playlists/${customPlaylistId.value}.json")
+                .withBodyFile(s"playlists/get_playlist_fields.json")
             )
         )
       }

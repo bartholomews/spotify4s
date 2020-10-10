@@ -63,7 +63,7 @@ class UsersApiSpec extends WireWordSpec with ServerBehaviours {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBodyFile("playlists/user_playlists.json")
+                .withBodyFile("playlists/get_user_playlists.json")
             )
         )
 
