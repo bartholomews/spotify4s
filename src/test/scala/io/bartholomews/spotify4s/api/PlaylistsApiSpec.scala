@@ -16,19 +16,26 @@ import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 import io.bartholomews.spotify4s.api.SpotifyApi.SpotifyUris
 import io.bartholomews.spotify4s.client.ClientData.sampleClient
 import io.bartholomews.spotify4s.entities.{
+  ExternalResourceUrl,
+  Followers,
   FullPlaylist,
   IsoCountry,
   Page,
+  PlaylistTrack,
+  PublicUser,
   SimplePlaylist,
   SnapshotId,
   SpotifyId,
+  SpotifyImage,
+  SpotifyResourceUrl,
   SpotifyUri,
   SpotifyUserId
 }
 import io.circe.{Decoder, HCursor}
 import org.http4s.{Status, Uri}
+import org.scalatest.matchers.should.Matchers
 
-class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
+class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers {
   import cats.implicits._
   import eu.timepit.refined.auto._
 
@@ -109,10 +116,116 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours {
             )
         )
 
+      import io.bartholomews.fsclient.entities.FsResponse
+
       "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(playlistsPage)) =>
-          playlistsPage.items.size shouldBe 2
-          playlistsPage.items(1).name shouldBe "😗👌💨"
+        case FsResponse(_, _, Right(playlistsPage: Page[SimplePlaylist])) =>
+          playlistsPage should matchTo(
+            Page[SimplePlaylist](
+              href = Uri.unsafeFromString("https://api.spotify.com/v1/users/wizzler/playlists?offset=5&limit=2"),
+              items = List(
+                SimplePlaylist(
+                  collaborative = false,
+                  description = Some(
+                    "Get psyched for your night out. The best tunes hand-picked by Barney Stinson himself. It's going to be legen... wait for it.... daaaaary!"
+                  ),
+                  externalUrls = SpotifyResourceUrl(
+                    Uri.unsafeFromString("https://open.spotify.com/playlist/2LZYIzBoCXAdx8buWmUwQe")
+                  ),
+                  href = Uri.unsafeFromString("https://api.spotify.com/v1/playlists/2LZYIzBoCXAdx8buWmUwQe"),
+                  id = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+                  images = List(
+                    SpotifyImage(
+                      height = Some(640),
+                      url = Uri.unsafeFromString(
+                        "https://mosaic.scdn.co/640/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653"
+                      ),
+                      width = Some(640)
+                    ),
+                    SpotifyImage(
+                      height = Some(300),
+                      url = Uri.unsafeFromString(
+                        "https://mosaic.scdn.co/300/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653"
+                      ),
+                      width = Some(300)
+                    ),
+                    SpotifyImage(
+                      height = Some(60),
+                      url = Uri.unsafeFromString(
+                        "https://mosaic.scdn.co/60/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653"
+                      ),
+                      width = Some(60)
+                    )
+                  ),
+                  name = "Barney's Get Psyched Mix",
+                  owner = PublicUser(
+                    displayName = Some("Ronald Pompa"),
+                    externalUrls = SpotifyResourceUrl(Uri.unsafeFromString("https://open.spotify.com/user/wizzler")),
+                    followers = None,
+                    href = Uri.unsafeFromString("https://api.spotify.com/v1/users/wizzler"),
+                    id = SpotifyUserId("wizzler"),
+                    images = List.empty,
+                    uri = SpotifyUri("spotify:user:wizzler")
+                  ),
+                  public = Some(true),
+                  snapshotId = "MzEsYjJiMWU4ZTlmZTU2MTcwYmNjZTMzMjdiMmQ4YjQwMTU1N2UzMjJhYg==",
+                  tracks = Page(
+                    href = Uri.unsafeFromString("https://api.spotify.com/v1/playlists/2LZYIzBoCXAdx8buWmUwQe/tracks"),
+                    items = List.empty,
+                    limit = None,
+                    next = None,
+                    offset = None,
+                    previous = None,
+                    total = 11
+                  ),
+                  uri = SpotifyUri("spotify:playlist:2LZYIzBoCXAdx8buWmUwQe")
+                ),
+                SimplePlaylist(
+                  collaborative = false,
+                  description = Some("For medicinal use only!"),
+                  externalUrls = SpotifyResourceUrl(
+                    Uri.unsafeFromString("https://open.spotify.com/playlist/7K0UB4wqdztK4jc3nrw9an")
+                  ),
+                  href = Uri.unsafeFromString("https://api.spotify.com/v1/playlists/7K0UB4wqdztK4jc3nrw9an"),
+                  id = SpotifyId("7K0UB4wqdztK4jc3nrw9an"),
+                  images = List(
+                    SpotifyImage(
+                      height = None,
+                      url = Uri.unsafeFromString("https://i.scdn.co/image/ab67706c0000da849899faadb08d52ace2662432"),
+                      width = None
+                    )
+                  ),
+                  name = "😗👌💨",
+                  owner = PublicUser(
+                    displayName = Some("Ronald Pompa"),
+                    externalUrls = SpotifyResourceUrl(Uri.unsafeFromString("https://open.spotify.com/user/wizzler")),
+                    followers = None,
+                    href = Uri.unsafeFromString("https://api.spotify.com/v1/users/wizzler"),
+                    id = SpotifyUserId("wizzler"),
+                    images = List.empty,
+                    uri = SpotifyUri("spotify:user:wizzler")
+                  ),
+                  public = Some(true),
+                  snapshotId = "MjEsNTIzM2ZlOWU4YzZmYWYzZjgxOTFlMTEzOTA1YmFjN2E2OTlmYzRjNg==",
+                  tracks = Page(
+                    href = Uri.unsafeFromString("https://api.spotify.com/v1/playlists/7K0UB4wqdztK4jc3nrw9an/tracks"),
+                    items = List.empty,
+                    limit = None,
+                    next = None,
+                    offset = None,
+                    previous = None,
+                    total = 14
+                  ),
+                  uri = SpotifyUri("spotify:playlist:7K0UB4wqdztK4jc3nrw9an")
+                )
+              ),
+              limit = Some(2),
+              next = Some("https://api.spotify.com/v1/users/wizzler/playlists?offset=7&limit=2"),
+              offset = Some(5),
+              previous = Some("https://api.spotify.com/v1/users/wizzler/playlists?offset=3&limit=2"),
+              total = 8
+            )
+          )
       }
     }
   }

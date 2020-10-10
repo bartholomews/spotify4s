@@ -4,6 +4,7 @@ import cats.effect.Sync
 import fs2.Pipe
 import io.circe.generic.extras.semiauto.deriveConfiguredEncoder
 import io.circe.{Decoder, Encoder, HCursor, Json}
+import org.http4s.Uri
 
 /**
   * href 	string 	A link to the Web API endpoint returning the full result of the request.
@@ -17,7 +18,7 @@ import io.circe.{Decoder, Encoder, HCursor, Json}
   * @tparam A the page items type
   */
 case class Page[A](
-  href: String,
+  href: Uri,
   items: List[A],
   limit: Option[Int],
   next: Option[String],
@@ -37,7 +38,7 @@ object Page {
   implicit def decoder[A](implicit decode: Decoder[A]): Decoder[Page[A]] =
     (c: HCursor) =>
       for {
-        href <- c.downField("href").as[String]
+        href <- c.downField("href").as[Uri]
         items <- c.downField("items").as[Option[List[A]]]
         limit <- c.downField("limit").as[Option[Int]]
         next <- c.downField("next").as[Option[String]]
