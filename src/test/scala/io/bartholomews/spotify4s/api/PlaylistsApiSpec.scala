@@ -259,7 +259,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
     val uriTrack2 = SpotifyUri("spotify:track:1301WleyT98MSxVHPZCA6M")
     val uriTrack3 = SpotifyUri("spotify:episode:512ojhOuo1ktJprKbVcKyQ")
     def endpoint: MappingBuilder =
-      post(urlPathEqualTo(s"$basePath/playlists/2LZYIzBoCXAdx8buWmUwQe"))
+      post(urlPathEqualTo(s"$basePath/playlists/2LZYIzBoCXAdx8buWmUwQe/tracks"))
         .withRequestBody(equalToJson(s"""
                                        |{
                                        | "uris": [

@@ -185,7 +185,7 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
     position: Option[TracksPosition]
   )(implicit signer: SignerV2): F[HttpResponse[SnapshotId]] = {
     new FsAuthJson.Post[AddTracksToPlaylistRequest, SnapshotId] {
-      override val uri: Uri = basePath / "playlists" / playlistId.value
+      override val uri: Uri = basePath / "playlists" / playlistId.value / "tracks"
       override def entityBody: AddTracksToPlaylistRequest =
         AddTracksToPlaylistRequest(uris.value.toList.map(_.value), position.map(_.value))
     }.runWith(client)
