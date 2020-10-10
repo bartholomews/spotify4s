@@ -5,8 +5,6 @@ import cats.effect.IO
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import eu.timepit.refined.collection.MaxSize
-import eu.timepit.refined.refineV
 import io.bartholomews.fsclient.entities.FsResponse
 import io.bartholomews.fsclient.entities.oauth.NonRefreshableToken
 import io.bartholomews.fsclient.utils.HttpTypes.{HttpResponse, IOResponse}
@@ -50,7 +48,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
       val uri2 = SpotifyUri("spotify:episode:512ojhOuo1ktJprKbVcKyQ")
 
       val maybeUris: Either[Throwable, SpotifyUris] =
-        refineV[MaxSize[100]](NonEmptyList.of(uri1, uri2)).leftMap(msg => new Exception(msg))
+        SpotifyUri.fromNel(NonEmptyList.of(uri1, uri2)).leftMap(msg => new Exception(msg))
 
       val request: IO[HttpResponse[Unit]] = IO
         .fromEither(maybeUris)
@@ -77,16 +75,26 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
     }
 
     "`uris` parameter is too large" should {
-      // FIXME: Add validators utils
-      // import io.bartholomews.spotify4s.validators._
+      val tooManyUris: List[SpotifyUri] =
+        (1 to 101).map(_ => SpotifyUri("just one extra uri...")).toList
 
-      val tooManyUris: NonEmptyList[SpotifyUri] =
-        NonEmptyList.fromListUnsafe((1 to 101).map(_ => SpotifyUri("way too many")).toList)
+      "return a compile time error" in {
 
-      "return a compile time error" in
-        inside(refineV[MaxSize[100]](tooManyUris)) {
+        val ex1: Either[String, SpotifyUris] = SpotifyUri.fromList(List.empty)
+        assert(ex1 == Left("Predicate failed: need to provide at least one uri."))
+
+        val asda: NonEmptyList[SpotifyUri] = NonEmptyList.fromListUnsafe(
+          (1 to 101).map(_ => SpotifyUri("just one extra uri...")).toList
+        )
+
+        val ex2: Either[String, SpotifyUris] = SpotifyUri.fromNel(asda)
+        assert(ex2 == Left("Predicate failed: a maximum of 100 uris can be set in one request."))
+
+
+        inside(SpotifyUri.fromList(tooManyUris)) {
           case Left(error) => error shouldBe "Predicate failed: a maximum of 100 uris can be set in one request."
         }
+      }
     }
   }
 
@@ -273,7 +281,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
 
     "adding tracks to a playlist at specified position" should {
       val maybeUris: Either[Throwable, SpotifyUris] =
-        refineV[MaxSize[100]](NonEmptyList.of(uriTrack1, uriTrack2, uriTrack3))
+        SpotifyUri
+          .fromNel(NonEmptyList.of(uriTrack1, uriTrack2, uriTrack3))
           .leftMap(msg => new Exception(msg))
 
       val request: IO[HttpResponse[SnapshotId]] = IO

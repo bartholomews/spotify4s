@@ -2,11 +2,14 @@ package io.bartholomews.spotify4s.entities
 
 import cats.Order
 import cats.data.NonEmptyList
+import cats.syntax.either.catsSyntaxEitherObject
 import eu.timepit.refined.api.Validate
 import eu.timepit.refined.api.Validate.Plain
 import eu.timepit.refined.numeric.Interval
 import eu.timepit.refined.predicates.all.Size
 import eu.timepit.refined.predicates.collection.MaxSize
+import eu.timepit.refined.refineV
+import io.bartholomews.spotify4s.api.SpotifyApi.SpotifyUris
 import io.bartholomews.spotify4s.validators.maxSizeP
 import io.circe.Codec
 import io.circe.generic.extras.semiauto.deriveUnwrappedCodec
@@ -35,6 +38,15 @@ object SpotifyUri {
         Size[Interval.Closed[_0, Witness.`100`.T]](maxSizeP)
       )
   }
+
+  def fromList(xs: List[SpotifyUri]): Either[String, SpotifyUris] =
+    Either
+      .fromOption(NonEmptyList.fromList(xs), ifNone = "Predicate failed: need to provide at least one uri.")
+      .map(fromNel)
+      .joinRight
+
+  def fromNel(xs: NonEmptyList[SpotifyUri]): Either[String, SpotifyUris] =
+    refineV[MaxSize[100]](xs)
 }
 
 /**

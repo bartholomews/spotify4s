@@ -12,6 +12,29 @@ which is a wrapper on http4s/fs2 with circe and OAuth handling.
 
 See [ENDPOINTS.md](https://github.com/bartholomews/spotify4s/blob/master/ENDPOINTS.md)
 
+## Refined types
+
+This library is using [refined]() in order to enforce type safety on some request parameters.   
+It also provides validators out of the box to make its usage a bit easier:
+```scala
+import cats.data.NonEmptyList
+import cats.data.NonEmptyList.fromListUnsafe
+import io.bartholomews.spotify4s.api.SpotifyApi.SpotifyUris
+import io.bartholomews.spotify4s.entities.SpotifyUri
+
+// type SpotifyUris = Refined[NonEmptyList[SpotifyUri], MaxSize[100]]
+
+val ex1: Either[String, SpotifyUris] = SpotifyUri.fromList(List.empty)
+assert(ex1 == Left("Predicate failed: need to provide at least one uri."))
+
+val tooManyUris: NonEmptyList[SpotifyUri] = NonEmptyList.fromListUnsafe(
+  (1 to 101).map(_ => SpotifyUri("just one extra uri...")).toList
+) 
+
+val ex2: Either[String, SpotifyUris] = SpotifyUri.fromNel(tooManyUris)
+assert(ex2 == Left("Predicate failed: a maximum of 100 uris can be set in one request."))
+```
+
 ## Contributing
 
 Any request / issue / help / PR is most welcome.
