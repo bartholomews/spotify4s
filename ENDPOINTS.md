@@ -25,7 +25,14 @@
     ❌ [Get an episode](https://developer.spotify.com/documentation/web-api/reference/episodes/get-an-episode/)  
     ❌ [Get several episodes](https://developer.spotify.com/documentation/web-api/reference/episodes/get-several-episodes/)  
 
-- **Follow** [🔗](https://developer.spotify.com/documentation/web-api/reference/follow/) ❌
+- **Follow** [🔗](https://developer.spotify.com/documentation/web-api/reference/follow/)  
+    ❌ [Check if Current User Follows Artists or Users](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)  
+    ❌ [Check if Users Follow a Playlist](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)  
+    ❌ [Follow Artists or Users](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)  
+    ❌ [Follow a Playlist](https://developer.spotify.com/documentation/web-api/reference/follow/follow-playlist/)  
+    ❌ [Get User's Followed Artists](https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/)  
+    ❌ [Unfollow Artists or Users](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)  
+    ✅ [Unfollow a Playlist](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-playlist/)  
 
 - **User Library** [🔗](https://developer.spotify.com/documentation/web-api/reference/library/) ❌
 
@@ -34,7 +41,7 @@
 - **Player** [🔗](https://developer.spotify.com/documentation/web-api/reference/player/) ❌
 
 - **Playlists** - [🔗](https://developer.spotify.com/documentation/web-api/reference/playlists/)  
-    ❌ [Add items to a playlist](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)   
+    ✅ [Add items to a playlist](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)   
     ✅ [Change a playlist's details](https://developer.spotify.com/documentation/web-api/reference/playlists/change-playlist-details/)  
     ✅ [Create a playlist](https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/)  
     ✅ [Get a list of current user's playlists](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)  
