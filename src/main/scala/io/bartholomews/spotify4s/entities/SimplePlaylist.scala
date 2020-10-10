@@ -16,7 +16,7 @@ case class SimplePlaylist(
   owner: PublicUser,
   public: Option[Boolean],
   snapshotId: String,
-  tracks: Page[PlaylistTrack],
+  tracks: CollectionLink,
   uri: SpotifyUri
 )
 

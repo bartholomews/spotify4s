@@ -16,6 +16,7 @@ import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
 import io.bartholomews.spotify4s.api.SpotifyApi.SpotifyUris
 import io.bartholomews.spotify4s.client.ClientData.sampleClient
 import io.bartholomews.spotify4s.entities.{
+  CollectionLink,
   ExternalResourceUrl,
   Followers,
   FullPlaylist,
@@ -169,13 +170,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
                   ),
                   public = Some(true),
                   snapshotId = "MzEsYjJiMWU4ZTlmZTU2MTcwYmNjZTMzMjdiMmQ4YjQwMTU1N2UzMjJhYg==",
-                  tracks = Page(
-                    href = Uri.unsafeFromString("https://api.spotify.com/v1/playlists/2LZYIzBoCXAdx8buWmUwQe/tracks"),
-                    items = List.empty,
-                    limit = None,
-                    next = None,
-                    offset = None,
-                    previous = None,
+                  tracks = CollectionLink(
+                    href = SpotifyUri("https://api.spotify.com/v1/playlists/2LZYIzBoCXAdx8buWmUwQe/tracks"),
                     total = 11
                   ),
                   uri = SpotifyUri("spotify:playlist:2LZYIzBoCXAdx8buWmUwQe")
@@ -207,13 +203,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
                   ),
                   public = Some(true),
                   snapshotId = "MjEsNTIzM2ZlOWU4YzZmYWYzZjgxOTFlMTEzOTA1YmFjN2E2OTlmYzRjNg==",
-                  tracks = Page(
-                    href = Uri.unsafeFromString("https://api.spotify.com/v1/playlists/7K0UB4wqdztK4jc3nrw9an/tracks"),
-                    items = List.empty,
-                    limit = None,
-                    next = None,
-                    offset = None,
-                    previous = None,
+                  tracks = CollectionLink(
+                    href = SpotifyUri("https://api.spotify.com/v1/playlists/7K0UB4wqdztK4jc3nrw9an/tracks"),
                     total = 14
                   ),
                   uri = SpotifyUri("spotify:playlist:7K0UB4wqdztK4jc3nrw9an")
