@@ -5,7 +5,7 @@
 # spotify4s
 Early stage *Spotify* client with the *Typelevel* stack.  
 
-The client is using the library [fsclient](https://github.com/bartholomews/fsclient)
+This client is using the library [fsclient](https://github.com/bartholomews/fsclient)
 which is a wrapper on http4s/fs2 with circe and OAuth handling.
 
 ## Endpoints Task list
@@ -14,7 +14,7 @@ See [ENDPOINTS.md](https://github.com/bartholomews/spotify4s/blob/master/ENDPOIN
 
 ## Refined types
 
-This library is using [refined]() in order to enforce type safety on some request parameters.   
+This client is using [refined](https://github.com/fthomas/refined) in order to enforce type safety on some request parameters.   
 It also provides validators out of the box to make its usage a bit easier:
 ```scala
 import cats.data.NonEmptyList
