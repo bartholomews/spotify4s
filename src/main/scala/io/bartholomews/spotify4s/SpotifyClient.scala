@@ -20,6 +20,7 @@ class SpotifyClient(client: FsClientV2[IO, SignerV2])(
   object playlists extends PlaylistsApi(client)
   object tracks extends TracksApi(client)
   object users extends UsersApi(client)
+  object follow extends FollowApi(client)
 }
 
 object SpotifyClient {
