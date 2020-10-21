@@ -47,6 +47,15 @@ object SpotifyUri {
 
   def fromNel(xs: NonEmptyList[SpotifyUri]): Either[String, SpotifyUris] =
     refineV[MaxSize[100]](xs)
+
+  def apply(xs: NonEmptyList[SpotifyUri]): NonEmptyList[SpotifyUris] = {
+    NonEmptyList.fromListUnsafe(
+      xs.toList
+        .grouped(100)
+        .toList
+        .map(xs => fromList(xs).fold(error => throw new Exception(s"Unexpected refinement error: [$error]"), identity))
+    )
+  }
 }
 
 /**
