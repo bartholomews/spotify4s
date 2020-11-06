@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
   object Versions {
     val refined = "0.9.13"
-    val fsClient = "0.0.2+94-63b8456a-SNAPSHOT"
+    val fsClient = "0.0.3"
     val scalaIso = "0.1.1"
   }
 
@@ -15,6 +15,6 @@ object Dependencies {
   )
 
   lazy val testDependencies: Seq[ModuleID] = Seq(
-    "io.bartholomews" %% "scalatestudo" % "0.0.2+5-6af2650f-SNAPSHOT"
+    "io.bartholomews" %% "scalatestudo" % "0.0.2+8-b48f2bb5-SNAPSHOT"
   ).map(_ % Test)
 }
