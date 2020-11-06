@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/bartholomews/spotify4s/workflows/build/badge.svg)](https://github.com/{user}/{repo}/actions)
+[![Actions Status](https://github.com/bartholomews/spotify4s/workflows/build/badge.svg)](https://github.com/bartholomews/spotify4s/actions)
 [![Build Status](https://travis-ci.org/bartholomews/spotify4s.svg?branch=master)](https://travis-ci.org/bartholomews/spotify4s)
 [![codecov](https://codecov.io/gh/bartholomews/spotify4s/branch/master/graph/badge.svg)](https://codecov.io/gh/bartholomews/spotify4s)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/bartholomews/spotify4s/blob/master/LICENSE)
