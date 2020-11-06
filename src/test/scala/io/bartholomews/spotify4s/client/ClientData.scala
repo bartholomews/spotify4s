@@ -15,7 +15,7 @@ object ClientData extends TestudoClientData {
   implicit val ioContextShift: ContextShift[IO] = IO.contextShift(ec)
   implicit val resource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](ec).resource
 
-  val sampleClient: SpotifyClient = new SpotifyClient(OAuthV2.sampleClient)
+  val sampleClient: SpotifyClient[IO] = new SpotifyClient(OAuthV2.sampleClient)
   val sampleSpotifyId: SpotifyId = SpotifyId("SAMPLE_SPOTIFY_ID")
   val sampleSpotifyUserId: SpotifyUserId = SpotifyUserId("SAMPLE_SPOTIFY_USER_ID")
 }

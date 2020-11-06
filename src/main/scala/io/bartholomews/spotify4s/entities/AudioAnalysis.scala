@@ -1,6 +1,5 @@
 package io.bartholomews.spotify4s.entities
 
-import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
 import io.circe.Decoder
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 
@@ -13,6 +12,6 @@ case class AudioAnalysis(
   tatums: List[Tatum]
 )
 
-object AudioAnalysis extends FsJsonResponsePipe[AudioAnalysis] {
+object AudioAnalysis {
   implicit val decoder: Decoder[AudioAnalysis] = deriveConfiguredDecoder
 }

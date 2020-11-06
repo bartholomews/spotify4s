@@ -1,6 +1,5 @@
 package io.bartholomews.spotify4s.entities
 
-import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.circe.Decoder
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
@@ -52,6 +51,6 @@ case class PrivateUser(
   uri: SpotifyUri
 )
 
-object PrivateUser extends FsJsonResponsePipe[PrivateUser] {
+object PrivateUser {
   implicit val decoder: Decoder[PrivateUser] = deriveConfiguredDecoder
 }

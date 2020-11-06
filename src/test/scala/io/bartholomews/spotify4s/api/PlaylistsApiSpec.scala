@@ -15,12 +15,9 @@ import io.bartholomews.spotify4s.api.SpotifyApi.SpotifyUris
 import io.bartholomews.spotify4s.client.ClientData.sampleClient
 import io.bartholomews.spotify4s.entities.{
   CollectionLink,
-  ExternalResourceUrl,
-  Followers,
   FullPlaylist,
   IsoCountry,
   Page,
-  PlaylistTrack,
   PublicUser,
   SimplePlaylist,
   SnapshotId,

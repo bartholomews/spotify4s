@@ -6,7 +6,7 @@ import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.requests.FsAuthJson
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset}
+import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Offset}
 import io.bartholomews.spotify4s.entities.{Page, PrivateUser, SimplePlaylist}
 import io.circe.Json
 import org.http4s.Uri
@@ -14,7 +14,6 @@ import org.http4s.Uri
 // https://developer.spotify.com/documentation/web-api/reference/users-profile/
 class UsersApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
-  import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, rawJsonPipe}
   private[api] val basePath: Uri = apiUri / "v1"
 
   /**
@@ -64,14 +63,14 @@ class UsersApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
     *            (wrapped in a paging object) in JSON format.
     *            On error, the header status code is an error code and the response body contains an error object.
     */
-  def getPlaylists(limit: Limit = 20, offset: Offset = 0)(
+  def getPlaylists(limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(
     implicit signer: SignerV2
   ): F[HttpResponse[Page[SimplePlaylist]]] = {
     implicit val pipeDecoder: Pipe[F, Json, Page[SimplePlaylist]] = Page.pipeDecoder
     new FsAuthJson.Get[Page[SimplePlaylist]] {
       override val uri: Uri = (basePath / "me" / "playlists")
         .withQueryParam("limit", limit.value)
-        .withQueryParam("offset", offset.value)
+        .withQueryParam("offset", offset)
     }.runWith(client)
   }
 }

@@ -1,12 +1,11 @@
 package io.bartholomews.spotify4s.api
 
 import cats.effect.ConcurrentEffect
-import fs2.Pipe
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.requests.{FsAuth, FsAuthJson}
+import io.bartholomews.fsclient.requests.{FsAuthJson, FsAuthPlainText}
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Limit, Offset, SpotifyUris, TracksPosition}
+import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Offset, SpotifyUris, TracksPosition}
 import io.bartholomews.spotify4s.entities.requests.{
   AddTracksToPlaylistRequest,
   CreatePlaylistRequest,
@@ -17,18 +16,17 @@ import io.bartholomews.spotify4s.entities.{
   Market,
   Page,
   SimplePlaylist,
+  SimplePlaylistItem,
   SnapshotId,
   SpotifyId,
   SpotifyUserId
 }
-import io.circe.{Decoder, Json}
+import io.circe.Decoder
 import org.http4s.Uri
 
 // https://developer.spotify.com/console/playlists/
 class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
-  import Page.pipeDecoder
   import eu.timepit.refined.auto.autoRefineV
-  import io.bartholomews.fsclient.implicits._
 
   private[api] val basePath: Uri = apiUri / "v1"
 
@@ -60,7 +58,7 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   def replacePlaylistItems(playlistId: SpotifyId, uris: SpotifyUris)(
     implicit signer: SignerV2
   ): F[HttpResponse[Unit]] =
-    new FsAuth.PutEmpty {
+    new FsAuthPlainText.PutEmpty[Unit] {
       override val uri: Uri = (basePath / "users" / "playlists")
         .withQueryParam(key = "uris", uris.value.toList.map(_.value).mkString(","))
     }.runWith(client)
@@ -89,13 +87,13 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
     *            (wrapped in a paging object) in JSON format.
     *            On error, the header status code is an error code and the response body contains an error object.
     */
-  def getUserPlaylists(userId: SpotifyUserId, limit: Limit = 20, offset: Offset = 0)(
+  def getUserPlaylists(userId: SpotifyUserId, limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(
     implicit signer: SignerV2
   ): F[HttpResponse[Page[SimplePlaylist]]] =
     new FsAuthJson.Get[Page[SimplePlaylist]] {
       override val uri: Uri = (basePath / "users" / userId.value / "playlists")
         .withQueryParam("limit", limit.value)
-        .withQueryParam("offset", offset.value)
+        .withQueryParam("offset", offset)
     }.runWith(client)
 
   /**
@@ -134,10 +132,14 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
     collaborative: Option[Boolean],
     description: Option[String]
   )(implicit signer: SignerV2): F[HttpResponse[Unit]] =
-    new FsAuth.Put[ModifyPlaylistRequest] {
+    new FsAuthPlainText.Put[ModifyPlaylistRequest, Unit] {
       override val uri: Uri = basePath / "playlists" / playlistId.value
-      override def entityBody: ModifyPlaylistRequest =
-        ModifyPlaylistRequest(playlistName, public, collaborative, description)
+      override def requestBody: ModifyPlaylistRequest = ModifyPlaylistRequest(
+        playlistName,
+        public,
+        collaborative,
+        description
+      )
     }.runWith(client)
 
   // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-upload-custom-playlist-cover
@@ -187,13 +189,10 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   )(implicit signer: SignerV2): F[HttpResponse[SnapshotId]] = {
     new FsAuthJson.Post[AddTracksToPlaylistRequest, SnapshotId] {
       override val uri: Uri = basePath / "playlists" / playlistId.value / "tracks"
-      override def entityBody: AddTracksToPlaylistRequest =
+      override def requestBody: AddTracksToPlaylistRequest =
         AddTracksToPlaylistRequest(uris.value.toList.map(_.value), position.map(_.value))
     }.runWith(client)
   }
-
-  // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-playlists-tracks
-  // TODO
 
   // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-playlist-cover
   // TODO
@@ -277,11 +276,37 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
     implicit signer: SignerV2,
     partialPlaylistDecoder: Decoder[PartialPlaylist]
   ): F[HttpResponse[PartialPlaylist]] = {
-    implicit val jsonPipe: Pipe[F, Json, PartialPlaylist] = deriveJsonPipe[F, PartialPlaylist]
     new FsAuthJson.Get[PartialPlaylist] {
       override val uri: Uri = (basePath / "playlists" / playlistId.value)
         .withQueryParam("fields", fields)
         .withOptionQueryParam("market", market.map(_.value))
+    }.runWith(client)
+  }
+
+  /**
+    * https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks
+    *
+    * @param playlistId The Spotify ID for the playlist.
+    * @param market Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking. For episodes, if a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+    *               _Note: If neither market or user country are provided, the episode is considered unavailable for the client.
+    * @param limit Optional. The maximum number of items to return. Default: 100. Minimum: 1. Maximum: 100.
+    * @param offset Optional. The index of the first item to return. Default: 0 (the first object).
+    * @param signer Required. A valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details. Both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
+    * @return On success, the response body contains an array of track objects and episode objects (depends on the additional_types parameter), wrapped in a paging object in JSON format and the HTTP status code in the response header is 200 OK. If an episode is unavailable in the given market, its information will not be included in the response. On error, the header status code is an error code and the response body contains an error object. Requesting playlists that you do not have the user’s authorization to access returns error 403 Forbidden.
+    */
+  def getPlaylistItems(
+    playlistId: SpotifyId,
+    market: Market,
+    limit: SimplePlaylistItem.Limit = 100,
+    offset: Offset = 0
+  )(
+    implicit signer: SignerV2
+  ): F[HttpResponse[Page[SimplePlaylistItem]]] = {
+    new FsAuthJson.Get[Page[SimplePlaylistItem]] {
+      override val uri: Uri = (basePath / "playlists" / playlistId.value / "tracks")
+        .withQueryParam("market", market.value)
+        .withQueryParam("limit", limit.value)
+        .withQueryParam("offset", offset)
     }.runWith(client)
   }
 
@@ -339,7 +364,7 @@ class PlaylistsApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) 
   ): F[HttpResponse[FullPlaylist]] =
     new FsAuthJson.Post[CreatePlaylistRequest, FullPlaylist] {
       override val uri: Uri = basePath / "users" / userId.value / "playlists"
-      override def entityBody: CreatePlaylistRequest =
+      override def requestBody: CreatePlaylistRequest =
         CreatePlaylistRequest(playlistName, public, collaborative, description)
     }.runWith(client)
 }

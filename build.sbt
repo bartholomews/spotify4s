@@ -25,7 +25,7 @@ scalacOptions += "-Ymacro-annotations" // https://github.com/circe/circe/issues/
 
 libraryDependencies ++= dependencies ++ testDependencies
 
-coverageMinimum := 89 // FIXME
+coverageMinimum := 85 // FIXME
 coverageFailOnMinimum := true
 
 // http://www.scalatest.org/user_guide/using_scalatest_with_sbt

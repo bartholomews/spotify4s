@@ -13,8 +13,6 @@ import org.http4s.{Headers, Status, Uri}
 
 // https://developer.spotify.com/documentation/general/guides/authorization-guide
 class AuthApi[F[_]: ConcurrentEffect](client: FsClientV2[F, SignerV2]) {
-  import io.bartholomews.fsclient.implicits.rawJsonPipe
-
   /**
     *
     * @param redirectUri
@@ -103,7 +101,7 @@ class AuthApi[F[_]: ConcurrentEffect](client: FsClientV2[F, SignerV2]) {
         .toRight("missing_required_query_parameters")
         .joinRight
 
-      val redirectUri = RedirectUri(Uri(uri.scheme, uri.authority, uri.path.stripSuffix("/")))
+      val redirectUri = RedirectUri(Uri(uri.scheme, uri.authority, uri.path.dropEndsWithSlash))
       response.fold(
         errorMsg => f.pure(FsResponse(Headers.empty, Status.Unauthorized, Left(ErrorBodyString(errorMsg)))),
         code => apply(code, redirectUri)

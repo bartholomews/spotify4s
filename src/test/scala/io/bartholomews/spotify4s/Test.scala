@@ -53,7 +53,7 @@ object Test {
   private val userAgent =
     UserAgent("spotify4s", Some("0.0.1"), Some("https://github.com/bartholomews/spotify4s"))
 
-  val client: SpotifyClient = new SpotifyClient(
+  val client: SpotifyClient[IO] = new SpotifyClient(
     new FsClientV2(
       appConfig = FsClientConfig(userAgent, ClientPasswordBasicAuthenticationV2(clientPassword)),
       clientPassword

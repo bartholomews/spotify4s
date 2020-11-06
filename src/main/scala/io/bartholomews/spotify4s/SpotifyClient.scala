@@ -1,6 +1,6 @@
 package io.bartholomews.spotify4s
 
-import cats.effect.{ContextShift, IO}
+import cats.effect.{ConcurrentEffect, ContextShift}
 import io.bartholomews.fsclient.client.FsClientV2
 import io.bartholomews.fsclient.config.{FsClientConfig, UserAgent}
 import io.bartholomews.fsclient.entities.oauth.v2.OAuthV2AuthorizationFramework.ClientPassword
@@ -10,11 +10,9 @@ import pureconfig.ConfigSource
 
 import scala.concurrent.ExecutionContext
 
-class SpotifyClient(client: FsClientV2[IO, SignerV2])(
+class SpotifyClient[F[_]: ConcurrentEffect](client: FsClientV2[F, SignerV2])(
   implicit ec: ExecutionContext
 ) {
-  private implicit val contextShift: ContextShift[IO] = IO.contextShift(ec)
-
   object auth extends AuthApi(client)
   object browse extends BrowseApi(client)
   object playlists extends PlaylistsApi(client)
@@ -27,7 +25,7 @@ object SpotifyClient {
   import FsClientConfig.LoadConfigOrThrow
   import pureconfig.generic.auto._
 
-  def unsafeFromConfig()(implicit ec: ExecutionContext, cs: ContextShift[IO]): SpotifyClient =
+  def unsafeFromConfig[F[_]: ConcurrentEffect]()(implicit ec: ExecutionContext, cs: ContextShift[F]): SpotifyClient[F] =
     (for {
       userAgent <- ConfigSource.default.at(namespace = "user-agent").load[UserAgent]
       clientPassword <- ConfigSource.default

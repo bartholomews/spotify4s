@@ -15,7 +15,6 @@ import org.http4s.Uri
 // https://developer.spotify.com/documentation/web-api/reference/browse/
 class BrowseApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
-  import io.bartholomews.fsclient.implicits._
 
   private[api] val basePath: Uri = apiUri / "v1" / "browse"
 

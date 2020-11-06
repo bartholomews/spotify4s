@@ -3,7 +3,7 @@ package io.bartholomews.spotify4s.api
 import cats.effect.ConcurrentEffect
 import io.bartholomews.fsclient.client.FsClient
 import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.requests.FsAuth
+import io.bartholomews.fsclient.requests.FsAuthJson
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.spotify4s.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.entities.SpotifyId
@@ -11,8 +11,6 @@ import org.http4s.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/browse/
 class FollowApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
-  import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, rawUnitPipe}
-
   private[api] val basePath: Uri = apiUri / "v1"
 
   /**
@@ -40,7 +38,7 @@ class FollowApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
   def unfollowPlaylist(playlistId: SpotifyId)(
     implicit signer: SignerV2
   ): F[HttpResponse[Unit]] =
-    new FsAuth.DeleteEmpty {
+    new FsAuthJson.DeleteEmpty[Unit] {
       override val uri: Uri = basePath / "playlists" / playlistId.value / "followers"
     }.runWith(client)
 }
