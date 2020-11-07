@@ -13,12 +13,12 @@ import scala.concurrent.ExecutionContext
 class SpotifyClient[F[_]: ConcurrentEffect](client: FsClientV2[F, SignerV2])(
   implicit ec: ExecutionContext
 ) {
-  object auth extends AuthApi(client)
-  object browse extends BrowseApi(client)
-  object playlists extends PlaylistsApi(client)
-  object tracks extends TracksApi(client)
-  object users extends UsersApi(client)
-  object follow extends FollowApi(client)
+  object auth extends AuthApi[F](client)
+  object browse extends BrowseApi[F, SignerV2](client)
+  object playlists extends PlaylistsApi[F, SignerV2](client)
+  object tracks extends TracksApi[F, SignerV2](client)
+  object users extends UsersApi[F, SignerV2](client)
+  object follow extends FollowApi[F, SignerV2](client)
 }
 
 object SpotifyClient {
