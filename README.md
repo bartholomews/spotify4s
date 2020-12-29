@@ -6,7 +6,7 @@
 Early stage *Spotify* client with the *Typelevel* stack.  
 
 This client is using the library [fsclient](https://github.com/bartholomews/fsclient)
-which is a wrapper on http4s/fs2 with circe and OAuth handling.
+which is an oAuth wrapper on top of [sttp](https://sttp.softwaremill.com/en/stable)
 
 ## Endpoints Task list
 
