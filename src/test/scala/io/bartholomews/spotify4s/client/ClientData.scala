@@ -1,21 +1,61 @@
 package io.bartholomews.spotify4s.client
 
-import cats.effect.{ContextShift, IO, Resource}
-import io.bartholomews.scalatestudo.data.TestudoClientData
+import io.bartholomews.fsclient.core.FsClient
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RefreshToken}
+import io.bartholomews.fsclient.core.oauth.v2.{ClientId, ClientPassword, ClientSecret}
+import io.bartholomews.fsclient.core.oauth.{
+  AccessTokenSigner,
+  ClientPasswordAuthentication,
+  NonRefreshableTokenSigner,
+  Scope
+}
 import io.bartholomews.spotify4s.SpotifyClient
 import io.bartholomews.spotify4s.entities.{SpotifyId, SpotifyUserId}
-import org.http4s.client.Client
-import org.http4s.client.blaze.BlazeClientBuilder
+import sttp.client.{HttpURLConnectionBackend, Identity}
 
-import scala.concurrent.ExecutionContext
-
-object ClientData extends TestudoClientData {
-  // https://http4s.org/v0.20/client/
-  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
-  implicit val ioContextShift: ContextShift[IO] = IO.contextShift(ec)
-  implicit val resource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](ec).resource
-
-  val sampleClient: SpotifyClient[IO] = new SpotifyClient(OAuthV2.sampleClient)
+object ClientData {
   val sampleSpotifyId: SpotifyId = SpotifyId("SAMPLE_SPOTIFY_ID")
   val sampleSpotifyUserId: SpotifyUserId = SpotifyUserId("SAMPLE_SPOTIFY_USER_ID")
+
+  val sampleUserAgent: UserAgent = UserAgent(
+    appName = "SAMPLE_APP_NAME",
+    appVersion = Some("SAMPLE_APP_VERSION"),
+    appUrl = Some("https://bartholomews.io/sample-app-url")
+  )
+
+  val sampleClientId: ClientId = ClientId("SAMPLE_CLIENT_ID")
+  val sampleClientSecret: ClientSecret = ClientSecret("SAMPLE_CLIENT_SECRET")
+  val sampleClientPassword: ClientPassword = ClientPassword(sampleClientId, sampleClientSecret)
+
+  def sampleFsClient: FsClient[Identity, ClientPasswordAuthentication] = FsClient(
+    sampleUserAgent,
+    ClientPasswordAuthentication(sampleClientPassword),
+    HttpURLConnectionBackend()
+  )
+
+  val sampleAccessTokenKey: AccessToken = AccessToken(
+    "00000000000-0000000000000000000-0000000-0000000000000000000000000000000000000000001"
+  )
+
+  val sampleRefreshToken: RefreshToken = RefreshToken("SAMPLE_REFRESH_TOKEN")
+
+  val sampleAuthorizationCode: AccessTokenSigner = AccessTokenSigner(
+    generatedAt = 21312L,
+    accessToken = sampleAccessTokenKey,
+    tokenType = "bearer",
+    expiresIn = 1000L,
+    refreshToken = Some(sampleRefreshToken),
+    scope = Scope(List.empty)
+  )
+
+  val sampleNonRefreshableToken: NonRefreshableTokenSigner = NonRefreshableTokenSigner(
+    generatedAt = 21312L,
+    accessToken = sampleAccessTokenKey,
+    tokenType = "bearer",
+    expiresIn = 1000L,
+    scope = Scope(List.empty)
+  )
+
+  val sampleClient: SpotifyClient[Identity] = new SpotifyClient(sampleFsClient)
 }

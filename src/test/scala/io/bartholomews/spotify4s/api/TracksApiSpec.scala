@@ -4,13 +4,12 @@ import cats.data.NonEmptySet
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import io.bartholomews.fsclient.entities.FsResponse
-import io.bartholomews.fsclient.entities.oauth.NonRefreshableToken
-import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
+import io.bartholomews.fsclient.core.http.SttpResponses.CirceJsonResponse
+import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
-import io.bartholomews.spotify4s.client.ClientData.{sampleClient, sampleSpotifyId}
+import io.bartholomews.spotify4s.DiffDerivations.matchTo
+import io.bartholomews.spotify4s.client.ClientData.{sampleClient, sampleNonRefreshableToken, sampleSpotifyId}
 import io.bartholomews.spotify4s.entities.{
   AudioAnalysis,
   AudioFeatures,
@@ -29,16 +28,16 @@ import io.bartholomews.spotify4s.entities.{
   Tempo,
   TimeSignature
 }
-import org.http4s.Uri
 import org.scalatest.BeforeAndAfterEach
+import sttp.client.UriContext
 
 class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAfterEach {
-  implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken
+  implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
 
   "`getAudioAnalysis`" should {
     def endpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-analysis/${sampleSpotifyId.value}"))
-    val request: IOResponse[AudioAnalysis] = sampleClient.tracks.getAudioAnalysis(sampleSpotifyId)
+    def request: CirceJsonResponse[AudioAnalysis] = sampleClient.tracks.getAudioAnalysis(sampleSpotifyId)
 
     behave like clientReceivingUnexpectedResponse(endpoint, request)
 
@@ -52,8 +51,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
           )
       )
 
-    "return the correct entity" in matchResponse(stub, request) {
-      case FsResponse(_, _, Right(audioAnalysis)) =>
+    "return the correct entity" in matchResponseBody(stub, request) {
+      case Right(audioAnalysis) =>
         audioAnalysis.bars.head should matchTo(
           Bar(
             start = 0.06443,
@@ -87,7 +86,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
   "`getAudioFeatures` for a track" should {
     def endpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-features/${sampleSpotifyId.value}"))
-    val request: IOResponse[AudioFeatures] = sampleClient.tracks.getAudioFeatures(sampleSpotifyId)
+    def request: CirceJsonResponse[AudioFeatures] = sampleClient.tracks.getAudioFeatures(sampleSpotifyId)
 
     behave like clientReceivingUnexpectedResponse(endpoint, request)
 
@@ -101,8 +100,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
           )
       )
 
-    "return the correct entity" in matchResponse(stub, request) {
-      case FsResponse(_, _, Right(audioFeatures)) =>
+    "return the correct entity" in matchResponseBody(stub, request) {
+      case Right(audioFeatures) =>
         audioFeatures shouldBe AudioFeatures(
           durationMs = 255349,
           key = PitchClass(5),
@@ -119,8 +118,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
           tempo = 98.002,
           id = SpotifyId("06AKEBrKUckW0KREUWRnvT"),
           uri = SpotifyUri("spotify:track:06AKEBrKUckW0KREUWRnvT"),
-          trackHref = Uri.unsafeFromString("https://api.spotify.com/v1/tracks/06AKEBrKUckW0KREUWRnvT"),
-          analysisUrl = Uri.unsafeFromString("https://api.spotify.com/v1/audio-analysis/06AKEBrKUckW0KREUWRnvT")
+          trackHref = uri"https://api.spotify.com/v1/tracks/06AKEBrKUckW0KREUWRnvT",
+          analysisUrl = uri"https://api.spotify.com/v1/audio-analysis/06AKEBrKUckW0KREUWRnvT"
         )
     }
   }
@@ -129,7 +128,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
     def endpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-features"))
 
-    val request: IOResponse[List[AudioFeatures]] = sampleClient.tracks.getAudioFeatures(
+    def request: CirceJsonResponse[List[AudioFeatures]] = sampleClient.tracks.getAudioFeatures(
       NonEmptySet.of(
         SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
         SpotifyId("3twNvmDtFQtAd5gMKedhLD")
@@ -148,8 +147,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
           )
       )
 
-    "return the correct entity" in matchResponse(stub, request) {
-      case FsResponse(_, _, Right(af1 :: af2 :: Nil)) =>
+    "return the correct entity" in matchResponseBody(stub, request) {
+      case Right(af1 :: af2 :: Nil) =>
         af1 should matchTo(
           AudioFeatures(
             durationMs = 222200,
@@ -167,8 +166,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
             tempo = 148.114,
             id = SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
             uri = SpotifyUri("spotify:track:3n3Ppam7vgaVa1iaRUc9Lp"),
-            trackHref = Uri.unsafeFromString("https://api.spotify.com/v1/tracks/3n3Ppam7vgaVa1iaRUc9Lp"),
-            analysisUrl = Uri.unsafeFromString("https://api.spotify.com/v1/audio-analysis/3n3Ppam7vgaVa1iaRUc9Lp")
+            trackHref = uri"https://api.spotify.com/v1/tracks/3n3Ppam7vgaVa1iaRUc9Lp",
+            analysisUrl = uri"https://api.spotify.com/v1/audio-analysis/3n3Ppam7vgaVa1iaRUc9Lp"
           )
         )
 
@@ -189,8 +188,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
             tempo = 138.019,
             id = SpotifyId("3twNvmDtFQtAd5gMKedhLD"),
             uri = SpotifyUri("spotify:track:3twNvmDtFQtAd5gMKedhLD"),
-            trackHref = Uri.unsafeFromString("https://api.spotify.com/v1/tracks/3twNvmDtFQtAd5gMKedhLD"),
-            analysisUrl = Uri.unsafeFromString("https://api.spotify.com/v1/audio-analysis/3twNvmDtFQtAd5gMKedhLD")
+            trackHref = uri"https://api.spotify.com/v1/tracks/3twNvmDtFQtAd5gMKedhLD",
+            analysisUrl = uri"https://api.spotify.com/v1/audio-analysis/3twNvmDtFQtAd5gMKedhLD"
           )
         )
     }
@@ -200,7 +199,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks"))
 
     "market is not defined" should {
-      val request: IOResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
+      def request: CirceJsonResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
         ids = NonEmptySet.of(
           SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
           SpotifyId("3twNvmDtFQtAd5gMKedhLD")
@@ -227,15 +226,15 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(List(track1, track2))) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(List(track1, track2)) =>
           track1.uri shouldBe SpotifyUri("spotify:track:3n3Ppam7vgaVa1iaRUc9Lp")
           track2.uri shouldBe SpotifyUri("spotify:track:3twNvmDtFQtAd5gMKedhLD")
       }
     }
 
     "market is defined" should {
-      val request: IOResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
+      def request: CirceJsonResponse[List[FullTrack]] = sampleClient.tracks.getTracks(
         ids = NonEmptySet.of(
           SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
           SpotifyId("3twNvmDtFQtAd5gMKedhLD")
@@ -260,8 +259,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(List(track1, track2))) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(List(track1, track2)) =>
           track1.uri shouldBe SpotifyUri("spotify:track:3n3Ppam7vgaVa1iaRUc9Lp")
           track2.uri shouldBe SpotifyUri("spotify:track:3twNvmDtFQtAd5gMKedhLD")
           track2.availableMarkets shouldBe List.empty
@@ -274,7 +273,7 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
     def endpoint(trackId: SpotifyId): MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks/${trackId.value}"))
 
     "market is not defined" should {
-      val request: IOResponse[FullTrack] = sampleClient.tracks.getTrack(
+      def request: CirceJsonResponse[FullTrack] = sampleClient.tracks.getTrack(
         sampleTrackId,
         market = None
       )
@@ -291,14 +290,14 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(track)) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(track) =>
           track.uri shouldBe SpotifyUri("spotify:track:3n3Ppam7vgaVa1iaRUc9Lp")
       }
     }
 
     "market is defined" should {
-      val request: IOResponse[FullTrack] = sampleClient.tracks.getTrack(
+      def request: CirceJsonResponse[FullTrack] = sampleClient.tracks.getTrack(
         sampleTrackId,
         market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
       )
@@ -316,14 +315,14 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(track)) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(track) =>
           track.uri shouldBe SpotifyUri("spotify:track:3n3Ppam7vgaVa1iaRUc9Lp")
       }
     }
 
     "market is defined as `from_token`" should {
-      val request: IOResponse[FullTrack] = sampleClient.tracks.getTrack(
+      def request: CirceJsonResponse[FullTrack] = sampleClient.tracks.getTrack(
         sampleTrackId,
         market = Some(FromToken)
       )
@@ -342,8 +341,8 @@ class TracksApiSpec extends WireWordSpec with ServerBehaviours with BeforeAndAft
         )
       }
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(track)) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(track) =>
           track.uri shouldBe SpotifyUri("spotify:track:3n3Ppam7vgaVa1iaRUc9Lp")
       }
     }

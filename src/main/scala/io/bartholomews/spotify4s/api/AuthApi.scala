@@ -1,18 +1,44 @@
 package io.bartholomews.spotify4s.api
 
 import cats.Applicative
-import cats.effect.ConcurrentEffect
-import io.bartholomews.fsclient.client.FsClientV2
-import io.bartholomews.fsclient.entities.oauth.v2.OAuthV2AuthorizationFramework._
-import io.bartholomews.fsclient.entities.oauth.{AuthorizationCode, NonRefreshableToken, SignerV2}
-import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
-import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
-import io.bartholomews.spotify4s.api.SpotifyApi.accountsUri
+import io.bartholomews.fsclient.core.http.SttpResponses.CirceJsonResponse
+import io.bartholomews.fsclient.core.oauth.v2.AuthorizationCodeRequest
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{
+  AuthorizationCodeGrant,
+  ClientCredentialsGrant,
+  RedirectUri,
+  RefreshToken,
+  ResponseHandler
+}
+import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, ClientPasswordAuthentication, NonRefreshableTokenSigner}
+import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
+import io.bartholomews.spotify4s.api.SpotifyApi._
 import io.bartholomews.spotify4s.entities.SpotifyScope
-import org.http4s.{Headers, Status, Uri}
+import sttp.client.circe.asJson
+import sttp.model.Uri.{PathSegment, QuerySegment}
+import sttp.model.{StatusCode, Uri}
 
-// https://developer.spotify.com/documentation/general/guides/authorization-guide
-class AuthApi[F[_]: ConcurrentEffect](client: FsClientV2[F, SignerV2]) {
+class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication])
+    extends FsApiClient[F, ClientPasswordAuthentication](client) {
+  import io.circe._
+  import sttp.client._
+
+  private val clientPassword = client.signer.clientPassword
+
+  private val tokenEndpoint = accountsUri / "api" / "token"
+
+  def authorizationCodeRequest(
+    redirectUri: RedirectUri,
+    state: Option[String],
+    scopes: List[SpotifyScope]
+  ): AuthorizationCodeRequest =
+    AuthorizationCodeRequest(
+      clientId = clientPassword.clientId,
+      redirectUri = redirectUri,
+      state = state,
+      scopes = scopes.map(_.entryName)
+    )
+
   /**
     *
     * @param redirectUri
@@ -49,71 +75,62 @@ class AuthApi[F[_]: ConcurrentEffect](client: FsClientV2[F, SignerV2]) {
     * @return
     */
   def authorizeUrl(
-    redirectUri: Uri,
-    state: Option[String],
-    scopes: List[SpotifyScope],
+    authorizationCodeRequest: AuthorizationCodeRequest,
     showDialog: Boolean = false
   ): Uri = {
+    val serverUri =
+      accountsUri
+        .pathSegments(accountsUri.pathSegments ++ List(PathSegment("authorize")))
+        .querySegment(QuerySegment.KeyValue("show_dialog", showDialog.toString))
+
     AuthorizationCodeGrant
-      .authorizationCodeUri(client.clientPassword.clientId, redirectUri, state, scopes.map(_.entryName)) {
-        (accountsUri / "authorize")
-          .withQueryParam("show_dialog", showDialog)
-      }
+      .authorizationRequestUri(authorizationCodeRequest, serverUri)
   }
 
   // https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
   object AuthorizationCode {
-    private val tokenEndpoint = accountsUri / "api" / "token"
+    def getAccessToken(request: AuthorizationCodeRequest, redirectionUriResponse: Uri)(
+      implicit f: Applicative[F]
+    ): F[Response[Either[ResponseError[Error], AccessTokenSigner]]] = {
+      AuthorizationCodeGrant
+        .authorizationResponse(request, redirectionUriResponse)
+        .fold(
+          // FIXME: ResponseError[T] for non-circe parsers ?
+          errorMsg =>
+            f.pure(
+              Response.apply[Either[ResponseError[Error], AccessTokenSigner]](
+                body = Left(HttpError(errorMsg, StatusCode.Unauthorized)),
+                code = StatusCode.Unauthorized
+              )
+            ),
+          verifier => {
+            implicit val responseHandler: ResponseHandler[AccessTokenSigner] = asJson[AccessTokenSigner]
 
-    def apply(code: String, redirectUri: RedirectUri): F[HttpResponse[AuthorizationCode]] = {
-      implicit val signer: SignerV2 = client.appConfig.signer
-      new AuthorizationCodeGrant.AccessTokenRequest(code, Some(redirectUri)) {
-        override val uri: Uri = tokenEndpoint
-      }.runWith(client)
+            AuthorizationCodeGrant
+              .accessTokenRequest(
+                tokenEndpoint,
+                verifier,
+                Some(request.redirectUri),
+                clientPassword
+              )
+              .send()
+          }
+        )
     }
 
-    def refresh(refreshToken: RefreshToken): F[HttpResponse[AuthorizationCode]] = {
-      implicit val signer: SignerV2 = client.appConfig.signer
-      new AuthorizationCodeGrant.RefreshTokenRequest(refreshToken, scope = List.empty) {
-        override val uri: Uri = tokenEndpoint
-      }.runWith(client)
-    }
-
-    /**
-      *
-      * @param uri if the user does not accept your request or an error has occurred,
-      *            the response query string, for example https://example.com/callback?error=access_denied&state=STATE,
-      *            contains the following parameters:
-      *            error 	The reason authorization failed, for example: “access_denied”
-      *            state 	The value of the state parameter supplied in the request.
-      *             TODO: prob worth to validate `state` if present
-      *
-      * @param f   `Applicative[F]` must be in scope
-      *
-      * @return an `FsResponse[HttpError, AuthorizationCode]` wrapped in the ConcurrentEffect `F`
-      */
-    def fromUri(uri: Uri)(implicit f: Applicative[F]): F[HttpResponse[AuthorizationCode]] = {
-      val response: Either[String, String] = uri.query.pairs
-        .collectFirst({
-          case ("code", Some(code)) => Right(code)
-          case ("error", Some(error)) => Left(error)
-        })
-        .toRight("missing_required_query_parameters")
-        .joinRight
-
-      val redirectUri = RedirectUri(Uri(uri.scheme, uri.authority, uri.path.dropEndsWithSlash))
-      response.fold(
-        errorMsg => f.pure(FsResponse(Headers.empty, Status.Unauthorized, Left(ErrorBodyString(errorMsg)))),
-        code => apply(code, redirectUri)
-      )
+    def getRefreshToken(refreshToken: RefreshToken): F[CirceJsonResponse[AccessTokenSigner]] = {
+      implicit val responseHandler: ResponseHandler[AccessTokenSigner] = asJson[AccessTokenSigner]
+      AuthorizationCodeGrant
+        .refreshTokenRequest(tokenEndpoint, refreshToken, scopes = List.empty, clientPassword)
+        .send()
     }
   }
 
   // https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
-  def clientCredentials(): F[HttpResponse[NonRefreshableToken]] = {
-    implicit val signer: SignerV2 = client.appConfig.signer
-    new ClientCredentialsGrant.AccessTokenRequest() {
-      override val uri: Uri = accountsUri / "api" / "token"
-    }.runWith(client)
+  def clientCredentials(): F[CirceJsonResponse[NonRefreshableTokenSigner]] = {
+    implicit val responseHandler: ResponseHandler[NonRefreshableTokenSigner] = asJson[NonRefreshableTokenSigner]
+    ClientCredentialsGrant
+      .accessTokenRequest(tokenEndpoint, clientPassword)
+      .send()
   }
 }

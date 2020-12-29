@@ -13,7 +13,7 @@ import io.bartholomews.spotify4s.api.SpotifyApi.SpotifyUris
 import io.bartholomews.spotify4s.validators.maxSizeP
 import io.circe.Codec
 import io.circe.generic.extras.semiauto.deriveUnwrappedCodec
-import org.http4s.Uri
+import sttp.model.Uri
 import shapeless.Nat._0
 import shapeless.Witness
 /*

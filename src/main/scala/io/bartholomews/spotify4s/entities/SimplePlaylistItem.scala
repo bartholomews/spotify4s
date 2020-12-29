@@ -4,7 +4,7 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Interval
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.circe.{Decoder, DecodingFailure, HCursor}
-import org.http4s.Uri
+import sttp.model.Uri
 
 sealed trait SimplePlaylistItem
 object SimplePlaylistItem {

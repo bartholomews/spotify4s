@@ -3,7 +3,7 @@ package io.bartholomews.spotify4s.entities
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.circe.Decoder
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
-import org.http4s.Uri
+import sttp.model.Uri
 
 /**
   * https://developer.spotify.com/documentation/web-api/reference/object-model/#user-object-private

@@ -5,26 +5,24 @@ import java.time.Month
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import io.bartholomews.fsclient.entities.FsResponse
-import io.bartholomews.fsclient.entities.oauth.NonRefreshableToken
-import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
+import io.bartholomews.fsclient.core.http.SttpResponses.CirceJsonResponse
+import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
 import io.bartholomews.iso_country.CountryCodeAlpha2
-import io.bartholomews.spotify4s.client.ClientData.sampleClient
-import io.bartholomews.spotify4s.entities.{AlbumType, NewReleases, ReleaseDate}
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
-import org.http4s.Uri
+import io.bartholomews.spotify4s.client.ClientData.{sampleClient, sampleNonRefreshableToken}
+import io.bartholomews.spotify4s.entities.{AlbumType, NewReleases, ReleaseDate}
+import sttp.client.UriContext
 
 class BrowseApiSpec extends WireWordSpec with ServerBehaviours {
   import eu.timepit.refined.auto.autoRefineV
 
-  implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken
+  implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
 
   "`getNewReleases`" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/new-releases"))
 
     "country is defined" should {
-      val request: IOResponse[NewReleases] = sampleClient.browse.getNewReleases(
+      def request: CirceJsonResponse[NewReleases] = sampleClient.browse.getNewReleases(
         country = Some(CountryCodeAlpha2.SWEDEN),
         limit = 2,
         offset = 5
@@ -47,11 +45,9 @@ class BrowseApiSpec extends WireWordSpec with ServerBehaviours {
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(NewReleases(albums))) =>
-          albums.href shouldBe Uri.unsafeFromString(
-            "https://api.spotify.com/v1/browse/new-releases?country=SE&offset=5&limit=2"
-          )
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(NewReleases(albums)) =>
+          albums.href shouldBe uri"https://api.spotify.com/v1/browse/new-releases?country=SE&offset=5&limit=2"
           albums.next shouldBe Some("https://api.spotify.com/v1/browse/new-releases?country=SE&offset=7&limit=2")
           albums.items.size shouldBe 2
           albums.items.head.albumType shouldBe Some(AlbumType.Single)

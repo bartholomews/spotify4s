@@ -1,7 +1,7 @@
 package io.bartholomews.spotify4s.entities
 
 import io.circe._
-import org.http4s.Uri
+import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/object-model/#external-url-object
 sealed trait ExternalResourceUrl {
@@ -9,7 +9,7 @@ sealed trait ExternalResourceUrl {
 }
 
 case class SpotifyResourceUrl(uri: Uri) extends ExternalResourceUrl {
-  override val value: String = uri.renderString
+  override val value: String = uri.toString()
 }
 
 object ExternalResourceUrl {

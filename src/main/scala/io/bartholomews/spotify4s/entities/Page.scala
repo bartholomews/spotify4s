@@ -1,10 +1,8 @@
 package io.bartholomews.spotify4s.entities
 
-import cats.effect.Sync
-import fs2.Pipe
 import io.circe.generic.extras.semiauto.deriveConfiguredEncoder
-import io.circe.{Decoder, Encoder, HCursor, Json}
-import org.http4s.Uri
+import io.circe.{Decoder, Encoder, HCursor}
+import sttp.model.Uri
 
 /**
   * href 	string 	A link to the Web API endpoint returning the full result of the request.
@@ -28,12 +26,6 @@ case class Page[A](
 )
 
 object Page {
-  implicit def pipeDecoder[F[_]: Sync, A](
-    implicit evidence: Sync[F],
-    decode: Decoder[A]
-  ): Pipe[F, Json, Page[A]] =
-    io.circe.fs2.decoder[F, Page[A]](evidence, Page.decoder)
-
   implicit def encoder[A](implicit encode: Encoder[A]): Encoder[Page[A]] = deriveConfiguredEncoder
   implicit def decoder[A](implicit decode: Decoder[A]): Decoder[Page[A]] =
     (c: HCursor) =>

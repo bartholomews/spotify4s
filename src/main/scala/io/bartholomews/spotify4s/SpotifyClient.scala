@@ -1,40 +1,32 @@
 package io.bartholomews.spotify4s
 
-import cats.effect.{ConcurrentEffect, ContextShift}
-import io.bartholomews.fsclient.client.FsClientV2
-import io.bartholomews.fsclient.config.{FsClientConfig, UserAgent}
-import io.bartholomews.fsclient.entities.oauth.v2.OAuthV2AuthorizationFramework.ClientPassword
-import io.bartholomews.fsclient.entities.oauth.{ClientPasswordBasicAuthenticationV2, SignerV2}
+import io.bartholomews.fsclient.core.FsClient
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.oauth.ClientPasswordAuthentication
+import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
 import io.bartholomews.spotify4s.api._
 import pureconfig.ConfigSource
+import sttp.client.SttpBackend
 
-import scala.concurrent.ExecutionContext
-
-class SpotifyClient[F[_]: ConcurrentEffect](client: FsClientV2[F, SignerV2])(
-  implicit ec: ExecutionContext
-) {
+class SpotifyClient[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
+  type S = ClientPasswordAuthentication
   object auth extends AuthApi[F](client)
-  object browse extends BrowseApi[F, SignerV2](client)
-  object playlists extends PlaylistsApi[F, SignerV2](client)
-  object tracks extends TracksApi[F, SignerV2](client)
-  object users extends UsersApi[F, SignerV2](client)
-  object follow extends FollowApi[F, SignerV2](client)
+  object browse extends BrowseApi[F, S](client)
+  object follow extends FollowApi[F, S](client)
+  object playlists extends PlaylistsApi[F, S](client)
+  object tracks extends TracksApi[F, S](client)
+  object users extends UsersApi[F, S](client)
 }
 
 object SpotifyClient {
-  import FsClientConfig.LoadConfigOrThrow
   import pureconfig.generic.auto._
 
-  def unsafeFromConfig[F[_]: ConcurrentEffect]()(implicit ec: ExecutionContext, cs: ContextShift[F]): SpotifyClient[F] =
-    (for {
-      userAgent <- ConfigSource.default.at(namespace = "user-agent").load[UserAgent]
-      clientPassword <- ConfigSource.default
-                         .at("spotify")
-                         .load[ClientPassword]
-    } yield new SpotifyClient(
-      new FsClientV2(
-        appConfig = FsClientConfig(userAgent, ClientPasswordBasicAuthenticationV2(clientPassword)),
-        clientPassword
-      )
-    )).orThrow
+  def unsafeFromConfig[F[_]]()(implicit sttpBackend: SttpBackend[F, Nothing, Nothing]): SpotifyClient[F] = {
+    // FIXME: Should add User-Agent header to all requests, also make it safe
+    val userAgent = ConfigSource.default.at(namespace = "user-agent").loadOrThrow[UserAgent]
+    val signer = ClientPasswordAuthentication(
+      ConfigSource.default.at("spotify").loadOrThrow[ClientPassword]
+    )
+    new SpotifyClient[F](FsClient(userAgent, signer, sttpBackend))
+  }
 }

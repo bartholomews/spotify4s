@@ -1,18 +1,16 @@
 package io.bartholomews.spotify4s.api
 
-import cats.effect.ConcurrentEffect
-import fs2.Pipe
-import io.bartholomews.fsclient.client.FsClient
-import io.bartholomews.fsclient.entities.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.requests.FsAuthJson
-import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
+import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
+import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
 import io.bartholomews.spotify4s.api.SpotifyApi.{apiUri, Offset}
 import io.bartholomews.spotify4s.entities.{Page, PrivateUser, SimplePlaylist}
-import io.circe.Json
-import org.http4s.Uri
+import io.circe
+import sttp.client.circe.asJson
+import sttp.client.{Response, ResponseError}
+import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/users-profile/
-class UsersApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
+class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
   import eu.timepit.refined.auto.autoRefineV
   private[api] val basePath: Uri = apiUri / "v1"
 
@@ -36,10 +34,12 @@ class UsersApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
     *          When requesting fields that you don’t have the user’s authorization to access,
     *          it will return error 403 Forbidden.
     */
-  def me(implicit signer: SignerV2): F[HttpResponse[PrivateUser]] =
-    new FsAuthJson.Get[PrivateUser] {
-      override val uri: Uri = basePath / "me"
-    }.runWith(client)
+  def me(implicit signer: SignerV2): F[Response[Either[ResponseError[circe.Error], PrivateUser]]] =
+    baseRequest(client)
+      .get(basePath / "me")
+      .sign(signer)
+      .response(asJson[PrivateUser])
+      .send()
 
   /**
     * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-a-list-of-current-users-playlists
@@ -65,12 +65,23 @@ class UsersApi[F[_]: ConcurrentEffect, S <: Signer](client: FsClient[F, S]) {
     */
   def getPlaylists(limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(
     implicit signer: SignerV2
-  ): F[HttpResponse[Page[SimplePlaylist]]] = {
-    implicit val pipeDecoder: Pipe[F, Json, Page[SimplePlaylist]] = Page.pipeDecoder
-    new FsAuthJson.Get[Page[SimplePlaylist]] {
-      override val uri: Uri = (basePath / "me" / "playlists")
-        .withQueryParam("limit", limit.value)
-        .withQueryParam("offset", offset)
-    }.runWith(client)
+  ): F[Response[Either[ResponseError[circe.Error], Page[SimplePlaylist]]]] = {
+    val uri: Uri = (basePath / "me" / "playlists")
+      .withQueryParam("limit", limit.value.toString)
+      .withQueryParam("offset", offset.toString)
+
+    baseRequest(client)
+      .get(uri)
+      .sign(signer)
+      .response(asJson[Page[SimplePlaylist]])
+      .send()
+
+    // :F[HttpResponse[Page[SimplePlaylist]]]
+//    implicit val pipeDecoder: Pipe[F, Json, Page[SimplePlaylist]] = Page.pipeDecoder
+//    new FsAuthJson.Get[Page[SimplePlaylist]] {
+//      override val uri: Uri = (basePath / "me" / "playlists")
+//        .withQueryParam("limit", limit.value)
+//        .withQueryParam("offset", offset)
+//    }.runWith(client)
   }
 }

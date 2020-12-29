@@ -2,8 +2,7 @@ package io.bartholomews.spotify4s.entities
 
 import enumeratum.EnumEntry.Hyphencase
 import enumeratum._
-import io.bartholomews.fsclient.entities.oauth.Scope
-import io.bartholomews.fsclient.utils.FsLogger
+import io.bartholomews.fsclient.core.oauth.Scope
 
 // https://developer.spotify.com/documentation/general/guides/scopes/
 sealed trait SpotifyScope extends EnumEntry with Hyphencase
@@ -40,7 +39,7 @@ case object SpotifyScope extends Enum[SpotifyScope] with CirceEnum[SpotifyScope]
             .fold(Tuple2(str :: errors, scopes))(scope => Tuple2(errors, scope :: scopes))
       }) match {
       case (errors, scopes) =>
-        FsLogger.logger.warn("unknown scopes returned", errors)
+//        FsLogger.logger.warn("unknown scopes returned", errors)
         scopes
     }
   }

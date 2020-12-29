@@ -1,18 +1,16 @@
 package io.bartholomews.spotify4s.api
 
 import cats.data.NonEmptyList
-import cats.effect.IO
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import io.bartholomews.fsclient.entities.FsResponse
-import io.bartholomews.fsclient.entities.oauth.NonRefreshableToken
-import io.bartholomews.fsclient.utils.HttpTypes.{HttpResponse, IOResponse}
+import io.bartholomews.fsclient.core.http.SttpResponses.CirceJsonResponse
+import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.scalatestudo.data.TestudoFsClientData.OAuthV2
+import io.bartholomews.spotify4s.DiffDerivations.matchTo
 import io.bartholomews.spotify4s.api.SpotifyApi.SpotifyUris
-import io.bartholomews.spotify4s.client.ClientData.sampleClient
+import io.bartholomews.spotify4s.client.ClientData.{sampleClient, sampleNonRefreshableToken}
 import io.bartholomews.spotify4s.entities.{
   CollectionLink,
   FullPlaylist,
@@ -28,14 +26,15 @@ import io.bartholomews.spotify4s.entities.{
   SpotifyUserId
 }
 import io.circe.{Decoder, HCursor}
-import org.http4s.{Status, Uri}
 import org.scalatest.matchers.should.Matchers
+import sttp.client.{HttpError, Response, UriContext}
+import sttp.model.{StatusCode, Uri}
 
 class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers {
   import cats.implicits._
   import eu.timepit.refined.auto._
 
-  implicit val signer: NonRefreshableToken = OAuthV2.sampleNonRefreshableToken
+  implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
 
   "`replacePlaylistItems`" when {
     def endpoint: MappingBuilder = put(urlPathEqualTo(s"$basePath/users/playlists"))
@@ -47,14 +46,10 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
       val maybeUris: Either[Throwable, SpotifyUris] =
         SpotifyUri.fromNel(NonEmptyList.of(uri1, uri2)).leftMap(msg => new Exception(msg))
 
-      val request: IO[HttpResponse[Unit]] = IO
-        .fromEither(maybeUris)
-        .flatMap(
-          spotifyUris =>
-            sampleClient.playlists.replacePlaylistItems(
-              playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
-              uris = spotifyUris
-            )
+      def request: Response[Either[HttpError, Unit]] =
+        sampleClient.playlists.replacePlaylistItems(
+          playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+          uris = maybeUris.getOrElse(fail(s"$maybeUris"))
         )
 
       val endpointRequest =
@@ -66,8 +61,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
       def stub: StubMapping =
         stubFor(endpointRequest.willReturn(aResponse().withStatus(201)))
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, status, Right(())) => status shouldBe Status.Created
+      "return the correct entity" in matchIdResponse(stub, request) {
+        case Response(Right(()), status, _, _, _) => status shouldBe StatusCode.Created
       }
     }
 
@@ -95,7 +90,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/users/wizzler/playlists"))
 
     "`limits` and `offset` query parameters are defined" should {
-      val request: IO[HttpResponse[Page[SimplePlaylist]]] = sampleClient.playlists.getUserPlaylists(
+      def request: CirceJsonResponse[Page[SimplePlaylist]] = sampleClient.playlists.getUserPlaylists(
         userId = SpotifyUserId("wizzler"),
         limit = 2,
         offset = 5
@@ -118,13 +113,11 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
             )
         )
 
-      import io.bartholomews.fsclient.entities.FsResponse
-
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(playlistsPage: Page[SimplePlaylist])) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(playlistsPage: Page[SimplePlaylist]) =>
           playlistsPage should matchTo(
             Page[SimplePlaylist](
-              href = Uri.unsafeFromString("https://api.spotify.com/v1/users/wizzler/playlists?offset=5&limit=2"),
+              href = uri"https://api.spotify.com/v1/users/wizzler/playlists?offset=5&limit=2",
               items = List(
                 SimplePlaylist(
                   collaborative = false,
@@ -132,39 +125,36 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
                     "Get psyched for your night out. The best tunes hand-picked by Barney Stinson himself. It's going to be legen... wait for it.... daaaaary!"
                   ),
                   externalUrls = SpotifyResourceUrl(
-                    Uri.unsafeFromString("https://open.spotify.com/playlist/2LZYIzBoCXAdx8buWmUwQe")
+                    uri"https://open.spotify.com/playlist/2LZYIzBoCXAdx8buWmUwQe"
                   ),
-                  href = Uri.unsafeFromString("https://api.spotify.com/v1/playlists/2LZYIzBoCXAdx8buWmUwQe"),
+                  href = uri"https://api.spotify.com/v1/playlists/2LZYIzBoCXAdx8buWmUwQe",
                   id = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
                   images = List(
                     SpotifyImage(
                       height = Some(640),
-                      url = Uri.unsafeFromString(
-                        "https://mosaic.scdn.co/640/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653"
-                      ),
+                      url =
+                        uri"https://mosaic.scdn.co/640/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653",
                       width = Some(640)
                     ),
                     SpotifyImage(
                       height = Some(300),
-                      url = Uri.unsafeFromString(
-                        "https://mosaic.scdn.co/300/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653"
-                      ),
+                      url =
+                        uri"https://mosaic.scdn.co/300/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653",
                       width = Some(300)
                     ),
                     SpotifyImage(
                       height = Some(60),
-                      url = Uri.unsafeFromString(
-                        "https://mosaic.scdn.co/60/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653"
-                      ),
+                      url =
+                        uri"https://mosaic.scdn.co/60/ab67616d0000b2731336b31b6a1799f0de5807acab67616d0000b2736a916e0b410279803d867fbdab67616d0000b273a51d5896371922e3fbe26d05ab67616d0000b273aa07223229c3f264be0ca653",
                       width = Some(60)
                     )
                   ),
                   name = "Barney's Get Psyched Mix",
                   owner = PublicUser(
                     displayName = Some("Ronald Pompa"),
-                    externalUrls = SpotifyResourceUrl(Uri.unsafeFromString("https://open.spotify.com/user/wizzler")),
+                    externalUrls = SpotifyResourceUrl(uri"https://open.spotify.com/user/wizzler"),
                     followers = None,
-                    href = Uri.unsafeFromString("https://api.spotify.com/v1/users/wizzler"),
+                    href = uri"https://api.spotify.com/v1/users/wizzler",
                     id = SpotifyUserId("wizzler"),
                     images = List.empty,
                     uri = SpotifyUri("spotify:user:wizzler")
@@ -181,23 +171,23 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
                   collaborative = false,
                   description = Some("For medicinal use only!"),
                   externalUrls = SpotifyResourceUrl(
-                    Uri.unsafeFromString("https://open.spotify.com/playlist/7K0UB4wqdztK4jc3nrw9an")
+                    uri"https://open.spotify.com/playlist/7K0UB4wqdztK4jc3nrw9an"
                   ),
-                  href = Uri.unsafeFromString("https://api.spotify.com/v1/playlists/7K0UB4wqdztK4jc3nrw9an"),
+                  href = uri"https://api.spotify.com/v1/playlists/7K0UB4wqdztK4jc3nrw9an",
                   id = SpotifyId("7K0UB4wqdztK4jc3nrw9an"),
                   images = List(
                     SpotifyImage(
                       height = None,
-                      url = Uri.unsafeFromString("https://i.scdn.co/image/ab67706c0000da849899faadb08d52ace2662432"),
+                      url = uri"https://i.scdn.co/image/ab67706c0000da849899faadb08d52ace2662432",
                       width = None
                     )
                   ),
                   name = "😗👌💨",
                   owner = PublicUser(
                     displayName = Some("Ronald Pompa"),
-                    externalUrls = SpotifyResourceUrl(Uri.unsafeFromString("https://open.spotify.com/user/wizzler")),
+                    externalUrls = SpotifyResourceUrl(uri"https://open.spotify.com/user/wizzler"),
                     followers = None,
-                    href = Uri.unsafeFromString("https://api.spotify.com/v1/users/wizzler"),
+                    href = uri"https://api.spotify.com/v1/users/wizzler",
                     id = SpotifyUserId("wizzler"),
                     images = List.empty,
                     uri = SpotifyUri("spotify:user:wizzler")
@@ -233,7 +223,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
                                        |""".stripMargin))
 
     "updating `name` and `public` fields" should {
-      val request = sampleClient.playlists.changePlaylistDetails(
+      def request: Response[Either[HttpError, Unit]] = sampleClient.playlists.changePlaylistDetails(
         playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
         playlistName = Some("New name for Playlist"),
         public = Some(false),
@@ -249,8 +239,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
             .willReturn(aResponse().withStatus(200))
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, status, Right(())) => status shouldBe Status.Ok
+      "return the correct entity" in matchIdResponse(stub, request) {
+        case Response(Right(()), status, _, _, _) => status shouldBe StatusCode.Ok
       }
     }
   }
@@ -278,15 +268,11 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
           .fromNel(NonEmptyList.of(uriTrack1, uriTrack2, uriTrack3))
           .leftMap(msg => new Exception(msg))
 
-      val request: IO[HttpResponse[SnapshotId]] = IO
-        .fromEither(maybeUris)
-        .flatMap(
-          spotifyUris =>
-            sampleClient.playlists.addTracksToPlaylist(
-              playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
-              uris = spotifyUris,
-              position = Some(1)
-            )
+      def request: CirceJsonResponse[SnapshotId] =
+        sampleClient.playlists.addTracksToPlaylist(
+          playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+          uris = maybeUris.getOrElse(fail(maybeUris.toString)),
+          position = Some(1)
         )
 
       behave like clientReceivingUnexpectedResponse(endpoint, request)
@@ -301,8 +287,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(snapshotId)) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(snapshotId) =>
           snapshotId shouldBe SnapshotId("JbtmHBDBAYu3/bt8BOXKjzKx3i0b6LCa/wVjyl6qQ2Yf6nFXkbmzuEa+ZI/U1yF+")
       }
     }
@@ -312,7 +298,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/playlists/3cEYpjA9oz9GiPac4AsH4n"))
 
     "optional query parameters are not defined" should {
-      val request = sampleClient.playlists.getPlaylist(playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"))
+      def request: CirceJsonResponse[FullPlaylist] =
+        sampleClient.playlists.getPlaylist(playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"))
       behave like clientReceivingUnexpectedResponse(endpoint, request)
 
       def stub: StubMapping =
@@ -325,8 +312,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(fullPlaylist)) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(fullPlaylist) =>
           fullPlaylist.owner.displayName shouldBe Some("JMPerez²")
       }
     }
@@ -337,7 +324,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
         implicit val decoder: Decoder[PartialPlaylist] = (c: HCursor) =>
           for {
             description <- c.downField("description").as[String]
-            href <- c.downField("href").as[Uri](org.http4s.circe.decodeUri)
+            href <- c.downField("href").as[Uri](Decoder.decodeString.emap(Uri.parse))
             tracks <- c.downField("tracks").downField("items").as[List[PartialTrack]]
           } yield PartialPlaylist(description, href, tracks)
       }
@@ -351,7 +338,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
           } yield PartialTrack(trackName, addedBy)
       }
 
-      val request: IO[HttpResponse[PartialPlaylist]] = sampleClient.playlists.getPlaylistFields(
+      def request: CirceJsonResponse[PartialPlaylist] = sampleClient.playlists.getPlaylistFields[PartialPlaylist](
         playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"),
         fields = "href,description,tracks.items(added_by(id),track(name))",
         market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
@@ -374,13 +361,12 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(playlist)) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(playlist) =>
           playlist shouldBe PartialPlaylist(
             description = "A playlist for testing pourposes",
-            href = Uri.unsafeFromString(
-              "https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n?fields=href,description,tracks.items(added_by(id),track(name))"
-            ),
+            href =
+              uri"https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n?fields=href,description,tracks.items(added_by(id),track(name))",
             tracks = List(
               PartialTrack(addedBy = "jmperezperez", trackName = "Api"),
               PartialTrack(addedBy = "jmperezperez", trackName = "Is"),
@@ -394,7 +380,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
 
     "entity has many null fields" should {
       val customPlaylistId = SpotifyId("4YUV9hthjX0LOvg8Oe8w85")
-      val request: IOResponse[FullPlaylist] = sampleClient.playlists.getPlaylist(
+      def request: CirceJsonResponse[FullPlaylist] = sampleClient.playlists.getPlaylist(
         customPlaylistId,
         market = None
       )
@@ -410,8 +396,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
         )
       }
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(playlist)) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(playlist) =>
           playlist.uri.value shouldBe "spotify:playlist:4YUV9hthjX0LOvg8Oe8w85"
       }
     }
@@ -429,7 +415,7 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
             |""".stripMargin))
 
     "creating a private playlist with default parameters" should {
-      val request = sampleClient.playlists.createPlaylist(
+      def request: CirceJsonResponse[FullPlaylist] = sampleClient.playlists.createPlaylist(
         userId = SpotifyUserId("thelinmichael"),
         playlistName = "A New Playlist",
         public = false
@@ -447,8 +433,8 @@ class PlaylistsApiSpec extends WireWordSpec with ServerBehaviours with Matchers 
             )
         )
 
-      "return the correct entity" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(fullPlaylist)) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(fullPlaylist) =>
           fullPlaylist.name shouldBe "A New Playlist"
           fullPlaylist.description shouldBe None
           fullPlaylist.owner.id shouldBe SpotifyUserId("thelinmichael")

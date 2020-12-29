@@ -3,22 +3,25 @@ package io.bartholomews.spotify4s.api
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, stubFor}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import io.bartholomews.fsclient.entities.{ErrorBodyJson, ErrorBodyString, FsResponse}
-import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.spotify4s.entities.{ApiError, AuthError}
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.scalatestudo.WireWordSpec
+import io.bartholomews.spotify4s.entities.{ApiError, AuthError}
+import io.circe.ParsingFailure
 import org.apache.http.entity.ContentType
-import org.http4s.Status
+import org.scalatest.matchers.should.Matchers
+import sttp.client.{DeserializationError, HttpError, ResponseError}
+import sttp.model.StatusCode
 
-trait ServerBehaviours {
+trait ServerBehaviours extends Matchers {
 
   self: WireWordSpec =>
-
   val basePath = "/api/v1"
 
-  def clientReceivingUnexpectedResponse[A](
+  import io.circe.parser._
+
+  def clientReceivingUnexpectedResponse[E <: ResponseError[_], A](
     expectedEndpoint: MappingBuilder,
-    request: IOResponse[A],
+    request: => SttpResponse[E, A],
     decodingBody: Boolean = true
   ): Unit = {
     behave like clientReceivingAuthErrorResponse(expectedEndpoint, request)
@@ -27,7 +30,10 @@ trait ServerBehaviours {
       behave like clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request)
   }
 
-  private def clientReceivingAuthErrorResponse[A](expectedEndpoint: MappingBuilder, request: IOResponse[A]): Unit = {
+  private def clientReceivingAuthErrorResponse[E <: ResponseError[_], A](
+    expectedEndpoint: MappingBuilder,
+    request: => SttpResponse[E, A]
+  ): Unit = {
     "the server responds with an `invalid_grant` error" when {
       def stub: StubMapping =
         stubFor(
@@ -40,19 +46,23 @@ trait ServerBehaviours {
             )
         )
 
-      "returns a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyJson(error))) =>
-          status shouldBe Status.Unauthorized
-          inside(error.as[AuthError]) {
-            case Right(AuthError(error, message)) =>
-              error shouldBe "invalid_grant"
-              message shouldBe "Invalid authorization code"
-          }
+      "returns a Left with appropriate message" in matchResponseBody(stub, request) {
+        case Left(HttpError(body, status)) =>
+          status shouldBe StatusCode.Unauthorized
+          parse(body).flatMap(_.as[AuthError]) shouldBe Right(
+            AuthError(
+              error = "invalid_grant",
+              message = "Invalid authorization code"
+            )
+          )
       }
     }
   }
 
-  private def clientReceivingApiErrorResponse[A](expectedEndpoint: MappingBuilder, request: IOResponse[A]): Unit = {
+  private def clientReceivingApiErrorResponse[E <: ResponseError[_], A](
+    expectedEndpoint: MappingBuilder,
+    request: => SttpResponse[E, A]
+  ): Unit = {
     "the server responds with an `invalid_id` error" when {
       def stub: StubMapping =
         stubFor(
@@ -65,30 +75,24 @@ trait ServerBehaviours {
             )
         )
 
-      "returns a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyJson(error))) =>
-          status shouldBe Status.BadRequest
-          inside(error.as[ApiError]) {
-            case Right(ApiError(status, message)) =>
-              status shouldBe 400
-              message shouldBe "invalid id"
-          }
+      "returns a Left with appropriate message" in matchResponseBody(stub, request) {
+        case Left(HttpError(body, status)) =>
+          status shouldBe StatusCode.BadRequest
+          parse(body).flatMap(_.as[ApiError]) shouldBe Right(
+            ApiError(
+              status = 400,
+              message = "invalid id"
+            )
+          )
       }
     }
   }
 
-  private def clientReceivingSuccessfulUnexpectedResponseBody[A](
+  private def clientReceivingSuccessfulUnexpectedResponseBody[E <: ResponseError[_], A](
     expectedEndpoint: MappingBuilder,
-    request: IOResponse[A]
+    request: => SttpResponse[E, A]
   ): Unit = {
-    "the server response is unexpected" should {
-      def stub: StubMapping =
-        stubFor(
-          expectedEndpoint
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBody("""
+    val ezekiel = """
                     |Ezekiel 25:17.
                     |"The path of the righteous man is beset on all sides
                     |by the inequities of the selfish and the tyranny of evil men.
@@ -99,14 +103,23 @@ trait ServerBehaviours {
                     |those who attempt to poison and destroy my brothers.
                     |And you will know I am the Lord
                     |when I lay my vengeance upon you."
-                    |""".stripMargin)
+                    |""".stripMargin
+
+    "the server response is unexpected" should {
+      def stub: StubMapping =
+        stubFor(
+          expectedEndpoint
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBody(ezekiel)
             )
         )
 
-      "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
-          status shouldBe Status.UnprocessableEntity
-          error shouldBe "There was a problem decoding or parsing this response, please check the error logs"
+      "return a Left with appropriate message" in matchResponseBody(stub, request) {
+        case Left(DeserializationError(body, error: io.circe.Error)) =>
+          body shouldBe ezekiel
+          error shouldBe a[ParsingFailure]
       }
     }
   }

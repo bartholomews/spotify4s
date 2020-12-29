@@ -2,7 +2,7 @@ package io.bartholomews.spotify4s.entities
 
 import io.circe.Decoder
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
-import org.http4s.Uri
+import sttp.model.Uri
 
 case class AudioFeatures(
   durationMs: Int,

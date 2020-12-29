@@ -4,7 +4,7 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Interval
 import io.circe.Decoder
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
-import org.http4s.Uri
+import sttp.model.Uri
 
 case class SimplePlaylist(
   collaborative: Boolean,
