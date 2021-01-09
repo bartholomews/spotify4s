@@ -1,7 +1,8 @@
 package io.bartholomews.spotify4s.playJson
 
 import enumeratum.EnumFormats
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RefreshToken, ResponseHandler}
+import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, NonRefreshableTokenSigner, Scope}
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
 import io.bartholomews.spotify4s.core.entities.{
@@ -40,18 +41,46 @@ import io.bartholomews.spotify4s.core.entities.{
   SubscriptionLevel,
   Tempo
 }
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.JsonConfiguration.Aux
 import play.api.libs.json.JsonNaming.SnakeCase
-import play.api.libs.json.{JsError, JsString, JsSuccess, Json, JsonConfiguration, JsonNaming, Reads, Writes}
+import play.api.libs.json.{JsError, JsPath, JsString, JsSuccess, Json, JsonConfiguration, JsonNaming, Reads, Writes}
 import sttp.client3.playJson.asJson
 import sttp.model.Uri
 
 object codecs extends SpotifyPlayJsonApi
 
+//noinspection DuplicatedCode
 // TODO: move into fsclient
 trait FsClientPlayJsonApi {
   implicit def responseHandler[T](implicit decoder: Reads[T]): ResponseHandler[JsError, T] =
     asJson[T]
+
+  implicit val accessTokenDecoder: Reads[AccessToken] = Json.valueReads
+  implicit val refreshTokenDecoder: Reads[RefreshToken] = Json.valueReads
+
+  implicit val scopeDecoder: Reads[Scope] = Reads
+    .optionNoError[String]
+    .map(_.fold(Scope(List.empty))(str => Scope(str.split(" ").toList)))
+
+  implicit val accessTokenSignerDecoder: Reads[AccessTokenSigner] =
+    (JsPath \ "generated_at")
+      .read[Long]
+      .orElse(Reads.pure(System.currentTimeMillis))
+      .and((JsPath \ "access_token").read[AccessToken])
+      .and((JsPath \ "token_type").read[String])
+      .and((JsPath \ "expires_in").read[Long])
+      .and((JsPath \ "refresh_token").readNullable[RefreshToken])
+      .and((JsPath \ "scope").read[Scope].orElse(Reads.pure(Scope(List.empty))))(AccessTokenSigner.apply _)
+
+  implicit val nonRefreshableTokenSignerDecoder: Reads[NonRefreshableTokenSigner] =
+    (JsPath \ "generated_at")
+      .read[Long]
+      .orElse(Reads.pure(System.currentTimeMillis))
+      .and((JsPath \ "access_token").read[AccessToken])
+      .and((JsPath \ "token_type").read[String])
+      .and((JsPath \ "expires_in").read[Long])
+      .and((JsPath \ "scope").read[Scope].orElse(Reads.pure(Scope(List.empty))))(NonRefreshableTokenSigner.apply _)
 
   implicit val uriEncoder: Writes[Uri] = (o: Uri) => JsString(o.toString)
   implicit val uriDecoder: Reads[Uri] = {

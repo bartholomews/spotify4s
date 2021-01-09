@@ -4,7 +4,7 @@ object Dependencies {
   object Versions {
     val cats = "2.3.0"
     val refined = "0.9.13"
-    val fsClient = "0.1.0+1-08b48bdf-SNAPSHOT"
+    val fsClient = "0.1.0+2-f6fce5d9-SNAPSHOT"
     val scalaIso = "0.1.1+4-0b19443b-SNAPSHOT"
     // https://github.com/softwaremill/sttp/releases
     // https://search.maven.org/search?q=sttp%20softwaremill%20play-json
