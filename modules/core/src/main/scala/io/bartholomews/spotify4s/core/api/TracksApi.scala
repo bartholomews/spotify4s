@@ -23,67 +23,77 @@ class TracksApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(c
   private[api] val basePath: Uri = apiUri / "v1"
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/
-  def getAudioAnalysis[E](
+  def getAudioAnalysis[DE](
     id: SpotifyId
-  )(implicit signer: SignerV2, responseHandler: ResponseHandler[E, AudioAnalysis]): F[SttpResponse[E, AudioAnalysis]] =
-    baseRequest(client)
-      .get(basePath / "audio-analysis" / id.value)
-      .sign
-      .response(responseHandler)
-      .send()
+  )(
+    implicit signer: SignerV2,
+    responseHandler: ResponseHandler[DE, AudioAnalysis]
+  ): F[SttpResponse[DE, AudioAnalysis]] =
+    backend.send(
+      baseRequest(client)
+        .get(basePath / "audio-analysis" / id.value)
+        .sign
+        .response(responseHandler)
+    )
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/
-  def getAudioFeatures[E](
+  def getAudioFeatures[DE](
     id: SpotifyId
-  )(implicit signer: SignerV2, responseHandler: ResponseHandler[E, AudioFeatures]): F[SttpResponse[E, AudioFeatures]] =
-    baseRequest(client)
-      .get(basePath / "audio-features" / id.value)
-      .sign
-      .response(responseHandler)
-      .send()
+  )(
+    implicit signer: SignerV2,
+    responseHandler: ResponseHandler[DE, AudioFeatures]
+  ): F[SttpResponse[DE, AudioFeatures]] =
+    backend.send(
+      baseRequest(client)
+        .get(basePath / "audio-features" / id.value)
+        .sign
+        .response(responseHandler)
+    )
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-audio-features/
-  def getAudioFeatures[E](
+  def getAudioFeatures[DE](
     ids: NonEmptySet[SpotifyId]
   )(
     implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, AudioFeaturesResponse]
-  ): F[SttpResponse[E, List[AudioFeatures]]] = {
-    baseRequest(client)
-      .get(
-        (basePath / "audio-features").withQueryParam("ids", ids.value.map(_.value).toNonEmptyList.toList.mkString(","))
-      )
-      .sign
-      .response(responseHandler)
-      .mapResponseRight(_.audioFeatures)
-      .send()
-  }
+    responseHandler: ResponseHandler[DE, AudioFeaturesResponse]
+  ): F[SttpResponse[DE, List[AudioFeatures]]] =
+    backend.send(
+      baseRequest(client)
+        .get(
+          (basePath / "audio-features")
+            .withQueryParam("ids", ids.value.map(_.value).toNonEmptyList.toList.mkString(","))
+        )
+        .sign
+        .response(responseHandler)
+        .mapResponseRight(_.audioFeatures)
+    )
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/
-  def getTracks[E](ids: NonEmptySet[SpotifyId], market: Option[Market])(
+  def getTracks[DE](ids: NonEmptySet[SpotifyId], market: Option[Market])(
     implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, FullTracksResponse]
-  ): F[SttpResponse[E, List[FullTrack]]] = {
-    baseRequest(client)
-      .get(
-        (basePath / "tracks")
-          .withQueryParam("ids", ids.value.map(_.value).toNonEmptyList.toList.mkString(","))
-          .withOptionQueryParam("market", market.map(_.value))
-      )
-      .sign
-      .response(responseHandler)
-      .mapResponseRight(_.tracks)
-      .send()
-  }
+    responseHandler: ResponseHandler[DE, FullTracksResponse]
+  ): F[SttpResponse[DE, List[FullTrack]]] =
+    backend.send(
+      baseRequest(client)
+        .get(
+          (basePath / "tracks")
+            .withQueryParam("ids", ids.value.map(_.value).toNonEmptyList.toList.mkString(","))
+            .withOptionQueryParam("market", market.map(_.value))
+        )
+        .sign
+        .response(responseHandler)
+        .mapResponseRight(_.tracks)
+    )
 
   // https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/
-  def getTrack[E](id: SpotifyId, market: Option[Market])(
+  def getTrack[DE](id: SpotifyId, market: Option[Market])(
     implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, FullTrack]
-  ): F[SttpResponse[E, FullTrack]] =
-    baseRequest(client)
-      .get((basePath / "tracks" / id.value).withOptionQueryParam("market", market.map(_.value)))
-      .sign
-      .response(responseHandler)
-      .send()
+    responseHandler: ResponseHandler[DE, FullTrack]
+  ): F[SttpResponse[DE, FullTrack]] =
+    backend.send(
+      baseRequest(client)
+        .get((basePath / "tracks" / id.value).withOptionQueryParam("market", market.map(_.value)))
+        .sign
+        .response(responseHandler)
+    )
 }

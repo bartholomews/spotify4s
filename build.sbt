@@ -3,7 +3,6 @@ import sbt.Keys.{libraryDependencies, organization, parallelExecution}
 import scoverage.ScoverageKeys.coverageFailOnMinimum
 
 ThisBuild / scalaVersion := "2.13.3"
-
 inThisBuild(
   List(
     organization := "io.bartholomews",
@@ -47,10 +46,21 @@ lazy val circe = (project in file("modules/circe"))
     libraryDependencies ++= circeDependencies,
   )
 
+lazy val play = (project in file("modules/play"))
+  .dependsOn(core % "test->test; compile->compile")
+  .settings(commonSettings)
+  .settings(
+    name := "spotify4s-play",
+    libraryDependencies ++= playDependencies,
+  )
+
 // https://www.scala-sbt.org/1.x/docs/Multi-Project.html
+// https://stackoverflow.com/questions/11899723/how-to-turn-off-parallel-execution-of-tests-for-multi-project-builds
 lazy val spotify4s = (project in file("."))
+  .settings(commonSettings)
+  .settings(addCommandAlias("test", ";core/test;circe/test;play/test"): _*)
   .settings(skip in publish := true)
-  .aggregate(core, circe)
+  .aggregate(core, circe, play)
 
 addCommandAlias("test-coverage", ";clean ;coverage ;test ;coverageReport")
 addCommandAlias("test-fast", "testOnly * -- -l org.scalatest.tags.Slow")

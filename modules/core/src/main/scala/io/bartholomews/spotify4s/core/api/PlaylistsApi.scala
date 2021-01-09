@@ -20,7 +20,7 @@ import io.bartholomews.spotify4s.core.entities.{
   SpotifyId,
   SpotifyUserId
 }
-import sttp.client.BodySerializer
+import sttp.client3.BodySerializer
 import sttp.model.Uri
 
 // https://developer.spotify.com/console/playlists/
@@ -60,11 +60,12 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
     val uri: Uri = (basePath / "users" / "playlists")
       .withQueryParam(key = "uris", uris.value.toList.map(_.value).mkString(","))
 
-    baseRequest(client)
-      .put(uri)
-      .sign(signer)
-      .response(asUnit)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .put(uri)
+        .sign(signer)
+        .response(asUnit)
+    )
   }
 
 //  : F[HttpResponse[Unit]] =

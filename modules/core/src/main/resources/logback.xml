@@ -38,7 +38,7 @@
 
     <logger name="org.http4s" level="ERROR"/>
 
-    <root level="DEBUG">
+    <root level="ERROR">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ASYNCFILE"/>
         <!--<appender-ref ref="ASYNCSTDOUT" />-->

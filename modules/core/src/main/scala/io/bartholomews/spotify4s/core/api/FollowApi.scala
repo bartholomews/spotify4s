@@ -4,7 +4,7 @@ import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.core.entities.SpotifyId
-import sttp.client.{ignore, Response}
+import sttp.client3.{ignore, Response}
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/browse/
@@ -37,10 +37,11 @@ class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(c
     implicit signer: SignerV2
   ): F[Response[Unit]] = {
     val uri = basePath / "playlists" / playlistId.value / "followers"
-    baseRequest(client)
-      .delete(uri)
-      .sign(signer)
-      .response(ignore)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .delete(uri)
+        .sign(signer)
+        .response(ignore)
+    )
   }
 }
