@@ -33,7 +33,7 @@ import io.bartholomews.spotify4s.core.entities.{
 import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken, sampleSpotifyId}
 import sttp.client3.UriContext
 
-abstract class TracksApiSpec[D[_], DE] extends WireWordSpec with ServerBehaviours[D, DE] {
+abstract class TracksApiSpec[E[_], D[_], DE] extends WireWordSpec with ServerBehaviours[E, D, DE] {
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
   implicit def audioAnalysisDecoder: D[AudioAnalysis]
   implicit def audioFeaturesDecoder: D[AudioFeatures]

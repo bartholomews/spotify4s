@@ -3,12 +3,13 @@ package io.bartholomews.spotify4s.circe
 import io.bartholomews.fsclient.circe.FsClientCirceApi
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
-import io.bartholomews.spotify4s.core.entities.{AlbumGroup, AlbumType, AudioAnalysis, AudioFeatures, AudioFeaturesResponse, AudioSection, AudioSegment, CollectionLink, Confidence, ExternalResourceUrl, Followers, FullTrack, FullTracksResponse, LinkedTrack, Modality, NewReleases, Page, PitchClass, PrivateUser, PublicUser, Restrictions, SimpleAlbum, SimplePlaylist, SpotifyCategoryId, SpotifyError, SpotifyId, SpotifyImage, SpotifyUri, SpotifyUrl, SpotifyUserId, SubscriptionLevel}
+import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
+import io.bartholomews.spotify4s.core.entities.{AlbumGroup, AlbumType, AudioAnalysis, AudioFeatures, AudioFeaturesResponse, AudioSection, AudioSegment, CollectionLink, Confidence, ExternalResourceUrl, Followers, FullPlaylist, FullTrack, FullTracksResponse, LinkedTrack, Modality, NewReleases, Page, PitchClass, PlaylistTrack, PrivateUser, PublicUser, Restrictions, SimpleAlbum, SimplePlaylist, SnapshotId, SnapshotIdResponse, SpotifyCategoryId, SpotifyError, SpotifyId, SpotifyImage, SpotifyUri, SpotifyUrl, SpotifyUserId, SubscriptionLevel}
 import io.circe.generic.extras.Configuration
-import io.circe.generic.extras.semiauto.{deriveConfiguredCodec, deriveConfiguredDecoder, deriveUnwrappedCodec}
-import io.circe.{Codec, Decoder}
+import io.circe.generic.extras.semiauto.{deriveConfiguredCodec, deriveConfiguredDecoder, deriveConfiguredEncoder, deriveUnwrappedCodec, deriveUnwrappedDecoder}
+import io.circe.{Codec, Decoder, Encoder}
 
-object codecs extends SpotifyCirceApi with SpotifyCirceApiEncoders
+object codecs extends SpotifyCirceApi
 
 trait SpotifyCirceApi extends FsClientCirceApi {
   import io.bartholomews.fsclient.circe.sttpUriCodec
@@ -25,6 +26,7 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val countryCodeAlpha2Codec: Codec[CountryCodeAlpha2] = CountryCodeAlpha2Circe.codec
   implicit val externalResourceUrlCodec: Codec[ExternalResourceUrl] = ExternalResourceUrlCirce.codec
   implicit val followersCodec: Codec[Followers] = deriveConfiguredCodec
+  implicit val fullPlaylistDecoder: Decoder[FullPlaylist] = deriveConfiguredDecoder
   implicit val fullTrackDecoder: Decoder[FullTrack] = FullTrackCirce.decoder
   implicit val fullTracksResponseDecoder: Decoder[FullTracksResponse] = deriveConfiguredDecoder
   implicit val linkedTrackCodec: Codec[LinkedTrack] = deriveConfiguredCodec
@@ -32,11 +34,15 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val newReleasesDecoder: Decoder[NewReleases] = deriveConfiguredDecoder
   implicit def pageDecoder[A](implicit decoder: Decoder[A]): Decoder[Page[A]] = PageCirce.decoder
   implicit val pitchClassCodec: Codec[PitchClass] = deriveUnwrappedCodec
+  implicit val playlistTrackDecoder: Decoder[PlaylistTrack] = deriveConfiguredDecoder
   implicit val publicUserDecoder: Decoder[PublicUser] = PublicUserCirce.decoder
-  implicit val privateUserDecoder: Decoder[PrivateUser] = deriveConfiguredDecoder // FIXME: I think images might be null, see PublicUser
+  implicit val privateUserDecoder
+    : Decoder[PrivateUser] = deriveConfiguredDecoder // FIXME: I think images might be null, see PublicUser
   implicit val restrictionsCodec: Codec[Restrictions] = deriveConfiguredCodec
   implicit val simpleAlbumDecoder: Decoder[SimpleAlbum] = SimpleAlbumCirce.decoder
   implicit val simplePlaylistDecoder: Decoder[SimplePlaylist] = deriveConfiguredDecoder
+  implicit val snapshotIdResponseDecoder: Decoder[SnapshotIdResponse] = deriveConfiguredDecoder
+  implicit val snapshotIdDecoder: Decoder[SnapshotId] = deriveUnwrappedDecoder
   implicit val spotifyCategoryIdCodec: Codec[SpotifyCategoryId] = deriveUnwrappedCodec
   implicit val spotifyErrorDecoder: Decoder[SpotifyError] = SpotifyErrorCirce.spotifyErrorDecoder
   implicit val spotifyIdCodec: Codec[SpotifyId] = deriveUnwrappedCodec
@@ -48,4 +54,13 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val barCodec: Codec[Bar] = TimeIntervalCirce.barCodec
   implicit val beatCodec: Codec[Beat] = TimeIntervalCirce.beatCodec
   implicit val tatumCodec: Codec[Tatum] = TimeIntervalCirce.tatumCodec
+
+  implicit val addTracksToPlaylistRequestEncoder: Encoder[AddTracksToPlaylistRequest] =
+    dropNullValues(deriveConfiguredEncoder[AddTracksToPlaylistRequest])
+
+  implicit val createPlaylistRequestEncoder: Encoder[CreatePlaylistRequest] =
+    dropNullValues(deriveConfiguredEncoder[CreatePlaylistRequest])
+
+  implicit val modifyPlaylistRequestEncoder: Encoder[ModifyPlaylistRequest] =
+    dropNullValues(deriveConfiguredEncoder[ModifyPlaylistRequest])
 }

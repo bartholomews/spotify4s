@@ -18,7 +18,7 @@ import sttp.model.StatusCode
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-abstract class AuthApiSpec[D[_], DE] extends WireWordSpec with ServerBehaviours[D, DE] with DiffDerivations {
+abstract class AuthApiSpec[E[_], D[_], DE] extends WireWordSpec with ServerBehaviours[E, D, DE] with DiffDerivations {
   implicit def accessTokenSignerDecoder: D[AccessTokenSigner]
   implicit def nonRefreshableTokenSignerDecoder: D[NonRefreshableTokenSigner]
 
@@ -28,8 +28,8 @@ abstract class AuthApiSpec[D[_], DE] extends WireWordSpec with ServerBehaviours[
     "getting an authorization code" when {
       def endpoint: MappingBuilder = post(urlMatching("/accounts/api/token"))
 
-      def clientReceivingSuccessfulAccessTokenSigner[E](
-        request: => SttpResponse[E, AccessTokenSigner]
+      def clientReceivingSuccessfulAccessTokenSigner(
+        request: => SttpResponse[DE, AccessTokenSigner]
       ): Unit = {
         "the server responds with the expected json message" should {
           def stub: StubMapping =

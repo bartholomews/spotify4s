@@ -9,16 +9,17 @@ import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.spotify4s.core.entities.{ApiError, AuthError, Page, SpotifyError}
 import org.apache.http.entity.ContentType
 import org.scalatest.matchers.should.Matchers
-import sttp.client3.{DeserializationException, HttpError}
+import sttp.client3.{BodySerializer, DeserializationException, HttpError}
 import sttp.model.StatusCode
 
 import scala.reflect.ClassTag
 
-trait ServerBehaviours[Decoder[_], DE] extends Matchers {
+trait ServerBehaviours[Encoder[_], Decoder[_], DE] extends Matchers {
 
   self: WireWordSpec =>
 
   implicit def ct: ClassTag[DE]
+  implicit def bodySerializer[T](implicit encoder: Encoder[T]): BodySerializer[T]
   implicit def responseHandler[T](implicit decoder: Decoder[T]): ResponseHandler[DE, T]
   implicit def pageDecoder[T](implicit decoder: Decoder[T]): Decoder[Page[T]]
 
@@ -28,9 +29,9 @@ trait ServerBehaviours[Decoder[_], DE] extends Matchers {
 
   override final val testResourcesFileRoot: String = "modules/core/src/test/resources"
 
-  def clientReceivingUnexpectedResponse[A](
+  def clientReceivingUnexpectedResponse[DE2 <: DE, A](
     expectedEndpoint: MappingBuilder,
-    request: => SttpResponse[DE, A],
+    request: => SttpResponse[DE2, A],
     decodingBody: Boolean = true
   ): Unit = {
     behave like clientReceivingAuthErrorResponse(expectedEndpoint, request)
@@ -39,9 +40,9 @@ trait ServerBehaviours[Decoder[_], DE] extends Matchers {
       behave like clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request)
   }
 
-  private def clientReceivingAuthErrorResponse[A](
+  private def clientReceivingAuthErrorResponse[DE2 <: DE, A](
     expectedEndpoint: MappingBuilder,
-    request: => SttpResponse[DE, A]
+    request: => SttpResponse[DE2, A]
   ): Unit = {
     "the server responds with an `invalid_grant` error" when {
       def stub: StubMapping =
@@ -68,9 +69,9 @@ trait ServerBehaviours[Decoder[_], DE] extends Matchers {
     }
   }
 
-  private def clientReceivingApiErrorResponse[A](
+  private def clientReceivingApiErrorResponse[DE2 <: DE, A](
     expectedEndpoint: MappingBuilder,
-    request: => SttpResponse[DE, A]
+    request: => SttpResponse[DE2, A]
   ): Unit = {
     "the server responds with an `invalid_id` error" when {
       def stub: StubMapping =
@@ -97,9 +98,9 @@ trait ServerBehaviours[Decoder[_], DE] extends Matchers {
     }
   }
 
-  private def clientReceivingSuccessfulUnexpectedResponseBody[A](
+  private def clientReceivingSuccessfulUnexpectedResponseBody[DE2 <: DE, A](
     expectedEndpoint: MappingBuilder,
-    request: => SttpResponse[DE, A]
+    request: => SttpResponse[DE2, A]
   ): Unit = {
     val ezekiel = """
                     |Ezekiel 25:17.

@@ -5,6 +5,11 @@ import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RefreshToken
 import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, NonRefreshableTokenSigner, Scope}
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
+import io.bartholomews.spotify4s.core.entities.requests.{
+  AddTracksToPlaylistRequest,
+  CreatePlaylistRequest,
+  ModifyPlaylistRequest
+}
 import io.bartholomews.spotify4s.core.entities.{
   AlbumGroup,
   AlbumType,
@@ -20,6 +25,7 @@ import io.bartholomews.spotify4s.core.entities.{
   ExternalIds,
   ExternalResourceUrl,
   Followers,
+  FullPlaylist,
   FullTrack,
   FullTracksResponse,
   LinkedTrack,
@@ -27,12 +33,15 @@ import io.bartholomews.spotify4s.core.entities.{
   NewReleases,
   Page,
   PitchClass,
+  PlaylistTrack,
   PrivateUser,
   PublicUser,
   Restrictions,
   SimpleAlbum,
   SimpleArtist,
   SimplePlaylist,
+  SnapshotId,
+  SnapshotIdResponse,
   SpotifyError,
   SpotifyId,
   SpotifyImage,
@@ -107,6 +116,12 @@ trait SpotifyPlayJsonApi extends FsClientPlayJsonApi {
   }
   implicit def pageDecoder[T](implicit decoder: Reads[T]): Reads[Page[T]] = Json.reads[Page[T]]
 
+  implicit val modifyPlaylistRequestEncoder: Writes[ModifyPlaylistRequest] = Json.writes
+  implicit val createPlaylistRequestEncoder: Writes[CreatePlaylistRequest] = Json.writes
+  implicit val addTracksToPlaylistRequestEncoder: Writes[AddTracksToPlaylistRequest] = Json.writes
+
+  implicit val snapshotIdDecoder: Reads[SnapshotId] = Json.valueReads
+  implicit val snapshotIdResponseDecoder: Reads[SnapshotIdResponse] = Json.reads
   implicit val spotifyErrorDecoder: Reads[SpotifyError] = SpotifyErrorPlayJson.spotifyErrorReads
   implicit val spotifyIdDecoder: Reads[SpotifyId] = Json.valueReads[SpotifyId]
   implicit val spotifyImageDecoder: Reads[SpotifyImage] = Json.reads[SpotifyImage]
@@ -136,12 +151,14 @@ trait SpotifyPlayJsonApi extends FsClientPlayJsonApi {
   implicit val restrictionsDecoder: Reads[Restrictions] = Json.reads[Restrictions]
   implicit val simpleAlbumDecoder: Reads[SimpleAlbum] = SimpleAlbumPlayJson.reads
   implicit val simpleArtistDecoder: Reads[SimpleArtist] = SimpleArtistPlayJson.reads
+  implicit val publicUserDecoder: Reads[PublicUser] = PublicUserPlayJson.reads
   implicit val fullTrackDecoder: Reads[FullTrack] = FullTrackPlayJson.reads
+  implicit val playlistTrackDecoder: Reads[PlaylistTrack] = Json.reads
+  implicit val fullPlaylistDecoder: Reads[FullPlaylist] = Json.reads[FullPlaylist]
   implicit val fullTracksResponseDecoder: Reads[FullTracksResponse] = Json.reads[FullTracksResponse]
   implicit val subscriptionLevelDecoder: Reads[SubscriptionLevel] = EnumFormats.reads(SubscriptionLevel)
   implicit val privateUserDecoder: Reads[PrivateUser] = Json.reads[PrivateUser]
   implicit val collectionLinkDecoder: Reads[CollectionLink] = Json.reads[CollectionLink]
   implicit val newReleasesDecoder: Reads[NewReleases] = Json.reads[NewReleases]
-  implicit val publicUserDecoder: Reads[PublicUser] = PublicUserPlayJson.reads
   implicit val simplePlaylistDecoder: Reads[SimplePlaylist] = Json.reads[SimplePlaylist]
 }

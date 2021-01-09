@@ -17,6 +17,7 @@ import io.bartholomews.spotify4s.core.entities.{
   SimplePlaylist,
   SimplePlaylistItem,
   SnapshotId,
+  SnapshotIdResponse,
   SpotifyId,
   SpotifyUserId
 }
@@ -106,11 +107,12 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.toString)
 
-    baseRequest(client)
-      .get(uri)
-      .sign(signer)
-      .response(responseHandler)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .get(uri)
+        .sign(signer)
+        .response(responseHandler)
+    )
   }
 
   /**
@@ -153,12 +155,13 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
     bodySerializer: BodySerializer[ModifyPlaylistRequest]
   ): F[SttpResponse[Nothing, Unit]] = {
     val uri: Uri = basePath / "playlists" / playlistId.value
-    baseRequest(client)
-      .put(uri)
-      .body(ModifyPlaylistRequest(playlistName, public, collaborative, description))
-      .sign(signer)
-      .response(asUnit)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .put(uri)
+        .body(ModifyPlaylistRequest(playlistName, public, collaborative, description))
+        .sign(signer)
+        .response(asUnit)
+    )
   }
 
   // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-upload-custom-playlist-cover
@@ -208,16 +211,18 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
   )(
     implicit signer: SignerV2,
     bodySerializer: BodySerializer[AddTracksToPlaylistRequest],
-    responseHandler: ResponseHandler[E, SnapshotId]
+    responseHandler: ResponseHandler[E, SnapshotIdResponse]
   ): F[SttpResponse[E, SnapshotId]] = {
     val uri: Uri = basePath / "playlists" / playlistId.value / "tracks"
 
-    baseRequest(client)
-      .post(uri)
-      .body(AddTracksToPlaylistRequest(uris.value.toList.map(_.value), position.map(_.value)))
-      .sign(signer)
-      .response(responseHandler)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .post(uri)
+        .body(AddTracksToPlaylistRequest(uris.value.toList.map(_.value), position.map(_.value)))
+        .sign(signer)
+        .response(responseHandler)
+        .mapResponse(_.map(_.snapshotId))
+    )
   }
 
   // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-playlist-cover
@@ -252,18 +257,19 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
     *         On error, the header status code is an error code and the response body contains an error object.
     *         Requesting playlists that you do not have the user’s authorization to access returns error 403 Forbidden.
     */
-  def getPlaylist[E](playlistId: SpotifyId, market: Option[Market] = None)(
+  def getPlaylist[DE](playlistId: SpotifyId, market: Option[Market] = None)(
     implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, FullPlaylist]
-  ): F[SttpResponse[E, FullPlaylist]] = {
+    responseHandler: ResponseHandler[DE, FullPlaylist]
+  ): F[SttpResponse[DE, FullPlaylist]] = {
     val uri: Uri = (basePath / "playlists" / playlistId.value)
       .withOptionQueryParam("market", market.map(_.value))
 
-    baseRequest(client)
-      .get(uri)
-      .sign(signer)
-      .response(responseHandler)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .get(uri)
+        .sign(signer)
+        .response(responseHandler)
+    )
   }
 
   /**
@@ -312,11 +318,12 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
       .withQueryParam("fields", fields)
       .withOptionQueryParam("market", market.map(_.value))
 
-    baseRequest(client)
-      .get(uri)
-      .sign(signer)
-      .response(responseHandler)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .get(uri)
+        .sign(signer)
+        .response(responseHandler)
+    )
   }
 
   /**
@@ -344,11 +351,12 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.toString)
 
-    baseRequest(client)
-      .get(uri)
-      .sign(signer)
-      .response(responseHandler)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .get(uri)
+        .sign(signer)
+        .response(responseHandler)
+    )
   }
 
   /**
@@ -407,11 +415,12 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
   ): F[SttpResponse[E, FullPlaylist]] = {
     val uri: Uri = basePath / "users" / userId.value / "playlists"
 
-    baseRequest(client)
-      .post(uri)
-      .body(CreatePlaylistRequest(playlistName, public, collaborative, description))
-      .sign(signer)
-      .response(responseHandler)
-      .send()
+    backend.send(
+      baseRequest(client)
+        .post(uri)
+        .body(CreatePlaylistRequest(playlistName, public, collaborative, description))
+        .sign(signer)
+        .response(responseHandler)
+    )
   }
 }

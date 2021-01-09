@@ -11,7 +11,9 @@ import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylis
 import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken}
 import sttp.client3.{Identity, Response}
 
-abstract class UsersApiSpec[Decoder[_], DE] extends WireWordSpec with ServerBehaviours[Decoder, DE] {
+abstract class UsersApiSpec[Encoder[_], Decoder[_], DE]
+    extends WireWordSpec
+    with ServerBehaviours[Encoder, Decoder, DE] {
   import eu.timepit.refined.auto.autoRefineV
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
 

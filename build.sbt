@@ -34,7 +34,7 @@ lazy val core = (project in file("modules/core"))
     commonSettings,
     name := "spotify4s-core",
     libraryDependencies ++= dependencies ++ testDependencies,
-    coverageMinimum := 78, // FIXME
+    coverageMinimum := 85,
     coverageFailOnMinimum := true
 )
 
@@ -44,6 +44,8 @@ lazy val circe = (project in file("modules/circe"))
   .settings(
     name := "spotify4s-circe",
     libraryDependencies ++= circeDependencies,
+    coverageMinimum := 85,
+    coverageFailOnMinimum := true
   )
 
 lazy val play = (project in file("modules/play"))
@@ -52,6 +54,8 @@ lazy val play = (project in file("modules/play"))
   .settings(
     name := "spotify4s-play",
     libraryDependencies ++= playDependencies,
+    coverageMinimum := 80,
+    coverageFailOnMinimum := true
   )
 
 // https://www.scala-sbt.org/1.x/docs/Multi-Project.html
