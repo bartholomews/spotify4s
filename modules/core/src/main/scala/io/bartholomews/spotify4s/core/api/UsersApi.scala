@@ -41,7 +41,7 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
       .get(basePath / "me")
       .sign(signer)
       .response(responseHandler)
-      .send()
+      .send(backend)
 
   /**
     * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-a-list-of-current-users-playlists
@@ -77,7 +77,7 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
       .get(uri)
       .sign(signer)
       .response(responseHandler)
-      .send()
+      .send(backend)
 
     // :F[HttpResponse[Page[SimplePlaylist]]]
 //    implicit val pipeDecoder: Pipe[F, Json, Page[SimplePlaylist]] = Page.pipeDecoder

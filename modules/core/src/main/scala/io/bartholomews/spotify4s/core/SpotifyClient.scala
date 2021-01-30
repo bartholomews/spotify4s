@@ -21,7 +21,7 @@ class SpotifyClient[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
 object SpotifyClient {
   import pureconfig.generic.auto._
 
-  def unsafeFromConfig[F[_]]()(implicit sttpBackend: SttpBackend[F, Any]): SpotifyClient[F] = {
+  def unsafeFromConfig[F[_]](sttpBackend: SttpBackend[F, Any]): SpotifyClient[F] = {
     // FIXME: Should add User-Agent header to all requests, also make it safe
     val userAgent = ConfigSource.default.at(namespace = "user-agent").loadOrThrow[UserAgent]
     val signer = ClientPasswordAuthentication(

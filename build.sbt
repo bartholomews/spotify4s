@@ -54,7 +54,7 @@ lazy val play = (project in file("modules/play"))
   .settings(
     name := "spotify4s-play",
     libraryDependencies ++= playDependencies,
-    coverageMinimum := 80,
+    coverageMinimum := 79,
     coverageFailOnMinimum := true
   )
 

@@ -6,7 +6,7 @@ import io.circe.{Codec, Decoder, DecodingFailure, Encoder, HCursor, Json}
 import sttp.model.Uri
 
 private[spotify4s] object ExternalResourceUrlCirce {
-  import io.bartholomews.fsclient.circe.sttpUriCodec
+  import io.bartholomews.fsclient.circe.codecs.sttpUriCodec
 
   private def decodeExternalResourceUrlJsonObject(json: Json, c: HCursor): Result[ExternalResourceUrl] = {
     json.asObject match {

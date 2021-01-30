@@ -5,7 +5,7 @@ import io.circe.{Decoder, HCursor}
 import sttp.model.Uri
 
 private[spotify4s] object PageCirce {
-  import io.bartholomews.fsclient.circe.sttpUriCodec
+  import io.bartholomews.fsclient.circe.codecs.sttpUriCodec
   def decoder[A](implicit decode: Decoder[A]): Decoder[Page[A]] =
     (c: HCursor) =>
       for {

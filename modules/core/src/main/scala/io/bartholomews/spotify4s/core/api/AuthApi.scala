@@ -30,7 +30,7 @@ class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication])
   ): Uri = {
     val serverUri =
       accountsUri
-        .withPathSegments(accountsUri.pathSegments ++ List(PathSegment("authorize")))
+        .addPathSegment(PathSegment("authorize"))
         .addQuerySegment(QuerySegment.KeyValue("show_dialog", showDialog.toString))
 
     AuthorizationCodeGrant

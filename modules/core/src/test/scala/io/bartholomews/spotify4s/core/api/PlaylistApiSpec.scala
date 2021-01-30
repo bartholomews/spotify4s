@@ -12,8 +12,26 @@ import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.spotify4s.core.ServerBehaviours
 import io.bartholomews.spotify4s.core.api.PlaylistApiSpec.{PartialPlaylist, PartialTrack}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.SpotifyUris
-import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
-import io.bartholomews.spotify4s.core.entities.{CollectionLink, FullPlaylist, IsoCountry, Page, PublicUser, SimplePlaylist, SnapshotId, SnapshotIdResponse, SpotifyId, SpotifyImage, SpotifyResourceUrl, SpotifyUri, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.requests.{
+  AddTracksToPlaylistRequest,
+  CreatePlaylistRequest,
+  ModifyPlaylistRequest
+}
+import io.bartholomews.spotify4s.core.entities.{
+  CollectionLink,
+  FullPlaylist,
+  IsoCountry,
+  Page,
+  PublicUser,
+  SimplePlaylist,
+  SnapshotId,
+  SnapshotIdResponse,
+  SpotifyId,
+  SpotifyImage,
+  SpotifyResourceUrl,
+  SpotifyUri,
+  SpotifyUserId
+}
 import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken}
 import sttp.client3.{Identity, Response, UriContext}
 import sttp.model.{StatusCode, Uri}

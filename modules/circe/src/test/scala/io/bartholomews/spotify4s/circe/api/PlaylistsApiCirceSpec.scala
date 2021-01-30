@@ -12,7 +12,6 @@ class PlaylistsApiCirceSpec
     extends PlaylistApiSpec[circe.Encoder, circe.Decoder, circe.Error]
     with WireWordSpec
     with CirceServerBehaviours {
-
   implicit val partialPlaylistDecoder: Decoder[PartialPlaylist] = (c: HCursor) =>
     for {
       description <- c.downField("description").as[String]

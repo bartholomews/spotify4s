@@ -5,6 +5,7 @@
 /project/target/
 target
 .idea/
+.vscode
 src/main/main.iml
 # metals
 .bloop

@@ -26,7 +26,12 @@ private[spotify4s] object SimpleAlbumPlayJson {
       .and((JsPath \ "album_type").readNullable[AlbumType](AlbumTypePlayJson.reads))
       .and((JsPath \ "artists").read[List[SimpleArtist]](list(SimpleArtistPlayJson.reads)))
       .and((JsPath \ "available_markets").read[List[CountryCodeAlpha2]].orElse(Reads.pure(List.empty)))
-      .and((JsPath \ "external_urls").read[ExternalResourceUrl](externalResourceUrlDecoder).map(Option(_)).orElse(Reads.pure(None)))
+      .and(
+        (JsPath \ "external_urls")
+          .read[ExternalResourceUrl](externalResourceUrlDecoder)
+          .map(Option(_))
+          .orElse(Reads.pure(None))
+      )
       .and((JsPath \ "href").readNullable[Uri](uriDecoder))
       .and((JsPath \ "id").readNullable[SpotifyId](spotifyIdDecoder))
       .and((JsPath \ "images").read[List[SpotifyImage]](list(spotifyImageDecoder)))

@@ -1,11 +1,18 @@
 package io.bartholomews.spotify4s.circe
 
-import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, Followers, PublicUser, SpotifyImage, SpotifyUri, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.{
+  ExternalResourceUrl,
+  Followers,
+  PublicUser,
+  SpotifyImage,
+  SpotifyUri,
+  SpotifyUserId
+}
 import io.circe.{Decoder, HCursor}
 import sttp.model.Uri
 
 private[spotify4s] object PublicUserCirce {
-  import io.bartholomews.fsclient.circe.sttpUriCodec
+  import io.bartholomews.fsclient.circe.codecs.sttpUriCodec
   import codecs._
   val decoder: Decoder[PublicUser] = (c: HCursor) =>
     for {

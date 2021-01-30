@@ -18,7 +18,7 @@ import sttp.model.Uri
 
 private[spotify4s] object SimpleAlbumCirce {
   import codecs._
-  import io.bartholomews.fsclient.circe.sttpUriCodec
+  import io.bartholomews.fsclient.circe.codecs.sttpUriCodec
   import io.circe.Decoder.{decodeList, decodeOption}
   val decoder: Decoder[SimpleAlbum] = (c: HCursor) =>
     for {

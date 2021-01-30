@@ -49,6 +49,6 @@ class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(c
       .get(uri)
       .sign(signer)
       .response(responseHandler)
-      .send()
+      .send(backend)
   }
 }

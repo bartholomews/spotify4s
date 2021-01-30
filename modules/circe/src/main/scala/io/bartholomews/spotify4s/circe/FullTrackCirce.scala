@@ -8,7 +8,7 @@ import sttp.model.Uri
 
 private[spotify4s] object FullTrackCirce {
   import codecs._
-  import io.bartholomews.fsclient.circe.sttpUriCodec
+  import io.bartholomews.fsclient.circe.codecs.sttpUriCodec
   val decoder: Decoder[FullTrack] = (c: HCursor) =>
     for {
       album <- c.downField("album").as[SimpleAlbum](SimpleAlbumCirce.decoder)
