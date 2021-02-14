@@ -23,4 +23,8 @@ private[spotify4s] object PublicUserPlayJson {
       .and((JsPath \ "id").read[SpotifyUserId])
       .and((JsPath \ "images").readNullable[List[SpotifyImage]].map(_.getOrElse(List.empty)))
       .and((JsPath \ "uri").read[SpotifyUri])(PublicUser.apply _)
+
+  val writes: Writes[PublicUser] = Json.writes
+
+  val format: Format[PublicUser] = Format(reads, writes)
 }

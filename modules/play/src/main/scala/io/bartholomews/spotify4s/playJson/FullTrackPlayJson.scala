@@ -13,7 +13,7 @@ import io.bartholomews.spotify4s.core.entities.{
   SpotifyUri
 }
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json.{JsPath, Reads}
+import play.api.libs.json.{Format, JsPath, Json, Reads, Writes}
 import sttp.model.Uri
 
 private[spotify4s] object FullTrackPlayJson {
@@ -29,14 +29,18 @@ private[spotify4s] object FullTrackPlayJson {
       .and((JsPath \ "external_ids").read[ExternalIds].map(Option(_)).orElse(Reads.pure(None)))
       .and((JsPath \ "external_urls").read[ExternalResourceUrl].map(Option(_)).orElse(Reads.pure(None)))
       .and((JsPath \ "href").readNullable[Uri])
-      .and((JsPath \ "id").readNullable[SpotifyId](spotifyIdDecoder))
+      .and((JsPath \ "id").readNullable[SpotifyId](spotifyIdCodec))
       .and((JsPath \ "is_playable").readNullable[Boolean])
       .and((JsPath \ "linked_from").readNullable[LinkedTrack])
-      .and((JsPath \ "restrictions").readNullable[Restrictions](restrictionsDecoder))
+      .and((JsPath \ "restrictions").readNullable[Restrictions](restrictionsCodec))
       .and((JsPath \ "name").read[String])
       .and((JsPath \ "popularity").read[Int])
       .and((JsPath \ "preview_url").readNullable[Uri])
       .and((JsPath \ "track_number").read[Int])
-      .and((JsPath \ "uri").read[SpotifyUri](spotifyUriDecoder))
+      .and((JsPath \ "uri").read[SpotifyUri](spotifyUriCodec))
       .and((JsPath \ "is_local").read[Boolean])(FullTrack.apply _)
+
+  val writes: Writes[FullTrack] = Json.writes
+
+  val format: Format[FullTrack] = Format(reads, writes)
 }
