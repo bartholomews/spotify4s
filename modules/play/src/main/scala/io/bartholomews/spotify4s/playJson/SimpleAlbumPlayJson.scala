@@ -32,7 +32,7 @@ private[spotify4s] object SimpleAlbumPlayJson {
           .map(Option(_))
           .orElse(Reads.pure(None))
       )
-      .and((JsPath \ "href").readNullable[Uri](uriDecoder))
+      .and((JsPath \ "href").readNullable[Uri])
       .and((JsPath \ "id").readNullable[SpotifyId](spotifyIdDecoder))
       .and((JsPath \ "images").read[List[SpotifyImage]](list(spotifyImageDecoder)))
       .and((JsPath \ "name").read[String])

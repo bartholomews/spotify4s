@@ -58,7 +58,6 @@ import io.circe.{Codec, Decoder, Encoder}
 object codecs extends SpotifyCirceApi
 
 trait SpotifyCirceApi extends FsClientCirceApi {
-  implicit val defaultConfig: Configuration = Configuration.default.withSnakeCaseMemberNames
   implicit val albumGroupDecoder: Decoder[AlbumGroup] = AlbumGroupCirce.decoder
   implicit val albumTypeDecoder: Decoder[AlbumType] = AlbumTypeCirce.decoder
   implicit val audioAnalysisDecoder: Decoder[AudioAnalysis] = deriveConfiguredDecoder

@@ -24,7 +24,7 @@ import io.bartholomews.spotify4s.core.entities.{
 import play.api.libs.json.{Json, Writes}
 
 object encoders {
-  import io.bartholomews.spotify4s.playJson.codecs.uriEncoder
+  import io.bartholomews.spotify4s.playJson.codecs.sttpUriEncoder
   implicit val followersEncoder: Writes[Followers] = Json.writes[Followers]
   implicit val spotifyIdEncoder: Writes[SpotifyId] = Json.valueWrites[SpotifyId]
   implicit val spotifyUriEncoder: Writes[SpotifyUri] = Json.valueWrites[SpotifyUri]

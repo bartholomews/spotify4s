@@ -5,7 +5,7 @@ import play.api.libs.json.{Format, JsError, JsObject, JsString, Reads, Writes}
 import sttp.model.Uri
 
 private[spotify4s] object ExternalResourceUrlPlayJson {
-  import io.bartholomews.spotify4s.playJson.codecs.uriDecoder
+  import io.bartholomews.spotify4s.playJson.codecs.sttpUriDecoder
 
   val reads: Reads[ExternalResourceUrl] = {
     case JsObject(objMap) =>

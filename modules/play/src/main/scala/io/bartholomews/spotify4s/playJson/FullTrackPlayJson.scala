@@ -28,7 +28,7 @@ private[spotify4s] object FullTrackPlayJson {
       .and((JsPath \ "explicit").read[Boolean])
       .and((JsPath \ "external_ids").read[ExternalIds].map(Option(_)).orElse(Reads.pure(None)))
       .and((JsPath \ "external_urls").read[ExternalResourceUrl].map(Option(_)).orElse(Reads.pure(None)))
-      .and((JsPath \ "href").readNullable[Uri](uriDecoder))
+      .and((JsPath \ "href").readNullable[Uri])
       .and((JsPath \ "id").readNullable[SpotifyId](spotifyIdDecoder))
       .and((JsPath \ "is_playable").readNullable[Boolean])
       .and((JsPath \ "linked_from").readNullable[LinkedTrack])
