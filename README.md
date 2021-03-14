@@ -10,9 +10,181 @@ This client is using the library [fsclient](https://github.com/bartholomews/fscl
 which is an OAuth wrapper on top of [sttp](https://sttp.softwaremill.com/en/stable),
 so you can use any effect type providing the relevant [backend](https://sttp.softwaremill.com/en/stable/backends/summary.html)
 
+Pick one module:
+
+```
+// circe codecs
+libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-66d9aa0f-SNAPSHOT"
+// play-json codecs
+libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-66d9aa0f-SNAPSHOT"
+// no codecs (you need to provide your own)
+libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-66d9aa0f-SNAPSHOT"
+```
+
 ## Endpoints Task list
 
 See [ENDPOINTS.md](https://github.com/bartholomews/spotify4s/blob/master/ENDPOINTS.md)
+
+## Setup
+
+### Register your app and obtain a *Client ID* and *Client Secret*
+
+Follow the instructions here: https://developer.spotify.com/documentation/general/guides/app-settings
+
+### Choose your sttp backend and create a *Spotify Client*
+
+```scala
+import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
+
+// Choose your effect / sttp backend
+type F[X] = Identity[X]
+val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+```
+
+You can load your app credentials from `application.conf`:
+
+```
+user-agent {
+    app-name = "your-app-name" // required
+    app-version = "0.0.1-SNAPSHOT" // optional
+    app-url = "https://github.com/your/app-name" // optional
+}
+
+spotify {
+    client-id: ${YOUR_SPOTIFY_CLIENT_ID} // required
+    client-secret: ${YOUR_SPOTIFY_CLIENT_SECRET} // required
+}
+```
+
+```scala
+import io.bartholomews.spotify4s.core.SpotifyClient
+
+val client = SpotifyClient.unsafeFromConfig(backend)
+```
+
+Or you can create a client manually:
+
+```scala
+import io.bartholomews.fsclient.core.FsClient
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.oauth.ClientPasswordAuthentication
+import io.bartholomews.fsclient.core.oauth.v2.{ClientId, ClientPassword, ClientSecret}
+import io.bartholomews.spotify4s.core.SpotifyClient
+
+private val userAgent =
+  UserAgent(appName = "your-app-name", appVersion = None, appUrl = None)
+
+private val signer = ClientPasswordAuthentication(
+  ClientPassword(
+    clientId = ClientId(System.getenv("YOUR_SPOTIFY_CLIENT_ID")),
+    clientSecret = ClientSecret(System.getenv("YOUR_SPOTIFY_CLIENT_SECRET"))
+  )
+)
+
+val client = new SpotifyClient(FsClient(userAgent, signer, backend))
+```
+
+#### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
+
+The Client Credentials flow is used in server-to-server authentication. 
+Only endpoints that do not access user information can be accessed.
+
+```scala
+  import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+  import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
+  import io.bartholomews.spotify4s.core.entities.{FullTrack, SpotifyId}
+  import io.circe
+
+  // import the response handler and token response decoder
+  // (here using the circe module, you can also use the play framework or provide your own if using core module)
+  import io.bartholomews.spotify4s.circe.codecs._
+
+  val accessTokenResponse: F[SttpResponse[circe.Error, NonRefreshableTokenSigner]] =
+    client.auth.clientCredentials
+
+  accessTokenResponse.body.map(implicit token => {
+    /*
+      You can store the token, but need to get a new one if expired;
+      it could be useful to create a "Client Credentials Client"
+      which manages token refresh automatically
+     */
+    val isExpired = token.isExpired()
+    // The access token allows you to make requests to the Spotify Web API endpoints
+    // that do NOT require user authorization
+    val trackResponse: F[SttpResponse[circe.Error, FullTrack]] = client.tracks.getTrack(
+      id = SpotifyId("2TpxZ7JUBn3uw46aR7qd6V"),
+      market = None
+    )
+  })
+```
+
+#### [Authorization Code Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow)
+
+This flow is suitable for long-running applications in which the user grants permission only once. 
+It provides an **access token** that can be *refreshed*. Since the token exchange involves sending your secret key, 
+perform this on a secure location, like a backend service, and not from a client such as a browser or from a mobile app.
+
+```scala
+  import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+  import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, NonRefreshableTokenSigner}
+  import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
+  import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
+  import io.bartholomews.spotify4s.core.entities.{FullTrack, PrivateUser, SpotifyId, SpotifyScope}
+  import io.circe
+  import sttp.client3.UriContext
+  import sttp.model.Uri
+  
+  val request = SpotifyUserAuthorizationRequest(
+    /*
+      The URI to redirect to after the user grants or denies permission.
+      This URI needs to have been entered in the Redirect URI whitelist
+      that you specified when you registered your application.
+      The value of redirect_uri here must exactly match one of the values
+      you entered when you registered your application,
+      including upper or lowercase, terminating slashes, and such.
+     */
+    redirectUri = RedirectUri(uri"https://bartholomews.io/callback"),
+    /*
+      A list of scopes. See https://developer.spotify.com/documentation/general/guides/authorization-guide/#list-of-scopes
+      If no scopes are specified, authorization will be granted only to access publicly available information:
+      that is, only information normally visible in the Spotify desktop, web, and mobile players.
+     */
+    scopes = List(SpotifyScope.PLAYLIST_READ_PRIVATE),
+    /*
+      Optional, but strongly recommended.
+      This provides protection against attacks such as cross-site request forgery.
+      See RFC-6749 (tools.ietf.org/html/rfc6749#section-4.1)
+     */
+    state = None
+  )
+
+  // Send the user to `authorizeUrl`
+  val authorizeUrl: Uri = client.auth.authorizeUrl(request)
+
+  // After they approve/deny your app, they will be sent to `uriAfterRedirect`, which should look something like:
+  val redirectionUriResponse: Uri = uri"http://localhost:9000/callback?code=AQApD1DlOFSQ27NXtPeZTmTbWDe9j6HyqxJrOy"
+
+  // import the response handler and token response decoder
+  // (here using the circe module, you can also use the play framework or provide your own if using core module)
+  import io.bartholomews.spotify4s.circe.codecs._
+
+  val accessTokenResponse: F[SttpResponse[circe.Error, AccessTokenSigner]] =
+    client.auth.AuthorizationCode.acquire(request, redirectionUriResponse)
+
+  accessTokenResponse.body.map(
+    implicit token =>
+      /*
+      You can store both the token.accessToken and token.refreshToken.
+      If expired, you need to call `refresh(token.refreshToken)`
+       */
+      if (token.isExpired()) client.auth.AuthorizationCode.refresh(token.refreshToken)
+      else {
+        // The access token allows you to make requests to the Spotify Web API on behalf of a user:
+        val me: F[SttpResponse[circe.Error, PrivateUser]] = client.users.me
+        println(me)
+      }
+  )
+```
 
 ## Refined types
 

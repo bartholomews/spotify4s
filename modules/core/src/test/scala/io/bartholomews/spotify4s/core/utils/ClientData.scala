@@ -45,7 +45,7 @@ object ClientData {
     accessToken = sampleAccessTokenKey,
     tokenType = "bearer",
     expiresIn = 1000L,
-    refreshToken = Some(sampleRefreshToken),
+    refreshToken = sampleRefreshToken,
     scope = Scope(List.empty)
   )
 

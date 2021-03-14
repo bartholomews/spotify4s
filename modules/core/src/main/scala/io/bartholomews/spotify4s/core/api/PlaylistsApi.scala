@@ -1,32 +1,23 @@
 package io.bartholomews.spotify4s.core.api
 
+import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, Offset, SpotifyUris, TracksPosition}
 import io.bartholomews.spotify4s.core.entities.requests.{
   AddTracksToPlaylistRequest,
   CreatePlaylistRequest,
   ModifyPlaylistRequest
 }
-import io.bartholomews.spotify4s.core.entities.{
-  FullPlaylist,
-  Market,
-  Page,
-  SimplePlaylist,
-  SimplePlaylistItem,
-  SnapshotId,
-  SnapshotIdResponse,
-  SpotifyId,
-  SpotifyUserId
-}
+import io.bartholomews.spotify4s.core.entities._
 import sttp.client3.BodySerializer
 import sttp.model.Uri
 
 // https://developer.spotify.com/console/playlists/
-class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
+class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
+  import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private[api] val basePath: Uri = apiUri / "v1"
 
@@ -61,12 +52,11 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
     val uri: Uri = (basePath / "users" / "playlists")
       .withQueryParam(key = "uris", uris.value.toList.map(_.value).mkString(","))
 
-    backend.send(
-      baseRequest(client)
-        .put(uri)
-        .sign(signer)
-        .response(asUnit)
-    )
+    baseRequest(client.userAgent)
+      .put(uri)
+      .sign(signer)
+      .response(asUnit)
+      .send(client.backend)
   }
 
 //  : F[HttpResponse[Unit]] =
@@ -107,12 +97,11 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.toString)
 
-    backend.send(
-      baseRequest(client)
-        .get(uri)
-        .sign(signer)
-        .response(responseHandler)
-    )
+    baseRequest(client.userAgent)
+      .get(uri)
+      .sign(signer)
+      .response(responseHandler)
+      .send(client.backend)
   }
 
   /**
@@ -155,13 +144,12 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
     bodySerializer: BodySerializer[ModifyPlaylistRequest]
   ): F[SttpResponse[Nothing, Unit]] = {
     val uri: Uri = basePath / "playlists" / playlistId.value
-    backend.send(
-      baseRequest(client)
-        .put(uri)
-        .body(ModifyPlaylistRequest(playlistName, public, collaborative, description))
-        .sign(signer)
-        .response(asUnit)
-    )
+    baseRequest(client.userAgent)
+      .put(uri)
+      .body(ModifyPlaylistRequest(playlistName, public, collaborative, description))
+      .sign(signer)
+      .response(asUnit)
+      .send(client.backend)
   }
 
   // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-upload-custom-playlist-cover
@@ -215,14 +203,13 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
   ): F[SttpResponse[E, SnapshotId]] = {
     val uri: Uri = basePath / "playlists" / playlistId.value / "tracks"
 
-    backend.send(
-      baseRequest(client)
-        .post(uri)
-        .body(AddTracksToPlaylistRequest(uris.value.toList.map(_.value), position.map(_.value)))
-        .sign(signer)
-        .response(responseHandler)
-        .mapResponse(_.map(_.snapshotId))
-    )
+    baseRequest(client.userAgent)
+      .post(uri)
+      .body(AddTracksToPlaylistRequest(uris.value.toList.map(_.value), position.map(_.value)))
+      .sign(signer)
+      .response(responseHandler)
+      .mapResponse(_.map(_.snapshotId))
+      .send(client.backend)
   }
 
   // https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-playlist-cover
@@ -264,12 +251,11 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
     val uri: Uri = (basePath / "playlists" / playlistId.value)
       .withOptionQueryParam("market", market.map(_.value))
 
-    backend.send(
-      baseRequest(client)
-        .get(uri)
-        .sign(signer)
-        .response(responseHandler)
-    )
+    baseRequest(client.userAgent)
+      .get(uri)
+      .sign(signer)
+      .response(responseHandler)
+      .send(client.backend)
   }
 
   /**
@@ -318,12 +304,11 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
       .withQueryParam("fields", fields)
       .withOptionQueryParam("market", market.map(_.value))
 
-    backend.send(
-      baseRequest(client)
-        .get(uri)
-        .sign(signer)
-        .response(responseHandler)
-    )
+    baseRequest(client.userAgent)
+      .get(uri)
+      .sign(signer)
+      .response(responseHandler)
+      .send(client.backend)
   }
 
   /**
@@ -351,12 +336,11 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.toString)
 
-    backend.send(
-      baseRequest(client)
-        .get(uri)
-        .sign(signer)
-        .response(responseHandler)
-    )
+    baseRequest(client.userAgent)
+      .get(uri)
+      .sign(signer)
+      .response(responseHandler)
+      .send(client.backend)
   }
 
   /**
@@ -415,12 +399,11 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClien
   ): F[SttpResponse[E, FullPlaylist]] = {
     val uri: Uri = basePath / "users" / userId.value / "playlists"
 
-    backend.send(
-      baseRequest(client)
-        .post(uri)
-        .body(CreatePlaylistRequest(playlistName, public, collaborative, description))
-        .sign(signer)
-        .response(responseHandler)
-    )
+    baseRequest(client.userAgent)
+      .post(uri)
+      .body(CreatePlaylistRequest(playlistName, public, collaborative, description))
+      .sign(signer)
+      .response(responseHandler)
+      .send(client.backend)
   }
 }

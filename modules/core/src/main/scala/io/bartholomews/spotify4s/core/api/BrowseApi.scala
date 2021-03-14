@@ -5,15 +5,16 @@ import eu.timepit.refined.numeric.{GreaterEqual, Interval}
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
+import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.core.entities.NewReleases
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/browse/
-class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
+class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
+  import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private[api] val basePath: Uri = apiUri / "v1" / "browse"
 
@@ -45,10 +46,10 @@ class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(c
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.value.toString)
 
-    baseRequest(client)
+    baseRequest(client.userAgent)
       .get(uri)
       .sign(signer)
       .response(responseHandler)
-      .send(backend)
+      .send(client.backend)
   }
 }

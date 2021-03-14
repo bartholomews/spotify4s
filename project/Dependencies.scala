@@ -4,7 +4,7 @@ object Dependencies {
   object Versions {
     val cats = "2.3.0"
     val refined = "0.9.13"
-    val fsClient = "0.1.1+4-9595003e-SNAPSHOT"
+    val fsClient = "0.1.1+21-52eadd08-SNAPSHOT"
     val scalaIso = "0.1.1+4-0b19443b-SNAPSHOT"
   }
 

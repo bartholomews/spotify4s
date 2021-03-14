@@ -1,16 +1,18 @@
 package io.bartholomews.spotify4s.core.api
 
+import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, Offset}
 import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylist}
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/users-profile/
-class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
+class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
+  import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
+
   private[api] val basePath: Uri = apiUri / "v1"
 
   /**
@@ -37,11 +39,11 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
     implicit signer: SignerV2,
     responseHandler: ResponseHandler[E, PrivateUser]
   ): F[SttpResponse[E, PrivateUser]] =
-    baseRequest(client)
+    baseRequest(client.userAgent)
       .get(basePath / "me")
       .sign(signer)
       .response(responseHandler)
-      .send(backend)
+      .send(client.backend)
 
   /**
     * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-a-list-of-current-users-playlists
@@ -73,11 +75,11 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.toString)
 
-    baseRequest(client)
+    baseRequest(client.userAgent)
       .get(uri)
       .sign(signer)
       .response(responseHandler)
-      .send(backend)
+      .send(client.backend)
 
     // :F[HttpResponse[Page[SimplePlaylist]]]
 //    implicit val pipeDecoder: Pipe[F, Json, Page[SimplePlaylist]] = Page.pipeDecoder
