@@ -14,11 +14,11 @@ Pick one module:
 
 ```
 // circe codecs
-libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-66d9aa0f-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-cc8791e8-SNAPSHOT"
 // play-json codecs
-libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-66d9aa0f-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-cc8791e8-SNAPSHOT"
 // no codecs (you need to provide your own)
-libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-66d9aa0f-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-cc8791e8-SNAPSHOT"
 ```
 
 ## Endpoints Task list
@@ -84,7 +84,7 @@ private val signer = ClientPasswordAuthentication(
 val client = new SpotifyClient(FsClient(userAgent, signer, backend))
 ```
 
-#### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
+### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
 
 The Client Credentials flow is used in server-to-server authentication. 
 Only endpoints that do not access user information can be accessed.
@@ -118,7 +118,7 @@ Only endpoints that do not access user information can be accessed.
   })
 ```
 
-#### [Authorization Code Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow)
+### [Authorization Code Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow)
 
 This flow is suitable for long-running applications in which the user grants permission only once. 
 It provides an **access token** that can be *refreshed*. Since the token exchange involves sending your secret key, 
@@ -161,7 +161,7 @@ perform this on a secure location, like a backend service, and not from a client
   // Send the user to `authorizeUrl`
   val authorizeUrl: Uri = client.auth.authorizeUrl(request)
 
-  // After they approve/deny your app, they will be sent to `uriAfterRedirect`, which should look something like:
+  // After they approve/deny your app, they will be sent to `redirectionUriResponse`, which should look something like:
   val redirectionUriResponse: Uri = uri"http://localhost:9000/callback?code=AQApD1DlOFSQ27NXtPeZTmTbWDe9j6HyqxJrOy"
 
   // import the response handler and token response decoder
@@ -181,7 +181,6 @@ perform this on a secure location, like a backend service, and not from a client
       else {
         // The access token allows you to make requests to the Spotify Web API on behalf of a user:
         val me: F[SttpResponse[circe.Error, PrivateUser]] = client.users.me
-        println(me)
       }
   )
 ```
