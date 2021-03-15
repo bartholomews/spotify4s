@@ -19,6 +19,9 @@ libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-8f4c84b
 libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-8f4c84bd-SNAPSHOT"
 // no codecs (you need to provide your own)
 libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-8f4c84bd-SNAPSHOT"
+
+resolvers +=
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 ```
 
 ## Endpoints Task list
