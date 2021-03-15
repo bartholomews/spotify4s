@@ -14,11 +14,11 @@ Pick one module:
 
 ```
 // circe codecs
-libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-cc8791e8-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-8f4c84bd-SNAPSHOT"
 // play-json codecs
-libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-cc8791e8-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-8f4c84bd-SNAPSHOT"
 // no codecs (you need to provide your own)
-libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-cc8791e8-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-8f4c84bd-SNAPSHOT"
 ```
 
 ## Endpoints Task list
@@ -87,7 +87,7 @@ val client = new SpotifyClient(FsClient(userAgent, signer, backend))
 ### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
 
 The Client Credentials flow is used in server-to-server authentication.  
-Only endpoints that do not access user information can be accessed.
+*Only endpoints that do not access user information can be accessed.*
 
 ```scala
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
@@ -189,7 +189,6 @@ It provides an **access token** that can be *refreshed*.
       else {
         // The access token allows you to make requests to the Spotify Web API on behalf of a user:
         val me: F[SttpResponse[circe.Error, PrivateUser]] = client.users.me
-        println(me)
       }
   )
 ```
