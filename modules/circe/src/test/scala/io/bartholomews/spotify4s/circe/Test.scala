@@ -117,7 +117,7 @@ object AuthorizationCodeFlow_3_UseAccessToken extends App {
     AccessToken(accessToken),
     "Bearer",
     3600,
-    RefreshToken(refreshToken),
+    Some(RefreshToken(refreshToken)),
     Scope(List(""))
   )
 

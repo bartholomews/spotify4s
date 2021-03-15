@@ -86,7 +86,7 @@ val client = new SpotifyClient(FsClient(userAgent, signer, backend))
 
 ### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
 
-The Client Credentials flow is used in server-to-server authentication. 
+The Client Credentials flow is used in server-to-server authentication.  
 Only endpoints that do not access user information can be accessed.
 
 ```scala
@@ -120,20 +120,19 @@ Only endpoints that do not access user information can be accessed.
 
 ### [Authorization Code Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow)
 
-This flow is suitable for long-running applications in which the user grants permission only once. 
-It provides an **access token** that can be *refreshed*. Since the token exchange involves sending your secret key, 
-perform this on a secure location, like a backend service, and not from a client such as a browser or from a mobile app.
+This flow is suitable for long-running applications in which the user grants permission only once.  
+It provides an **access token** that can be *refreshed*.  
 
 ```scala
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-  import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, NonRefreshableTokenSigner}
+  import io.bartholomews.fsclient.core.oauth.AccessTokenSigner
   import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
   import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
-  import io.bartholomews.spotify4s.core.entities.{FullTrack, PrivateUser, SpotifyId, SpotifyScope}
+  import io.bartholomews.spotify4s.core.entities.{PrivateUser, SpotifyScope}
   import io.circe
   import sttp.client3.UriContext
   import sttp.model.Uri
-  
+
   val request = SpotifyUserAuthorizationRequest(
     /*
       The URI to redirect to after the user grants or denies permission.
@@ -161,7 +160,7 @@ perform this on a secure location, like a backend service, and not from a client
   // Send the user to `authorizeUrl`
   val authorizeUrl: Uri = client.auth.authorizeUrl(request)
 
-  // After they approve/deny your app, they will be sent to `redirectionUriResponse`, which should look something like:
+  // After they approve/deny your app, they will be sent to `uriAfterRedirect`, which should look something like:
   val redirectionUriResponse: Uri = uri"http://localhost:9000/callback?code=AQApD1DlOFSQ27NXtPeZTmTbWDe9j6HyqxJrOy"
 
   // import the response handler and token response decoder
@@ -172,15 +171,25 @@ perform this on a secure location, like a backend service, and not from a client
     client.auth.AuthorizationCode.acquire(request, redirectionUriResponse)
 
   accessTokenResponse.body.map(
-    implicit token =>
+    implicit accessTokenSigner =>
       /*
-      You can store both the token.accessToken and token.refreshToken.
-      If expired, you need to call `refresh(token.refreshToken)`
+      You can store both the accessTokenSigner.accessToken and accessTokenSigner.refreshToken.
+      A refresh token is returned only with the first `accessTokenSigner` response,
+      you need to keep using that to refresh, and subsequent token responses
+      do not provide a refresh token.
        */
-      if (token.isExpired()) client.auth.AuthorizationCode.refresh(token.refreshToken)
+      if (accessTokenSigner.isExpired())
+        client.auth.AuthorizationCode.refresh(
+          accessTokenSigner.refreshToken.getOrElse(
+            RefreshToken(
+              "Only the first `accessTokenSigner` has a refresh token, I hope you still have that"
+            )
+          )
+        )
       else {
         // The access token allows you to make requests to the Spotify Web API on behalf of a user:
         val me: F[SttpResponse[circe.Error, PrivateUser]] = client.users.me
+        println(me)
       }
   )
 ```

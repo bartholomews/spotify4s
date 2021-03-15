@@ -55,7 +55,7 @@ abstract class AuthApiSpec[E[_], D[_], DE] extends WireWordSpec with ServerBehav
                   accessToken = AccessToken("some-access-token"),
                   tokenType = "Bearer",
                   expiresIn = 3600L,
-                  refreshToken = RefreshToken("refresh-token"),
+                  refreshToken = Some(RefreshToken("refresh-token")),
                   scope = Scope(List("user-read-private", "user-read-email", "unknown-scope"))
                 )
               )
@@ -142,7 +142,7 @@ abstract class AuthApiSpec[E[_], D[_], DE] extends WireWordSpec with ServerBehav
                 accessToken = AccessToken("some-access-token"),
                 tokenType = "Bearer",
                 expiresIn = 3600L,
-                refreshToken = RefreshToken("refresh-token"),
+                refreshToken = Some(RefreshToken("refresh-token")),
                 scope = Scope(List("user-read-private", "user-read-email", "unknown-scope"))
               )
             )
