@@ -145,7 +145,7 @@ It provides an **access token** that can be *refreshed*.
       you entered when you registered your application,
       including upper or lowercase, terminating slashes, and such.
      */
-    redirectUri = RedirectUri(uri"https://bartholomews.io/callback"),
+    redirectUri = RedirectUri(uri"http://localhost:9000/callback"),
     /*
       A list of scopes. See https://developer.spotify.com/documentation/general/guides/authorization-guide/#list-of-scopes
       If no scopes are specified, authorization will be granted only to access publicly available information:
