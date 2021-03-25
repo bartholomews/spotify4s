@@ -4,7 +4,7 @@
 <a href="https://typelevel.org/cats/"><img src="https://typelevel.org/cats/img/cats-badge.svg" height="40px" align="right" alt="Cats friendly" /></a>
 
 # spotify4s
-*Spotify* client on top of [sttp](https://sttp.softwaremill.com/en/stable).
+Type safe, functional *Spotify* client on top of [sttp](https://sttp.softwaremill.com/en/stable).
 
 This client is using the library [fsclient](https://github.com/bartholomews/fsclient)
 which is an OAuth wrapper on top of [sttp](https://sttp.softwaremill.com/en/stable),
