@@ -12,9 +12,10 @@ jobs:
       - uses: olafurpg/setup-gpg@v3
       - run: sbt test-coverage
       - run: sbt coveralls
-      - run: sbt ci-release
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      - run: sbt ci-release
+        env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
