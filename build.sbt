@@ -66,5 +66,5 @@ lazy val spotify4s = (project in file("."))
   .settings(skip in publish := true)
   .aggregate(core, circe, play)
 
-addCommandAlias("test-coverage", ";clean ;coverage ;test ;coverageReport")
+addCommandAlias("test-coverage", ";clean ;coverage ;test ;coverageAggregate")
 addCommandAlias("test-fast", "testOnly * -- -l org.scalatest.tags.Slow")

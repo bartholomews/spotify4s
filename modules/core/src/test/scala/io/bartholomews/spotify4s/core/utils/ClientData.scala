@@ -1,15 +1,9 @@
 package io.bartholomews.spotify4s.core.utils
 
-import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RefreshToken}
 import io.bartholomews.fsclient.core.oauth.v2.{ClientId, ClientPassword, ClientSecret}
-import io.bartholomews.fsclient.core.oauth.{
-  AccessTokenSigner,
-  ClientPasswordAuthentication,
-  NonRefreshableTokenSigner,
-  Scope
-}
+import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, NonRefreshableTokenSigner, Scope}
 import io.bartholomews.spotify4s.core.SpotifyClient
 import io.bartholomews.spotify4s.core.entities.{SpotifyId, SpotifyUserId}
 import sttp.client3.{HttpURLConnectionBackend, Identity}
@@ -27,12 +21,6 @@ object ClientData {
   val sampleClientId: ClientId = ClientId("SAMPLE_CLIENT_ID")
   val sampleClientSecret: ClientSecret = ClientSecret("SAMPLE_CLIENT_SECRET")
   val sampleClientPassword: ClientPassword = ClientPassword(sampleClientId, sampleClientSecret)
-
-  def sampleFsClient: FsClient[Identity, ClientPasswordAuthentication] = FsClient(
-    sampleUserAgent,
-    ClientPasswordAuthentication(sampleClientPassword),
-    HttpURLConnectionBackend()
-  )
 
   val sampleAccessTokenKey: AccessToken = AccessToken(
     "00000000000-0000000000000000000-0000000-0000000000000000000000000000000000000000001"
@@ -57,5 +45,9 @@ object ClientData {
     scope = Scope(List.empty)
   )
 
-  val sampleClient: SpotifyClient[Identity] = new SpotifyClient(sampleFsClient)
+  val sampleClient: SpotifyClient[Identity] = new SpotifyClient(
+    sampleUserAgent,
+    sampleClientPassword,
+    HttpURLConnectionBackend()
+  )
 }

@@ -1,29 +1,26 @@
 package io.bartholomews.spotify4s.circe
 
 import cats.data.NonEmptySet
-import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RedirectUri, RefreshToken}
 import io.bartholomews.fsclient.core.oauth.v2.{ClientId, ClientPassword, ClientSecret}
-import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, ClientPasswordAuthentication, Scope}
+import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, Scope}
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.circe.Test._
+import io.bartholomews.spotify4s.circe.codecs._
 import io.bartholomews.spotify4s.core.SpotifyClient
 import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
 import io.bartholomews.spotify4s.core.entities.{SpotifyId, SpotifyScope}
 import sttp.client3.{HttpURLConnectionBackend, Identity, Response, ResponseException, UriContext}
-import io.bartholomews.spotify4s.circe.codecs._
 
 object Test {
   // $COVERAGE-OFF$
   private val userAgent =
     UserAgent("spotify4s", Some("0.0.1"), Some("https://github.com/bartholomews/spotify4s"))
 
-  private val signer = ClientPasswordAuthentication(
-    ClientPassword(
-      clientId = ClientId(System.getenv("MUSICGENE_SPOTIFY_CLIENT_ID")),
-      clientSecret = ClientSecret(System.getenv("MUSICGENE_SPOTIFY_CLIENT_SECRET"))
-    )
+  private val clientPassword = ClientPassword(
+    clientId = ClientId(System.getenv("MUSICGENE_SPOTIFY_CLIENT_ID")),
+    clientSecret = ClientSecret(System.getenv("MUSICGENE_SPOTIFY_CLIENT_SECRET"))
   )
 
   val spotifyUserAuthorizationRequest: SpotifyUserAuthorizationRequest =
@@ -41,8 +38,10 @@ object Test {
     re.body.fold(println, println)
 
   val sttpClient: SpotifyClient[Identity] = {
-    new SpotifyClient[Identity](
-      FsClient(userAgent, signer, HttpURLConnectionBackend())
+    new SpotifyClient(
+      userAgent,
+      clientPassword,
+      HttpURLConnectionBackend()
     )
   }
   // $COVERAGE-ON$
