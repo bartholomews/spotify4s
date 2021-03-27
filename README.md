@@ -4,7 +4,7 @@
 <a href="https://typelevel.org/cats/"><img src="https://typelevel.org/cats/img/cats-badge.svg" height="40px" align="right" alt="Cats friendly" /></a>
 
 # spotify4s
-Type safe, functional *Spotify* client on top of [sttp](https://sttp.softwaremill.com/en/stable).
+Type-safe, functional *Spotify* client on top of [sttp](https://sttp.softwaremill.com/en/stable).
 
 This client is using the library [fsclient](https://github.com/bartholomews/fsclient)
 which is an OAuth wrapper on top of [sttp](https://sttp.softwaremill.com/en/stable),
@@ -109,7 +109,7 @@ The Client Credentials flow is used in server-to-server authentication.
     /*
       You can store the token, but need to get a new one if expired;
       it could be useful to create a "Client Credentials Client"
-      which manages token refresh automatically
+      which manages token "refresh" automatically
      */
     val isExpired = token.isExpired()
     // The access token allows you to make requests to the Spotify Web API endpoints
@@ -163,7 +163,7 @@ It provides an **access token** that can be *refreshed*.
   // Send the user to `authorizeUrl`
   val authorizeUrl: Uri = client.auth.authorizeUrl(request)
 
-  // After they approve/deny your app, they will be sent to `uriAfterRedirect`, which should look something like:
+  // After they approve/deny your app, they will be sent to `SpotifyUserAuthorizationRequest.redirectUri`, which should look something like:
   val redirectionUriResponse: Uri = uri"http://localhost:9000/callback?code=AQApD1DlOFSQ27NXtPeZTmTbWDe9j6HyqxJrOy"
 
   // import the response handler and token response decoder
