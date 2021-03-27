@@ -4,11 +4,15 @@ import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth.ClientPasswordAuthentication
 import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
-import io.bartholomews.spotify4s.core.api.{AuthApi, BrowseApi, FollowApi, PlaylistsApi, TracksApi, UsersApi}
+import io.bartholomews.spotify4s.core.api._
 import pureconfig.ConfigSource
+import pureconfig.error.ConfigReaderFailures
 import sttp.client3.SttpBackend
 
-class SpotifyClient[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
+class SpotifyClient[F[_]] private (client: FsClient[F, ClientPasswordAuthentication]) {
+  def this(userAgent: UserAgent, clientPassword: ClientPassword, backend: SttpBackend[F, Any]) =
+    this(FsClient(userAgent, ClientPasswordAuthentication(clientPassword), backend))
+
   type S = ClientPasswordAuthentication
   object auth extends AuthApi[F](client)
   object browse extends BrowseApi[F, S](client)
@@ -21,12 +25,18 @@ class SpotifyClient[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
 object SpotifyClient {
   import pureconfig.generic.auto._
 
+  private val userAgentConfig = ConfigSource.default.at(namespace = "user-agent")
+  private val spotifyConfig = ConfigSource.default.at("spotify")
+
+  def fromConfig[F[_]](sttpBackend: SttpBackend[F, Any]): Either[ConfigReaderFailures, SpotifyClient[F]] =
+    for {
+      userAgent <- userAgentConfig.load[UserAgent]
+      clientPassword <- spotifyConfig.load[ClientPassword]
+    } yield new SpotifyClient[F](userAgent, clientPassword, sttpBackend)
+
   def unsafeFromConfig[F[_]](sttpBackend: SttpBackend[F, Any]): SpotifyClient[F] = {
-    // FIXME: Should add User-Agent header to all requests, also make it safe
-    val userAgent = ConfigSource.default.at(namespace = "user-agent").loadOrThrow[UserAgent]
-    val signer = ClientPasswordAuthentication(
-      ConfigSource.default.at("spotify").loadOrThrow[ClientPassword]
-    )
-    new SpotifyClient[F](FsClient(userAgent, signer, sttpBackend))
+    val userAgent = userAgentConfig.loadOrThrow[UserAgent]
+    val clientPassword = spotifyConfig.loadOrThrow[ClientPassword]
+    new SpotifyClient[F](userAgent, clientPassword, sttpBackend)
   }
 }

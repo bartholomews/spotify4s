@@ -61,8 +61,10 @@ spotify {
 
 ```scala
 import io.bartholomews.spotify4s.core.SpotifyClient
+import pureconfig.error.ConfigReaderFailures
 
-val client = SpotifyClient.unsafeFromConfig(backend)
+val safeClient: Either[ConfigReaderFailures, SpotifyClient[Identity]] = SpotifyClient.fromConfig(backend)
+val unsafeClient: SpotifyClient[Identity] = SpotifyClient.unsafeFromConfig(backend)
 ```
 
 Or you can create a client manually:
@@ -70,21 +72,18 @@ Or you can create a client manually:
 ```scala
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.config.UserAgent
-import io.bartholomews.fsclient.core.oauth.ClientPasswordAuthentication
 import io.bartholomews.fsclient.core.oauth.v2.{ClientId, ClientPassword, ClientSecret}
 import io.bartholomews.spotify4s.core.SpotifyClient
 
 private val userAgent =
   UserAgent(appName = "your-app-name", appVersion = None, appUrl = None)
 
-private val signer = ClientPasswordAuthentication(
-  ClientPassword(
+private val clientPassword = ClientPassword(
     clientId = ClientId(System.getenv("YOUR_SPOTIFY_CLIENT_ID")),
     clientSecret = ClientSecret(System.getenv("YOUR_SPOTIFY_CLIENT_SECRET"))
-  )
 )
 
-val client = new SpotifyClient(FsClient(userAgent, signer, backend))
+val client = new SpotifyClient(userAgent, clientPassword, backend)
 ```
 
 ### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
@@ -129,7 +128,7 @@ It provides an **access token** that can be *refreshed*.
 ```scala
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
   import io.bartholomews.fsclient.core.oauth.AccessTokenSigner
-  import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
+  import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{RedirectUri, RefreshToken}
   import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
   import io.bartholomews.spotify4s.core.entities.{PrivateUser, SpotifyScope}
   import io.circe
