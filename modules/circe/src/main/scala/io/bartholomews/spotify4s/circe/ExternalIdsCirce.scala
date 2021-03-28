@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.circe
 
-import io.bartholomews.spotify4s.core.entities.{EAN, ExternalIds, ISRC, UPC}
+import io.bartholomews.spotify4s.core.entities.ExternalIds
+import io.bartholomews.spotify4s.core.entities.ExternalIds._
 import io.circe.{Codec, Decoder, DecodingFailure, Encoder, Json}
 
 private[spotify4s] object ExternalIdsCirce {

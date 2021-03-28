@@ -18,8 +18,12 @@ import io.bartholomews.spotify4s.core.entities.{
   AudioSegment,
   CollectionLink,
   Confidence,
+  Copyright,
+  ExternalIds,
   ExternalResourceUrl,
   Followers,
+  FullAlbum,
+  FullArtist,
   FullPlaylist,
   FullTrack,
   FullTracksResponse,
@@ -31,9 +35,12 @@ import io.bartholomews.spotify4s.core.entities.{
   PlaylistTrack,
   PrivateUser,
   PublicUser,
+  ReleaseDate,
   Restrictions,
   SimpleAlbum,
+  SimpleArtist,
   SimplePlaylist,
+  SimpleTrack,
   SnapshotId,
   SnapshotIdResponse,
   SpotifyCategoryId,
@@ -45,7 +52,6 @@ import io.bartholomews.spotify4s.core.entities.{
   SpotifyUserId,
   SubscriptionLevel
 }
-import io.circe.generic.extras.Configuration
 import io.circe.generic.extras.semiauto.{
   deriveConfiguredCodec,
   deriveConfiguredDecoder,
@@ -68,6 +74,12 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val collectionLinkCodec: Codec[CollectionLink] = deriveConfiguredCodec
   implicit val confidenceCodec: Codec[Confidence] = deriveUnwrappedCodec
   implicit val countryCodeAlpha2Codec: Codec[CountryCodeAlpha2] = CountryCodeAlpha2Circe.codec
+  val optionalCountryCodeList: Decoder[List[CountryCodeAlpha2]] =
+    Decoder
+      .decodeOption(Decoder.decodeList(countryCodeAlpha2Codec))
+      .map(_.getOrElse(List.empty))
+  implicit val copyrightCodec: Codec[Copyright] = deriveConfiguredCodec
+  implicit val externalIdsCodec: Codec[ExternalIds] = ExternalIdsCirce.codec
   implicit val externalResourceUrlCodec: Codec[ExternalResourceUrl] = ExternalResourceUrlCirce.codec
   implicit val followersCodec: Codec[Followers] = deriveConfiguredCodec
   implicit val fullPlaylistDecoder: Decoder[FullPlaylist] = deriveConfiguredDecoder
@@ -98,6 +110,19 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val barCodec: Codec[Bar] = TimeIntervalCirce.barCodec
   implicit val beatCodec: Codec[Beat] = TimeIntervalCirce.beatCodec
   implicit val tatumCodec: Codec[Tatum] = TimeIntervalCirce.tatumCodec
+
+  implicit val releaseDateDecoder: Decoder[ReleaseDate] = ReleaseDateCirce.decoder
+  implicit val simpleArtistDecoder: Decoder[SimpleArtist] = SimpleArtistCirce.decoder
+  implicit val simpleTrackDecoder: Decoder[SimpleTrack] = {
+    implicit val availableMarketsDecoder: Decoder[List[CountryCodeAlpha2]] = optionalCountryCodeList
+    deriveConfiguredDecoder
+  }
+
+  implicit val fullArtistDecoder: Decoder[FullArtist] = deriveConfiguredDecoder
+  implicit val fullAlbumDecoder: Decoder[FullAlbum] = {
+    implicit val availableMarketsDecoder: Decoder[List[CountryCodeAlpha2]] = optionalCountryCodeList
+    deriveConfiguredDecoder
+  }
 
   implicit val addTracksToPlaylistRequestEncoder: Encoder[AddTracksToPlaylistRequest] =
     dropNullValues(deriveConfiguredEncoder[AddTracksToPlaylistRequest])

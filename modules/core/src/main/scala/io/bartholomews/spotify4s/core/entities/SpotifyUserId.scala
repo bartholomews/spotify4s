@@ -45,7 +45,13 @@ object SpotifyUri {
   def fromNel(xs: NonEmptyList[SpotifyUri]): Either[String, SpotifyUris] =
     refineV[MaxSize[100]](xs)
 
-  def apply(xs: NonEmptyList[SpotifyUri]): NonEmptyList[SpotifyUris] = {
+  /**
+    * Group a NEL of `SpotifyUri` in batches of max size (100) `SpotifyUris`
+    * (so each `SpotifyUris` can be mapped to each separate request).
+    * @param xs the nel of `SpotifyUri` to be grouped
+    * @return a nel of grouped `SpotifyUris`
+    */
+  def grouped(xs: NonEmptyList[SpotifyUri]): NonEmptyList[SpotifyUris] = {
     NonEmptyList.fromListUnsafe(
       xs.toList
         .grouped(100)

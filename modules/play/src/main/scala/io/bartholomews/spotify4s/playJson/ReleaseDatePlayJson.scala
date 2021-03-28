@@ -3,24 +3,24 @@ package io.bartholomews.spotify4s.playJson
 import enumeratum.EnumEntry.Lowercase
 import enumeratum.{Enum, EnumEntry, EnumFormats}
 import io.bartholomews.spotify4s.core.entities.ReleaseDate
-import play.api.libs.json.{Format, JsObject, JsString, Reads, Writes}
+import play.api.libs.json._
 
 import scala.util.{Failure, Success, Try}
 
 private[spotify4s] object ReleaseDatePlayJson {
   sealed trait ReleaseDatePrecision extends EnumEntry with Lowercase {
-    def decodeReleaseDate: PartialFunction[String, Try[ReleaseDate]]
+    def decodeReleaseDatePf: PartialFunction[String, Try[ReleaseDate]]
   }
 
   case object ReleaseDatePrecision extends Enum[ReleaseDatePrecision] {
     case object Year extends ReleaseDatePrecision {
-      override final val decodeReleaseDate: PartialFunction[String, Try[ReleaseDate]] = {
+      override final val decodeReleaseDatePf: PartialFunction[String, Try[ReleaseDate]] = {
         case s"$y" => Try(y.toInt).map(year => ReleaseDate(year, month = None, dayOfMonth = None))
       }
     }
 
     case object Month extends ReleaseDatePrecision {
-      override final val decodeReleaseDate: PartialFunction[String, Try[ReleaseDate]] = {
+      override final val decodeReleaseDatePf: PartialFunction[String, Try[ReleaseDate]] = {
         case s"$y-$mm" =>
           Try(Tuple2(y.toInt, java.time.Month.of(mm.toInt))).map({
             case (year, month) => ReleaseDate(year, month = Some(month), dayOfMonth = None)
@@ -29,7 +29,7 @@ private[spotify4s] object ReleaseDatePlayJson {
     }
 
     case object Day extends ReleaseDatePrecision {
-      override final val decodeReleaseDate: PartialFunction[String, Try[ReleaseDate]] = {
+      override final val decodeReleaseDatePf: PartialFunction[String, Try[ReleaseDate]] = {
         case s"$y-$mm-$dd" =>
           Try(Tuple3(y.toInt, java.time.Month.of(mm.toInt), dd.toInt)).map({
             case (year, month, day) => ReleaseDate(year, month = Some(month), dayOfMonth = Some(day))
@@ -53,9 +53,17 @@ private[spotify4s] object ReleaseDatePlayJson {
           rdv match {
             case Failure(exception) => Reads.failed[ReleaseDate](s"Invalid release date: [${exception.getMessage}]")
             case Success(value) => Reads.pure(value)
-          }
+        }
       )
       .applyOrElse[String, Reads[ReleaseDate]](rd, other => Reads.failed(s"Invalid release date: [$other]"))
+
+  def decodeReleaseDate(
+    releaseDatePrecisionReads: Reads[ReleaseDatePrecision],
+    releaseDateRaw: Reads[String]
+  ): Reads[ReleaseDate] =
+    releaseDatePrecisionReads.flatMap(
+      rdp => releaseDateRaw.flatMap(rdr => decodeReleaseDate(rdp.decodeReleaseDatePf)(rdr))
+    )
 
   def decodeNullableReleaseDate(
     releaseDatePrecisionReads: Reads[Option[ReleaseDatePrecision]],
@@ -63,11 +71,12 @@ private[spotify4s] object ReleaseDatePlayJson {
   ): Reads[Option[ReleaseDate]] = {
     releaseDatePrecisionReads.flatMap {
       case Some(rdp) =>
-        releaseDateRaw.flatMap(maybeReleaseDateStr => {
-          maybeReleaseDateStr
-            .map(str => decodeReleaseDate(rdp.decodeReleaseDate)(str).map(Option(_)))
-            .getOrElse(Reads.failed[Option[ReleaseDate]]("Missing release_date value"))
-        })
+        releaseDateRaw.flatMap(
+          maybeReleaseDateStr =>
+            maybeReleaseDateStr
+              .map(str => decodeReleaseDate(rdp.decodeReleaseDatePf)(str).map(Option(_)))
+              .getOrElse(Reads.failed[Option[ReleaseDate]]("Missing release_date value"))
+        )
       case None => Reads.pure(None)
     }
   }
@@ -78,5 +87,5 @@ private[spotify4s] object ReleaseDatePlayJson {
         "release_date_precision" -> JsString(ReleaseDatePrecision.fromReleaseDate(o).entryName),
         "release_date" -> JsString(o.toString)
       )
-    )
+  )
 }

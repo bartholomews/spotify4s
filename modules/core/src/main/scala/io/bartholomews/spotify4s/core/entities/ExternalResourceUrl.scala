@@ -7,6 +7,8 @@ sealed trait ExternalResourceUrl {
   def value: String
 }
 
-case class SpotifyResourceUrl(uri: Uri) extends ExternalResourceUrl {
-  override val value: String = uri.toString()
+object ExternalResourceUrl {
+  final case class SpotifyResourceUrl(uri: Uri) extends ExternalResourceUrl {
+    override val value: String = uri.toString()
+  }
 }

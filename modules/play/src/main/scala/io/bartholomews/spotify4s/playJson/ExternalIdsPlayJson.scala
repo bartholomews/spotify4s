@@ -1,7 +1,8 @@
 package io.bartholomews.spotify4s.playJson
 
-import io.bartholomews.spotify4s.core.entities.{EAN, ExternalIds, ISRC, UPC}
-import play.api.libs.json.{Format, JsError, JsObject, JsString, JsSuccess, Reads, Writes}
+import io.bartholomews.spotify4s.core.entities.ExternalIds
+import io.bartholomews.spotify4s.core.entities.ExternalIds._
+import play.api.libs.json._
 
 object ExternalIdsPlayJson {
   val reads: Reads[ExternalIds] = {

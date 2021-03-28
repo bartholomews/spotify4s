@@ -15,6 +15,7 @@ class SpotifyClient[F[_]] private (client: FsClient[F, ClientPasswordAuthenticat
 
   type S = ClientPasswordAuthentication
   object auth extends AuthApi[F](client)
+  object albums extends AlbumsApi[F, S](client)
   object browse extends BrowseApi[F, S](client)
   object follow extends FollowApi[F, S](client)
   object playlists extends PlaylistsApi[F, S](client)

@@ -1,5 +1,7 @@
 package io.bartholomews.spotify4s.core.entities
 
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.numeric.Interval
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import sttp.model.Uri
 
@@ -25,5 +27,9 @@ case class FullTrack(
   uri: SpotifyUri,
   isLocal: Boolean
 )
+
+object FullTrack {
+  type Limit = Refined[Int, Interval.Closed[1, 50]]
+}
 
 case class FullTracksResponse(tracks: List[FullTrack])

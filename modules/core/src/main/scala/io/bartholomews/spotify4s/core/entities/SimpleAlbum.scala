@@ -5,7 +5,7 @@ import sttp.model.Uri
 
 /**
   * Album Object (simplified)
-  * https://developer.spotify.com/documentation/web-api/reference/object-model/#album-object-simplified
+  * https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedalbumobject
   *
   * @param albumGroup The field is present when getting an artist’s albums.
   *                    Possible values are “album”, “single”, “compilation”, “appears_on”.

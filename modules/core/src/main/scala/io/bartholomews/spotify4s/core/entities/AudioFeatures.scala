@@ -2,6 +2,7 @@ package io.bartholomews.spotify4s.core.entities
 
 import sttp.model.Uri
 
+// https://developer.spotify.com/documentation/web-api/reference/#object-audiofeaturesobject
 case class AudioFeatures(
   durationMs: Int,
   key: PitchClass,

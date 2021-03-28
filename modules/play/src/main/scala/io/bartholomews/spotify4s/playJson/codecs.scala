@@ -4,16 +4,69 @@ import enumeratum.EnumFormats
 import io.bartholomews.fsclient.play.FsClientPlayApi
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
-import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
-import io.bartholomews.spotify4s.core.entities.{AlbumGroup, AlbumType, ApiError, AudioAnalysis, AudioFeatures, AudioFeaturesResponse, AudioSection, AudioSegment, AuthError, CollectionLink, Confidence, ExternalIds, ExternalResourceUrl, Followers, FullPlaylist, FullTrack, FullTracksResponse, LinkedTrack, Modality, NewReleases, Page, PitchClass, PlaylistTrack, PrivateUser, PublicUser, Restrictions, SimpleAlbum, SimpleArtist, SimplePlaylist, SnapshotId, SnapshotIdResponse, SpotifyError, SpotifyId, SpotifyImage, SpotifyUri, SpotifyUserId, SubscriptionLevel, Tempo}
+import io.bartholomews.spotify4s.core.entities.requests.{
+  AddTracksToPlaylistRequest,
+  CreatePlaylistRequest,
+  ModifyPlaylistRequest
+}
+import io.bartholomews.spotify4s.core.entities.{
+  AlbumGroup,
+  AlbumType,
+  ApiError,
+  AudioAnalysis,
+  AudioFeatures,
+  AudioFeaturesResponse,
+  AudioSection,
+  AudioSegment,
+  AuthError,
+  CollectionLink,
+  Confidence,
+  Copyright,
+  ExternalIds,
+  ExternalResourceUrl,
+  Followers,
+  FullAlbum,
+  FullArtist,
+  FullPlaylist,
+  FullTrack,
+  FullTracksResponse,
+  LinkedTrack,
+  Modality,
+  NewReleases,
+  Page,
+  PitchClass,
+  PlaylistTrack,
+  PrivateUser,
+  PublicUser,
+  Restrictions,
+  SimpleAlbum,
+  SimpleArtist,
+  SimplePlaylist,
+  SimpleTrack,
+  SnapshotId,
+  SnapshotIdResponse,
+  SpotifyError,
+  SpotifyId,
+  SpotifyImage,
+  SpotifyUri,
+  SpotifyUserId,
+  SubscriptionLevel,
+  Tempo
+}
 import play.api.libs.json.JsonConfiguration.Aux
 import play.api.libs.json.JsonNaming.SnakeCase
-import play.api.libs.json.{Format, Json, JsonConfiguration, JsonNaming, Reads, Writes}
+import play.api.libs.json.{Format, JsValue, Json, JsonConfiguration, JsonNaming, Reads, Writes}
 
 object codecs extends SpotifyPlayJsonApi
 
 trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val config: Aux[Json.MacroOptions] = JsonConfiguration(SnakeCase)
+  def readNullableList[A](implicit rds: Reads[A]): Reads[List[A]] =
+    (json: JsValue) =>
+      json
+        .validateOpt[List[A]](Reads.list(rds))
+        .map(_.getOrElse(Nil))
+
   val withDiscriminator: Json.WithOptions[Json.MacroOptions] = {
     Json.configured(
       JsonConfiguration(
@@ -37,6 +90,7 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val createPlaylistRequestEncoder: Writes[CreatePlaylistRequest] = Json.writes
   implicit val addTracksToPlaylistRequestEncoder: Writes[AddTracksToPlaylistRequest] = Json.writes
 
+  implicit val copyrightCodec: Format[Copyright] = Json.format[Copyright]
   implicit val snapshotIdCodec: Format[SnapshotId] = Json.valueFormat
   implicit val snapshotIdResponseCodec: Format[SnapshotIdResponse] = Json.format
   implicit val spotifyErrorCodec: Format[SpotifyError] = SpotifyErrorPlayJson.spotifyErrorFormat
@@ -78,4 +132,11 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val collectionLinkCodec: Format[CollectionLink] = Json.format[CollectionLink]
   implicit val newReleasesCodec: Format[NewReleases] = Json.format[NewReleases]
   implicit val simplePlaylistCodec: Format[SimplePlaylist] = Json.format[SimplePlaylist]
+  // TODO: Format not Reads
+  implicit val simpleTrackDecoder: Reads[SimpleTrack] = SimpleTrackPlayJson.reads
+  implicit val fullArtistDecoder: Reads[FullArtist] = Json.reads[FullArtist]
+  implicit val fullAlbumDecoder: Reads[FullAlbum] = {
+    implicit val opt: Reads[List[CountryCodeAlpha2]] = readNullableList[CountryCodeAlpha2]
+    FullAlbumPlayJson.reads
+  }
 }

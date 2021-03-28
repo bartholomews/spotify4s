@@ -11,7 +11,7 @@ object SpotifyApi {
   private[api] val apiUri = SpotifyConfig.spotify.apiUri.value
   private[api] val accountsUri = SpotifyConfig.spotify.accountsUri.value
 
-  type Offset = Int
+  type Offset = Int Refined GreaterEqual[0]
   type TracksPosition = Refined[Int, GreaterEqual[0]]
   type SpotifyUris = Refined[NonEmptyList[SpotifyUri], MaxSize[100]]
 }

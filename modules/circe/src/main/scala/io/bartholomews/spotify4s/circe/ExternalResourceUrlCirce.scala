@@ -1,8 +1,9 @@
 package io.bartholomews.spotify4s.circe
 
-import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, SpotifyResourceUrl}
+import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl
+import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
 import io.circe.Decoder.Result
-import io.circe.{Codec, Decoder, DecodingFailure, Encoder, HCursor, Json}
+import io.circe._
 import sttp.model.Uri
 
 private[spotify4s] object ExternalResourceUrlCirce {

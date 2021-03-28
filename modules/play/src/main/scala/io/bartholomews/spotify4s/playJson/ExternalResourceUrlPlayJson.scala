@@ -1,7 +1,8 @@
 package io.bartholomews.spotify4s.playJson
 
-import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, SpotifyResourceUrl}
-import play.api.libs.json.{Format, JsError, JsObject, JsString, Reads, Writes}
+import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl
+import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
+import play.api.libs.json._
 import sttp.model.Uri
 
 private[spotify4s] object ExternalResourceUrlPlayJson {

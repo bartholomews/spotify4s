@@ -3,6 +3,7 @@ package io.bartholomews.spotify4s.playJson
 import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, SimpleArtist, SpotifyId, SpotifyUri}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.{Format, JsPath, JsSuccess, Json, Reads, Writes}
+import sttp.model.Uri
 
 private[spotify4s] object SimpleArtistPlayJson {
   import io.bartholomews.spotify4s.playJson.codecs._
@@ -10,7 +11,7 @@ private[spotify4s] object SimpleArtistPlayJson {
     (JsPath \ "external_urls")
       .readNullable[ExternalResourceUrl]
       .orElse(_ => JsSuccess(None))
-      .and((JsPath \ "href").readNullable[String])
+      .and((JsPath \ "href").readNullable[Uri])
       .and((JsPath \ "id").readNullable[SpotifyId])
       .and((JsPath \ "name").read[String])
       .and((JsPath \ "uri").readNullable[SpotifyUri])(SimpleArtist.apply _)

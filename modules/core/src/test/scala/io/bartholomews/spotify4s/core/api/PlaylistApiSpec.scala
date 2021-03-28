@@ -12,6 +12,7 @@ import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.spotify4s.core.ServerBehaviours
 import io.bartholomews.spotify4s.core.api.PlaylistApiSpec.{PartialPlaylist, PartialTrack}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.SpotifyUris
+import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
 import io.bartholomews.spotify4s.core.entities.requests.{
   AddTracksToPlaylistRequest,
   CreatePlaylistRequest,
@@ -28,7 +29,6 @@ import io.bartholomews.spotify4s.core.entities.{
   SnapshotIdResponse,
   SpotifyId,
   SpotifyImage,
-  SpotifyResourceUrl,
   SpotifyUri,
   SpotifyUserId
 }

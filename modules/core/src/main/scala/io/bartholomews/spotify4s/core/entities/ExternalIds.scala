@@ -5,11 +5,11 @@ sealed trait ExternalIds {
   def value: String
 }
 
-// https://en.wikipedia.org/wiki/International_Standard_Recording_Code
-case class ISRC(value: String) extends ExternalIds
-
-// https://en.wikipedia.org/wiki/International_Article_Number
-case class EAN(value: String) extends ExternalIds
-
-// https://en.wikipedia.org/wiki/Universal_Product_Code
-case class UPC(value: String) extends ExternalIds
+object ExternalIds {
+  // https://en.wikipedia.org/wiki/International_Standard_Recording_Code
+  case class ISRC(value: String) extends ExternalIds
+  // https://en.wikipedia.org/wiki/International_Article_Number
+  case class EAN(value: String) extends ExternalIds
+  // https://en.wikipedia.org/wiki/Universal_Product_Code
+  case class UPC(value: String) extends ExternalIds
+}
