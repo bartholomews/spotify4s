@@ -18,7 +18,10 @@ import sttp.model.StatusCode
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-abstract class AuthApiSpec[E[_], D[_], DE] extends WireWordSpec with ServerBehaviours[E, D, DE] with DiffDerivations {
+abstract class AuthApiSpec[E[_], D[_], DE, J]
+    extends WireWordSpec
+    with ServerBehaviours[E, D, DE, J]
+    with DiffDerivations {
   implicit def accessTokenSignerDecoder: D[AccessTokenSigner]
   implicit def nonRefreshableTokenSignerDecoder: D[NonRefreshableTokenSigner]
 

@@ -3,12 +3,15 @@ package io.bartholomews.spotify4s.playJson.api
 import io.bartholomews.spotify4s.core.api.PlaylistApiSpec
 import io.bartholomews.spotify4s.core.api.PlaylistApiSpec.{PartialPlaylist, PartialTrack}
 import io.bartholomews.spotify4s.core.entities.{FullPlaylist, SimplePlaylist, SnapshotIdResponse}
-import io.bartholomews.spotify4s.playJson.PlayServerBehaviours
+import io.bartholomews.spotify4s.playJson.{PlayEntityCodecs, PlayServerBehaviours}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json.{JsError, JsPath, Reads, Writes}
+import play.api.libs.json._
 import sttp.model.Uri
 
-class PlaylistApiPlaySpec extends PlaylistApiSpec[Writes, Reads, JsError] with PlayServerBehaviours {
+class PlaylistApiPlaySpec
+    extends PlaylistApiSpec[Writes, Reads, JsError, JsValue]
+    with PlayServerBehaviours
+    with PlayEntityCodecs {
   implicit val partialTrackReads: Reads[PartialTrack] =
     (JsPath \ "track" \ "name")
       .read[String]

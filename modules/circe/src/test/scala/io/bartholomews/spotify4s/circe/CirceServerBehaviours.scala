@@ -9,7 +9,9 @@ import sttp.client3.BodySerializer
 
 import scala.reflect.ClassTag
 
-trait CirceServerBehaviours extends ServerBehaviours[circe.Encoder, circe.Decoder, circe.Error] with SpotifyCirceApi {
+trait CirceServerBehaviours
+    extends ServerBehaviours[circe.Encoder, circe.Decoder, circe.Error, circe.Json]
+    with SpotifyCirceApi {
   self: WireWordSpec =>
 
   import io.bartholomews.spotify4s.circe.codecs._

@@ -18,6 +18,8 @@ abstract class EntitiesSpec[Entity, Encode[_], Decode[_], Json]() extends AnyWor
 }
 
 trait JsonCodecs[Entity, Encoder[_], Decoder[_], Json] {
+  implicit def entityEncoder: Encoder[Entity]
+  implicit def entityDecoder: Decoder[Entity]
   def parse(rawJson: String): Either[String, Json]
   def encode(entity: Entity): Json
   def decode(json: Json): Either[String, Entity]

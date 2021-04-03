@@ -8,7 +8,7 @@ object RefinedReadme extends App {
   // type SpotifyUris = Refined[NonEmptyList[SpotifyUri], MaxSize[100]]
 
   val ex1: Either[String, SpotifyUris] = SpotifyUri.fromList(List.empty)
-  assert(ex1 == Left("Predicate failed: need to provide at least one uri."))
+  assert(ex1 == Left("Predicate failed: need to provide at least one element."))
 
   val tooManyUris: NonEmptyList[SpotifyUri] = NonEmptyList.fromListUnsafe(
     (1 to 101).map(_ => SpotifyUri("just one extra uri...")).toList

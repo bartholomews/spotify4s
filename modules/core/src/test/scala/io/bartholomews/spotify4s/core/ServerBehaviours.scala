@@ -6,7 +6,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.spotify4s.core.entities.{ApiError, AuthError, Page, SpotifyError}
+import io.bartholomews.spotify4s.core.entities.{ApiError, AuthError, JsonCodecs, Page, SpotifyError}
 import org.apache.http.entity.ContentType
 import org.scalatest.matchers.should.Matchers
 import sttp.client3.{BodySerializer, DeserializationException, HttpError}
@@ -14,9 +14,14 @@ import sttp.model.StatusCode
 
 import scala.reflect.ClassTag
 
-trait ServerBehaviours[Encoder[_], Decoder[_], DE] extends Matchers {
+trait ServerBehaviours[Encoder[_], Decoder[_], DE, Json] extends Matchers {
 
   self: WireWordSpec =>
+
+  def entityCodecs[Entity](
+    implicit encoder: Encoder[Entity],
+    decoder: Decoder[Entity]
+  ): JsonCodecs[Entity, Encoder, Decoder, Json]
 
   implicit def ct: ClassTag[DE]
   implicit def bodySerializer[T](implicit encoder: Encoder[T]): BodySerializer[T]

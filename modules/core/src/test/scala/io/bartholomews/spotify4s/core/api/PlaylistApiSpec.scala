@@ -37,7 +37,7 @@ import sttp.client3.{Identity, Response, UriContext}
 import sttp.model.{StatusCode, Uri}
 
 //noinspection MutatorLikeMethodIsParameterless
-abstract class PlaylistApiSpec[E[_], D[_], DE] extends WireWordSpec with ServerBehaviours[E, D, DE] {
+abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with ServerBehaviours[E, D, DE, J] {
   import cats.implicits._
   import eu.timepit.refined.auto._
 
@@ -87,7 +87,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE] extends WireWordSpec with ServerB
 
       "return a compile time error" in {
         val ex1: Either[String, SpotifyUris] = SpotifyUri.fromList(List.empty)
-        assert(ex1 == Left("Predicate failed: need to provide at least one uri."))
+        assert(ex1 == Left("Predicate failed: need to provide at least one element."))
 
         val ex2: Either[String, SpotifyUris] = SpotifyUri.fromNel(
           NonEmptyList.fromListUnsafe((1 to 101).map(_ => SpotifyUri("just one extra uri...")).toList)

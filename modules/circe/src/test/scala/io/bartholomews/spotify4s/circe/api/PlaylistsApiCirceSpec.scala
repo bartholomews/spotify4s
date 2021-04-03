@@ -1,7 +1,7 @@
 package io.bartholomews.spotify4s.circe.api
 
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.spotify4s.circe.CirceServerBehaviours
+import io.bartholomews.spotify4s.circe.{CirceEntityCodecs, CirceServerBehaviours}
 import io.bartholomews.spotify4s.core.api.PlaylistApiSpec
 import io.bartholomews.spotify4s.core.api.PlaylistApiSpec.{PartialPlaylist, PartialTrack}
 import io.circe
@@ -9,9 +9,10 @@ import io.circe.{Decoder, HCursor}
 import sttp.model.Uri
 
 class PlaylistsApiCirceSpec
-    extends PlaylistApiSpec[circe.Encoder, circe.Decoder, circe.Error]
+    extends PlaylistApiSpec[circe.Encoder, circe.Decoder, circe.Error, circe.Json]
     with WireWordSpec
-    with CirceServerBehaviours {
+    with CirceServerBehaviours
+    with CirceEntityCodecs {
   implicit val partialPlaylistDecoder: Decoder[PartialPlaylist] = (c: HCursor) =>
     for {
       description <- c.downField("description").as[String]
