@@ -1,12 +1,12 @@
 
 ## Endpoints Task list
   
-- **Albums** [🔗](https://developer.spotify.com/documentation/web-api/reference/albums/)  
-    ❌ [Get an album](https://developer.spotify.com/documentation/web-api/reference/albums/get-album/)  
-    ❌ [Get several albums](https://developer.spotify.com/documentation/web-api/reference/albums/get-several-albums/)  
-    ❌ [Get an album's tracks](https://developer.spotify.com/documentation/web-api/reference/albums/get-albums-tracks/)  
-
-- **Artists** [🔗](https://developer.spotify.com/documentation/web-api/reference/artists/)  
+- **Albums** [🔗](https://developer.spotify.com/documentation/web-api/reference/albums)  
+    ✅ [Get an album](https://developer.spotify.com/documentation/web-api/reference/albums/get-album)  
+    ✅ [Get several albums](https://developer.spotify.com/documentation/web-api/reference/albums/get-several-albums)    
+    ✅ [Get an album's tracks](https://developer.spotify.com/documentation/web-api/reference/albums/get-albums-tracks)    
+  
+- **Artists** [🔗](https://developer.spotify.com/documentation/web-api/reference/artists)  
     ❌ [Get an artist](https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/)  
     ❌ [Get several artists](https://developer.spotify.com/documentation/web-api/reference/artists/get-several-artists/)  
     ❌ [Get an artist's albums](https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-albums/)  

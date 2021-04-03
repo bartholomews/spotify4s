@@ -24,10 +24,6 @@ resolvers +=
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 ```
 
-## Endpoints Task list
-
-See [ENDPOINTS.md](https://github.com/bartholomews/spotify4s/blob/master/ENDPOINTS.md)
-
 ## Setup
 
 ### Register your app and obtain a *Client ID* and *Client Secret*
@@ -85,6 +81,21 @@ private val clientPassword = ClientPassword(
 
 val client = new SpotifyClient(userAgent, clientPassword, backend)
 ```
+
+## Usage
+
+The various [apis](https://developer.spotify.com/documentation/web-api/reference) are accessible as objects
+within the client, e.g.:
+```scala
+// browse api
+client.browse.getNewReleases(country = None)
+// albums api
+client.albums.getAlbum(id = SpotifyId("1weenld61qoidwYuZ1GESA"), country = None)
+```
+
+## Endpoints Task list
+
+See [ENDPOINTS.md](https://github.com/bartholomews/spotify4s/blob/master/ENDPOINTS.md)
 
 ### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
 

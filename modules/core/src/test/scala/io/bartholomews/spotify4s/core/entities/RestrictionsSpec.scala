@@ -1,7 +1,6 @@
 package io.bartholomews.spotify4s.core.entities
 
-abstract class RestrictionsEntitiesSpec[Encode[_], Decode[_], Json]
-    extends EntitiesSpec[Restrictions, Encode, Decode, Json] {
+abstract class RestrictionsSpec[Encode[_], Decode[_], Json] extends EntitySpec[Restrictions, Encode, Decode, Json] {
 
   implicit def restrictionsCodecs: JsonCodecs[Restrictions, Encode, Decode, Json]
 

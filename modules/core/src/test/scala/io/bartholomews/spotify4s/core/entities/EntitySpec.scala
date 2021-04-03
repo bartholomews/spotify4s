@@ -3,7 +3,7 @@ package io.bartholomews.spotify4s.core.entities
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-abstract class EntitiesSpec[Entity, Encode[_], Decode[_], Json]() extends AnyWordSpec with Matchers {
+abstract class EntitySpec[Entity, Encode[_], Decode[_], Json]() extends AnyWordSpec with Matchers {
   def aNiceCodec(entity: Entity, rawJson: String)(
     implicit codecs: JsonCodecs[Entity, Encode, Decode, Json]
   ): Unit = {
