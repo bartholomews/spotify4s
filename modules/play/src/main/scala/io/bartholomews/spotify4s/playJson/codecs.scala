@@ -26,6 +26,7 @@ import io.bartholomews.spotify4s.core.entities.{
   ExternalResourceUrl,
   Followers,
   FullAlbum,
+  FullAlbumsResponse,
   FullArtist,
   FullPlaylist,
   FullTrack,
@@ -139,4 +140,5 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
     implicit val opt: Reads[List[CountryCodeAlpha2]] = readNullableList[CountryCodeAlpha2]
     FullAlbumPlayJson.reads
   }
+  implicit val fullAlbumsResponseDecoder: Reads[FullAlbumsResponse] = Json.reads[FullAlbumsResponse]
 }

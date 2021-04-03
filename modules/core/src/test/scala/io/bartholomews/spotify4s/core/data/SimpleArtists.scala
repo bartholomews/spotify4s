@@ -21,4 +21,5 @@ object SimpleArtists {
   val `Bill Evans`: SimpleArtist = makeSimpleArtist(name = "Bill Evans", id = "4jXfFzeP66Zy67HM2mvIIF")
   val `Wynton Kelly`: SimpleArtist = makeSimpleArtist(name = "Wynton Kelly", id = "5ncBRFyyylFng7kQJaRXN0")
   val `Paul Chambers`: SimpleArtist = makeSimpleArtist(name = "Paul Chambers", id = "0M1UOBJZ9tcKJbrbnVlHZG")
+  val `Keith Jarrett`: SimpleArtist = makeSimpleArtist(name = "Keith Jarrett", id = "0F3Aew9DSd6fb6192K1K0Y")
 }

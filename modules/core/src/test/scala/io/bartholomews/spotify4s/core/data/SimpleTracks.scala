@@ -134,4 +134,46 @@ object SimpleTracks {
     uri = SpotifyUri("spotify:track:3R3fcrKaeBr3U6s9R2belr"),
     isLocal = false
   )
+
+  val `Shhh / Peaceful`: SimpleTrack = SimpleTrack(
+    artists = List(SimpleArtists.`Miles Davis`),
+    availableMarkets = List.empty,
+    discNumber = 1,
+    durationMs = 1094733,
+    explicit = false,
+    externalUrls = Some(SpotifyResourceUrl(uri"https://open.spotify.com/track/267lVml7gJ9xefwgO6E2Ag")),
+    href = Some(uri"https://api.spotify.com/v1/tracks/267lVml7gJ9xefwgO6E2Ag"),
+    id = Some(SpotifyId("267lVml7gJ9xefwgO6E2Ag")),
+    isPlayable = Some(true),
+    linkedFrom = None,
+    restrictions = None,
+    name = "Shhh / Peaceful",
+    previewUrl = Some(
+      uri"https://p.scdn.co/mp3-preview/4de96132fc9f4be9fd6dc11b3ce7f4c279e1bf2f?cid=07f5f9e97a9a4fddba3d205d19fcd21e"
+    ),
+    trackNumber = 1,
+    uri = SpotifyUri("spotify:track:267lVml7gJ9xefwgO6E2Ag"),
+    isLocal = false
+  )
+
+  val `In a Silent Way`: SimpleTrack = SimpleTrack(
+    artists = List(SimpleArtists.`Miles Davis`),
+    availableMarkets = List.empty,
+    discNumber = 1,
+    durationMs = 1192333,
+    explicit = false,
+    externalUrls = Some(SpotifyResourceUrl(uri"https://open.spotify.com/track/54a3lHJAwce1dOKrsDPEHv")),
+    href = Some(uri"https://api.spotify.com/v1/tracks/54a3lHJAwce1dOKrsDPEHv"),
+    id = Some(SpotifyId("54a3lHJAwce1dOKrsDPEHv")),
+    isPlayable = Some(true),
+    linkedFrom = None,
+    restrictions = None,
+    name = "In a Silent Way",
+    previewUrl = Some(
+      uri"https://p.scdn.co/mp3-preview/c8a0f0bfa72cbcc9d6cb2ea06c93a5409282e37c?cid=07f5f9e97a9a4fddba3d205d19fcd21e"
+    ),
+    trackNumber = 2,
+    uri = SpotifyUri("spotify:track:54a3lHJAwce1dOKrsDPEHv"),
+    isLocal = false
+  )
 }

@@ -1,0 +1,489 @@
+{
+  "albums": [
+    {
+      "album_type": "album",
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+          },
+          "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+          "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+          "name": "Miles Davis",
+          "type": "artist",
+          "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+        }
+      ],
+      "copyrights": [
+        {
+          "text": "Originally released 1959 Sony Music Entertainment Inc.",
+          "type": "P"
+        }
+      ],
+      "external_ids": {
+        "upc": "5099749522428"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/album/1weenld61qoidwYuZ1GESA"
+      },
+      "genres": [
+      ],
+      "href": "https://api.spotify.com/v1/albums/1weenld61qoidwYuZ1GESA",
+      "id": "1weenld61qoidwYuZ1GESA",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://i.scdn.co/image/ab67616d0000b2737ab89c25093ea3787b1995b4",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://i.scdn.co/image/ab67616d00001e027ab89c25093ea3787b1995b4",
+          "width": 300
+        },
+        {
+          "height": 64,
+          "url": "https://i.scdn.co/image/ab67616d000048517ab89c25093ea3787b1995b4",
+          "width": 64
+        }
+      ],
+      "label": "Columbia",
+      "name": "Kind Of Blue",
+      "popularity": 56,
+      "release_date": "1959-08-17",
+      "release_date_precision": "day",
+      "total_tracks": 5,
+      "tracks": {
+        "href": "https://api.spotify.com/v1/albums/1weenld61qoidwYuZ1GESA/tracks?offset=0&limit=50&market=GB",
+        "items": [
+          {
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+                },
+                "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+                "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+                "name": "Miles Davis",
+                "type": "artist",
+                "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/2hGh5VOeeqimQFxqXvfCUf"
+                },
+                "href": "https://api.spotify.com/v1/artists/2hGh5VOeeqimQFxqXvfCUf",
+                "id": "2hGh5VOeeqimQFxqXvfCUf",
+                "name": "John Coltrane",
+                "type": "artist",
+                "uri": "spotify:artist:2hGh5VOeeqimQFxqXvfCUf"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/5v74mT11KGJqadf9sLw4dA"
+                },
+                "href": "https://api.spotify.com/v1/artists/5v74mT11KGJqadf9sLw4dA",
+                "id": "5v74mT11KGJqadf9sLw4dA",
+                "name": "Cannonball Adderley",
+                "type": "artist",
+                "uri": "spotify:artist:5v74mT11KGJqadf9sLw4dA"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/4jXfFzeP66Zy67HM2mvIIF"
+                },
+                "href": "https://api.spotify.com/v1/artists/4jXfFzeP66Zy67HM2mvIIF",
+                "id": "4jXfFzeP66Zy67HM2mvIIF",
+                "name": "Bill Evans",
+                "type": "artist",
+                "uri": "spotify:artist:4jXfFzeP66Zy67HM2mvIIF"
+              }
+            ],
+            "disc_number": 1,
+            "duration_ms": 562400,
+            "explicit": false,
+            "external_urls": {
+              "spotify": "https://open.spotify.com/track/7q3kkfAVpmcZ8g6JUThi3o"
+            },
+            "href": "https://api.spotify.com/v1/tracks/7q3kkfAVpmcZ8g6JUThi3o",
+            "id": "7q3kkfAVpmcZ8g6JUThi3o",
+            "is_local": false,
+            "is_playable": true,
+            "name": "So What (feat. John Coltrane, Cannonball Adderley & Bill Evans)",
+            "preview_url": "https://p.scdn.co/mp3-preview/31223c6ee13d66a93d17e741f6c759adf22f6c54?cid=07f5f9e97a9a4fddba3d205d19fcd21e",
+            "track_number": 1,
+            "type": "track",
+            "uri": "spotify:track:7q3kkfAVpmcZ8g6JUThi3o"
+          },
+          {
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+                },
+                "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+                "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+                "name": "Miles Davis",
+                "type": "artist",
+                "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/2hGh5VOeeqimQFxqXvfCUf"
+                },
+                "href": "https://api.spotify.com/v1/artists/2hGh5VOeeqimQFxqXvfCUf",
+                "id": "2hGh5VOeeqimQFxqXvfCUf",
+                "name": "John Coltrane",
+                "type": "artist",
+                "uri": "spotify:artist:2hGh5VOeeqimQFxqXvfCUf"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/5v74mT11KGJqadf9sLw4dA"
+                },
+                "href": "https://api.spotify.com/v1/artists/5v74mT11KGJqadf9sLw4dA",
+                "id": "5v74mT11KGJqadf9sLw4dA",
+                "name": "Cannonball Adderley",
+                "type": "artist",
+                "uri": "spotify:artist:5v74mT11KGJqadf9sLw4dA"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/5ncBRFyyylFng7kQJaRXN0"
+                },
+                "href": "https://api.spotify.com/v1/artists/5ncBRFyyylFng7kQJaRXN0",
+                "id": "5ncBRFyyylFng7kQJaRXN0",
+                "name": "Wynton Kelly",
+                "type": "artist",
+                "uri": "spotify:artist:5ncBRFyyylFng7kQJaRXN0"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/0M1UOBJZ9tcKJbrbnVlHZG"
+                },
+                "href": "https://api.spotify.com/v1/artists/0M1UOBJZ9tcKJbrbnVlHZG",
+                "id": "0M1UOBJZ9tcKJbrbnVlHZG",
+                "name": "Paul Chambers",
+                "type": "artist",
+                "uri": "spotify:artist:0M1UOBJZ9tcKJbrbnVlHZG"
+              }
+            ],
+            "disc_number": 1,
+            "duration_ms": 586493,
+            "explicit": false,
+            "external_urls": {
+              "spotify": "https://open.spotify.com/track/3NvYPUNu6nwQgN31UnoDbn"
+            },
+            "href": "https://api.spotify.com/v1/tracks/3NvYPUNu6nwQgN31UnoDbn",
+            "id": "3NvYPUNu6nwQgN31UnoDbn",
+            "is_local": false,
+            "is_playable": true,
+            "name": "Freddie Freeloader (feat. John Coltrane, Cannonball Adderley, Wynton Kelly & Paul Chambers)",
+            "preview_url": "https://p.scdn.co/mp3-preview/744d4852b9c7a68aa661829770e86db0d55863ec?cid=07f5f9e97a9a4fddba3d205d19fcd21e",
+            "track_number": 2,
+            "type": "track",
+            "uri": "spotify:track:3NvYPUNu6nwQgN31UnoDbn"
+          },
+          {
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+                },
+                "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+                "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+                "name": "Miles Davis",
+                "type": "artist",
+                "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/2hGh5VOeeqimQFxqXvfCUf"
+                },
+                "href": "https://api.spotify.com/v1/artists/2hGh5VOeeqimQFxqXvfCUf",
+                "id": "2hGh5VOeeqimQFxqXvfCUf",
+                "name": "John Coltrane",
+                "type": "artist",
+                "uri": "spotify:artist:2hGh5VOeeqimQFxqXvfCUf"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/4jXfFzeP66Zy67HM2mvIIF"
+                },
+                "href": "https://api.spotify.com/v1/artists/4jXfFzeP66Zy67HM2mvIIF",
+                "id": "4jXfFzeP66Zy67HM2mvIIF",
+                "name": "Bill Evans",
+                "type": "artist",
+                "uri": "spotify:artist:4jXfFzeP66Zy67HM2mvIIF"
+              }
+            ],
+            "disc_number": 1,
+            "duration_ms": 337160,
+            "explicit": false,
+            "external_urls": {
+              "spotify": "https://open.spotify.com/track/6bP4GyrKNbcKPMDqWJqpxI"
+            },
+            "href": "https://api.spotify.com/v1/tracks/6bP4GyrKNbcKPMDqWJqpxI",
+            "id": "6bP4GyrKNbcKPMDqWJqpxI",
+            "is_local": false,
+            "is_playable": true,
+            "name": "Blue in Green (feat. John Coltrane & Bill Evans)",
+            "preview_url": "https://p.scdn.co/mp3-preview/021636a9d64620193add469ca93b4c3ef2d5e7f8?cid=07f5f9e97a9a4fddba3d205d19fcd21e",
+            "track_number": 3,
+            "type": "track",
+            "uri": "spotify:track:6bP4GyrKNbcKPMDqWJqpxI"
+          },
+          {
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+                },
+                "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+                "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+                "name": "Miles Davis",
+                "type": "artist",
+                "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/2hGh5VOeeqimQFxqXvfCUf"
+                },
+                "href": "https://api.spotify.com/v1/artists/2hGh5VOeeqimQFxqXvfCUf",
+                "id": "2hGh5VOeeqimQFxqXvfCUf",
+                "name": "John Coltrane",
+                "type": "artist",
+                "uri": "spotify:artist:2hGh5VOeeqimQFxqXvfCUf"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/5v74mT11KGJqadf9sLw4dA"
+                },
+                "href": "https://api.spotify.com/v1/artists/5v74mT11KGJqadf9sLw4dA",
+                "id": "5v74mT11KGJqadf9sLw4dA",
+                "name": "Cannonball Adderley",
+                "type": "artist",
+                "uri": "spotify:artist:5v74mT11KGJqadf9sLw4dA"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/4jXfFzeP66Zy67HM2mvIIF"
+                },
+                "href": "https://api.spotify.com/v1/artists/4jXfFzeP66Zy67HM2mvIIF",
+                "id": "4jXfFzeP66Zy67HM2mvIIF",
+                "name": "Bill Evans",
+                "type": "artist",
+                "uri": "spotify:artist:4jXfFzeP66Zy67HM2mvIIF"
+              }
+            ],
+            "disc_number": 1,
+            "duration_ms": 692973,
+            "explicit": false,
+            "external_urls": {
+              "spotify": "https://open.spotify.com/track/0TUa7gBg7LJH6B8dkNVioU"
+            },
+            "href": "https://api.spotify.com/v1/tracks/0TUa7gBg7LJH6B8dkNVioU",
+            "id": "0TUa7gBg7LJH6B8dkNVioU",
+            "is_local": false,
+            "is_playable": true,
+            "name": "All Blues (feat. John Coltrane, Cannonball Adderley & Bill Evans)",
+            "preview_url": "https://p.scdn.co/mp3-preview/9654ed54a8011d3a19e39023d8210bc1d9678174?cid=07f5f9e97a9a4fddba3d205d19fcd21e",
+            "track_number": 4,
+            "type": "track",
+            "uri": "spotify:track:0TUa7gBg7LJH6B8dkNVioU"
+          },
+          {
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+                },
+                "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+                "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+                "name": "Miles Davis",
+                "type": "artist",
+                "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/2hGh5VOeeqimQFxqXvfCUf"
+                },
+                "href": "https://api.spotify.com/v1/artists/2hGh5VOeeqimQFxqXvfCUf",
+                "id": "2hGh5VOeeqimQFxqXvfCUf",
+                "name": "John Coltrane",
+                "type": "artist",
+                "uri": "spotify:artist:2hGh5VOeeqimQFxqXvfCUf"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/5v74mT11KGJqadf9sLw4dA"
+                },
+                "href": "https://api.spotify.com/v1/artists/5v74mT11KGJqadf9sLw4dA",
+                "id": "5v74mT11KGJqadf9sLw4dA",
+                "name": "Cannonball Adderley",
+                "type": "artist",
+                "uri": "spotify:artist:5v74mT11KGJqadf9sLw4dA"
+              },
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/4jXfFzeP66Zy67HM2mvIIF"
+                },
+                "href": "https://api.spotify.com/v1/artists/4jXfFzeP66Zy67HM2mvIIF",
+                "id": "4jXfFzeP66Zy67HM2mvIIF",
+                "name": "Bill Evans",
+                "type": "artist",
+                "uri": "spotify:artist:4jXfFzeP66Zy67HM2mvIIF"
+              }
+            ],
+            "disc_number": 1,
+            "duration_ms": 566066,
+            "explicit": false,
+            "external_urls": {
+              "spotify": "https://open.spotify.com/track/3R3fcrKaeBr3U6s9R2belr"
+            },
+            "href": "https://api.spotify.com/v1/tracks/3R3fcrKaeBr3U6s9R2belr",
+            "id": "3R3fcrKaeBr3U6s9R2belr",
+            "is_local": false,
+            "is_playable": true,
+            "name": "Flamenco Sketches (feat. John Coltrane, Cannonball Adderley & Bill Evans)",
+            "preview_url": "https://p.scdn.co/mp3-preview/22fdba943713b875689f1c3e5ecfd3737103cc9b?cid=07f5f9e97a9a4fddba3d205d19fcd21e",
+            "track_number": 5,
+            "type": "track",
+            "uri": "spotify:track:3R3fcrKaeBr3U6s9R2belr"
+          }
+        ],
+        "limit": 50,
+        "next": null,
+        "offset": 0,
+        "previous": null,
+        "total": 5
+      },
+      "type": "album",
+      "uri": "spotify:album:1weenld61qoidwYuZ1GESA"
+    },
+    {
+      "album_type": "album",
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+          },
+          "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+          "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+          "name": "Miles Davis",
+          "type": "artist",
+          "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+        }
+      ],
+      "copyrights": [
+        {
+          "text": "Originally released 1969. All rights reserved by Columbia Records, a division of Sony Music Entertainment Inc.",
+          "type": "P"
+        }
+      ],
+      "external_ids": {
+        "upc": "696998655621"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/album/0Hs3BomCdwIWRhgT57x22T"
+      },
+      "genres": [
+      ],
+      "href": "https://api.spotify.com/v1/albums/0Hs3BomCdwIWRhgT57x22T",
+      "id": "0Hs3BomCdwIWRhgT57x22T",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://i.scdn.co/image/ab67616d0000b2737a4a3c0b5d38ec756c62d214",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://i.scdn.co/image/ab67616d00001e027a4a3c0b5d38ec756c62d214",
+          "width": 300
+        },
+        {
+          "height": 64,
+          "url": "https://i.scdn.co/image/ab67616d000048517a4a3c0b5d38ec756c62d214",
+          "width": 64
+        }
+      ],
+      "label": "Columbia/Legacy",
+      "name": "In A Silent Way",
+      "popularity": 41,
+      "release_date": "1969-07-30",
+      "release_date_precision": "day",
+      "total_tracks": 2,
+      "tracks": {
+        "href": "https://api.spotify.com/v1/albums/0Hs3BomCdwIWRhgT57x22T/tracks?offset=0&limit=50&market=GB",
+        "items": [
+          {
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+                },
+                "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+                "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+                "name": "Miles Davis",
+                "type": "artist",
+                "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+              }
+            ],
+            "disc_number": 1,
+            "duration_ms": 1094733,
+            "explicit": false,
+            "external_urls": {
+              "spotify": "https://open.spotify.com/track/267lVml7gJ9xefwgO6E2Ag"
+            },
+            "href": "https://api.spotify.com/v1/tracks/267lVml7gJ9xefwgO6E2Ag",
+            "id": "267lVml7gJ9xefwgO6E2Ag",
+            "is_local": false,
+            "is_playable": true,
+            "name": "Shhh / Peaceful",
+            "preview_url": "https://p.scdn.co/mp3-preview/4de96132fc9f4be9fd6dc11b3ce7f4c279e1bf2f?cid=07f5f9e97a9a4fddba3d205d19fcd21e",
+            "track_number": 1,
+            "type": "track",
+            "uri": "spotify:track:267lVml7gJ9xefwgO6E2Ag"
+          },
+          {
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/0kbYTNQb4Pb1rPbbaF0pT4"
+                },
+                "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4",
+                "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+                "name": "Miles Davis",
+                "type": "artist",
+                "uri": "spotify:artist:0kbYTNQb4Pb1rPbbaF0pT4"
+              }
+            ],
+            "disc_number": 1,
+            "duration_ms": 1192333,
+            "explicit": false,
+            "external_urls": {
+              "spotify": "https://open.spotify.com/track/54a3lHJAwce1dOKrsDPEHv"
+            },
+            "href": "https://api.spotify.com/v1/tracks/54a3lHJAwce1dOKrsDPEHv",
+            "id": "54a3lHJAwce1dOKrsDPEHv",
+            "is_local": false,
+            "is_playable": true,
+            "name": "In a Silent Way",
+            "preview_url": "https://p.scdn.co/mp3-preview/c8a0f0bfa72cbcc9d6cb2ea06c93a5409282e37c?cid=07f5f9e97a9a4fddba3d205d19fcd21e",
+            "track_number": 2,
+            "type": "track",
+            "uri": "spotify:track:54a3lHJAwce1dOKrsDPEHv"
+          }
+        ],
+        "limit": 50,
+        "next": null,
+        "offset": 0,
+        "previous": null,
+        "total": 2
+      },
+      "type": "album",
+      "uri": "spotify:album:0Hs3BomCdwIWRhgT57x22T"
+    }
+  ]
+}

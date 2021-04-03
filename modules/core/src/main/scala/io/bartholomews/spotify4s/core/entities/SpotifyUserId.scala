@@ -2,7 +2,6 @@ package io.bartholomews.spotify4s.core.entities
 
 import cats.Order
 import cats.data.NonEmptyList
-import cats.syntax.either.catsSyntaxEitherObject
 import eu.timepit.refined.api.Validate
 import eu.timepit.refined.api.Validate.Plain
 import eu.timepit.refined.numeric.Interval
@@ -10,10 +9,10 @@ import eu.timepit.refined.predicates.all.Size
 import eu.timepit.refined.predicates.collection.MaxSize
 import eu.timepit.refined.refineV
 import io.bartholomews.spotify4s.core.api.SpotifyApi.SpotifyUris
-import io.bartholomews.spotify4s.validators.maxSizeP
-import sttp.model.Uri
+import io.bartholomews.spotify4s.core.validators.RefinedValidators.{maxSizeP, NelMaxSizeValidators}
 import shapeless.Nat._0
 import shapeless.Witness
+import sttp.model.Uri
 /*
   https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids
  */
@@ -26,8 +25,8 @@ import shapeless.Witness
   *                example: "spotify:track:6rqhFgbbKwnb9MLmUQDhG6"
   */
 case class SpotifyUri(value: String) extends AnyVal
-object SpotifyUri {
-  implicit def validateSpotifyUris: Plain[NonEmptyList[SpotifyUri], MaxSize[100]] = {
+object SpotifyUri extends NelMaxSizeValidators[SpotifyUri, SpotifyUris](maxSize = 100) {
+  private def validateSpotifyUris: Plain[NonEmptyList[SpotifyUri], MaxSize[100]] = {
     Validate
       .fromPredicate(
         (d: NonEmptyList[SpotifyUri]) => d.length <= 100,
@@ -36,29 +35,8 @@ object SpotifyUri {
       )
   }
 
-  def fromList(xs: List[SpotifyUri]): Either[String, SpotifyUris] =
-    Either
-      .fromOption(NonEmptyList.fromList(xs), ifNone = "Predicate failed: need to provide at least one uri.")
-      .map(fromNel)
-      .joinRight
-
-  def fromNel(xs: NonEmptyList[SpotifyUri]): Either[String, SpotifyUris] =
-    refineV[MaxSize[100]](xs)
-
-  /**
-    * Group a NEL of `SpotifyUri` in batches of max size (100) `SpotifyUris`
-    * (so each `SpotifyUris` can be mapped to each separate request).
-    * @param xs the nel of `SpotifyUri` to be grouped
-    * @return a nel of grouped `SpotifyUris`
-    */
-  def grouped(xs: NonEmptyList[SpotifyUri]): NonEmptyList[SpotifyUris] = {
-    NonEmptyList.fromListUnsafe(
-      xs.toList
-        .grouped(100)
-        .toList
-        .map(xs => fromList(xs).fold(error => throw new Exception(s"Unexpected refinement error: [$error]"), identity))
-    )
-  }
+  override def fromNel(xs: NonEmptyList[SpotifyUri]): Either[String, SpotifyUris] =
+    refineV[MaxSize[100]](xs)(validateSpotifyUris)
 }
 
 /**

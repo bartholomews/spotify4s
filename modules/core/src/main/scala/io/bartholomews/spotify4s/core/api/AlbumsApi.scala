@@ -1,15 +1,23 @@
 package io.bartholomews.spotify4s.core.api
 
 import cats.data.NonEmptyList
-import eu.timepit.refined.api.Refined
+import eu.timepit.refined.api.Validate.Plain
+import eu.timepit.refined.api.{Refined, Validate}
 import eu.timepit.refined.collection.MaxSize
+import eu.timepit.refined.numeric.Interval
+import eu.timepit.refined.predicates.all.Size
+import eu.timepit.refined.refineV
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, Offset}
 import io.bartholomews.spotify4s.core.entities._
+import io.bartholomews.spotify4s.core.validators.RefinedValidators.{maxSizeP, NelMaxSizeValidators}
+import shapeless.Nat._0
+import shapeless.Witness
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/#category-albums
@@ -18,8 +26,6 @@ class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private[api] val basePath: Uri = apiUri / "v1" / "albums"
-
-  type AlbumIds = Refined[NonEmptyList[SpotifyId], MaxSize[20]]
 
   // https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-album
   def getAlbum[E](id: SpotifyId, country: Option[CountryCodeAlpha2])(
@@ -61,8 +67,8 @@ class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     offset: Offset = 0
   )(
     implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, Page[FullTrack]]
-  ): F[SttpResponse[E, Page[FullTrack]]] = {
+    responseHandler: ResponseHandler[E, Page[SimpleTrack]]
+  ): F[SttpResponse[E, Page[SimpleTrack]]] = {
     val uri: Uri = (basePath / id.value / "tracks")
       .withOptionQueryParam("market", country.map(_.value))
       .withQueryParam("limit", limit.value.toString)
@@ -73,5 +79,23 @@ class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
       .sign(signer)
       .response(responseHandler)
       .send(client.backend)
+  }
+}
+
+object AlbumsApi {
+  type AlbumIds = Refined[NonEmptyList[SpotifyId], MaxSize[20]]
+
+  object AlbumIds extends NelMaxSizeValidators[SpotifyId, AlbumIds](maxSize = 20) {
+    private def validateAlbumIds: Plain[NonEmptyList[SpotifyId], MaxSize[20]] = {
+      Validate
+        .fromPredicate(
+          (d: NonEmptyList[SpotifyId]) => d.length <= 20,
+          (_: NonEmptyList[SpotifyId]) => "a maximum of 20 ids can be set in one request",
+          Size[Interval.Closed[_0, Witness.`20`.T]](maxSizeP)
+        )
+    }
+
+    override def fromNel(xs: NonEmptyList[SpotifyId]): Either[String, AlbumIds] =
+      refineV[MaxSize[20]](xs)(validateAlbumIds)
   }
 }

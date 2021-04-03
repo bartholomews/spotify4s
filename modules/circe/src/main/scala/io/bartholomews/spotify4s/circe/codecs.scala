@@ -23,6 +23,7 @@ import io.bartholomews.spotify4s.core.entities.{
   ExternalResourceUrl,
   Followers,
   FullAlbum,
+  FullAlbumsResponse,
   FullArtist,
   FullPlaylist,
   FullTrack,
@@ -123,6 +124,8 @@ trait SpotifyCirceApi extends FsClientCirceApi {
     implicit val availableMarketsDecoder: Decoder[List[CountryCodeAlpha2]] = optionalCountryCodeList
     deriveConfiguredDecoder
   }
+
+  implicit val fullAlbumsResponseDecoder: Decoder[FullAlbumsResponse] = deriveConfiguredDecoder
 
   implicit val addTracksToPlaylistRequestEncoder: Encoder[AddTracksToPlaylistRequest] =
     dropNullValues(deriveConfiguredEncoder[AddTracksToPlaylistRequest])
