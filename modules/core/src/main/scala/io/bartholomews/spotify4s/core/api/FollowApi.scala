@@ -7,8 +7,8 @@ import io.bartholomews.spotify4s.core.entities.SpotifyId
 import sttp.client3.{ignore, Response}
 import sttp.model.Uri
 
-// https://developer.spotify.com/documentation/web-api/reference/browse/
-class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
+// https://developer.spotify.com/documentation/web-api/reference/#category-follow
+private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private[api] val basePath: Uri = apiUri / "v1"

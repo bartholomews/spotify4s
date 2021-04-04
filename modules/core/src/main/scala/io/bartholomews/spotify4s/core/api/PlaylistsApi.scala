@@ -14,8 +14,8 @@ import io.bartholomews.spotify4s.core.entities.requests.{
 import sttp.client3.BodySerializer
 import sttp.model.Uri
 
-// https://developer.spotify.com/console/playlists/
-class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
+// https://developer.spotify.com/console/playlists
+private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 

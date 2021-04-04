@@ -10,8 +10,8 @@ import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.core.entities._
 import sttp.model.Uri
 
-// https://developer.spotify.com/documentation/web-api/reference/tracks/
-class TracksApi[F[_], S <: Signer](client: FsClient[F, S]) {
+// https://developer.spotify.com/documentation/web-api/reference/tracks
+private[spotify4s] class TracksApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private[api] val basePath: Uri = apiUri / "v1"

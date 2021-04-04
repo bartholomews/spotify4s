@@ -8,8 +8,8 @@ import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, Offset}
 import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylist}
 import sttp.model.Uri
 
-// https://developer.spotify.com/documentation/web-api/reference/users-profile/
-class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
+// https://developer.spotify.com/documentation/web-api/reference/users-profile
+private[spotify4s] class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 

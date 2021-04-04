@@ -13,7 +13,8 @@ import sttp.client3.{HttpError, Response, ResponseException}
 import sttp.model.Uri.{PathSegment, QuerySegment}
 import sttp.model.{StatusCode, Uri}
 
-class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
+// https://developer.spotify.com/documentation/general/guides/authorization-guide
+private[spotify4s] class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private val clientPassword = client.signer.clientPassword
