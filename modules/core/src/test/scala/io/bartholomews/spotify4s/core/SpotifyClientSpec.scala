@@ -11,7 +11,7 @@ class SpotifyClientSpec extends AnyWordSpec {
     "initialised with an implicit configuration" should {
       "read the consumer values from resource folder" in {
         noException shouldBe thrownBy {
-          SpotifyClient.unsafeFromConfig[Identity](backend)
+          SpotifyAuthClient.unsafeFromConfig[Identity](backend)
         }
       }
     }

@@ -4,12 +4,12 @@ import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth.ClientPasswordAuthentication
 import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
-import io.bartholomews.spotify4s.core.api._
+import io.bartholomews.spotify4s.core.api.{AlbumsApi, _}
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
 import sttp.client3.SttpBackend
 
-class SpotifyClient[F[_]] private (client: FsClient[F, ClientPasswordAuthentication]) {
+class SpotifyAuthClient[F[_]] private (client: FsClient[F, ClientPasswordAuthentication]) {
   def this(userAgent: UserAgent, clientPassword: ClientPassword, backend: SttpBackend[F, Any]) =
     this(FsClient(userAgent, ClientPasswordAuthentication(clientPassword), backend))
 
@@ -23,21 +23,21 @@ class SpotifyClient[F[_]] private (client: FsClient[F, ClientPasswordAuthenticat
   object users extends UsersApi[F, S](client)
 }
 
-object SpotifyClient {
+object SpotifyAuthClient {
   import pureconfig.generic.auto._
 
   private val userAgentConfig = ConfigSource.default.at(namespace = "user-agent")
   private val spotifyConfig = ConfigSource.default.at("spotify")
 
-  def fromConfig[F[_]](sttpBackend: SttpBackend[F, Any]): Either[ConfigReaderFailures, SpotifyClient[F]] =
+  def fromConfig[F[_]](sttpBackend: SttpBackend[F, Any]): Either[ConfigReaderFailures, SpotifyAuthClient[F]] =
     for {
       userAgent <- userAgentConfig.load[UserAgent]
       clientPassword <- spotifyConfig.load[ClientPassword]
-    } yield new SpotifyClient[F](userAgent, clientPassword, sttpBackend)
+    } yield new SpotifyAuthClient[F](userAgent, clientPassword, sttpBackend)
 
-  def unsafeFromConfig[F[_]](sttpBackend: SttpBackend[F, Any]): SpotifyClient[F] = {
+  def unsafeFromConfig[F[_]](sttpBackend: SttpBackend[F, Any]): SpotifyAuthClient[F] = {
     val userAgent = userAgentConfig.loadOrThrow[UserAgent]
     val clientPassword = spotifyConfig.loadOrThrow[ClientPassword]
-    new SpotifyClient[F](userAgent, clientPassword, sttpBackend)
+    new SpotifyAuthClient[F](userAgent, clientPassword, sttpBackend)
   }
 }

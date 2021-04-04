@@ -13,7 +13,7 @@ import sttp.client3.{HttpError, Response, ResponseException}
 import sttp.model.Uri.{PathSegment, QuerySegment}
 import sttp.model.{StatusCode, Uri}
 
-class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
+class AuthApi[F[_]: Applicative](client: FsClient[F, ClientPasswordAuthentication]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private val clientPassword = client.signer.clientPassword
@@ -43,11 +43,11 @@ class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
 
   // https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
   object AuthorizationCode {
+
     /**
       *
       * @param request the original authorization request
       * @param redirectionUriResponse the url where the user is redirected after approving/denying app permissions
-      * @param f the effect
       * @param responseHandler the sttp response handler
       * @tparam DE the deserialization error
       * @return
@@ -55,26 +55,23 @@ class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
     def acquire[DE](
       request: SpotifyUserAuthorizationRequest,
       redirectionUriResponse: Uri
-    )(
-      implicit f: Applicative[F],
-      responseHandler: ResponseHandler[DE, AccessTokenSigner]
-    ): F[SttpResponse[DE, AccessTokenSigner]] =
+    )(implicit responseHandler: ResponseHandler[DE, AccessTokenSigner]): F[SttpResponse[DE, AccessTokenSigner]] =
       AuthorizationCodeGrant
         .authorizationResponse(request.toAuthorizationCodeRequest(clientPassword), redirectionUriResponse)
         .fold(
           errorMsg =>
-            f.pure(
+            Applicative[F].pure(
               Response.apply[Either[ResponseException[String, DE], AccessTokenSigner]](
                 // Consider having a DeserializationError in fsclient instead
                 body = Left(HttpError(errorMsg, StatusCode.Unauthorized)),
                 code = StatusCode.Unauthorized
               )
-            ),
+          ),
           verifier =>
             client.backend.send(
               AuthorizationCodeGrant
                 .accessTokenRequest(tokenEndpoint, verifier, Some(request.redirectUri), clientPassword)
-            )
+          )
         )
 
     def refresh[E](
@@ -85,8 +82,11 @@ class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
         .send(client.backend)
   }
 
-  // https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
-  def clientCredentials[E](
+  /*
+    This flow is exposed in `SpotifySimpleClient` which will also manage token re-fetching
+    https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
+   */
+  private[spotify4s] def clientCredentials[E](
     implicit responseHandler: ResponseHandler[E, NonRefreshableTokenSigner]
   ): F[SttpResponse[E, NonRefreshableTokenSigner]] =
     ClientCredentialsGrant

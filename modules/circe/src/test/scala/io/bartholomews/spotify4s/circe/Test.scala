@@ -8,17 +8,18 @@ import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, Scope}
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.circe.Test._
 import io.bartholomews.spotify4s.circe.codecs._
-import io.bartholomews.spotify4s.core.SpotifyClient
+import io.bartholomews.spotify4s.core.{SpotifyAuthClient, SpotifySimpleClient}
+import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
 import io.bartholomews.spotify4s.core.entities.{SpotifyId, SpotifyScope}
 import sttp.client3.{HttpURLConnectionBackend, Identity, Response, ResponseException, UriContext}
 
 object Test {
   // $COVERAGE-OFF$
-  private val userAgent =
+  val userAgent: UserAgent =
     UserAgent("spotify4s", Some("0.0.1"), Some("https://github.com/bartholomews/spotify4s"))
 
-  private val clientPassword = ClientPassword(
+  val clientPassword: ClientPassword = ClientPassword(
     clientId = ClientId(System.getenv("MUSICGENE_SPOTIFY_CLIENT_ID")),
     clientSecret = ClientSecret(System.getenv("MUSICGENE_SPOTIFY_CLIENT_SECRET"))
   )
@@ -37,8 +38,8 @@ object Test {
   def printBody[DE, A](re: Response[Either[ResponseException[String, DE], A]]): Unit =
     re.body.fold(println, println)
 
-  val sttpClient: SpotifyClient[Identity] = {
-    new SpotifyClient(
+  val sttpClient: SpotifyAuthClient[Identity] = {
+    new SpotifyAuthClient(
       userAgent,
       clientPassword,
       HttpURLConnectionBackend()
@@ -46,12 +47,19 @@ object Test {
   }
   // $COVERAGE-ON$
 }
-/*
-#authorization-code-flow"
-#authorization-code-flow-with-proof-key-for-code-exchange-pkce
-#implicit-grant-flow
-#client-credentials-flow
- */
+
+object SpotifySimpleClientFlow extends App {
+  import Test._
+  val simpleClient = new SpotifySimpleClient(userAgent, clientPassword, HttpURLConnectionBackend())
+  println {
+    simpleClient.albums
+      .getAlbums(
+        AlbumIds.fromList(List(SpotifyId("1weenld61qoidwYuZ1GESA"))).getOrElse(throw new Exception("OOPS")),
+        None
+      )
+      .body
+  }
+}
 
 // https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
 object ClientCredentialsFlow extends App {

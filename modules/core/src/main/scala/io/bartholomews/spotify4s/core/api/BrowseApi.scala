@@ -12,7 +12,7 @@ import io.bartholomews.spotify4s.core.entities.NewReleases
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/browse/
-class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
+private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 

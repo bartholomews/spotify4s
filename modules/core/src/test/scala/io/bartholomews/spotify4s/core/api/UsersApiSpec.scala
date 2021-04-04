@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
+import io.bartholomews.fsclient.core.oauth.SignerV2
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.spotify4s.core.ServerBehaviours
 import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylist, SpotifyUserId}
@@ -15,7 +15,7 @@ abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
     extends WireWordSpec
     with ServerBehaviours[Encoder, Decoder, DE, J] {
   import eu.timepit.refined.auto.autoRefineV
-  implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
+  implicit val signer: SignerV2 = sampleNonRefreshableToken
 
   implicit def privateUserDecoder: Decoder[PrivateUser]
   implicit def simplePlaylistDecoder: Decoder[SimplePlaylist]
@@ -24,8 +24,7 @@ abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me"))
 
     "successfully authenticated" should {
-      def request: Identity[SttpResponse[DE, PrivateUser]] =
-        sampleClient.users.me
+      def request: Identity[SttpResponse[DE, PrivateUser]] = sampleClient.users.me
 
       behave like clientReceivingUnexpectedResponse(endpoint, request)
 

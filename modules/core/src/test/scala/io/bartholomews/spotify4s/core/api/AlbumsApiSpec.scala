@@ -6,7 +6,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
+import io.bartholomews.fsclient.core.oauth.{NonRefreshableTokenSigner, SignerV2}
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.spotify4s.core.ServerBehaviours
@@ -31,13 +31,13 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
         .withQueryParam("market", equalTo(UK.value))
 
     "country is defined" should {
-      def request: SttpResponse[DE, FullAlbum] =
+      def request: SignerV2 => SttpResponse[DE, FullAlbum] =
         sampleClient.albums.getAlbum[DE](
           id = albumId,
           country = Some(UK)
         )
 
-      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request(signer))
 
       def stub: StubMapping =
         stubFor(
@@ -49,7 +49,7 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
             )
         )
 
-      "return the correct entity" in matchResponseBody(stub, request) {
+      "return the correct entity" in matchResponseBody(stub, request(signer)) {
         case Right(album) => album should matchTo(FullAlbums.`Kind of Blue`)
       }
     }
@@ -58,6 +58,7 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
   "getAlbums" when {
     def endpointRequest: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/albums"))
+        .withQueryParam("ids", equalTo("1weenld61qoidwYuZ1GESA,0Hs3BomCdwIWRhgT57x22T"))
         .withQueryParam("market", equalTo(UK.value))
 
     "country is defined" should {
@@ -65,13 +66,13 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
         NonEmptyList.of(FullAlbums.`Kind of Blue`.id, FullAlbums.`In A Silent Way`.id)
       )
 
-      def request: SttpResponse[DE, List[FullAlbum]] =
+      def request: SignerV2 => SttpResponse[DE, List[FullAlbum]] =
         sampleClient.albums.getAlbums[DE](
           ids = maybeAlbumIds.getOrElse(fail(s"$maybeAlbumIds")),
           country = Some(UK)
         )
 
-      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request(signer))
 
       def stub: StubMapping =
         stubFor(
@@ -83,7 +84,7 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
             )
         )
 
-      "return the correct entity" in matchResponseBody(stub, request) {
+      "return the correct entity" in matchResponseBody(stub, request(signer)) {
         case Right(album) =>
           album should matchTo(
             List(
@@ -105,10 +106,10 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
         .withQueryParam("offset", equalTo("0"))
 
     "country is defined" should {
-      def request: SttpResponse[DE, Page[SimpleTrack]] =
+      def request: SignerV2 => SttpResponse[DE, Page[SimpleTrack]] =
         sampleClient.albums.getAlbumTracks[DE](id = albumId, country = Some(UK))
 
-      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request(signer))
 
       def stub: StubMapping =
         stubFor(
@@ -120,7 +121,7 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
             )
         )
 
-      "return the correct entity" in matchResponseBody(stub, request) {
+      "return the correct entity" in matchResponseBody(stub, request(signer)) {
         case Right(simpleTracks) =>
           simpleTracks should matchTo(
             Page(

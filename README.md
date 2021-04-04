@@ -56,11 +56,12 @@ spotify {
 ```
 
 ```scala
-import io.bartholomews.spotify4s.core.SpotifyClient
+import sttp.client3.Identity
+import io.bartholomews.spotify4s.core.SpotifyAuthClient
 import pureconfig.error.ConfigReaderFailures
 
-val safeClient: Either[ConfigReaderFailures, SpotifyClient[Identity]] = SpotifyClient.fromConfig(backend)
-val unsafeClient: SpotifyClient[Identity] = SpotifyClient.unsafeFromConfig(backend)
+val safeClient: Either[ConfigReaderFailures, SpotifyAuthClient[Identity]] = SpotifyAuthClient.fromConfig(backend)
+val unsafeClient: SpotifyAuthClient[Identity] = SpotifyAuthClient.unsafeFromConfig(backend)
 ```
 
 Or you can create a client manually:
@@ -69,7 +70,7 @@ Or you can create a client manually:
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth.v2.{ClientId, ClientPassword, ClientSecret}
-import io.bartholomews.spotify4s.core.SpotifyClient
+import io.bartholomews.spotify4s.core.SpotifyAuthClient
 
 private val userAgent =
   UserAgent(appName = "your-app-name", appVersion = None, appUrl = None)
@@ -79,7 +80,7 @@ private val clientPassword = ClientPassword(
     clientSecret = ClientSecret(System.getenv("YOUR_SPOTIFY_CLIENT_SECRET"))
 )
 
-val client = new SpotifyClient(userAgent, clientPassword, backend)
+val client = new SpotifyAuthClient(userAgent, clientPassword, backend)
 ```
 
 ## Usage
@@ -99,36 +100,28 @@ See [ENDPOINTS.md](https://github.com/bartholomews/spotify4s/blob/master/ENDPOIN
 
 ### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
 
-The Client Credentials flow is used in server-to-server authentication.  
-*Only endpoints that do not access user information can be accessed.*
+The Client Credentials flow is used in server-to-server authentication.
+For this flow you can use a `SpotifySimpleClient` (instead of the full `SpotifyAuthClient`).
+This client exposes only a subset of the endpoints, since it doesn't have authorization
+to access user information. It manages the access token request/refresh internally.
 
 ```scala
-  import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-  import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
-  import io.bartholomews.spotify4s.core.entities.{FullTrack, SpotifyId}
-  import io.circe
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.spotify4s.core.entities.{Page, SimpleTrack, SpotifyId}
+import io.bartholomews.spotify4s.core.SpotifySimpleClient
+import io.circe
 
-  // import the response handler and token response decoder
-  // (here using the circe module, you can also use the play framework or provide your own if using core module)
-  import io.bartholomews.spotify4s.circe.codecs._
+// import the response handler and token response decoder
+// (here using the circe module, you can also use the play framework or provide your own if using core module)
+import io.bartholomews.spotify4s.circe.codecs._
 
-  val accessTokenResponse: F[SttpResponse[circe.Error, NonRefreshableTokenSigner]] =
-    client.auth.clientCredentials
+// Create a `SpotifySimpleClient` (with the same options as the full `SpotifyAuthClient` as defined above)
+val client = SpotifySimpleClient.unsafeFromConfig(backend)
 
-  accessTokenResponse.body.map(implicit token => {
-    /*
-      You can store the token, but need to get a new one if expired;
-      it could be useful to create a "Client Credentials Client"
-      which manages token "refresh" automatically
-     */
-    val isExpired = token.isExpired()
-    // The access token allows you to make requests to the Spotify Web API endpoints
-    // that do NOT require user authorization
-    val trackResponse: F[SttpResponse[circe.Error, FullTrack]] = client.tracks.getTrack(
-      id = SpotifyId("2TpxZ7JUBn3uw46aR7qd6V"),
-      market = None
-    )
-  })
+val tracks: F[SttpResponse[circe.Error, Page[SimpleTrack]]] = client.albums.getAlbumTracks(
+  id = SpotifyId("1weenld61qoidwYuZ1GESA"),
+  country = None
+)
 ```
 
 ### [Authorization Code Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow)

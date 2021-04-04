@@ -80,13 +80,5 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
       .sign(signer)
       .response(responseHandler)
       .send(client.backend)
-
-    // :F[HttpResponse[Page[SimplePlaylist]]]
-//    implicit val pipeDecoder: Pipe[F, Json, Page[SimplePlaylist]] = Page.pipeDecoder
-//    new FsAuthJson.Get[Page[SimplePlaylist]] {
-//      override val uri: Uri = (basePath / "me" / "playlists")
-//        .withQueryParam("limit", limit.value)
-//        .withQueryParam("offset", offset)
-//    }.runWith(client)
   }
 }

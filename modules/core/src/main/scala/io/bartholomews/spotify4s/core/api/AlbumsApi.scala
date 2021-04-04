@@ -21,7 +21,7 @@ import shapeless.Witness
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/#category-albums
-class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
+private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
@@ -29,9 +29,8 @@ class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   // https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-album
   def getAlbum[E](id: SpotifyId, country: Option[CountryCodeAlpha2])(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, FullAlbum]
-  ): F[SttpResponse[E, FullAlbum]] = {
+    implicit responseHandler: ResponseHandler[E, FullAlbum]
+  ): SignerV2 => F[SttpResponse[E, FullAlbum]] = signer => {
     val uri: Uri = (basePath / id.value)
       .withOptionQueryParam("market", country.map(_.value))
 
@@ -44,11 +43,10 @@ class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   // https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-multiple-albums
   def getAlbums[E](ids: AlbumIds, country: Option[CountryCodeAlpha2])(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, FullAlbumsResponse]
-  ): F[SttpResponse[E, List[FullAlbum]]] = {
+    implicit responseHandler: ResponseHandler[E, FullAlbumsResponse]
+  ): SignerV2 => F[SttpResponse[E, List[FullAlbum]]] = signer => {
     val uri: Uri = basePath
-      .withQueryParam("ids", ids.value.toList.mkString(","))
+      .withQueryParam("ids", ids.value.toList.map(_.value).mkString(","))
       .withOptionQueryParam("market", country.map(_.value))
 
     baseRequest(client.userAgent)
@@ -66,9 +64,8 @@ class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     limit: FullTrack.Limit = 20,
     offset: Offset = 0
   )(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, Page[SimpleTrack]]
-  ): F[SttpResponse[E, Page[SimpleTrack]]] = {
+    implicit responseHandler: ResponseHandler[E, Page[SimpleTrack]]
+  ): SignerV2 => F[SttpResponse[E, Page[SimpleTrack]]] = signer => {
     val uri: Uri = (basePath / id.value / "tracks")
       .withOptionQueryParam("market", country.map(_.value))
       .withQueryParam("limit", limit.value.toString)
