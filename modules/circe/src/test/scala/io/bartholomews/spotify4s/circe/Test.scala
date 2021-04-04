@@ -71,14 +71,14 @@ object ClientCredentialsFlow extends App {
     .body
     .fold(
       println,
-      implicit nonRefreshableToken => {
+      nonRefreshableToken => {
         // 2. Use access token
         sttpClient.browse
           .getNewReleases(
             country = Some(CountryCodeAlpha2.ITALY),
             limit = 3,
             offset = 2
-          )
+          )(nonRefreshableToken)
           .body
           .fold(println, println)
       }
@@ -137,7 +137,7 @@ object AuthorizationCodeFlow_3_UseAccessToken extends App {
 //        SpotifyId("") // FIXME: I think SpotifyId needs to be nonEmpty otherwise troubles (400)
       ),
       market = None
-    )
+    )(authorizationCodeResponse)
   }
   // $COVERAGE-ON$
 }

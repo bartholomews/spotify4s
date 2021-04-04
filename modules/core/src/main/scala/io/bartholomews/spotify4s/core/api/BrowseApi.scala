@@ -2,17 +2,17 @@ package io.bartholomews.spotify4s.core.api
 
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.{GreaterEqual, Interval}
+import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
-import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.core.entities.NewReleases
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/browse/
-private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
+class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
@@ -37,9 +37,8 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param signer  The OAuth V2 Signer
     * @return `NewReleases`
     */
-  def getNewReleases[E](country: Option[CountryCodeAlpha2], limit: Limit = 20, offset: Offset = 0)(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, NewReleases]
+  def getNewReleases[E](country: Option[CountryCodeAlpha2], limit: Limit = 20, offset: Offset = 0)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[E, NewReleases]
   ): F[SttpResponse[E, NewReleases]] = {
     val uri: Uri = (basePath / "new-releases")
       .withOptionQueryParam("country", country.map(_.value))

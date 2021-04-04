@@ -29,16 +29,15 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *               reading country and product subscription level requires the user-read-private scope.
     *               See Using Scopes.
     *
-    * @return On success, the HTTP status code in the response header is 200 OK
-    *          and the response body contains a user object in JSON format.
-    *          On error, the header status code is an error code and the response body contains an error object.
-    *          When requesting fields that you don’t have the user’s authorization to access,
-    *          it will return error 403 Forbidden.
+    * On success, the HTTP status code in the response header is 200 OK
+    * and the response body contains a user object in JSON format.
+    * On error, the header status code is an error code and the response body contains an error object.
+    * When requesting fields that you don’t have the user’s authorization to access,
+    * it will return error 403 Forbidden.
     */
   def me[E](
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, PrivateUser]
-  ): F[SttpResponse[E, PrivateUser]] =
+    signer: SignerV2
+  )(implicit responseHandler: ResponseHandler[E, PrivateUser]): F[SttpResponse[E, PrivateUser]] =
     baseRequest(client.userAgent)
       .get(basePath / "me")
       .sign(signer)
@@ -67,9 +66,8 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *            (wrapped in a paging object) in JSON format.
     *            On error, the header status code is an error code and the response body contains an error object.
     */
-  def getPlaylists[E](limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, Page[SimplePlaylist]]
+  def getPlaylists[E](limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[E, Page[SimplePlaylist]]
   ): F[SttpResponse[E, Page[SimplePlaylist]]] = {
     val uri: Uri = (basePath / "me" / "playlists")
       .withQueryParam("limit", limit.value.toString)

@@ -35,9 +35,7 @@ class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         the header status code is an error code
     *         and the response body contains an error object.
     */
-  def unfollowPlaylist(playlistId: SpotifyId)(
-    implicit signer: SignerV2
-  ): F[Response[Unit]] = {
+  def unfollowPlaylist(playlistId: SpotifyId)(signer: SignerV2): F[Response[Unit]] = {
     val uri = basePath / "playlists" / playlistId.value / "followers"
     baseRequest(client.userAgent)
       .delete(uri)

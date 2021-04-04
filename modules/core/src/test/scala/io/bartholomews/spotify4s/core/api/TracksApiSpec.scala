@@ -32,7 +32,6 @@ import io.bartholomews.spotify4s.core.entities.{
 }
 import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken, sampleSpotifyId}
 import sttp.client3.UriContext
-import cats.implicits._
 
 abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with ServerBehaviours[E, D, DE, J] {
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
@@ -47,7 +46,7 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
       get(urlPathEqualTo(s"$basePath/audio-analysis/${sampleSpotifyId.value}"))
 
     def request: SttpResponse[DE, AudioAnalysis] =
-      sampleClient.tracks.getAudioAnalysis[DE](sampleSpotifyId)
+      sampleClient.tracks.getAudioAnalysis[DE](sampleSpotifyId)(signer)
 
     behave like clientReceivingUnexpectedResponse(endpoint, request)
 
@@ -96,9 +95,9 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
   "`getAudioFeatures` for a track" should {
     def endpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-features/${sampleSpotifyId.value}"))
-    def request = sampleClient.tracks.getAudioFeatures[DE](sampleSpotifyId)
+    def request = sampleClient.tracks.getAudioFeatures[DE](sampleSpotifyId)(_)
 
-    behave like clientReceivingUnexpectedResponse(endpoint, request)
+    behave like clientReceivingUnexpectedResponse(endpoint, request(signer))
 
     def stub: StubMapping =
       stubFor(
@@ -110,7 +109,7 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
           )
       )
 
-    "return the correct entity" in matchResponseBody(stub, request) {
+    "return the correct entity" in matchResponseBody(stub, request(signer)) {
       case Right(audioFeatures) =>
         audioFeatures shouldBe AudioFeatures(
           durationMs = 255349,
@@ -138,12 +137,13 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
     def endpoint: MappingBuilder =
       get(urlPathEqualTo(s"$basePath/audio-features"))
 
-    def request: SttpResponse[DE, List[AudioFeatures]] = sampleClient.tracks.getAudioFeatures[DE](
-      NonEmptySet.of(
-        SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
-        SpotifyId("3twNvmDtFQtAd5gMKedhLD")
-      )
-    )
+    def request: SttpResponse[DE, List[AudioFeatures]] =
+      sampleClient.tracks.getAudioFeatures[DE](
+        NonEmptySet.of(
+          SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
+          SpotifyId("3twNvmDtFQtAd5gMKedhLD")
+        )
+      )(signer)
 
     behave like clientReceivingUnexpectedResponse(endpoint, request)
 
@@ -209,13 +209,14 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks"))
 
     "market is not defined" should {
-      def request: SttpResponse[DE, List[FullTrack]] = sampleClient.tracks.getTracks[DE](
-        ids = NonEmptySet.of(
-          SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
-          SpotifyId("3twNvmDtFQtAd5gMKedhLD")
-        ),
-        market = None
-      )
+      def request: SttpResponse[DE, List[FullTrack]] =
+        sampleClient.tracks.getTracks[DE](
+          ids = NonEmptySet.of(
+            SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
+            SpotifyId("3twNvmDtFQtAd5gMKedhLD")
+          ),
+          market = None
+        )(signer)
 
       val endpointRequest =
         endpoint
@@ -244,13 +245,14 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
     }
 
     "market is defined" should {
-      def request: SttpResponse[DE, List[FullTrack]] = sampleClient.tracks.getTracks[DE](
-        ids = NonEmptySet.of(
-          SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
-          SpotifyId("3twNvmDtFQtAd5gMKedhLD")
-        ),
-        market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
-      )
+      def request: SttpResponse[DE, List[FullTrack]] =
+        sampleClient.tracks.getTracks[DE](
+          ids = NonEmptySet.of(
+            SpotifyId("3n3Ppam7vgaVa1iaRUc9Lp"),
+            SpotifyId("3twNvmDtFQtAd5gMKedhLD")
+          ),
+          market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
+        )(signer)
 
       val endpointRequest =
         endpoint
@@ -285,10 +287,11 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
     def endpoint(trackId: SpotifyId): MappingBuilder = get(urlPathEqualTo(s"$basePath/tracks/${trackId.value}"))
 
     "market is not defined" should {
-      def request: SttpResponse[DE, FullTrack] = sampleClient.tracks.getTrack[DE](
-        sampleTrackId,
-        market = None
-      )
+      def request: SttpResponse[DE, FullTrack] =
+        sampleClient.tracks.getTrack[DE](
+          sampleTrackId,
+          market = None
+        )(signer)
 
       behave like clientReceivingUnexpectedResponse(endpoint(sampleTrackId), request)
 
@@ -309,10 +312,11 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
     }
 
     "market is defined" should {
-      def request: SttpResponse[DE, FullTrack] = sampleClient.tracks.getTrack[DE](
-        sampleTrackId,
-        market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
-      )
+      def request: SttpResponse[DE, FullTrack] =
+        sampleClient.tracks.getTrack[DE](
+          sampleTrackId,
+          market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
+        )(signer)
 
       behave like clientReceivingUnexpectedResponse(endpoint(sampleTrackId), request)
 
@@ -334,10 +338,11 @@ abstract class TracksApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
     }
 
     "market is defined as `from_token`" should {
-      def request: SttpResponse[DE, FullTrack] = sampleClient.tracks.getTrack[DE](
-        sampleTrackId,
-        market = Some(FromToken)
-      )
+      def request: SttpResponse[DE, FullTrack] =
+        sampleClient.tracks.getTrack[DE](
+          sampleTrackId,
+          market = Some(FromToken)
+        )(signer)
 
       behave like clientReceivingUnexpectedResponse(endpoint(sampleTrackId), request)
 

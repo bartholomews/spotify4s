@@ -18,20 +18,7 @@ import io.bartholomews.spotify4s.core.entities.requests.{
   CreatePlaylistRequest,
   ModifyPlaylistRequest
 }
-import io.bartholomews.spotify4s.core.entities.{
-  CollectionLink,
-  FullPlaylist,
-  IsoCountry,
-  Page,
-  PublicUser,
-  SimplePlaylist,
-  SnapshotId,
-  SnapshotIdResponse,
-  SpotifyId,
-  SpotifyImage,
-  SpotifyUri,
-  SpotifyUserId
-}
+import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken}
 import sttp.client3.{Identity, Response, UriContext}
 import sttp.model.{StatusCode, Uri}
@@ -65,7 +52,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Serv
         sampleClient.playlists.replacePlaylistItems(
           playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
           uris = maybeUris.getOrElse(fail(s"$maybeUris"))
-        )
+        )(signer)
 
       val endpointRequest =
         endpoint
@@ -110,7 +97,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Serv
           userId = SpotifyUserId("wizzler"),
           limit = 2,
           offset = 5
-        )
+        )(signer)
 
       val endpointRequest =
         endpoint
@@ -239,13 +226,14 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Serv
                                        |""".stripMargin))
 
     "updating `name` and `public` fields" should {
-      def request: Identity[SttpResponse[Nothing, Unit]] = sampleClient.playlists.changePlaylistDetails(
-        playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
-        playlistName = Some("New name for Playlist"),
-        public = Some(false),
-        collaborative = None,
-        description = None
-      )
+      def request: Identity[SttpResponse[Nothing, Unit]] =
+        sampleClient.playlists.changePlaylistDetails(
+          playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+          playlistName = Some("New name for Playlist"),
+          public = Some(false),
+          collaborative = None,
+          description = None
+        )(signer)
 
       behave like clientReceivingUnexpectedResponse[Nothing, Unit](endpoint, request, decodingBody = false)
 
@@ -284,13 +272,12 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Serv
           .fromNel(NonEmptyList.of(uriTrack1, uriTrack2, uriTrack3))
           .leftMap(msg => new Exception(msg))
 
-      def request: SttpResponse[DE, SnapshotId] = {
+      def request: SttpResponse[DE, SnapshotId] =
         sampleClient.playlists.addTracksToPlaylist[DE](
           playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
           uris = maybeUris.getOrElse(fail(maybeUris.toString)),
           position = Some(1)
-        )
-      }
+        )(signer)
 
       behave like clientReceivingUnexpectedResponse(endpoint, request)
 
@@ -316,7 +303,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Serv
 
     "optional query parameters are not defined" should {
       def request: SttpResponse[DE, FullPlaylist] =
-        sampleClient.playlists.getPlaylist[DE](playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"))
+        sampleClient.playlists.getPlaylist[DE](playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"))(signer)
 
       behave like clientReceivingUnexpectedResponse(endpoint, request)
 
@@ -342,7 +329,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Serv
           playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"),
           fields = "href,description,tracks.items(added_by(id),track(name))",
           market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
-        )
+        )(signer)
 
       val endpointRequest =
         endpoint
@@ -380,10 +367,11 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Serv
 
     "entity has many null fields" should {
       val customPlaylistId = SpotifyId("4YUV9hthjX0LOvg8Oe8w85")
-      def request: SttpResponse[DE, FullPlaylist] = sampleClient.playlists.getPlaylist[DE](
-        customPlaylistId,
-        market = None
-      )
+      def request: SttpResponse[DE, FullPlaylist] =
+        sampleClient.playlists.getPlaylist[DE](
+          customPlaylistId,
+          market = None
+        )(signer)
 
       def stub: StubMapping = {
         stubFor(
@@ -415,11 +403,12 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Serv
             |""".stripMargin))
 
     "creating a private playlist with default parameters" should {
-      def request: SttpResponse[DE, FullPlaylist] = sampleClient.playlists.createPlaylist(
-        userId = SpotifyUserId("thelinmichael"),
-        playlistName = "A New Playlist",
-        public = false
-      )
+      def request: SttpResponse[DE, FullPlaylist] =
+        sampleClient.playlists.createPlaylist(
+          userId = SpotifyUserId("thelinmichael"),
+          playlistName = "A New Playlist",
+          public = false
+        )(signer)
 
       behave like clientReceivingUnexpectedResponse(endpoint, request)
 

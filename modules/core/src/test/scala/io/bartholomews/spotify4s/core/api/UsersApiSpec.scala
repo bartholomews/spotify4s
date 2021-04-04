@@ -24,7 +24,7 @@ abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me"))
 
     "successfully authenticated" should {
-      def request: Identity[SttpResponse[DE, PrivateUser]] = sampleClient.users.me
+      def request: Identity[SttpResponse[DE, PrivateUser]] = sampleClient.users.me(signer)
 
       behave like clientReceivingUnexpectedResponse(endpoint, request)
 
@@ -49,10 +49,7 @@ abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
 
     "`limits` and `offset` query parameters are defined" should {
       def request: Identity[SttpResponse[DE, Page[SimplePlaylist]]] =
-        sampleClient.users.getPlaylists[DE](
-          limit = 2,
-          offset = 5
-        )
+        sampleClient.users.getPlaylists[DE](limit = 2, offset = 5)(signer)
 
       val endpointRequest =
         endpoint

@@ -1,7 +1,5 @@
 package io.bartholomews.spotify4s.core.api
 
-import java.time.Month
-
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -14,6 +12,8 @@ import io.bartholomews.spotify4s.core.entities.{AlbumType, NewReleases, ReleaseD
 import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken}
 import sttp.client3.UriContext
 
+import java.time.Month
+
 abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with ServerBehaviours[E, D, DE, J] {
   import eu.timepit.refined.auto.autoRefineV
 
@@ -25,11 +25,7 @@ abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Server
 
     "country is defined" should {
       def request: SttpResponse[DE, NewReleases] =
-        sampleClient.browse.getNewReleases[DE](
-          country = Some(CountryCodeAlpha2.SWEDEN),
-          limit = 2,
-          offset = 5
-        )
+        sampleClient.browse.getNewReleases[DE](country = Some(CountryCodeAlpha2.SWEDEN), limit = 2, offset = 5)(signer)
 
       val endpointRequest =
         endpoint

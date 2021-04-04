@@ -13,7 +13,7 @@ import sttp.client3.{HttpError, Response, ResponseException}
 import sttp.model.Uri.{PathSegment, QuerySegment}
 import sttp.model.{StatusCode, Uri}
 
-class AuthApi[F[_]: Applicative](client: FsClient[F, ClientPasswordAuthentication]) {
+class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthentication]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private val clientPassword = client.signer.clientPassword
@@ -42,6 +42,8 @@ class AuthApi[F[_]: Applicative](client: FsClient[F, ClientPasswordAuthenticatio
   }
 
   // https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
+  // TODO[FB] ~ Might be worth to distinguish between response types:
+  //  `acquire` (has refresh token) vs `refresh` (doesn't have refresh token, need to use the acquired one)
   object AuthorizationCode {
 
     /**
@@ -49,18 +51,22 @@ class AuthApi[F[_]: Applicative](client: FsClient[F, ClientPasswordAuthenticatio
       * @param request the original authorization request
       * @param redirectionUriResponse the url where the user is redirected after approving/denying app permissions
       * @param responseHandler the sttp response handler
+      * @param f the effect with Applicative capabilities
       * @tparam DE the deserialization error
       * @return
       */
     def acquire[DE](
       request: SpotifyUserAuthorizationRequest,
       redirectionUriResponse: Uri
-    )(implicit responseHandler: ResponseHandler[DE, AccessTokenSigner]): F[SttpResponse[DE, AccessTokenSigner]] =
+    )(
+      implicit responseHandler: ResponseHandler[DE, AccessTokenSigner],
+      f: Applicative[F]
+    ): F[SttpResponse[DE, AccessTokenSigner]] =
       AuthorizationCodeGrant
         .authorizationResponse(request.toAuthorizationCodeRequest(clientPassword), redirectionUriResponse)
         .fold(
           errorMsg =>
-            Applicative[F].pure(
+            f.pure(
               Response.apply[Either[ResponseException[String, DE], AccessTokenSigner]](
                 // Consider having a DeserializationError in fsclient instead
                 body = Left(HttpError(errorMsg, StatusCode.Unauthorized)),

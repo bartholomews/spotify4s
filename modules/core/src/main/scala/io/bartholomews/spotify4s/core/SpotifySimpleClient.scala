@@ -59,13 +59,13 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       implicit
       tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[E, FullAlbum]
-    ): F[SttpResponse[E, FullAlbum]] = withToken { client.albums.getAlbum(id, country)(responseHandler) }
+    ): F[SttpResponse[E, FullAlbum]] = withToken { client.albums.getAlbum(id, country) }
 
     def getAlbums[E](ids: AlbumIds, country: Option[CountryCodeAlpha2])(
       implicit
       tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[E, FullAlbumsResponse]
-    ): F[SttpResponse[E, List[FullAlbum]]] = withToken { client.albums.getAlbums(ids, country)(responseHandler) }
+    ): F[SttpResponse[E, List[FullAlbum]]] = withToken { client.albums.getAlbums(ids, country) }
 
     def getAlbumTracks[E](
       id: SpotifyId,
@@ -77,7 +77,7 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[E, Page[SimpleTrack]]
     ): F[SttpResponse[E, Page[SimpleTrack]]] =
-      withToken { client.albums.getAlbumTracks(id, country, limit, offset)(responseHandler) }
+      withToken { client.albums.getAlbumTracks(id, country, limit, offset) }
   }
 }
 

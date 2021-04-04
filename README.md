@@ -130,73 +130,86 @@ This flow is suitable for long-running applications in which the user grants per
 It provides an **access token** that can be *refreshed*.  
 
 ```scala
-  import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-  import io.bartholomews.fsclient.core.oauth.AccessTokenSigner
-  import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{RedirectUri, RefreshToken}
-  import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
-  import io.bartholomews.spotify4s.core.entities.{PrivateUser, SpotifyScope}
-  import io.circe
-  import sttp.client3.UriContext
-  import sttp.model.Uri
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, SignerV2}
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{RedirectUri, RefreshToken}
+import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
+import io.bartholomews.spotify4s.core.entities.{PrivateUser, SpotifyScope}
+import io.circe
+import sttp.client3.UriContext
+import sttp.model.Uri
 
-  val request = SpotifyUserAuthorizationRequest(
+val request = SpotifyUserAuthorizationRequest(
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.fsclient.core.oauth.AccessTokenSigner
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{RedirectUri, RefreshToken}
+import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
+import io.bartholomews.spotify4s.core.entities.{PrivateUser, SpotifyScope}
+import io.circe
+import sttp.client3.UriContext
+import sttp.model.Uri
+
+val request = SpotifyUserAuthorizationRequest(
+  /*
+    The URI to redirect to after the user grants or denies permission.
+    This URI needs to have been entered in the Redirect URI whitelist
+    that you specified when you registered your application.
+    The value of redirect_uri here must exactly match one of the values
+    you entered when you registered your application,
+    including upper or lowercase, terminating slashes, and such.
+   */
+  redirectUri = RedirectUri(uri"https://bartholomews.io/callback"),
+  /*
+    A list of scopes. See https://developer.spotify.com/documentation/general/guides/authorization-guide/#list-of-scopes
+    If no scopes are specified, authorization will be granted only to access publicly available information:
+    that is, only information normally visible in the Spotify desktop, web, and mobile players.
+   */
+  scopes = List(SpotifyScope.PLAYLIST_READ_PRIVATE),
+  /*
+    Optional, but strongly recommended.
+    This provides protection against attacks such as cross-site request forgery.
+    See RFC-6749 (tools.ietf.org/html/rfc6749#section-4.1)
+   */
+  state = None
+)
+
+// Send the user to `authorizeUrl`
+val authorizeUrl: Uri = client.auth.authorizeUrl(request)
+
+// After they approve/deny your app, they will be sent to `uriAfterRedirect`, which should look something like:
+val redirectionUriResponse: Uri = uri"http://localhost:9000/callback?code=AQApD1DlOFSQ27NXtPeZTmTbWDe9j6HyqxJrOy"
+
+// import the response handler and token response decoder
+// (here using the circe module, you can also use the play framework or provide your own if using core module)
+import io.bartholomews.spotify4s.circe.codecs._
+
+val accessTokenResponse: F[SttpResponse[circe.Error, AccessTokenSigner]] =
+  client.auth.AuthorizationCode.acquire(request, redirectionUriResponse)
+
+accessTokenResponse.body.map(
+  (token: AccessTokenSigner) =>
     /*
-      The URI to redirect to after the user grants or denies permission.
-      This URI needs to have been entered in the Redirect URI whitelist
-      that you specified when you registered your application.
-      The value of redirect_uri here must exactly match one of the values
-      you entered when you registered your application,
-      including upper or lowercase, terminating slashes, and such.
+    You can store both the accessTokenSigner.accessToken and accessTokenSigner.refreshToken.
+    A refresh token is returned only with the first `accessTokenSigner` response,
+    you need to keep using that to refresh, and subsequent token responses
+    do not provide a refresh token.
      */
-    redirectUri = RedirectUri(uri"http://localhost:9000/callback"),
-    /*
-      A list of scopes. See https://developer.spotify.com/documentation/general/guides/authorization-guide/#list-of-scopes
-      If no scopes are specified, authorization will be granted only to access publicly available information:
-      that is, only information normally visible in the Spotify desktop, web, and mobile players.
-     */
-    scopes = List(SpotifyScope.PLAYLIST_READ_PRIVATE),
-    /*
-      Optional, but strongly recommended.
-      This provides protection against attacks such as cross-site request forgery.
-      See RFC-6749 (tools.ietf.org/html/rfc6749#section-4.1)
-     */
-    state = None
-  )
-
-  // Send the user to `authorizeUrl`
-  val authorizeUrl: Uri = client.auth.authorizeUrl(request)
-
-  // After they approve/deny your app, they will be sent to `SpotifyUserAuthorizationRequest.redirectUri`, which should look something like:
-  val redirectionUriResponse: Uri = uri"http://localhost:9000/callback?code=AQApD1DlOFSQ27NXtPeZTmTbWDe9j6HyqxJrOy"
-
-  // import the response handler and token response decoder
-  // (here using the circe module, you can also use the play framework or provide your own if using core module)
-  import io.bartholomews.spotify4s.circe.codecs._
-
-  val accessTokenResponse: F[SttpResponse[circe.Error, AccessTokenSigner]] =
-    client.auth.AuthorizationCode.acquire(request, redirectionUriResponse)
-
-  accessTokenResponse.body.map(
-    implicit accessTokenSigner =>
-      /*
-      You can store both the accessTokenSigner.accessToken and accessTokenSigner.refreshToken.
-      A refresh token is returned only with the first `accessTokenSigner` response,
-      you need to keep using that to refresh, and subsequent token responses
-      do not provide a refresh token.
-       */
-      if (accessTokenSigner.isExpired())
-        client.auth.AuthorizationCode.refresh(
-          accessTokenSigner.refreshToken.getOrElse(
-            RefreshToken(
-              "Only the first `accessTokenSigner` has a refresh token, I hope you still have that"
-            )
+    if (token.isExpired())
+      client.auth.AuthorizationCode.refresh(
+        token.refreshToken.getOrElse(
+          RefreshToken(
+            "Only the first `accessTokenSigner` has a refresh token, I hope you still have that"
           )
         )
-      else {
-        // The access token allows you to make requests to the Spotify Web API on behalf of a user:
-        val me: F[SttpResponse[circe.Error, PrivateUser]] = client.users.me
+      )
+    else {
+      // The access token allows you to make requests to the Spotify Web API on behalf of a user:
+      val me: F[SttpResponse[circe.Error, PrivateUser]] = client.users.me(token)
+      println {
+        me.body.map(_.displayName)
       }
-  )
+    }
+)
 ```
 
 ## Refined types

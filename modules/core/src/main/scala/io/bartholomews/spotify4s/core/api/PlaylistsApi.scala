@@ -5,12 +5,12 @@ import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, Offset, SpotifyUris, TracksPosition}
+import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{
   AddTracksToPlaylistRequest,
   CreatePlaylistRequest,
   ModifyPlaylistRequest
 }
-import io.bartholomews.spotify4s.core.entities._
 import sttp.client3.BodySerializer
 import sttp.model.Uri
 
@@ -47,7 +47,7 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         returns error 403 Forbidden.
     */
   def replacePlaylistItems(playlistId: SpotifyId, uris: SpotifyUris)(
-    implicit signer: SignerV2
+    signer: SignerV2
   ): F[SttpResponse[Nothing, Unit]] = {
     val uri: Uri = (basePath / "users" / "playlists")
       .withQueryParam(key = "uris", uris.value.toList.map(_.value).mkString(","))
@@ -90,9 +90,8 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *            On error, the header status code is an error code and the response body contains an error object.
     */
   def getUserPlaylists[E](userId: SpotifyUserId, limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, Page[SimplePlaylist]]
-  ): F[SttpResponse[E, Page[SimplePlaylist]]] = {
+    signer: SignerV2
+  )(implicit responseHandler: ResponseHandler[E, Page[SimplePlaylist]]): F[SttpResponse[E, Page[SimplePlaylist]]] = {
     val uri: Uri = (basePath / "users" / userId.value / "playlists")
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.toString)
@@ -140,9 +139,8 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     collaborative: Option[Boolean],
     description: Option[String]
   )(
-    implicit signer: SignerV2,
-    bodySerializer: BodySerializer[ModifyPlaylistRequest]
-  ): F[SttpResponse[Nothing, Unit]] = {
+    signer: SignerV2
+  )(implicit bodySerializer: BodySerializer[ModifyPlaylistRequest]): F[SttpResponse[Nothing, Unit]] = {
     val uri: Uri = basePath / "playlists" / playlistId.value
     baseRequest(client.userAgent)
       .put(uri)
@@ -196,9 +194,8 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     playlistId: SpotifyId,
     uris: SpotifyUris,
     position: Option[TracksPosition]
-  )(
-    implicit signer: SignerV2,
-    bodySerializer: BodySerializer[AddTracksToPlaylistRequest],
+  )(signer: SignerV2)(
+    implicit bodySerializer: BodySerializer[AddTracksToPlaylistRequest],
     responseHandler: ResponseHandler[E, SnapshotIdResponse]
   ): F[SttpResponse[E, SnapshotId]] = {
     val uri: Uri = basePath / "playlists" / playlistId.value / "tracks"
@@ -245,9 +242,8 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         Requesting playlists that you do not have the user’s authorization to access returns error 403 Forbidden.
     */
   def getPlaylist[DE](playlistId: SpotifyId, market: Option[Market] = None)(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[DE, FullPlaylist]
-  ): F[SttpResponse[DE, FullPlaylist]] = {
+    signer: SignerV2
+  )(implicit responseHandler: ResponseHandler[DE, FullPlaylist]): F[SttpResponse[DE, FullPlaylist]] = {
     val uri: Uri = (basePath / "playlists" / playlistId.value)
       .withOptionQueryParam("market", market.map(_.value))
 
@@ -297,9 +293,8 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         Requesting playlists that you do not have the user’s authorization to access returns error 403 Forbidden.
     */
   def getPlaylistFields[E, PartialPlaylist](playlistId: SpotifyId, fields: String, market: Option[Market] = None)(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, PartialPlaylist]
-  ): F[SttpResponse[E, PartialPlaylist]] = {
+    signer: SignerV2
+  )(implicit responseHandler: ResponseHandler[E, PartialPlaylist]): F[SttpResponse[E, PartialPlaylist]] = {
     val uri: Uri = (basePath / "playlists" / playlistId.value)
       .withQueryParam("fields", fields)
       .withOptionQueryParam("market", market.map(_.value))
@@ -327,9 +322,8 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     market: Market,
     limit: SimplePlaylistItem.Limit = 100,
     offset: Offset = 0
-  )(
-    implicit signer: SignerV2,
-    responseHandler: ResponseHandler[E, Page[SimplePlaylistItem]]
+  )(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[E, Page[SimplePlaylistItem]]
   ): F[SttpResponse[E, Page[SimplePlaylistItem]]] = {
     val uri: Uri = (basePath / "playlists" / playlistId.value / "tracks")
       .withQueryParam("market", market.value)
@@ -392,9 +386,8 @@ class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     public: Boolean = true,
     collaborative: Boolean = false,
     description: Option[String] = None
-  )(
-    implicit signer: SignerV2,
-    bodySerializer: BodySerializer[CreatePlaylistRequest],
+  )(signer: SignerV2)(
+    implicit bodySerializer: BodySerializer[CreatePlaylistRequest],
     responseHandler: ResponseHandler[E, FullPlaylist]
   ): F[SttpResponse[E, FullPlaylist]] = {
     val uri: Uri = basePath / "users" / userId.value / "playlists"
