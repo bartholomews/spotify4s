@@ -14,6 +14,8 @@ import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
 import sttp.client3.SttpBackend
 
+import java.util.concurrent.atomic.AtomicReference
+
 /**
   * This client has a subset of available endpoints available,
   * as it is not suitable for user-related endpoints (it would return 401);
@@ -26,7 +28,7 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
   import eu.timepit.refined.auto.autoRefineV
   type S = ClientPasswordAuthentication
 
-  private var signer: Option[TokenSignerV2] = None
+  private val signerRef: AtomicReference[Option[TokenSignerV2]] = new AtomicReference(None)
 
   import cats.implicits._
 
@@ -38,7 +40,7 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
         response.body.fold(
           err => response.copy(body = err.asLeft[A]).pure[F],
           newToken => {
-            signer = Some(newToken)
+            signerRef.set(Some(newToken))
             f(newToken)
           }
       )
@@ -48,11 +50,13 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
   private def withToken[E, A](f: TokenSignerV2 => F[SttpResponse[E, A]])(
     implicit tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner]
   ): F[SttpResponse[E, A]] =
-    signer.fold(acquireToken(f))(
-      token =>
-        if (token.isExpired()) acquireToken(f)
-        else f(token)
-    )
+    signerRef
+      .get()
+      .fold(acquireToken(f))(
+        token =>
+          if (token.isExpired()) acquireToken(f)
+          else f(token)
+      )
 
   object albums {
     def getAlbum[E](id: SpotifyId, country: Option[CountryCodeAlpha2])(
