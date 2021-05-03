@@ -10,7 +10,7 @@ object SimpleTracks {
       SimpleArtists.`Miles Davis`,
       SimpleArtists.`John Coltrane`,
       SimpleArtists.`Cannonball Adderley`,
-      SimpleArtists.`Bill Evans`,
+      SimpleArtists.`Bill Evans`
     ),
     availableMarkets = List.empty,
     discNumber = 1,
@@ -37,7 +37,7 @@ object SimpleTracks {
       SimpleArtists.`John Coltrane`,
       SimpleArtists.`Cannonball Adderley`,
       SimpleArtists.`Wynton Kelly`,
-      SimpleArtists.`Paul Chambers`,
+      SimpleArtists.`Paul Chambers`
     ),
     availableMarkets = List.empty,
     discNumber = 1,
@@ -62,7 +62,7 @@ object SimpleTracks {
     artists = List(
       SimpleArtists.`Miles Davis`,
       SimpleArtists.`John Coltrane`,
-      SimpleArtists.`Bill Evans`,
+      SimpleArtists.`Bill Evans`
     ),
     availableMarkets = List.empty,
     discNumber = 1,
@@ -88,7 +88,7 @@ object SimpleTracks {
       SimpleArtists.`Miles Davis`,
       SimpleArtists.`John Coltrane`,
       SimpleArtists.`Cannonball Adderley`,
-      SimpleArtists.`Bill Evans`,
+      SimpleArtists.`Bill Evans`
     ),
     availableMarkets = List.empty,
     discNumber = 1,
@@ -114,7 +114,7 @@ object SimpleTracks {
       SimpleArtists.`Miles Davis`,
       SimpleArtists.`John Coltrane`,
       SimpleArtists.`Cannonball Adderley`,
-      SimpleArtists.`Bill Evans`,
+      SimpleArtists.`Bill Evans`
     ),
     availableMarkets = List.empty,
     discNumber = 1,

@@ -24,8 +24,8 @@ val commonSettings = Seq(
   // TODO move options in a plugin
   scalacOptions += "-Ymacro-annotations", // https://github.com/circe/circe/issues/975
   // http://www.scalatest.org/user_guide/using_scalatest_with_sbt
-  logBuffered in Test := false,
-  parallelExecution in Test := false,
+  Test / logBuffered := false,
+  Test / parallelExecution := false,
   resolvers +=
     "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 )
@@ -37,7 +37,7 @@ lazy val core = (project in file("modules/core"))
     libraryDependencies ++= dependencies ++ testDependencies,
     coverageMinimum := 85,
     coverageFailOnMinimum := true
-)
+  )
 
 lazy val circe = (project in file("modules/circe"))
   .dependsOn(core % "test->test; compile->compile")
@@ -64,7 +64,7 @@ lazy val play = (project in file("modules/play"))
 lazy val spotify4s = (project in file("."))
   .settings(commonSettings)
   .settings(addCommandAlias("test", ";core/test;circe/test;play/test"): _*)
-  .settings(skip in publish := true)
+  .settings(publish / skip := true)
   .aggregate(core, circe, play)
 
 addCommandAlias("test-coverage", ";clean ;coverage ;test ;coverageAggregate")

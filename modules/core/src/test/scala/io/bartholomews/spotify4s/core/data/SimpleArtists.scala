@@ -4,7 +4,6 @@ import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, SimpleArtis
 import sttp.client3.UriContext
 
 object SimpleArtists {
-
   private def makeSimpleArtist(name: String, id: String): SimpleArtist =
     SimpleArtist(
       externalUrls = Some(ExternalResourceUrl.SpotifyResourceUrl(uri"https://open.spotify.com/artist/$id")),

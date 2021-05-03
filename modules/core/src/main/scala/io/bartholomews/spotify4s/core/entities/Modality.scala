@@ -10,8 +10,7 @@ import enumeratum.values.{IntEnum, IntEnumEntry}
   * with the minor key at 3 semitones lower (e.g. A minor) as both keys carry the same pitches.
   */
 sealed abstract class Modality(val value: Int) extends IntEnumEntry
-
-case object Modality extends IntEnum[Modality] {
+object Modality extends IntEnum[Modality] {
   case object Minor extends Modality(value = 0)
   case object Major extends Modality(value = 1)
   case object NoResult extends Modality(value = -1)

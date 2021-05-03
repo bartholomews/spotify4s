@@ -53,7 +53,7 @@ private[spotify4s] object ReleaseDatePlayJson {
           rdv match {
             case Failure(exception) => Reads.failed[ReleaseDate](s"Invalid release date: [${exception.getMessage}]")
             case Success(value) => Reads.pure(value)
-        }
+          }
       )
       .applyOrElse[String, Reads[ReleaseDate]](rd, other => Reads.failed(s"Invalid release date: [$other]"))
 
@@ -87,5 +87,5 @@ private[spotify4s] object ReleaseDatePlayJson {
         "release_date_precision" -> JsString(ReleaseDatePrecision.fromReleaseDate(o).entryName),
         "release_date" -> JsString(o.toString)
       )
-  )
+    )
 }

@@ -1,9 +1,19 @@
 package io.bartholomews.spotify4s.circe
 
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.entities.{ExternalIds, ExternalResourceUrl, FullTrack, LinkedTrack, Restrictions, SimpleAlbum, SimpleArtist, SpotifyId, SpotifyUri}
+import io.bartholomews.spotify4s.core.entities.{
+  ExternalIds,
+  ExternalResourceUrl,
+  FullTrack,
+  LinkedTrack,
+  Restrictions,
+  SimpleAlbum,
+  SimpleArtist,
+  SpotifyId,
+  SpotifyUri
+}
 import io.circe.{Decoder, HCursor}
-import io.circe.Decoder.{decodeOption, decodeList}
+import io.circe.Decoder.{decodeList, decodeOption}
 import sttp.model.Uri
 
 private[spotify4s] object FullTrackCirce {
@@ -13,7 +23,10 @@ private[spotify4s] object FullTrackCirce {
     for {
       album <- c.downField("album").as[SimpleAlbum](SimpleAlbumCirce.decoder)
       artists <- c.downField("artists").as[List[SimpleArtist]](decodeList(SimpleArtistCirce.decoder))
-      availableMarkets <- c.downField("available_markets").as[Option[List[CountryCodeAlpha2]]](decodeOption(decodeList(CountryCodeAlpha2Circe.decoder)))
+      availableMarkets <- c.downField("available_markets")
+                           .as[Option[List[CountryCodeAlpha2]]](
+                             decodeOption(decodeList(CountryCodeAlpha2Circe.decoder))
+                           )
       discNumber <- c.downField("disc_number").as[Int]
       durationMs <- c.downField("duration_ms").as[Int]
       explicit <- c.downField("explicit").as[Boolean]
