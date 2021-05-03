@@ -1,6 +1,6 @@
 package io.bartholomews.spotify4s.circe
 
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.circe.{Codec, Decoder, Encoder, Json}
 
 private[spotify4s] object CountryCodeAlpha2Circe {

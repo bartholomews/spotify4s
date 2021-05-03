@@ -1,20 +1,21 @@
 package io.bartholomews.spotify4s.core.api
 
+import java.time.Month
+
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.spotify4s.core.ServerBehaviours
+import io.bartholomews.scalatestudo.data.ClientData.v2.sampleNonRefreshableToken
+import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.entities.{AlbumType, NewReleases, ReleaseDate}
-import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken}
+import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.UriContext
 
-import java.time.Month
-
-abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with ServerBehaviours[E, D, DE, J] {
+abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with SpotifyServerBehaviours[E, D, DE, J] {
   import eu.timepit.refined.auto.autoRefineV
 
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken

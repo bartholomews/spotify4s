@@ -5,14 +5,15 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.core.http.FsClientSttpExtensions.UriExtensions
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RedirectUri, RefreshToken}
-import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, NonRefreshableTokenSigner, Scope}
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RefreshToken}
+import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, NonRefreshableTokenSigner, RedirectUri, Scope}
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.spotify4s.core.ServerBehaviours
+import io.bartholomews.scalatestudo.data.ClientData.v2.sampleRefreshToken
+import io.bartholomews.scalatestudo.diff.DiffDerivations
+import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
 import io.bartholomews.spotify4s.core.entities.SpotifyScope
-import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleRefreshToken}
-import io.bartholomews.spotify4s.core.utils.DiffDerivations
+import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.{HttpError, Identity, UriContext}
 import sttp.model.StatusCode
 
@@ -20,7 +21,7 @@ import sttp.model.StatusCode
 // https://www.lewuathe.com/wiremock-in-scala.html
 abstract class AuthApiSpec[E[_], D[_], DE, J]
     extends WireWordSpec
-    with ServerBehaviours[E, D, DE, J]
+    with SpotifyServerBehaviours[E, D, DE, J]
     with DiffDerivations {
   implicit def accessTokenSignerDecoder: D[AccessTokenSigner]
   implicit def nonRefreshableTokenSignerDecoder: D[NonRefreshableTokenSigner]

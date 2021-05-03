@@ -1,6 +1,6 @@
 package io.bartholomews.spotify4s.playJson
 
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.playJson.ReleaseDatePlayJson.{releaseDatePrecisionFormat, ReleaseDatePrecision}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps

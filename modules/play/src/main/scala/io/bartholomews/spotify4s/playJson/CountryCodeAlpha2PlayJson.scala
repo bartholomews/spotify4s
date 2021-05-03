@@ -1,7 +1,7 @@
 package io.bartholomews.spotify4s.playJson
 
-import io.bartholomews.iso_country.CountryCodeAlpha2
-import play.api.libs.json.{Format, JsError, JsString, JsSuccess, Reads, Writes}
+import io.bartholomews.iso.CountryCodeAlpha2
+import play.api.libs.json._
 
 private[spotify4s] object CountryCodeAlpha2PlayJson {
   val reads: Reads[CountryCodeAlpha2] = {

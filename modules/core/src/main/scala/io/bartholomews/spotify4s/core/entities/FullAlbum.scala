@@ -1,10 +1,10 @@
 package io.bartholomews.spotify4s.core.entities
 
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/#object-albumobject
-case class FullAlbum(
+final case class FullAlbum(
   albumType: AlbumType,
   artists: List[SimpleArtist],
   availableMarkets: List[CountryCodeAlpha2],
@@ -24,4 +24,4 @@ case class FullAlbum(
   uri: SpotifyUri
 )
 
-case class FullAlbumsResponse(albums: List[FullAlbum])
+final case class FullAlbumsResponse(albums: List[FullAlbum])

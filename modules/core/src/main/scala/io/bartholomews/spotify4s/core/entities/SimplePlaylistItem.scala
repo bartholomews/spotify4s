@@ -2,7 +2,7 @@ package io.bartholomews.spotify4s.core.entities
 
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Interval
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import sttp.model.Uri
 
 sealed trait SimplePlaylistItem

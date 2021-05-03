@@ -2,10 +2,15 @@ package io.bartholomews.spotify4s.core.api
 
 import cats.Applicative
 import io.bartholomews.fsclient.core.FsClient
-import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2._
 import io.bartholomews.fsclient.core.oauth.v2.{AuthorizationCodeRequest, ClientPassword}
-import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, ClientPasswordAuthentication, NonRefreshableTokenSigner}
+import io.bartholomews.fsclient.core.oauth.{
+  AccessTokenSigner,
+  ClientPasswordAuthentication,
+  NonRefreshableTokenSigner,
+  RedirectUri
+}
 import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
 import io.bartholomews.spotify4s.core.api.SpotifyApi.accountsUri
 import io.bartholomews.spotify4s.core.entities.SpotifyScope
@@ -46,7 +51,6 @@ private[spotify4s] class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthent
   // TODO[FB] ~ Might be worth to distinguish between response types:
   //  `acquire` (has refresh token) vs `refresh` (doesn't have refresh token, need to use the acquired one)
   object AuthorizationCode {
-
     /**
       *
       * @param request the original authorization request
@@ -73,12 +77,12 @@ private[spotify4s] class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthent
                 body = Left(HttpError(errorMsg, StatusCode.Unauthorized)),
                 code = StatusCode.Unauthorized
               )
-          ),
+            ),
           verifier =>
             client.backend.send(
               AuthorizationCodeGrant
                 .accessTokenRequest(tokenEndpoint, verifier, Some(request.redirectUri), clientPassword)
-          )
+            )
         )
 
     def refresh[E](

@@ -1,6 +1,6 @@
 package io.bartholomews.spotify4s.circe
 
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.{ExternalIds, ExternalResourceUrl, FullTrack, LinkedTrack, Restrictions, SimpleAlbum, SimpleArtist, SpotifyId, SpotifyUri}
 import io.circe.{Decoder, HCursor}
 import io.circe.Decoder.{decodeOption, decodeList}

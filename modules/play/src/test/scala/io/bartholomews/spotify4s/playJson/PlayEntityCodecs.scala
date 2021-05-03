@@ -1,6 +1,6 @@
 package io.bartholomews.spotify4s.playJson
 
-import io.bartholomews.spotify4s.core.entities.JsonCodecs
+import io.bartholomews.scalatestudo.entities.JsonCodecs
 import play.api.libs.json.{JsValue, Json, Reads, Writes}
 
 import scala.util.Try

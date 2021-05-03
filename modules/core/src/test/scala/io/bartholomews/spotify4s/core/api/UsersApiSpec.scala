@@ -6,14 +6,15 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.SignerV2
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.spotify4s.core.ServerBehaviours
+import io.bartholomews.scalatestudo.data.ClientData.v2.sampleNonRefreshableToken
+import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylist, SpotifyUserId}
-import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken}
+import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.{Identity, Response}
 
 abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
     extends WireWordSpec
-    with ServerBehaviours[Encoder, Decoder, DE, J] {
+    with SpotifyServerBehaviours[Encoder, Decoder, DE, J] {
   import eu.timepit.refined.auto.autoRefineV
   implicit val signer: SignerV2 = sampleNonRefreshableToken
 

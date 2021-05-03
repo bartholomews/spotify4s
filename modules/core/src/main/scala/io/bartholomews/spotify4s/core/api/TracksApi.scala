@@ -3,8 +3,7 @@ package io.bartholomews.spotify4s.core.api
 import cats.data.NonEmptySet
 import cats.implicits.catsKernelStdOrderForString
 import io.bartholomews.fsclient.core.FsClient
-import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
+import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.core.entities._

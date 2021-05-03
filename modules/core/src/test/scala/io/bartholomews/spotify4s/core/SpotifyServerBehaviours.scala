@@ -4,29 +4,21 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, stubFor}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
-import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.spotify4s.core.entities.{ApiError, AuthError, JsonCodecs, Page, SpotifyError}
+import io.bartholomews.scalatestudo.{ServerBehaviours, WireWordSpec}
+import io.bartholomews.spotify4s.core.entities.{ApiError, AuthError, Page, SpotifyError}
 import org.apache.http.entity.ContentType
 import org.scalatest.matchers.should.Matchers
-import sttp.client3.{BodySerializer, DeserializationException, HttpError}
+import sttp.client3.{DeserializationException, HttpError}
 import sttp.model.StatusCode
 
 import scala.reflect.ClassTag
 
-trait ServerBehaviours[Encoder[_], Decoder[_], DE, Json] extends Matchers {
+trait SpotifyServerBehaviours[E[_], D[_], DE, J] extends ServerBehaviours[E, D, DE, J] with Matchers {
 
   self: WireWordSpec =>
 
-  def entityCodecs[Entity](
-    implicit encoder: Encoder[Entity],
-    decoder: Decoder[Entity]
-  ): JsonCodecs[Entity, Encoder, Decoder, Json]
-
   implicit def ct: ClassTag[DE]
-  implicit def bodySerializer[T](implicit encoder: Encoder[T]): BodySerializer[T]
-  implicit def responseHandler[T](implicit decoder: Decoder[T]): ResponseHandler[DE, T]
-  implicit def pageDecoder[T](implicit decoder: Decoder[T]): Decoder[Page[T]]
+  implicit def pageDecoder[T](implicit decoder: D[T]): D[Page[T]]
 
   val basePath = "/api/v1"
 
@@ -134,7 +126,7 @@ trait ServerBehaviours[Encoder[_], Decoder[_], DE, Json] extends Matchers {
       "return a Left with appropriate message" in matchResponseBody(stub, request) {
         case Left(DeserializationException(body, error)) =>
           body shouldBe ezekiel
-//          error shouldBe a[DE]
+          error shouldBe a[DE]
       }
     }
   }

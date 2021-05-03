@@ -1,7 +1,8 @@
 package io.bartholomews.spotify4s.circe.entities
 
+import io.bartholomews.scalatestudo.entities.JsonCodecs
 import io.bartholomews.spotify4s.circe.CirceEntityCodecs
-import io.bartholomews.spotify4s.core.entities.{JsonCodecs, Restrictions, RestrictionsSpec}
+import io.bartholomews.spotify4s.core.entities.{Restrictions, RestrictionsSpec}
 import io.circe.{Decoder, Encoder, Json}
 import sttp.client3.circe.SttpCirceApi
 

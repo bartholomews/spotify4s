@@ -1,6 +1,6 @@
 package io.bartholomews.spotify4s.circe
 
-import io.bartholomews.spotify4s.core.entities.JsonCodecs
+import io.bartholomews.scalatestudo.entities.JsonCodecs
 
 trait CirceEntityCodecs {
   import io.circe._

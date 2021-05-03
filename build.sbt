@@ -2,7 +2,8 @@ import Dependencies._
 import sbt.Keys.{libraryDependencies, organization, parallelExecution}
 import scoverage.ScoverageKeys.coverageFailOnMinimum
 
-ThisBuild / scalaVersion := "2.13.3"
+// https://github.com/scala/scala
+ThisBuild / scalaVersion := "2.13.5"
 inThisBuild(
   List(
     organization := "io.bartholomews",

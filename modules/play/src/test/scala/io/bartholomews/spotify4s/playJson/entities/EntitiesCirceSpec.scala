@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.playJson.entities
 
-import io.bartholomews.spotify4s.core.entities.{JsonCodecs, Restrictions, RestrictionsSpec}
+import io.bartholomews.scalatestudo.entities.JsonCodecs
+import io.bartholomews.spotify4s.core.entities.{Restrictions, RestrictionsSpec}
 import io.bartholomews.spotify4s.playJson.PlayEntityCodecs
 import play.api.libs.json.{JsValue, Reads, Writes}
 import sttp.client3.playJson.SttpPlayJsonApi

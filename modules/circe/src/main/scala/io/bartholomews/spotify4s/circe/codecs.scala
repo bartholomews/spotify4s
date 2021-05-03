@@ -1,70 +1,19 @@
 package io.bartholomews.spotify4s.circe
 
 import io.bartholomews.fsclient.circe.FsClientCirceApi
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
-import io.bartholomews.spotify4s.core.entities.requests.{
-  AddTracksToPlaylistRequest,
-  CreatePlaylistRequest,
-  ModifyPlaylistRequest
-}
-import io.bartholomews.spotify4s.core.entities.{
-  AlbumGroup,
-  AlbumType,
-  AudioAnalysis,
-  AudioFeatures,
-  AudioFeaturesResponse,
-  AudioSection,
-  AudioSegment,
-  CollectionLink,
-  Confidence,
-  Copyright,
-  ExternalIds,
-  ExternalResourceUrl,
-  Followers,
-  FullAlbum,
-  FullAlbumsResponse,
-  FullArtist,
-  FullPlaylist,
-  FullTrack,
-  FullTracksResponse,
-  LinkedTrack,
-  Modality,
-  NewReleases,
-  Page,
-  PitchClass,
-  PlaylistTrack,
-  PrivateUser,
-  PublicUser,
-  ReleaseDate,
-  Restrictions,
-  SimpleAlbum,
-  SimpleArtist,
-  SimplePlaylist,
-  SimpleTrack,
-  SnapshotId,
-  SnapshotIdResponse,
-  SpotifyCategoryId,
-  SpotifyError,
-  SpotifyId,
-  SpotifyImage,
-  SpotifyUri,
-  SpotifyUrl,
-  SpotifyUserId,
-  SubscriptionLevel
-}
-import io.circe.generic.extras.semiauto.{
-  deriveConfiguredCodec,
-  deriveConfiguredDecoder,
-  deriveConfiguredEncoder,
-  deriveUnwrappedCodec,
-  deriveUnwrappedDecoder
-}
+import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
+import io.bartholomews.spotify4s.core.entities.{AlbumGroup, AlbumType, AudioAnalysis, AudioFeatures, AudioFeaturesResponse, AudioSection, AudioSegment, CollectionLink, Confidence, Copyright, ExternalIds, ExternalResourceUrl, Followers, FullAlbum, FullAlbumsResponse, FullArtist, FullPlaylist, FullTrack, FullTracksResponse, LinkedTrack, Modality, NewReleases, Page, PitchClass, PlaylistTrack, PrivateUser, PublicUser, ReleaseDate, Restrictions, SimpleAlbum, SimpleArtist, SimplePlaylist, SimpleTrack, SnapshotId, SnapshotIdResponse, SpotifyCategoryId, SpotifyError, SpotifyId, SpotifyImage, SpotifyUri, SpotifyUrl, SpotifyUserId, SubscriptionLevel}
+import io.circe.generic.extras.Configuration
+import io.circe.generic.extras.semiauto.{deriveConfiguredCodec, deriveConfiguredDecoder, deriveConfiguredEncoder, deriveUnwrappedCodec, deriveUnwrappedDecoder}
 import io.circe.{Codec, Decoder, Encoder}
 
 object codecs extends SpotifyCirceApi
 
 trait SpotifyCirceApi extends FsClientCirceApi {
+  implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames
+
   implicit val albumGroupDecoder: Decoder[AlbumGroup] = AlbumGroupCirce.decoder
   implicit val albumTypeDecoder: Decoder[AlbumType] = AlbumTypeCirce.decoder
   implicit val audioAnalysisDecoder: Decoder[AudioAnalysis] = deriveConfiguredDecoder

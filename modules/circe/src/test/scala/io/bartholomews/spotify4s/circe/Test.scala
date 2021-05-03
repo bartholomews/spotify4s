@@ -2,10 +2,10 @@ package io.bartholomews.spotify4s.circe
 
 import cats.data.NonEmptySet
 import io.bartholomews.fsclient.core.config.UserAgent
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RedirectUri, RefreshToken}
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RefreshToken}
 import io.bartholomews.fsclient.core.oauth.v2.{ClientId, ClientPassword, ClientSecret}
-import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, Scope}
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, RedirectUri, Scope}
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.circe.Test._
 import io.bartholomews.spotify4s.circe.codecs._
 import io.bartholomews.spotify4s.core.{SpotifyAuthClient, SpotifySimpleClient}

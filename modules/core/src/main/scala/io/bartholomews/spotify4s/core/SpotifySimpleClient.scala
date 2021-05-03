@@ -2,19 +2,18 @@ package io.bartholomews.spotify4s.core
 
 import cats.Monad
 import io.bartholomews.fsclient.core.config.UserAgent
-import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
 import io.bartholomews.fsclient.core.oauth.{ClientPasswordAuthentication, NonRefreshableTokenSigner, TokenSignerV2}
-import io.bartholomews.iso_country.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.SpotifyApi.Offset
 import io.bartholomews.spotify4s.core.entities._
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
 import sttp.client3.SttpBackend
-
 import java.util.concurrent.atomic.AtomicReference
+
+import io.bartholomews.iso.CountryCodeAlpha2
 
 /**
   * This client has a subset of available endpoints available,
@@ -43,7 +42,7 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
             signerRef.set(Some(newToken))
             f(newToken)
           }
-      )
+        )
     )
   }
 

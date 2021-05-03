@@ -4,19 +4,23 @@ import cats.data.NonEmptyList
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.{NonRefreshableTokenSigner, SignerV2}
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.spotify4s.core.ServerBehaviours
+import io.bartholomews.scalatestudo.data.ClientData.v2.sampleNonRefreshableToken
+import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.data.{FullAlbums, SimpleTracks}
+import io.bartholomews.spotify4s.core.diff.SpotifyDiffDerivations
 import io.bartholomews.spotify4s.core.entities._
-import io.bartholomews.spotify4s.core.utils.ClientData.{sampleClient, sampleNonRefreshableToken}
+import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.UriContext
 
-abstract class AlbumsApiSpec[E[_], D[_], DE, J] extends WireWordSpec with ServerBehaviours[E, D, DE, J] {
+abstract class AlbumsApiSpec[E[_], D[_], DE, J]
+    extends WireWordSpec
+    with SpotifyServerBehaviours[E, D, DE, J]
+    with SpotifyDiffDerivations {
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
   implicit def fullAlbumDecoder: D[FullAlbum]
   implicit def fullAlbumsResponseDecoder: D[FullAlbumsResponse]

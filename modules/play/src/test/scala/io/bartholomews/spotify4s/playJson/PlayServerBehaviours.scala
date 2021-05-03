@@ -1,14 +1,14 @@
 package io.bartholomews.spotify4s.playJson
 
 import io.bartholomews.scalatestudo.WireWordSpec
-import io.bartholomews.spotify4s.core.ServerBehaviours
+import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.entities.SpotifyError
 import play.api.libs.json.{JsError, JsValue, Reads, Writes}
 import sttp.client3.BodySerializer
 
 import scala.reflect.ClassTag
 
-trait PlayServerBehaviours extends ServerBehaviours[Writes, Reads, JsError, JsValue] with SpotifyPlayJsonApi {
+trait PlayServerBehaviours extends SpotifyServerBehaviours[Writes, Reads, JsError, JsValue] with SpotifyPlayJsonApi {
 
   self: WireWordSpec =>
 

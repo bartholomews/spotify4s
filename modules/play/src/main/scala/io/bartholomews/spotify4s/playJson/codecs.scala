@@ -2,61 +2,17 @@ package io.bartholomews.spotify4s.playJson
 
 import enumeratum.EnumFormats
 import io.bartholomews.fsclient.play.FsClientPlayApi
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
 import io.bartholomews.spotify4s.core.entities.requests.{
   AddTracksToPlaylistRequest,
   CreatePlaylistRequest,
   ModifyPlaylistRequest
 }
-import io.bartholomews.spotify4s.core.entities.{
-  AlbumGroup,
-  AlbumType,
-  ApiError,
-  AudioAnalysis,
-  AudioFeatures,
-  AudioFeaturesResponse,
-  AudioSection,
-  AudioSegment,
-  AuthError,
-  CollectionLink,
-  Confidence,
-  Copyright,
-  ExternalIds,
-  ExternalResourceUrl,
-  Followers,
-  FullAlbum,
-  FullAlbumsResponse,
-  FullArtist,
-  FullPlaylist,
-  FullTrack,
-  FullTracksResponse,
-  LinkedTrack,
-  Modality,
-  NewReleases,
-  Page,
-  PitchClass,
-  PlaylistTrack,
-  PrivateUser,
-  PublicUser,
-  Restrictions,
-  SimpleAlbum,
-  SimpleArtist,
-  SimplePlaylist,
-  SimpleTrack,
-  SnapshotId,
-  SnapshotIdResponse,
-  SpotifyError,
-  SpotifyId,
-  SpotifyImage,
-  SpotifyUri,
-  SpotifyUserId,
-  SubscriptionLevel,
-  Tempo
-}
+import io.bartholomews.spotify4s.core.entities._
 import play.api.libs.json.JsonConfiguration.Aux
 import play.api.libs.json.JsonNaming.SnakeCase
-import play.api.libs.json.{Format, JsValue, Json, JsonConfiguration, JsonNaming, Reads, Writes}
+import play.api.libs.json._
 
 object codecs extends SpotifyPlayJsonApi
 

@@ -8,10 +8,9 @@ import eu.timepit.refined.numeric.Interval
 import eu.timepit.refined.predicates.all.Size
 import eu.timepit.refined.refineV
 import io.bartholomews.fsclient.core.FsClient
-import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.ResponseHandler
+import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
-import io.bartholomews.iso_country.CountryCodeAlpha2
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, Offset}
 import io.bartholomews.spotify4s.core.entities._

@@ -4,7 +4,7 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Interval
 import sttp.model.Uri
 
-case class SimplePlaylist(
+final case class SimplePlaylist(
   collaborative: Boolean,
   description: Option[String],
   externalUrls: ExternalResourceUrl,
@@ -22,3 +22,5 @@ case class SimplePlaylist(
 object SimplePlaylist {
   type Limit = Refined[Int, Interval.Closed[1, 50]]
 }
+
+final case class PlaylistsResponse(playlists: Page[SimplePlaylist])

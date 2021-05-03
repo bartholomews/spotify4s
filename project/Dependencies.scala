@@ -2,10 +2,14 @@ import sbt._
 
 object Dependencies {
   object Versions {
-    val cats = "2.3.0"
-    val refined = "0.9.13"
-    val fsClient = "0.1.1+22-5b4e2b7a-SNAPSHOT"
-    val scalaIso = "0.1.1+4-0b19443b-SNAPSHOT"
+    // https://github.com/typelevel/cats
+    val cats = "2.6.0"
+    // https://github.com/fthomas/refined
+    val refined = "0.9.24"
+    // https://github.com/bartholomews/fsclient
+    val fsClient = "0.1.2+5-f5906f18-SNAPSHOT"
+    // https://github.com/bartholomews/scala-iso
+    val scalaIso = "0.1.3"
   }
 
   val circeDependencies: Seq[ModuleID] = Seq(
@@ -18,12 +22,12 @@ object Dependencies {
 
   val dependencies: Seq[ModuleID] = Seq(
     "io.bartholomews" %% "fsclient-core" % Versions.fsClient,
-    "org.typelevel"   %% "cats-core" % Versions.cats,
-    "eu.timepit"      %% "refined"   % Versions.refined,
-    "io.bartholomews" %% "scala-iso" % Versions.scalaIso
+    "org.typelevel"   %% "cats-core"     % Versions.cats,
+    "eu.timepit"      %% "refined"       % Versions.refined,
+    "io.bartholomews" %% "scala-iso"     % Versions.scalaIso
   )
 
   lazy val testDependencies: Seq[ModuleID] = Seq(
-    "io.bartholomews" %% "scalatestudo" % "0.0.3+2-4ad35c91-SNAPSHOT"
+    "io.bartholomews" %% "scalatestudo" % Versions.fsClient
   ).map(_ % Test)
 }
