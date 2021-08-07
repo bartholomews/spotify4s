@@ -1,13 +1,7 @@
 package io.bartholomews.spotify4s.circe
 
-import io.bartholomews.spotify4s.core.entities.{
-  ExternalResourceUrl,
-  Followers,
-  PublicUser,
-  SpotifyImage,
-  SpotifyUri,
-  SpotifyUserId
-}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
+import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, Followers, PublicUser, SpotifyImage, SpotifyUri}
 import io.circe.{Decoder, HCursor}
 import sttp.model.Uri
 

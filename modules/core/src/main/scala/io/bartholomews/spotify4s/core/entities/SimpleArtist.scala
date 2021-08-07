@@ -1,5 +1,6 @@
 package io.bartholomews.spotify4s.core.entities
 
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyArtistId
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/object-model/#artist-object-simplified
@@ -10,7 +11,7 @@ import sttp.model.Uri
 case class SimpleArtist(
   externalUrls: Option[ExternalResourceUrl],
   href: Option[Uri],
-  id: Option[SpotifyId],
+  id: Option[SpotifyArtistId],
   name: String,
   uri: Option[SpotifyUri]
 )

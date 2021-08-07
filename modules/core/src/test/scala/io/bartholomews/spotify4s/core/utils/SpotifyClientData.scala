@@ -3,7 +3,8 @@ package io.bartholomews.spotify4s.core.utils
 import io.bartholomews.scalatestudo.data.ClientData.sampleUserAgent
 import io.bartholomews.scalatestudo.data.ClientData.v2.sampleClientPassword
 import io.bartholomews.spotify4s.core.SpotifyAuthClient
-import io.bartholomews.spotify4s.core.entities.{SpotifyId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
 import sttp.client3.{HttpURLConnectionBackend, Identity}
 
 object SpotifyClientData {

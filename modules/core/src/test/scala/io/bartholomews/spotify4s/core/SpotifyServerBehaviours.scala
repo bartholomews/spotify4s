@@ -18,7 +18,9 @@ trait SpotifyServerBehaviours[E[_], D[_], DE, J] extends ServerBehaviours[E, D, 
   self: WireWordSpec =>
 
   implicit def ct: ClassTag[DE]
-  implicit def pageDecoder[T](implicit decoder: D[T]): D[Page[T]]
+  implicit def pageDecoder[A](implicit decoder: D[A]): D[Page[A]]
+  implicit def listDecoder[A](implicit decoder: D[A]): D[List[A]]
+  implicit def booleanDecoder: D[Boolean]
 
   val basePath = "/api/v1"
 
@@ -126,7 +128,7 @@ trait SpotifyServerBehaviours[E[_], D[_], DE, J] extends ServerBehaviours[E, D, 
       "return a Left with appropriate message" in matchResponseBody(stub, request) {
         case Left(DeserializationException(body, error)) =>
           body shouldBe ezekiel
-          // TODO: error shouldBe a[DE]
+        // TODO: error shouldBe a[DE]
       }
     }
   }

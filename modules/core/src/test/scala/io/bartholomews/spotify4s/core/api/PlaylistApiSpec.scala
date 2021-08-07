@@ -4,7 +4,6 @@ import cats.data.NonEmptyList
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
 import io.bartholomews.iso.CountryCodeAlpha2
@@ -15,6 +14,7 @@ import io.bartholomews.spotify4s.core.api.PlaylistApiSpec.{PartialPlaylist, Part
 import io.bartholomews.spotify4s.core.api.SpotifyApi.SpotifyUris
 import io.bartholomews.spotify4s.core.diff.SpotifyDiffDerivations
 import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{
   AddTracksToPlaylistRequest,
@@ -22,7 +22,7 @@ import io.bartholomews.spotify4s.core.entities.requests.{
   ModifyPlaylistRequest
 }
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
-import sttp.client3.{Identity, Response, UriContext}
+import sttp.client3.{Identity, UriContext}
 import sttp.model.{StatusCode, Uri}
 
 //noinspection MutatorLikeMethodIsParameterless
@@ -69,7 +69,9 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
         stubFor(endpointRequest.willReturn(aResponse().withStatus(201)))
 
       "return the correct entity" in matchIdResponse[Nothing, Unit](stub, request) {
-        case Response(Right(()), status, _, _, _, _) => status shouldBe StatusCode.Created
+        case response =>
+          response.body shouldBe Right(())
+          response.code shouldBe StatusCode.Created
       }
     }
 
@@ -249,7 +251,9 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
         )
 
       "return the correct entity" in matchIdResponse[Nothing, Unit](stub, request) {
-        case Response(Right(()), status, _, _, _, _) => status shouldBe StatusCode.Ok
+        case response =>
+          response.body shouldBe Right(())
+          response.code shouldBe StatusCode.Ok
       }
     }
   }

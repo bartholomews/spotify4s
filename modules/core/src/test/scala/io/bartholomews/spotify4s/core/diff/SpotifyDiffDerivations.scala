@@ -1,11 +1,11 @@
 package io.bartholomews.spotify4s.core.diff
 
 import java.time.Month
-
 import com.softwaremill.diffx.{Derived, Diff}
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.diff.DiffDerivations
 import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.Bar
 import io.bartholomews.spotify4s.core.entities._
 
@@ -17,7 +17,9 @@ trait SpotifyDiffDerivations extends DiffDerivations {
 
   implicit val spotifyUriDiff: Diff[SpotifyUri] = Diff.derived[SpotifyUri]
   implicit val spotifyIdDiff: Diff[SpotifyId] = Diff.derived[SpotifyId]
+  implicit val spotifyArtistIdDiff: Diff[SpotifyArtistId] = Diff.derived[SpotifyArtistId]
   implicit val spotifyUserIdDiff: Diff[SpotifyUserId] = Diff.derived[SpotifyUserId]
+  implicit val spotifyPlaylistIdDiff: Diff[SpotifyPlaylistId] = Diff.derived[SpotifyPlaylistId]
   implicit val spotifyImageDiff: Diff[SpotifyImage] = Diff.derived[SpotifyImage]
   implicit val copyrightDiff: Diff[Copyright] = Diff.derived[Copyright]
   implicit val restrictionsDiff: Diff[Restrictions] = Diff.derived[Restrictions]

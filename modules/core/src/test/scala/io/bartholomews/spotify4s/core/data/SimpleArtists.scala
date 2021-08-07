@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.core.data
 
-import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, SimpleArtist, SpotifyId, SpotifyUri}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyArtistId
+import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, SimpleArtist, SpotifyUri}
 import sttp.client3.UriContext
 
 object SimpleArtists {
@@ -8,7 +9,7 @@ object SimpleArtists {
     SimpleArtist(
       externalUrls = Some(ExternalResourceUrl.SpotifyResourceUrl(uri"https://open.spotify.com/artist/$id")),
       href = Some(uri"https://api.spotify.com/v1/artists/$id"),
-      id = Some(SpotifyId(id)),
+      id = Some(SpotifyArtistId(id)),
       name,
       uri = Some(SpotifyUri(s"spotify:artist:$id"))
     )

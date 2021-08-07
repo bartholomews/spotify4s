@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.core.entities
 
 import io.bartholomews.iso.CountryCodeAlpha2
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
 import sttp.model.Uri
 
 /**

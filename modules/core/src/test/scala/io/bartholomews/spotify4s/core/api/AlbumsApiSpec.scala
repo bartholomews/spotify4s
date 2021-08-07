@@ -66,13 +66,15 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J]
         .withQueryParam("market", equalTo(UK.value))
 
     "country is defined" should {
-      val maybeAlbumIds = AlbumIds.fromNel(
-        NonEmptyList.of(FullAlbums.`Kind of Blue`.id, FullAlbums.`In A Silent Way`.id)
-      )
+      val albumIds: AlbumIds = AlbumIds
+        .fromNel(
+          NonEmptyList.of(FullAlbums.`Kind of Blue`.id, FullAlbums.`In A Silent Way`.id)
+        )
+        .fold(fail(_), identity)
 
       def request: SignerV2 => SttpResponse[DE, List[FullAlbum]] =
         sampleClient.albums.getAlbums[DE](
-          ids = maybeAlbumIds.getOrElse(fail(s"$maybeAlbumIds")),
+          ids = albumIds,
           country = Some(UK)
         )
 

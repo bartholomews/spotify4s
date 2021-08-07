@@ -8,9 +8,10 @@ import io.bartholomews.fsclient.core.oauth.SignerV2
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.ClientData.v2.sampleNonRefreshableToken
 import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
-import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylist, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
+import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylist}
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
-import sttp.client3.{Identity, Response}
+import sttp.client3.Identity
 
 abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
     extends WireWordSpec
@@ -69,8 +70,8 @@ abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
             )
         )
 
-      "return the correct entity" in matchIdResponse(stub, request) {
-        case Response(Right(playlistsPage), _, _, _, _, _) =>
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(playlistsPage) =>
           playlistsPage.items.size shouldBe 2
           playlistsPage.items(1).name shouldBe "😗👌💨"
       }

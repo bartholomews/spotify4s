@@ -16,6 +16,10 @@ trait CirceServerBehaviours
 
   override implicit val ct: ClassTag[circe.Error] = ClassTag[circe.Error](circe.Error.getClass)
 
+  implicit def listDecoder[A](implicit decoder: Decoder[A]): Decoder[List[A]] = Decoder.decodeList[A]
+
+  implicit def booleanDecoder: Decoder[Boolean] = Decoder.decodeBoolean
+
   implicit def bodySerializer[T](implicit encoder: Encoder[T]): BodySerializer[T] =
     circeBodySerializer
 

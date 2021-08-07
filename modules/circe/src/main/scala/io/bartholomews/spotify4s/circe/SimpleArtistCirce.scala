@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.circe
 
-import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, SimpleArtist, SpotifyId, SpotifyUri}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyArtistId
+import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, SimpleArtist, SpotifyUri}
 import io.circe.{Decoder, HCursor}
 import sttp.model.Uri
 
@@ -10,7 +11,7 @@ private[spotify4s] object SimpleArtistCirce {
     for {
       externalUrls <- Right(c.downField("external_urls").as[ExternalResourceUrl].toOption)
       href <- c.downField("href").as[Option[Uri]]
-      id <- c.downField("id").as[Option[SpotifyId]]
+      id <- c.downField("id").as[Option[SpotifyArtistId]]
       name <- c.downField("name").as[String]
       uri <- c.downField("uri").as[Option[SpotifyUri]]
     } yield SimpleArtist(externalUrls, href, id, name, uri)

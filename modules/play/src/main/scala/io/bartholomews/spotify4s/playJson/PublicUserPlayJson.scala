@@ -1,13 +1,7 @@
 package io.bartholomews.spotify4s.playJson
 
-import io.bartholomews.spotify4s.core.entities.{
-  ExternalResourceUrl,
-  Followers,
-  PublicUser,
-  SpotifyImage,
-  SpotifyUri,
-  SpotifyUserId
-}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
+import io.bartholomews.spotify4s.core.entities.{ExternalResourceUrl, Followers, PublicUser, SpotifyImage, SpotifyUri}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.{Format, JsPath, Json, Reads, Writes}
 import sttp.model.Uri

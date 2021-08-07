@@ -4,6 +4,7 @@ import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, Offset, SpotifyUris, TracksPosition}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{
   AddTracksToPlaylistRequest,

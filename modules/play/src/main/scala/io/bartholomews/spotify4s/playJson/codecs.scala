@@ -3,13 +3,14 @@ package io.bartholomews.spotify4s.playJson
 import enumeratum.EnumFormats
 import io.bartholomews.fsclient.play.FsClientPlayApi
 import io.bartholomews.iso.CountryCodeAlpha2
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
+import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{
   AddTracksToPlaylistRequest,
   CreatePlaylistRequest,
   ModifyPlaylistRequest
 }
-import io.bartholomews.spotify4s.core.entities._
 import play.api.libs.json.JsonConfiguration.Aux
 import play.api.libs.json.JsonNaming.SnakeCase
 import play.api.libs.json._
@@ -52,9 +53,11 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val snapshotIdResponseCodec: Format[SnapshotIdResponse] = Json.format
   implicit val spotifyErrorCodec: Format[SpotifyError] = SpotifyErrorPlayJson.spotifyErrorFormat
   implicit val spotifyIdCodec: Format[SpotifyId] = Json.valueFormat[SpotifyId]
+  implicit val spotifyArtistIdCodec: Format[SpotifyArtistId] = Json.valueFormat[SpotifyArtistId]
+  implicit val spotifyUserIdCodec: Format[SpotifyUserId] = Json.valueFormat[SpotifyUserId]
+  implicit val spotifyPlaylistIdCodec: Format[SpotifyPlaylistId] = Json.valueFormat[SpotifyPlaylistId]
   implicit val spotifyImageCodec: Format[SpotifyImage] = Json.format[SpotifyImage]
   implicit val spotifyUriCodec: Format[SpotifyUri] = Json.valueFormat[SpotifyUri]
-  implicit val spotifyUserIdCodec: Format[SpotifyUserId] = Json.valueFormat[SpotifyUserId]
   implicit val confidenceCodec: Format[Confidence] = Json.valueFormat[Confidence]
   implicit val barCodec: Format[Bar] = TimeIntervalPlayJson.barFormat
   implicit val beatCodec: Format[Beat] = TimeIntervalPlayJson.beatFormat
@@ -92,6 +95,7 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   // TODO: Format not Reads
   implicit val simpleTrackDecoder: Reads[SimpleTrack] = SimpleTrackPlayJson.reads
   implicit val fullArtistDecoder: Reads[FullArtist] = Json.reads[FullArtist]
+  implicit val artistsResponseDecoder: Reads[ArtistsResponse] = Json.reads[ArtistsResponse]
   implicit val fullAlbumDecoder: Reads[FullAlbum] = {
     implicit val opt: Reads[List[CountryCodeAlpha2]] = readNullableList[CountryCodeAlpha2]
     FullAlbumPlayJson.reads

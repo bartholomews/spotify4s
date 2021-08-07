@@ -16,6 +16,9 @@ trait PlayServerBehaviours extends SpotifyServerBehaviours[Writes, Reads, JsErro
 
   import play.api.libs.json._
 
+  implicit def booleanDecoder: Reads[Boolean] = Reads.BooleanReads
+  implicit def listDecoder[A](implicit decoder: Reads[A]): Reads[List[A]] = Reads.list[A]
+
   implicit def bodySerializer[T](implicit encoder: Writes[T]): BodySerializer[T] =
     sttp.client3.playJson.playJsonBodySerializer
 

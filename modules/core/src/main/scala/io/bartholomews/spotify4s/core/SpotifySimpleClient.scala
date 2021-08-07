@@ -5,15 +5,17 @@ import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
 import io.bartholomews.fsclient.core.oauth.{ClientPasswordAuthentication, NonRefreshableTokenSigner, TokenSignerV2}
+import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
+import io.bartholomews.spotify4s.core.api.FollowApi.UserIdsFollowingPlaylist
 import io.bartholomews.spotify4s.core.api.SpotifyApi.Offset
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyPlaylistId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities._
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
 import sttp.client3.SttpBackend
-import java.util.concurrent.atomic.AtomicReference
 
-import io.bartholomews.iso.CountryCodeAlpha2
+import java.util.concurrent.atomic.AtomicReference
 
 /**
   * This client has a subset of available endpoints available,
@@ -81,6 +83,15 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       responseHandler: ResponseHandler[E, Page[SimpleTrack]]
     ): F[SttpResponse[E, Page[SimpleTrack]]] =
       withToken { client.albums.getAlbumTracks(id, country, limit, offset) }
+  }
+
+  object follow {
+    def usersFollowingPlaylist[E](playlistId: SpotifyPlaylistId, userIds: UserIdsFollowingPlaylist)(
+      implicit
+      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[E, List[Boolean]]
+    ): F[SttpResponse[E, Map[SpotifyUserId, Boolean]]] =
+      withToken { client.follow.usersFollowingPlaylist(playlistId, userIds) }
   }
 }
 

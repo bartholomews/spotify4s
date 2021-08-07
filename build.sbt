@@ -35,7 +35,7 @@ lazy val core = (project in file("modules/core"))
     commonSettings,
     name := "spotify4s-core",
     libraryDependencies ++= dependencies ++ testDependencies,
-    coverageMinimum := 85,
+    coverageMinimum := 68,
     coverageFailOnMinimum := true
   )
 
@@ -45,7 +45,7 @@ lazy val circe = (project in file("modules/circe"))
   .settings(
     name := "spotify4s-circe",
     libraryDependencies ++= circeDependencies,
-    coverageMinimum := 85,
+    coverageMinimum := 86,
     coverageFailOnMinimum := true
   )
 
@@ -55,7 +55,7 @@ lazy val play = (project in file("modules/play"))
   .settings(
     name := "spotify4s-play",
     libraryDependencies ++= playDependencies,
-    coverageMinimum := 75,
+    coverageMinimum := 79,
     coverageFailOnMinimum := true
   )
 
