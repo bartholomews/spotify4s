@@ -19,7 +19,7 @@ abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
   import eu.timepit.refined.auto.autoRefineV
 
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
-  implicit def newReleasesDecoder: D[NewReleases]
+  implicit def newReleasesCodec: D[NewReleases]
 
   "getNewReleases" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/new-releases"))

@@ -22,11 +22,11 @@ abstract class TracksApiSpec[E[_], D[_], DE, J]
     with SpotifyServerBehaviours[E, D, DE, J]
     with SpotifyDiffDerivations {
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
-  implicit def audioAnalysisDecoder: D[AudioAnalysis]
-  implicit def audioFeaturesDecoder: D[AudioFeatures]
-  implicit def audioFeaturesResponseDecoder: D[AudioFeaturesResponse]
-  implicit def fullTrackDecoder: D[FullTrack]
-  implicit def fullTracksResponseDecoder: D[FullTracksResponse]
+  implicit def audioAnalysisCodec: D[AudioAnalysis]
+  implicit def audioFeaturesCodec: D[AudioFeatures]
+  implicit def audioFeaturesResponseCodec: D[AudioFeaturesResponse]
+  implicit def fullTrackCodec: D[FullTrack]
+  implicit def fullTracksResponseCodec: D[FullTracksResponse]
 
   "`getAudioAnalysis`" should {
     def endpoint: MappingBuilder =

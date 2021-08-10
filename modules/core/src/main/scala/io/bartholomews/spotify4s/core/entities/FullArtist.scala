@@ -16,4 +16,4 @@ final case class FullArtist(
   uri: SpotifyUri
 )
 
-final case class ArtistsResponse(artists: Page[FullArtist])
+final case class ArtistsResponse(artists: CursorPage[SpotifyArtistId, FullArtist])

@@ -11,7 +11,7 @@ import io.bartholomews.scalatestudo.data.ClientData.v2.sampleNonRefreshableToken
 import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.api.FollowApi.{ArtistsFollowingIds, UserIdsFollowingPlaylist, UsersFollowingIds}
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
-import io.bartholomews.spotify4s.core.entities.{ArtistsResponse, FullArtist, Page, SpotifyId}
+import io.bartholomews.spotify4s.core.entities.{ArtistsResponse, CursorPage, FullArtist}
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.model.StatusCode
 
@@ -20,7 +20,7 @@ abstract class FollowApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
 
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
 
-  implicit def artistsResponseDecoder: D[ArtistsResponse]
+  implicit def artistsResponseCodec: D[ArtistsResponse]
 
   "followPlaylist" should {
     def endpointRequest: MappingBuilder = put(urlPathEqualTo(s"$basePath/playlists/2v3iNvBX8Ay1Gt2uXtUKUT/followers"))
@@ -116,7 +116,7 @@ abstract class FollowApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
         .withQueryParam("limit", equalTo("3"))
         .withQueryParam("after", equalTo("0f8MDDzIc6M4uH1xH0o0gy"))
 
-    def request: SttpResponse[DE, Page[FullArtist]] =
+    def request: SttpResponse[DE, CursorPage[SpotifyArtistId, FullArtist]] =
       sampleClient.follow
         .getFollowedArtists(after = Some(SpotifyArtistId("0f8MDDzIc6M4uH1xH0o0gy")), limit = 3)(signer)
 
@@ -135,6 +135,7 @@ abstract class FollowApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
     "return the correct entity" in matchResponseBody(stub, request) {
       case Right(page) =>
         page.items.map(_.name) shouldBe List("Trent Reznor", "Pink Floyd", "Miles Davis")
+        page.cursors.after shouldBe SpotifyArtistId("0kbYTNQb4Pb1rPbbaF0pT4")
     }
   }
 

@@ -3,12 +3,12 @@ package io.bartholomews.spotify4s.playJson
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities._
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json.{JsPath, Reads}
+import play.api.libs.json.{Format, JsPath, Json, Reads}
 import sttp.model.Uri
 
 object SimpleTrackPlayJson {
   import codecs._
-  implicit val reads: Reads[SimpleTrack] = (JsPath \ "artists")
+  val reads: Reads[SimpleTrack] = (JsPath \ "artists")
     .read[List[SimpleArtist]](Reads.list(SimpleArtistPlayJson.reads))
     .and((JsPath \ "available_markets").read[List[CountryCodeAlpha2]].orElse(Reads.pure(List.empty)))
     .and((JsPath \ "disc_number").read[Int])
@@ -25,4 +25,6 @@ object SimpleTrackPlayJson {
     .and((JsPath \ "track_number").read[Int])
     .and((JsPath \ "uri").read[SpotifyUri])
     .and((JsPath \ "is_local").read[Boolean])(SimpleTrack.apply _)
+
+  val format: Format[SimpleTrack] = Format[SimpleTrack](reads, Json.writes[SimpleTrack])
 }

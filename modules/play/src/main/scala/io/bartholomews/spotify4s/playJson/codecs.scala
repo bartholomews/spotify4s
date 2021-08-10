@@ -40,9 +40,22 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
     )
   }
 
-  implicit def pageDecoder[T](implicit decoder: Reads[T]): Reads[Page[T]] = Json.reads[Page[T]]
+  /*
+    override implicit def fullAlbumCodec: Reads[FullAlbum] = ???
+
+  override implicit def fullAlbumsResponseCodec: Reads[FullAlbumsResponse] = ???
+
+  override implicit def simpleTrackCodec: Reads[SimpleTrack] = ???
+   */
+
   implicit def pageEncoder[T](implicit encoder: Writes[T]): Writes[Page[T]] = Json.writes[Page[T]]
-  implicit def pageCodec[T](implicit codec: Format[T]): Format[Page[T]] = Json.format[Page[T]]
+  implicit def pageDecoder[T](implicit decoder: Reads[T]): Reads[Page[T]] = Json.reads[Page[T]]
+  implicit def cursorEncoder[Id](implicit encoder: Writes[Id]): Writes[Cursor[Id]] = Json.writes[Cursor[Id]]
+  implicit def cursorDecoder[Id](implicit decoder: Reads[Id]): Reads[Cursor[Id]] = Json.reads[Cursor[Id]]
+  implicit def cursorPageEncoder[Id, T](implicit idEncoder: Writes[Id], entityEncoder: Writes[T]): Writes[CursorPage[Id, T]] =
+    Json.writes[CursorPage[Id, T]]
+  implicit def cursorPageDecoder[Id, T](implicit idCodec: Reads[Id], entityCodec: Reads[T]): Reads[CursorPage[Id, T]] =
+    Json.reads[CursorPage[Id, T]]
 
   implicit val modifyPlaylistRequestEncoder: Writes[ModifyPlaylistRequest] = Json.writes
   implicit val createPlaylistRequestEncoder: Writes[CreatePlaylistRequest] = Json.writes
@@ -92,13 +105,9 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val collectionLinkCodec: Format[CollectionLink] = Json.format[CollectionLink]
   implicit val newReleasesCodec: Format[NewReleases] = Json.format[NewReleases]
   implicit val simplePlaylistCodec: Format[SimplePlaylist] = Json.format[SimplePlaylist]
-  // TODO: Format not Reads
-  implicit val simpleTrackDecoder: Reads[SimpleTrack] = SimpleTrackPlayJson.reads
-  implicit val fullArtistDecoder: Reads[FullArtist] = Json.reads[FullArtist]
-  implicit val artistsResponseDecoder: Reads[ArtistsResponse] = Json.reads[ArtistsResponse]
-  implicit val fullAlbumDecoder: Reads[FullAlbum] = {
-    implicit val opt: Reads[List[CountryCodeAlpha2]] = readNullableList[CountryCodeAlpha2]
-    FullAlbumPlayJson.reads
-  }
-  implicit val fullAlbumsResponseDecoder: Reads[FullAlbumsResponse] = Json.reads[FullAlbumsResponse]
+  implicit val simpleTrackCodec: Format[SimpleTrack] = SimpleTrackPlayJson.format
+  implicit val fullArtistCodec: Format[FullArtist] = Json.format[FullArtist]
+  implicit val artistsResponseCodec: Format[ArtistsResponse] = Json.format[ArtistsResponse]
+  implicit val fullAlbumCodec: Format[FullAlbum] = FullAlbumPlayJson.format
+  implicit val fullAlbumsResponseCodec: Format[FullAlbumsResponse] = Json.format[FullAlbumsResponse]
 }

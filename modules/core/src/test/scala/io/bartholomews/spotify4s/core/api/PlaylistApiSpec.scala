@@ -36,9 +36,9 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
 
   implicit def partialPlaylistDecoder: D[PartialPlaylist]
-  implicit def simplePlaylistDecoder: D[SimplePlaylist]
-  implicit def fullPlaylistDecoder: D[FullPlaylist]
-  implicit def snapshotIdResponseDecoder: D[SnapshotIdResponse]
+  implicit def simplePlaylistCodec: D[SimplePlaylist]
+  implicit def fullPlaylistCodec: D[FullPlaylist]
+  implicit def snapshotIdResponseCodec: D[SnapshotIdResponse]
   implicit def modifyPlaylistRequestEncoder: E[ModifyPlaylistRequest]
   implicit def createPlaylistRequestEncoder: E[CreatePlaylistRequest]
   implicit def addTracksToPlaylistRequestEncoder: E[AddTracksToPlaylistRequest]

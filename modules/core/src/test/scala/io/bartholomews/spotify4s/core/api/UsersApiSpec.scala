@@ -19,8 +19,8 @@ abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
   import eu.timepit.refined.auto.autoRefineV
   implicit val signer: SignerV2 = sampleNonRefreshableToken
 
-  implicit def privateUserDecoder: Decoder[PrivateUser]
-  implicit def simplePlaylistDecoder: Decoder[SimplePlaylist]
+  implicit def privateUserCodec: Decoder[PrivateUser]
+  implicit def simplePlaylistCodec: Decoder[SimplePlaylist]
 
   "me" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me"))

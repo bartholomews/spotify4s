@@ -13,7 +13,7 @@ import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.spotify4s.core.api.FollowApi.{ArtistsFollowingIds, UserIdsFollowingPlaylist, UsersFollowingIds}
 import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
-import io.bartholomews.spotify4s.core.entities.{ArtistsResponse, FullArtist, Page}
+import io.bartholomews.spotify4s.core.entities.{ArtistsResponse, CursorPage, FullArtist}
 import io.bartholomews.spotify4s.core.validators.RefinedValidators.{maxSizeP, NelMaxSizeValidators}
 import shapeless.Nat._0
 import shapeless.Witness
@@ -130,7 +130,7 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
     */
   def getFollowedArtists[E](after: Option[SpotifyArtistId] = None, limit: FollowedArtists.Limit = 20)(signer: SignerV2)(
     implicit responseHandler: ResponseHandler[E, ArtistsResponse]
-  ): F[Response[Either[ResponseException[String, E], Page[FullArtist]]]] = {
+  ): F[Response[Either[ResponseException[String, E], CursorPage[SpotifyArtistId, FullArtist]]]] = {
     val uri = (basePath / "me" / "following")
       .withQueryParam("type", "artist")
       .withQueryParam("limit", limit.value.toString)

@@ -9,18 +9,18 @@ private[spotify4s] object ExternalResourceUrlPlayJson {
   import io.bartholomews.spotify4s.playJson.codecs.sttpUriDecoder
 
   val reads: Reads[ExternalResourceUrl] = {
-    case JsObject(objMap) =>
-      if (objMap.size != 1) JsError(s"Expected an object with size one, got [$objMap]")
-      else
-        objMap
-          .get("spotify")
-          .map(_.validate[Uri].map(SpotifyResourceUrl.apply))
-          .getOrElse(JsError(s"Expected a `spotify` entry, got [$objMap]"))
+    case JsObject(objMap) if objMap.isEmpty => JsSuccess(ExternalResourceUrl.Empty)
+    case JsObject(objMap) if objMap.size == 1 =>
+      objMap
+        .get("spotify")
+        .map(_.validate[Uri].map(SpotifyResourceUrl.apply))
+        .getOrElse(JsError(s"Expected a `spotify` entry, got [$objMap]"))
 
-    case other => JsError(s"Expected a json object, got [$other]")
+    case other => JsError(s"Expected a singleton json object, got [$other]")
   }
 
   val writes: Writes[ExternalResourceUrl] = {
+    case ExternalResourceUrl.Empty => JsObject(Seq.empty)
     case SpotifyResourceUrl(uri) => JsObject(Map("spotify" -> JsString(uri.toString)))
   }
 

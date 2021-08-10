@@ -22,9 +22,9 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J]
     with SpotifyServerBehaviours[E, D, DE, J]
     with SpotifyDiffDerivations {
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
-  implicit def fullAlbumDecoder: D[FullAlbum]
-  implicit def fullAlbumsResponseDecoder: D[FullAlbumsResponse]
-  implicit def simpleTrackDecoder: D[SimpleTrack]
+  implicit def fullAlbumCodec: D[FullAlbum]
+  implicit def fullAlbumsResponseCodec: D[FullAlbumsResponse]
+  implicit def simpleTrackCodec: D[SimpleTrack]
 
   private val UK = CountryCodeAlpha2.UNITED_KINGDOM_OF_GREAT_BRITAIN_AND_NORTHERN_IRELAND
 

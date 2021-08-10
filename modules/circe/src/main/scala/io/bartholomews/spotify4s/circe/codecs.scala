@@ -4,12 +4,12 @@ import io.bartholomews.fsclient.circe.FsClientCirceApi
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
+import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{
   AddTracksToPlaylistRequest,
   CreatePlaylistRequest,
   ModifyPlaylistRequest
 }
-import io.bartholomews.spotify4s.core.entities._
 import io.circe.generic.extras.Configuration
 import io.circe.generic.extras.semiauto._
 import io.circe.{Codec, Decoder, Encoder}
@@ -19,41 +19,60 @@ object codecs extends SpotifyCirceApi
 trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames
 
-  implicit val albumGroupDecoder: Decoder[AlbumGroup] = AlbumGroupCirce.decoder
-  implicit val albumTypeDecoder: Decoder[AlbumType] = AlbumTypeCirce.decoder
-  implicit val audioAnalysisDecoder: Decoder[AudioAnalysis] = deriveConfiguredDecoder
-  implicit val audioFeaturesDecoder: Decoder[AudioFeatures] = deriveConfiguredDecoder
-  implicit val audioFeaturesResponseDecoder: Decoder[AudioFeaturesResponse] = deriveConfiguredDecoder
-  implicit val audioSectionDecoder: Decoder[AudioSection] = AudioSectionCirce.decoder
-  implicit val audioSegmentDecoder: Decoder[AudioSegment] = AudioSegmentCirce.decoder
+  implicit val albumGroupCodec: Codec[AlbumGroup] = AlbumGroupCirce.codec
+  implicit val albumTypeCodec: Codec[AlbumType] = AlbumTypeCirce.codec
+  implicit val audioAnalysisCodec: Codec[AudioAnalysis] = deriveConfiguredCodec
+  implicit val audioFeaturesCodec: Codec[AudioFeatures] = deriveConfiguredCodec
+  implicit val audioFeaturesResponseCodec: Codec[AudioFeaturesResponse] = deriveConfiguredCodec
+  implicit val audioSectionCodec: Codec[AudioSection] = AudioSectionCirce.codec
+  implicit val audioSegmentCodec: Codec[AudioSegment] = AudioSegmentCirce.codec
   implicit val collectionLinkCodec: Codec[CollectionLink] = deriveConfiguredCodec
   implicit val confidenceCodec: Codec[Confidence] = deriveUnwrappedCodec
   implicit val countryCodeAlpha2Codec: Codec[CountryCodeAlpha2] = CountryCodeAlpha2Circe.codec
-  val optionalCountryCodeList: Decoder[List[CountryCodeAlpha2]] =
+
+  private[spotify4s] val optionalCountryCodeList: Decoder[List[CountryCodeAlpha2]] =
     Decoder
       .decodeOption(Decoder.decodeList(countryCodeAlpha2Codec))
       .map(_.getOrElse(List.empty))
+
   implicit val copyrightCodec: Codec[Copyright] = deriveConfiguredCodec
   implicit val externalIdsCodec: Codec[ExternalIds] = ExternalIdsCirce.codec
   implicit val externalResourceUrlCodec: Codec[ExternalResourceUrl] = ExternalResourceUrlCirce.codec
   implicit val followersCodec: Codec[Followers] = deriveConfiguredCodec
-  implicit val fullPlaylistDecoder: Decoder[FullPlaylist] = deriveConfiguredDecoder
-  implicit val fullTrackDecoder: Decoder[FullTrack] = FullTrackCirce.decoder
-  implicit val fullTracksResponseDecoder: Decoder[FullTracksResponse] = deriveConfiguredDecoder
+  implicit val fullPlaylistCodec: Codec[FullPlaylist] = deriveConfiguredCodec
+  implicit val fullTrackCodec: Codec[FullTrack] = Codec.from(FullTrackCirce.decoder, deriveConfiguredEncoder)
+  implicit val fullTracksResponseCodec: Codec[FullTracksResponse] = deriveConfiguredCodec
   implicit val linkedTrackCodec: Codec[LinkedTrack] = deriveConfiguredCodec
   implicit val modalityCodec: Codec[Modality] = ModalityCirce.codec
-  implicit val newReleasesDecoder: Decoder[NewReleases] = deriveConfiguredDecoder
+  implicit val newReleasesCodec: Codec[NewReleases] = deriveConfiguredCodec
+
+  implicit def pageEncoder[A](implicit encoder: Encoder[A]): Encoder[Page[A]] = deriveConfiguredEncoder
   implicit def pageDecoder[A](implicit decoder: Decoder[A]): Decoder[Page[A]] = PageCirce.decoder
+  implicit def cursorEncoder[Id](implicit encoder: Encoder[Id]): Encoder[Cursor[Id]] = deriveConfiguredEncoder
+  implicit def cursorDecoder[Id](implicit decoder: Decoder[Id]): Decoder[Cursor[Id]] = deriveConfiguredDecoder
+
+  implicit def cursorPageEncoder[Id, A](
+    implicit idCodec: Encoder[Id],
+    entityCodec: Encoder[A]
+  ): Encoder[CursorPage[Id, A]] = deriveConfiguredEncoder
+
+  implicit def cursorPageDecoder[Id, A](
+    implicit idCodec: Decoder[Id],
+    entityCodec: Decoder[A]
+  ): Decoder[CursorPage[Id, A]] = deriveConfiguredDecoder
+
   implicit val pitchClassCodec: Codec[PitchClass] = deriveUnwrappedCodec
-  implicit val playlistTrackDecoder: Decoder[PlaylistTrack] = deriveConfiguredDecoder
-  implicit val publicUserDecoder: Decoder[PublicUser] = PublicUserCirce.decoder
-  implicit val privateUserDecoder
-    : Decoder[PrivateUser] = deriveConfiguredDecoder // FIXME: I think images might be null, see PublicUser
+  implicit val playlistTrackCodec: Codec[PlaylistTrack] = deriveConfiguredCodec
+
+  implicit val publicUserCodec: Codec[PublicUser] = Codec.from(PublicUserCirce.decoder, deriveConfiguredEncoder)
+  implicit val privateUserCodec
+    : Codec[PrivateUser] = deriveConfiguredCodec // FIXME: I think images might be null, see PublicUser
+
   implicit val restrictionsCodec: Codec[Restrictions] = deriveConfiguredCodec
-  implicit val simpleAlbumDecoder: Decoder[SimpleAlbum] = SimpleAlbumCirce.decoder
-  implicit val simplePlaylistDecoder: Decoder[SimplePlaylist] = deriveConfiguredDecoder
-  implicit val snapshotIdResponseDecoder: Decoder[SnapshotIdResponse] = deriveConfiguredDecoder
-  implicit val snapshotIdDecoder: Decoder[SnapshotId] = deriveUnwrappedDecoder
+  implicit val simpleAlbumCodec: Codec[SimpleAlbum] = SimpleAlbumCirce.codec
+  implicit val simplePlaylistCodec: Codec[SimplePlaylist] = deriveConfiguredCodec
+  implicit val snapshotIdResponseCodec: Codec[SnapshotIdResponse] = deriveConfiguredCodec
+  implicit val snapshotIdCodec: Codec[SnapshotId] = deriveUnwrappedCodec
   implicit val spotifyCategoryIdCodec: Codec[SpotifyCategoryId] = deriveUnwrappedCodec
   implicit val spotifyErrorDecoder: Decoder[SpotifyError] = SpotifyErrorCirce.spotifyErrorDecoder
   implicit val spotifyIdCodec: Codec[SpotifyId] = deriveUnwrappedCodec
@@ -68,21 +87,21 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val beatCodec: Codec[Beat] = TimeIntervalCirce.beatCodec
   implicit val tatumCodec: Codec[Tatum] = TimeIntervalCirce.tatumCodec
 
+  implicit val simpleArtistCodec: Codec[SimpleArtist] = Codec.from(SimpleArtistCirce.decoder, deriveConfiguredEncoder)
+
+  private val simpleTrackDecoder: Decoder[SimpleTrack] = {
+    implicit val availableMarketsDecoder: Decoder[List[CountryCodeAlpha2]] = optionalCountryCodeList
+    deriveConfiguredDecoder
+  }
+  implicit val simpleTrackCodec: Codec[SimpleTrack] = Codec.from(simpleTrackDecoder, deriveConfiguredEncoder)
+
   implicit val releaseDateDecoder: Decoder[ReleaseDate] = ReleaseDateCirce.decoder
-  implicit val simpleArtistDecoder: Decoder[SimpleArtist] = SimpleArtistCirce.decoder
-  implicit val simpleTrackDecoder: Decoder[SimpleTrack] = {
-    implicit val availableMarketsDecoder: Decoder[List[CountryCodeAlpha2]] = optionalCountryCodeList
-    deriveConfiguredDecoder
-  }
 
-  implicit val fullArtistDecoder: Decoder[FullArtist] = deriveConfiguredDecoder
-  implicit val artistsResponseDecoder: Decoder[ArtistsResponse] = deriveConfiguredDecoder
-  implicit val fullAlbumDecoder: Decoder[FullAlbum] = {
-    implicit val availableMarketsDecoder: Decoder[List[CountryCodeAlpha2]] = optionalCountryCodeList
-    deriveConfiguredDecoder
-  }
+  implicit val fullArtistCodec: Codec[FullArtist] = deriveConfiguredCodec
+  implicit val artistsResponseCodec: Codec[ArtistsResponse] = deriveConfiguredCodec
+  implicit val fullAlbumCodec: Codec[FullAlbum] = FullAlbumCirce.codec
 
-  implicit val fullAlbumsResponseDecoder: Decoder[FullAlbumsResponse] = deriveConfiguredDecoder
+  implicit val fullAlbumsResponseCodec: Codec[FullAlbumsResponse] = deriveConfiguredCodec
 
   implicit val addTracksToPlaylistRequestEncoder: Encoder[AddTracksToPlaylistRequest] =
     dropNullValues(deriveConfiguredEncoder[AddTracksToPlaylistRequest])
