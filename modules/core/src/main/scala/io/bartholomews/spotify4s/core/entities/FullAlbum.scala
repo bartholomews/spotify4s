@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.core.entities
 
 import io.bartholomews.iso.CountryCodeAlpha2
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyAlbumId
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/#object-albumobject
@@ -13,7 +14,7 @@ final case class FullAlbum(
   externalUrls: ExternalResourceUrl,
   genres: List[String],
   href: Uri,
-  id: SpotifyId,
+  id: SpotifyAlbumId,
   images: List[SpotifyImage],
   label: String,
   name: String,

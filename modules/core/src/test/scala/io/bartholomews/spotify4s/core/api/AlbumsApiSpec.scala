@@ -38,7 +38,7 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J]
       def request: SignerV2 => SttpResponse[DE, FullAlbum] =
         sampleClient.albums.getAlbum[DE](
           id = albumId,
-          country = Some(UK)
+          market = Some(UK)
         )
 
       behave like clientReceivingUnexpectedResponse(endpointRequest, request(signer))
@@ -75,7 +75,7 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J]
       def request: SignerV2 => SttpResponse[DE, List[FullAlbum]] =
         sampleClient.albums.getAlbums[DE](
           ids = albumIds,
-          country = Some(UK)
+          market = Some(UK)
         )
 
       behave like clientReceivingUnexpectedResponse(endpointRequest, request(signer))
@@ -113,7 +113,7 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J]
 
     "country is defined" should {
       def request: SignerV2 => SttpResponse[DE, Page[SimpleTrack]] =
-        sampleClient.albums.getAlbumTracks[DE](id = albumId, country = Some(UK))
+        sampleClient.albums.getAlbumTracks[DE](id = albumId, market = Some(UK))
 
       behave like clientReceivingUnexpectedResponse(endpointRequest, request(signer))
 

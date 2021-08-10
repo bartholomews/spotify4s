@@ -59,6 +59,7 @@ object SpotifyId {
     *              example: "wizzler"
     */
   final case class SpotifyUserId(value: String) extends AnyVal
+  final case class SpotifyAlbumId(value: String) extends AnyVal
   final case class SpotifyPlaylistId(value: String) extends AnyVal
 }
 

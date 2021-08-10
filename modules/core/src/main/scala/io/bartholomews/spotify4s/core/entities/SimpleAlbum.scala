@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.core.entities
 
 import io.bartholomews.iso.CountryCodeAlpha2
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyAlbumId
 import sttp.model.Uri
 
 /**
@@ -53,7 +54,7 @@ case class SimpleAlbum(
   availableMarkets: List[CountryCodeAlpha2],
   externalUrls: Option[ExternalResourceUrl],
   href: Option[Uri],
-  id: Option[SpotifyId],
+  id: Option[SpotifyAlbumId],
   images: List[SpotifyImage],
   name: String,
   releaseDate: Option[ReleaseDate],

@@ -6,10 +6,11 @@ import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpRe
 import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
 import io.bartholomews.fsclient.core.oauth.{ClientPasswordAuthentication, NonRefreshableTokenSigner, TokenSignerV2}
 import io.bartholomews.iso.CountryCodeAlpha2
+import io.bartholomews.spotify4s.core.api.AlbumsApi
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.FollowApi.UserIdsFollowingPlaylist
 import io.bartholomews.spotify4s.core.api.SpotifyApi.Offset
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyPlaylistId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyPlaylistId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities._
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
@@ -60,29 +61,29 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       )
 
   object albums {
-    def getAlbum[E](id: SpotifyId, country: Option[CountryCodeAlpha2])(
+    def getAlbums[E](ids: AlbumIds, market: Option[CountryCodeAlpha2])(
+      implicit
+      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[E, FullAlbumsResponse]
+    ): F[SttpResponse[E, List[FullAlbum]]] = withToken { client.albums.getAlbums(ids, market) }
+
+    def getAlbum[E](id: SpotifyAlbumId, country: Option[CountryCodeAlpha2])(
       implicit
       tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[E, FullAlbum]
     ): F[SttpResponse[E, FullAlbum]] = withToken { client.albums.getAlbum(id, country) }
 
-    def getAlbums[E](ids: AlbumIds, country: Option[CountryCodeAlpha2])(
-      implicit
-      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[E, FullAlbumsResponse]
-    ): F[SttpResponse[E, List[FullAlbum]]] = withToken { client.albums.getAlbums(ids, country) }
-
     def getAlbumTracks[E](
-      id: SpotifyId,
-      country: Option[CountryCodeAlpha2],
-      limit: FullTrack.Limit = 20,
+      id: SpotifyAlbumId,
+      market: Option[CountryCodeAlpha2],
+      limit: AlbumsApi.TracksLimit = 20,
       offset: Offset = 0
     )(
       implicit
       tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[E, Page[SimpleTrack]]
     ): F[SttpResponse[E, Page[SimpleTrack]]] =
-      withToken { client.albums.getAlbumTracks(id, country, limit, offset) }
+      withToken { client.albums.getAlbumTracks(id, market, limit, offset) }
   }
 
   object follow {
