@@ -3,14 +3,10 @@ package io.bartholomews.spotify4s.playJson
 import enumeratum.EnumFormats
 import io.bartholomews.fsclient.play.FsClientPlayApi
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
 import io.bartholomews.spotify4s.core.entities._
-import io.bartholomews.spotify4s.core.entities.requests.{
-  AddTracksToPlaylistRequest,
-  CreatePlaylistRequest,
-  ModifyPlaylistRequest
-}
+import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
 import play.api.libs.json.JsonConfiguration.Aux
 import play.api.libs.json.JsonNaming.SnakeCase
 import play.api.libs.json._
@@ -52,7 +48,10 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit def pageDecoder[T](implicit decoder: Reads[T]): Reads[Page[T]] = Json.reads[Page[T]]
   implicit def cursorEncoder[Id](implicit encoder: Writes[Id]): Writes[Cursor[Id]] = Json.writes[Cursor[Id]]
   implicit def cursorDecoder[Id](implicit decoder: Reads[Id]): Reads[Cursor[Id]] = Json.reads[Cursor[Id]]
-  implicit def cursorPageEncoder[Id, T](implicit idEncoder: Writes[Id], entityEncoder: Writes[T]): Writes[CursorPage[Id, T]] =
+  implicit def cursorPageEncoder[Id, T](
+    implicit idEncoder: Writes[Id],
+    entityEncoder: Writes[T]
+  ): Writes[CursorPage[Id, T]] =
     Json.writes[CursorPage[Id, T]]
   implicit def cursorPageDecoder[Id, T](implicit idCodec: Reads[Id], entityCodec: Reads[T]): Reads[CursorPage[Id, T]] =
     Json.reads[CursorPage[Id, T]]
@@ -67,6 +66,7 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val spotifyErrorCodec: Format[SpotifyError] = SpotifyErrorPlayJson.spotifyErrorFormat
   implicit val spotifyIdCodec: Format[SpotifyId] = Json.valueFormat[SpotifyId]
   implicit val spotifyArtistIdCodec: Format[SpotifyArtistId] = Json.valueFormat[SpotifyArtistId]
+  implicit val spotifyAlbumIdCodec: Format[SpotifyAlbumId] = Json.valueFormat[SpotifyAlbumId]
   implicit val spotifyUserIdCodec: Format[SpotifyUserId] = Json.valueFormat[SpotifyUserId]
   implicit val spotifyPlaylistIdCodec: Format[SpotifyPlaylistId] = Json.valueFormat[SpotifyPlaylistId]
   implicit val spotifyImageCodec: Format[SpotifyImage] = Json.format[SpotifyImage]

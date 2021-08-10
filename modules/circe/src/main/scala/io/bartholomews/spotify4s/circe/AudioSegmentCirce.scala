@@ -26,17 +26,18 @@ private[spotify4s] object AudioSegmentCirce {
       timbre
     )
 
-  val encoder: Encoder[AudioSegment] = (a: AudioSegment) => Json.obj(
-    ("start", a.start.asJson),
-    ("duration", a.duration.asJson),
-    ("confidence", a.confidence.asJson),
-    ("loudness_start", a.loudness.start.asJson),
-    ("loudness_max", a.loudness.max.asJson),
-    ("loudness_max_time", a.loudness.maxTime.asJson),
-    ("loudness_end", a.loudness.end.asJson),
-    ("pitches", a.pitches.asJson),
-    ("timbre", a.timbre.asJson),
-  )
+  val encoder: Encoder[AudioSegment] = (a: AudioSegment) =>
+    Json.obj(
+      ("start", a.start.asJson),
+      ("duration", a.duration.asJson),
+      ("confidence", a.confidence.asJson),
+      ("loudness_start", a.loudness.start.asJson),
+      ("loudness_max", a.loudness.max.asJson),
+      ("loudness_max_time", a.loudness.maxTime.asJson),
+      ("loudness_end", a.loudness.end.asJson),
+      ("pitches", a.pitches.asJson),
+      ("timbre", a.timbre.asJson)
+    )
 
   val codec: Codec[AudioSegment] = Codec.from(decoder, encoder)
 }

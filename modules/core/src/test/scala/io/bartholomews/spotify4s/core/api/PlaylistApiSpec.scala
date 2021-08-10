@@ -16,11 +16,7 @@ import io.bartholomews.spotify4s.core.diff.SpotifyDiffDerivations
 import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
 import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
 import io.bartholomews.spotify4s.core.entities._
-import io.bartholomews.spotify4s.core.entities.requests.{
-  AddTracksToPlaylistRequest,
-  CreatePlaylistRequest,
-  ModifyPlaylistRequest
-}
+import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.{Identity, UriContext}
 import sttp.model.{StatusCode, Uri}
@@ -42,6 +38,38 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
   implicit def modifyPlaylistRequestEncoder: E[ModifyPlaylistRequest]
   implicit def createPlaylistRequestEncoder: E[CreatePlaylistRequest]
   implicit def addTracksToPlaylistRequestEncoder: E[AddTracksToPlaylistRequest]
+
+  "`getPlaylists`" when {
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me/playlists"))
+
+    "`limits` and `offset` query parameters are defined" should {
+      def request: Identity[SttpResponse[DE, Page[SimplePlaylist]]] =
+        sampleClient.playlists.getPlaylists[DE](limit = 2, offset = 5)(signer)
+
+      val endpointRequest =
+        endpoint
+          .withQueryParam("limit", equalTo("2"))
+          .withQueryParam("offset", equalTo("5"))
+
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("playlists/get_user_playlists.json")
+            )
+        )
+
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(playlistsPage) =>
+          playlistsPage.items.size shouldBe 2
+          playlistsPage.items(1).name shouldBe "😗👌💨"
+      }
+    }
+  }
 
   "`replacePlaylistItems`" when {
     def endpoint: MappingBuilder = put(urlPathEqualTo(s"$basePath/users/playlists"))

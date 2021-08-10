@@ -3,36 +3,38 @@ package io.bartholomews.spotify4s.core.api
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
-import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, Offset}
-import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylist}
+import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
+import io.bartholomews.spotify4s.core.entities.{PrivateUser, PublicUser}
+import sttp.client3.{Response, ResponseException}
 import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/users-profile
 private[spotify4s] class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
-  import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private[api] val basePath: Uri = apiUri / "v1"
 
   /**
-    * https://developer.spotify.com/documentation/web-api/reference/users-profile/
+    * Get Current User's Profile
     *
-    * If the user-read-email scope is authorized,
-    * the returned JSON will include the email address that was entered when the user created their Spotify account.
+    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-current-users-profile
+    * Get detailed profile information about the current user (including the current user’s username).
+    *
+    * Important! If the user-read-email scope is authorized, the returned JSON will include the email address
+    * that was entered when the user created their Spotify account.
     * This email address is unverified; do not assume that the email address belongs to the user.
     *
-    * @param signer Required. A valid access token from the Spotify Accounts service:
-    *               see the Web API Authorization Guide for details.
+    * @param signer A valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details.
     *               The access token must have been issued on behalf of the current user.
     *               Reading the user’s email address requires the user-read-email scope;
-    *               reading country and product subscription level requires the user-read-private scope.
-    *               See Using Scopes.
-    *
-    * On success, the HTTP status code in the response header is 200 OK
-    * and the response body contains a user object in JSON format.
+    *               reading country, product subscription level and explicit content settings
+    *               requires the user-read-private scope. See Using Scopes.
+    * @param responseHandler The sttp `ResponseAs` handler
+    * @tparam E the Deserialization Error type
+    * @return On success, the HTTP status code in the response header is 200 OK and the response body contains a user object in JSON format.
     * On error, the header status code is an error code and the response body contains an error object.
-    * When requesting fields that you don’t have the user’s authorization to access,
-    * it will return error 403 Forbidden.
+    * When requesting fields that you don’t have the user’s authorization to access, it will return error 403 Forbidden.
     */
   def me[E](
     signer: SignerV2
@@ -44,38 +46,26 @@ private[spotify4s] class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
       .send(client.backend)
 
   /**
-    * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-a-list-of-current-users-playlists
+    * Get a User's Profile
     *
-    * @param limit  The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
+    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-profile
+    * Get public profile information about a Spotify user.
     *
-    * @param offset The index of the first playlist to return.
-    *                Default: 0 (the first object). Maximum offset: 100.000.
-    *                Use with limit to get the next set of playlists.
-    *
-    *  @param signer A valid access token from the Spotify Accounts service:
-    *                Private playlists are only retrievable for the current user
-    *                and requires the playlist-read-private scope to have been authorized by the user.
-    *                Note that this scope alone will not return collaborative playlists,
-    *                even though they are always private.
-    *                Collaborative playlists are only retrievable for the current user
-    *                and requires the playlist-read-collaborative scope to have been authorized by the user.
-    *
-    *  @return  On success, the HTTP status code in the response header is 200 OK
-    *            and the response body contains an array of simplified playlist objects
-    *            (wrapped in a paging object) in JSON format.
-    *            On error, the header status code is an error code and the response body contains an error object.
+    * @param userId The user’s Spotify user ID.
+    * @param signer A valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details.
+    * @param responseHandler The sttp `ResponseAs` handler
+    * @tparam E the Deserialization Error type
+    * @return On success, the HTTP status code in the response header is 200 OK
+    *         and the response body contains a user object in JSON format.
+    *         On error, the header status code is an error code and the response body contains an error object.
+    *         If a user with that user_id doesn't exist, the status code is 404 NOT FOUND.
     */
-  def getPlaylists[E](limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, Page[SimplePlaylist]]
-  ): F[SttpResponse[E, Page[SimplePlaylist]]] = {
-    val uri: Uri = (basePath / "me" / "playlists")
-      .withQueryParam("limit", limit.value.toString)
-      .withQueryParam("offset", offset.toString)
-
+  def getUserProfile[E](userId: SpotifyUserId)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[E, PublicUser]
+  ): F[Response[Either[ResponseException[String, E], PublicUser]]] =
     baseRequest(client.userAgent)
-      .get(uri)
+      .get(basePath / "users" / userId.value)
       .sign(signer)
       .response(responseHandler)
       .send(client.backend)
-  }
 }

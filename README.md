@@ -91,12 +91,12 @@ within the client, e.g.:
 // browse api
 client.browse.getNewReleases(country = None)
 // albums api
-client.albums.getAlbum(id = SpotifyId("1weenld61qoidwYuZ1GESA"), country = None)
+client.albums.getAlbum(id = SpotifyAlbumId("1weenld61qoidwYuZ1GESA"), country = None)
 ```
 
 ## Endpoints Task list
 
-See [ENDPOINTS.md](https://github.com/bartholomews/spotify4s/blob/master/ENDPOINTS.md)
+See [API.md](https://github.com/bartholomews/spotify4s/blob/master/docs/API.md)
 
 ### [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow)
 
@@ -138,8 +138,6 @@ import io.bartholomews.spotify4s.core.entities.{PrivateUser, SpotifyScope}
 import io.circe
 import sttp.client3.UriContext
 import sttp.model.Uri
-
-val request = SpotifyUserAuthorizationRequest(
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.AccessTokenSigner
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{RedirectUri, RefreshToken}

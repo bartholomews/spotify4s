@@ -9,6 +9,7 @@ import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
 import io.bartholomews.spotify4s.core.entities._
 import sttp.model.Uri
 
+// TODO: Tidy up docs
 // https://developer.spotify.com/documentation/web-api/reference/tracks
 private[spotify4s] class TracksApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._

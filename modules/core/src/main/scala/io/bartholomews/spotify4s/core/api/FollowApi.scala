@@ -30,8 +30,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Follow a Playlist
-    * Add the current user as a follower of a playlist.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-follow-playlist
+    * Add the current user as a follower of a playlist.
     *
     * @param playlistId The Spotify ID of the playlist. Any playlist can be followed,
     *                   regardless of its public/private status, as long as you know its playlist ID.
@@ -59,8 +60,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Unfollow Playlist
-    * Remove the current user as a follower of a playlist.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-unfollow-playlist
+    * Remove the current user as a follower of a playlist.
     *
     * @param playlistId The Spotify ID of the playlist that is to be no longer followed.
     * @param signer Required. A valid access token from the Spotify Accounts service:
@@ -93,8 +95,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Check if Users Follow a Playlist
-    * Check to see if one or more Spotify users are following a specified playlist.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-check-if-user-follows-playlist
+    * Check to see if one or more Spotify users are following a specified playlist.
     *
     * @param playlistId The Spotify ID of the playlist.
     * @param userIds A list of Spotify User IDs; the ids of the users that you want to check to see if they follow the playlist. Maximum: 5 ids.
@@ -120,8 +123,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get User's Followed Artists
-    * Get the current user’s followed artists.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-followed
+    * Get the current user’s followed artists.
     *
     * @param after The last artist ID retrieved from the previous request.
     * @param limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
@@ -150,8 +154,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Follow Artists
-    * Add the current user as a follower of one or more artists.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-follow-artists-users
+    * Add the current user as a follower of one or more artists.
     *
     * @param ids A comma-separated list of the artist Spotify IDs. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.
     * @param signer A valid user access token. Requires the user-follow-modify scope.
@@ -164,8 +169,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Follow Users
-    * Add the current user as a follower of other Spotify users.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-follow-artists-users
+    * Add the current user as a follower of other Spotify users.
     *
     * @param ids A comma-separated list of the user Spotify IDs. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.
     * @param signer A valid user access token. Requires the user-follow-modify scope.
@@ -191,8 +197,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Unfollow Artists
-    * Remove the current user as a follower of one or more artists.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-unfollow-artists-users
+    * Remove the current user as a follower of one or more artists.
     *
     * @param ids A comma-separated list of the artist Spotify IDs. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.
     * @param signer A valid user access token. Requires the user-follow-modify scope.
@@ -205,8 +212,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Unfollow Users
-    * Remove the current user as a follower of other Spotify users.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-unfollow-artists-users
+    * Remove the current user as a follower of other Spotify users.
     *
     * @param ids A comma-separated list of the user Spotify IDs. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.
     * @param signer A valid user access token. Requires the user-follow-modify scope.
@@ -232,8 +240,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get Following State for Artists
-    * Check to see if the current user is following one or more artists.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-check-current-user-follows
+    * Check to see if the current user is following one or more artists.
     *
     * @param ids A comma-separated list of the artist Spotify IDs to check. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.
     * @param signer A valid user access token. Requires the user-follow-read scope.
@@ -259,8 +268,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get Following State for Users
-    * Check to see if the current user is following other Spotify users.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-check-current-user-follows
+    * Check to see if the current user is following other Spotify users.
     *
     * @param ids A comma-separated list of the user Spotify IDs to check. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.
     * @param signer A valid user access token. Requires the user-follow-read scope.

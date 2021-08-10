@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.playJson
 
 import io.bartholomews.iso.CountryCodeAlpha2
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyAlbumId
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.playJson.ReleaseDatePlayJson.{ReleaseDatePrecision, releaseDatePrecisionFormat}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
@@ -20,7 +21,7 @@ object FullAlbumPlayJson {
     .and((JsPath \ "external_urls").read[ExternalResourceUrl](externalResourceUrlCodec))
     .and((JsPath \ "genres").read[List[String]])
     .and((JsPath \ "href").read[Uri])
-    .and((JsPath \ "id").read[SpotifyId](spotifyIdCodec))
+    .and((JsPath \ "id").read[SpotifyAlbumId])
     .and((JsPath \ "images").read[List[SpotifyImage]](Reads.list(spotifyImageCodec)))
     .and((JsPath \ "label").read[String])
     .and((JsPath \ "name").read[String])

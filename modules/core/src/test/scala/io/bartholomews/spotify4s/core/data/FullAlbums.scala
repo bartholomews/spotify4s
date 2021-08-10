@@ -1,6 +1,7 @@
 package io.bartholomews.spotify4s.core.data
 
 import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyAlbumId
 import io.bartholomews.spotify4s.core.entities._
 import sttp.client3.UriContext
 
@@ -16,7 +17,7 @@ object FullAlbums {
     externalUrls = SpotifyResourceUrl(uri"https://open.spotify.com/album/1weenld61qoidwYuZ1GESA"),
     genres = List.empty,
     href = uri"https://api.spotify.com/v1/albums/1weenld61qoidwYuZ1GESA",
-    id = SpotifyId("1weenld61qoidwYuZ1GESA"),
+    id = SpotifyAlbumId("1weenld61qoidwYuZ1GESA"),
     images = List(
       SpotifyImage(
         height = Some(640),
@@ -76,7 +77,7 @@ object FullAlbums {
     externalUrls = SpotifyResourceUrl(uri"https://open.spotify.com/album/0Hs3BomCdwIWRhgT57x22T"),
     genres = List.empty,
     href = uri"https://api.spotify.com/v1/albums/0Hs3BomCdwIWRhgT57x22T",
-    id = SpotifyId("0Hs3BomCdwIWRhgT57x22T"),
+    id = SpotifyAlbumId("0Hs3BomCdwIWRhgT57x22T"),
     images = List(
       SpotifyImage(
         height = Some(640),

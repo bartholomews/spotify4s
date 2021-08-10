@@ -29,8 +29,9 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get Multiple Albums
-    * Get Spotify catalog information for multiple albums identified by their Spotify IDs.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-multiple-albums
+    * Get Spotify catalog information for multiple albums identified by their Spotify IDs.
     *
     * @param ids A list of the Spotify IDs for the albums. Maximum: 20 IDs.
     * @param market An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.
@@ -63,8 +64,9 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get an Album
-    * Get Spotify catalog information for a single album.
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-album
+    * Get Spotify catalog information for a single album.
     *
     * @param id The Spotify ID of the album.
     * @param market The market you’d like to request. Synonym for `country`.
@@ -91,9 +93,10 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get an Album's Tracks
+    *
+    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-albums-tracks
     * Get Spotify catalog information about an album’s tracks.
     * Optional parameters can be used to limit the number of tracks returned.
-    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-albums-tracks
     *
     * @param id The Spotify ID of the album.
     * @param market An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.

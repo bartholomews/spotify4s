@@ -9,18 +9,17 @@ import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.ClientData.v2.sampleNonRefreshableToken
 import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
-import io.bartholomews.spotify4s.core.entities.{Page, PrivateUser, SimplePlaylist}
+import io.bartholomews.spotify4s.core.entities.{PrivateUser, PublicUser}
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.Identity
 
 abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
     extends WireWordSpec
     with SpotifyServerBehaviours[Encoder, Decoder, DE, J] {
-  import eu.timepit.refined.auto.autoRefineV
   implicit val signer: SignerV2 = sampleNonRefreshableToken
 
   implicit def privateUserCodec: Decoder[PrivateUser]
-  implicit def simplePlaylistCodec: Decoder[SimplePlaylist]
+  implicit def publicUserCodec: Decoder[PublicUser]
 
   "me" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me"))
@@ -46,35 +45,26 @@ abstract class UsersApiSpec[Encoder[_], Decoder[_], DE, J]
     }
   }
 
-  "`getPlaylists`" when {
-    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me/playlists"))
+  "getUserProfile" should {
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/users/test"))
 
-    "`limits` and `offset` query parameters are defined" should {
-      def request: Identity[SttpResponse[DE, Page[SimplePlaylist]]] =
-        sampleClient.users.getPlaylists[DE](limit = 2, offset = 5)(signer)
+    def request: Identity[SttpResponse[DE, PublicUser]] =
+      sampleClient.users.getUserProfile(SpotifyUserId("test"))(signer)
 
-      val endpointRequest =
+    behave like clientReceivingUnexpectedResponse(endpoint, request)
+
+    def stub: StubMapping =
+      stubFor(
         endpoint
-          .withQueryParam("limit", equalTo("2"))
-          .withQueryParam("offset", equalTo("5"))
+          .willReturn(
+            aResponse()
+              .withStatus(200)
+              .withBodyFile("users/user_profile.json")
+          )
+      )
 
-      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
-
-      def stub: StubMapping =
-        stubFor(
-          endpointRequest
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBodyFile("playlists/get_user_playlists.json")
-            )
-        )
-
-      "return the correct entity" in matchResponseBody(stub, request) {
-        case Right(playlistsPage) =>
-          playlistsPage.items.size shouldBe 2
-          playlistsPage.items(1).name shouldBe "😗👌💨"
-      }
+    "return the correct entity" in matchIdResponse(stub, request) {
+      case response => response.body.map(_.id) shouldBe Right(SpotifyUserId("test"))
     }
   }
 }

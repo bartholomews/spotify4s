@@ -11,6 +11,7 @@ import io.bartholomews.spotify4s.circe.codecs._
 import io.bartholomews.spotify4s.core.{SpotifyAuthClient, SpotifySimpleClient}
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyAlbumId
 import io.bartholomews.spotify4s.core.entities.{SpotifyId, SpotifyScope}
 import sttp.client3.{HttpURLConnectionBackend, Identity, Response, ResponseException, UriContext}
 
@@ -54,7 +55,7 @@ object SpotifySimpleClientFlow extends App {
   println {
     simpleClient.albums
       .getAlbums(
-        AlbumIds.fromList(List(SpotifyId("1weenld61qoidwYuZ1GESA"))).getOrElse(throw new Exception("OOPS")),
+        AlbumIds.fromList(List(SpotifyAlbumId("1weenld61qoidwYuZ1GESA"))).getOrElse(throw new Exception("OOPS")),
         None
       )
       .body

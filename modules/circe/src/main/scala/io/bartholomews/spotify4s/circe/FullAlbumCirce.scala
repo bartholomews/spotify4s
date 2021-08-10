@@ -1,7 +1,7 @@
 package io.bartholomews.spotify4s.circe
 
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.entities.{FullAlbum, ReleaseDate}
+import io.bartholomews.spotify4s.core.entities.FullAlbum
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import io.circe.syntax.EncoderOps
 import io.circe.{Codec, Decoder, Encoder, Json}
