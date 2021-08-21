@@ -1,4 +1,5 @@
 /RUNNING_PID
+.DS_Store
 /logs/
 /project/*-shim.sbt
 /project/project/
