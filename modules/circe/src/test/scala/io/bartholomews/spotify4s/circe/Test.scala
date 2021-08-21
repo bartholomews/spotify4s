@@ -75,7 +75,7 @@ object ClientCredentialsFlow extends App {
       nonRefreshableToken => {
         // 2. Use access token
         sttpClient.browse
-          .getNewReleases(
+          .getAllNewReleases(
             country = Some(CountryCodeAlpha2.ITALY),
             limit = 3,
             offset = 2

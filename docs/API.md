@@ -5,7 +5,7 @@
   ✅ [Get an Album](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-album)  
   ✅ [Get an Album's Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-albums-tracks)
 
-- **Artists** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-artists)
+- **Artists** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-artists)  
   ❌ [Get Multiple Artists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-multiple-artists)  
   ❌ [Get an Artist](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-artist)  
   ❌ [Get an Artist's Top Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-artists-top-tracks)  

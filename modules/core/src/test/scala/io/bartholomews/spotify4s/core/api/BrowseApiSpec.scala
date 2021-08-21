@@ -21,12 +21,12 @@ abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
   implicit def newReleasesCodec: D[NewReleases]
 
-  "getNewReleases" when {
+  "getAllNewReleases" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/new-releases"))
 
     "country is defined" should {
       def request: SttpResponse[DE, NewReleases] =
-        sampleClient.browse.getNewReleases[DE](country = Some(CountryCodeAlpha2.SWEDEN), limit = 2, offset = 5)(signer)
+        sampleClient.browse.getAllNewReleases[DE](country = Some(CountryCodeAlpha2.SWEDEN), limit = 2, offset = 5)(signer)
 
       val endpointRequest =
         endpoint
