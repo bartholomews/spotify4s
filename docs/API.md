@@ -68,4 +68,4 @@
 
 - **Users Profile** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-users-profile)  
   ✅ [Get Current User's Profile](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-current-users-profile)  
-  ❌ [Get a User's Profile](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-profile)  
+  ✅ [Get a User's Profile](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-profile)  

@@ -14,7 +14,7 @@ import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, Spotif
 import io.bartholomews.spotify4s.core.entities._
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
-import sttp.client3.SttpBackend
+import sttp.client3.{Response, ResponseException, SttpBackend}
 
 import java.util.concurrent.atomic.AtomicReference
 
@@ -93,6 +93,15 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       responseHandler: ResponseHandler[E, List[Boolean]]
     ): F[SttpResponse[E, Map[SpotifyUserId, Boolean]]] =
       withToken { client.follow.usersFollowingPlaylist(playlistId, userIds) }
+  }
+
+  object users {
+    def getUserProfile[E](userId: SpotifyUserId)(
+      implicit
+      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[E, PublicUser]
+    ): F[Response[Either[ResponseException[String, E], PublicUser]]] =
+      withToken { client.users.getUserProfile(userId) }
   }
 }
 
