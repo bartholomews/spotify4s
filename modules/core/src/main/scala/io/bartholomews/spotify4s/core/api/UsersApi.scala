@@ -31,14 +31,14 @@ private[spotify4s] class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *               reading country, product subscription level and explicit content settings
     *               requires the user-read-private scope. See Using Scopes.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK and the response body contains a user object in JSON format.
     * On error, the header status code is an error code and the response body contains an error object.
     * When requesting fields that you don’t have the user’s authorization to access, it will return error 403 Forbidden.
     */
-  def me[E](
+  def me[DE](
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, PrivateUser]): F[SttpResponse[E, PrivateUser]] =
+  )(implicit responseHandler: ResponseHandler[DE, PrivateUser]): F[SttpResponse[DE, PrivateUser]] =
     baseRequest(client.userAgent)
       .get(basePath / "me")
       .sign(signer)
@@ -54,15 +54,15 @@ private[spotify4s] class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param userId The user’s Spotify user ID.
     * @param signer A valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK
     *         and the response body contains a user object in JSON format.
     *         On error, the header status code is an error code and the response body contains an error object.
     *         If a user with that user_id doesn't exist, the status code is 404 NOT FOUND.
     */
-  def getUserProfile[E](userId: SpotifyUserId)(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, PublicUser]
-  ): F[Response[Either[ResponseException[String, E], PublicUser]]] =
+  def getUserProfile[DE](userId: SpotifyUserId)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, PublicUser]
+  ): F[Response[Either[ResponseException[String, DE], PublicUser]]] =
     baseRequest(client.userAgent)
       .get(basePath / "users" / userId.value)
       .sign(signer)

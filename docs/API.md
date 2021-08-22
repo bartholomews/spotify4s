@@ -62,7 +62,7 @@
 - **Tracks** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-tracks)  
   ✅ [Get Several Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-several-tracks)  
   ✅ [Get a Track](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-track)  
-  ❌ [Get Audio Features for Several Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-several-audio-features)  
+  ✅ [Get Audio Features for Several Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-several-audio-features)  
   ✅ [Get Audio Features for a Track](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features)  
   ✅ [Get Audio Analysis for a Track](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-analysis)  
 

@@ -85,9 +85,9 @@ private[spotify4s] class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthent
             )
         )
 
-    def refresh[E](
+    def refresh[DE](
       refreshToken: RefreshToken
-    )(implicit responseHandler: ResponseHandler[E, AccessTokenSigner]): F[SttpResponse[E, AccessTokenSigner]] =
+    )(implicit responseHandler: ResponseHandler[DE, AccessTokenSigner]): F[SttpResponse[DE, AccessTokenSigner]] =
       AuthorizationCodeGrant
         .refreshTokenRequest(tokenEndpoint, refreshToken, scopes = List.empty, clientPassword)
         .send(client.backend)
@@ -97,9 +97,9 @@ private[spotify4s] class AuthApi[F[_]](client: FsClient[F, ClientPasswordAuthent
     This flow is exposed in `SpotifySimpleClient` which will also manage token re-fetching
     https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
    */
-  private[spotify4s] def clientCredentials[E](
-    implicit responseHandler: ResponseHandler[E, NonRefreshableTokenSigner]
-  ): F[SttpResponse[E, NonRefreshableTokenSigner]] =
+  private[spotify4s] def clientCredentials[DE](
+    implicit responseHandler: ResponseHandler[DE, NonRefreshableTokenSigner]
+  ): F[SttpResponse[DE, NonRefreshableTokenSigner]] =
     ClientCredentialsGrant
       .accessTokenRequest(tokenEndpoint, clientPassword)
       .send(client.backend)

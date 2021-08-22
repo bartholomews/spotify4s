@@ -39,16 +39,16 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *                 Use with limit to get the next set of items.
     * @param signer The OAuth V2 Signer
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK and the response body contains a message and an albums object.
     *          The albums object contains an array of simplified album objects (wrapped in a paging object) in JSON format.
     *          On error, the header status code is an error code and the response body contains an error object.
     *         Once you have retrieved the list, you can use Get an Album’s Tracks to drill down further.
     *         The results are returned in an order reflected within the Spotify clients, and therefore may not be ordered by date.
     */
-  def getAllNewReleases[E](country: Option[CountryCodeAlpha2], limit: Limit = 20, offset: Offset = 0)(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, NewReleases]
-  ): F[SttpResponse[E, NewReleases]] = {
+  def getAllNewReleases[DE](country: Option[CountryCodeAlpha2], limit: Limit = 20, offset: Offset = 0)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, NewReleases]
+  ): F[SttpResponse[DE, NewReleases]] = {
     val uri: Uri = (basePath / "new-releases")
       .withOptionQueryParam("country", country.map(_.value))
       .withQueryParam("limit", limit.value.toString)
@@ -92,7 +92,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *               Use with limit to get the next set of items.
     * @param signer A valid user access token or your client credentials.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK
     *          and the response body contains a message and a playlists object.
     *          The playlists object contains an array of simplified playlist objects
@@ -101,7 +101,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *          Once you have retrieved the list of playlist objects,
     *          you can use Get a Playlist and Get a Playlist’s Tracks to drill down further.
     */
-  def getFeaturedPlaylists[E](
+  def getFeaturedPlaylists[DE](
     country: Option[CountryCodeAlpha2],
     locale: Option[Locale],
     timestamp: Option[LocalDateTime],
@@ -109,7 +109,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     offset: Offset = 0
   )(
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, FeaturedPlaylists]): F[SttpResponse[E, FeaturedPlaylists]] = {
+  )(implicit responseHandler: ResponseHandler[DE, FeaturedPlaylists]): F[SttpResponse[DE, FeaturedPlaylists]] = {
     val uri: Uri = (basePath / "featured-playlists")
       .withOptionQueryParam("country", country.map(_.value))
       .withOptionQueryParam("locale", locale.map(_.value))
@@ -145,21 +145,21 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param offset Optional. The index of the first item to return. Default: 0 (the first object). Use with limit to get the next set of categories.
     * @param signer A valid user access token or your client credentials.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK
     *         and the response body contains an object with a categories field,
     *         with an array of category objects (wrapped in a paging object) in JSON format.
     *         On error, the header status code is an error code and the response body contains an error object.
     *         Once you have retrieved the list, you can use `getCategory` to drill down further.
     */
-  def getAllCategories[E](
+  def getAllCategories[DE](
     country: Option[CountryCodeAlpha2],
     locale: Option[Locale],
     limit: Limit = 20,
     offset: Offset = 0
   )(
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, CategoriesResponse]): F[SttpResponse[E, Page[Category]]] = {
+  )(implicit responseHandler: ResponseHandler[DE, CategoriesResponse]): F[SttpResponse[DE, Page[Category]]] = {
     val uri: Uri = (basePath / "categories")
       .withOptionQueryParam("country", country.map(_.value))
       .withOptionQueryParam("locale", locale.map(_.value))
@@ -188,19 +188,19 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *               the category strings returned will be in the Spotify default language (American English).
     * @param signer A valid user access token or your client credentials.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK
     *         and the response body contains a category object in JSON format.
     *         On error, the header status code is an error code and the response body contains an error object.
     *         Once you have retrieved the category, you can use `getCategoryPlaylists` to drill down further.
     */
-  def getCategory[E](
+  def getCategory[DE](
     categoryId: SpotifyCategoryId,
     country: Option[CountryCodeAlpha2],
     locale: Option[Locale]
   )(
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, Category]): F[SttpResponse[E, Category]] = {
+  )(implicit responseHandler: ResponseHandler[DE, Category]): F[SttpResponse[DE, Category]] = {
     val uri: Uri = (basePath / "categories" / categoryId.value)
       .withOptionQueryParam("country", country.map(_.value))
       .withOptionQueryParam("locale", locale.map(_.value))
@@ -224,7 +224,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *               Use with limit to get the next set of items.
     * @param signer A valid user access token or your client credentials.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK
     *         and the response body contains an array of simplified playlist objects
     *         (wrapped in a paging object) in JSON format.
@@ -232,14 +232,14 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         and the response body contains an error object.
     *         Once you have retrieved the list, you can use `getPlaylist` and `getPlaylistItems` to drill down further.
     */
-  def getCategoryPlaylists[E](
+  def getCategoryPlaylists[DE](
     categoryId: SpotifyCategoryId,
     country: Option[CountryCodeAlpha2],
     limit: Limit = 20,
     offset: Offset = 0
   )(
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, PlaylistsResponse]): F[SttpResponse[E, Page[SimplePlaylist]]] = {
+  )(implicit responseHandler: ResponseHandler[DE, PlaylistsResponse]): F[SttpResponse[DE, Page[SimplePlaylist]]] = {
     val uri: Uri = (basePath / "categories" / categoryId.value)
       .withOptionQueryParam("country", country.map(_.value))
       .withQueryParam("limit", limit.value.toString)
@@ -254,7 +254,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   }
 
   // TODO[FB] could improve the query with a min/max/target grouping
-  def getRecommendations[E](
+  def getRecommendations[DE](
     limit: RecommendationsLimit = 20,
     market: Option[Market],
     seedArtists: List[SpotifyId],
@@ -276,7 +276,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     valenceQuery: Option[ValenceQuery] = None
   )(
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, Recommendations]): F[SttpResponse[E, Recommendations]] = {
+  )(implicit responseHandler: ResponseHandler[DE, Recommendations]): F[SttpResponse[DE, Recommendations]] = {
     val uri: Uri = (basePath / "recommendations")
       .withQueryParam("seed_artists", seedArtists.mkString(","))
       .withQueryParam("seed_genres", seedGenres.mkString(","))

@@ -10,7 +10,13 @@ import io.bartholomews.spotify4s.core.api.AlbumsApi
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.FollowApi.UserIdsFollowingPlaylist
 import io.bartholomews.spotify4s.core.api.SpotifyApi.Offset
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyPlaylistId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.api.TracksApi.{AudioFeaturesTrackIds, TrackIds}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{
+  SpotifyAlbumId,
+  SpotifyPlaylistId,
+  SpotifyTrackId,
+  SpotifyUserId
+}
 import io.bartholomews.spotify4s.core.entities._
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
@@ -34,11 +40,11 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
 
   import cats.implicits._
 
-  private def acquireToken[E, A](f: TokenSignerV2 => F[SttpResponse[E, A]])(
-    implicit tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner]
-  ): F[SttpResponse[E, A]] = {
+  private def acquireToken[DE, A](f: TokenSignerV2 => F[SttpResponse[DE, A]])(
+    implicit tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner]
+  ): F[SttpResponse[DE, A]] = {
     client.auth.clientCredentials.flatMap(
-      (response: SttpResponse[E, NonRefreshableTokenSigner]) =>
+      (response: SttpResponse[DE, NonRefreshableTokenSigner]) =>
         response.body.fold(
           err => response.copy(body = err.asLeft[A]).pure[F],
           newToken => {
@@ -49,9 +55,9 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
     )
   }
 
-  private def withToken[E, A](f: TokenSignerV2 => F[SttpResponse[E, A]])(
-    implicit tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner]
-  ): F[SttpResponse[E, A]] =
+  private def withToken[DE, A](f: TokenSignerV2 => F[SttpResponse[DE, A]])(
+    implicit tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner]
+  ): F[SttpResponse[DE, A]] =
     signerRef
       .get()
       .fold(acquireToken(f))(
@@ -61,46 +67,83 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       )
 
   object albums {
-    def getAlbums[E](ids: AlbumIds, market: Option[CountryCodeAlpha2])(
+    def getAlbums[DE](ids: AlbumIds, market: Option[CountryCodeAlpha2])(
       implicit
-      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[E, FullAlbumsResponse]
-    ): F[SttpResponse[E, List[FullAlbum]]] = withToken { client.albums.getAlbums(ids, market) }
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, FullAlbumsResponse]
+    ): F[SttpResponse[DE, List[FullAlbum]]] = withToken { client.albums.getAlbums(ids, market) }
 
-    def getAlbum[E](id: SpotifyAlbumId, country: Option[CountryCodeAlpha2])(
+    def getAlbum[DE](id: SpotifyAlbumId, country: Option[CountryCodeAlpha2])(
       implicit
-      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[E, FullAlbum]
-    ): F[SttpResponse[E, FullAlbum]] = withToken { client.albums.getAlbum(id, country) }
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, FullAlbum]
+    ): F[SttpResponse[DE, FullAlbum]] = withToken { client.albums.getAlbum(id, country) }
 
-    def getAlbumTracks[E](
+    def getAlbumTracks[DE](
       id: SpotifyAlbumId,
       market: Option[CountryCodeAlpha2],
       limit: AlbumsApi.TracksLimit = 20,
       offset: Offset = 0
     )(
       implicit
-      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[E, Page[SimpleTrack]]
-    ): F[SttpResponse[E, Page[SimpleTrack]]] =
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, Page[SimpleTrack]]
+    ): F[SttpResponse[DE, Page[SimpleTrack]]] =
       withToken { client.albums.getAlbumTracks(id, market, limit, offset) }
   }
 
   object follow {
-    def usersFollowingPlaylist[E](playlistId: SpotifyPlaylistId, userIds: UserIdsFollowingPlaylist)(
+    def usersFollowingPlaylist[DE](playlistId: SpotifyPlaylistId, userIds: UserIdsFollowingPlaylist)(
       implicit
-      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[E, List[Boolean]]
-    ): F[SttpResponse[E, Map[SpotifyUserId, Boolean]]] =
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, List[Boolean]]
+    ): F[SttpResponse[DE, Map[SpotifyUserId, Boolean]]] =
       withToken { client.follow.usersFollowingPlaylist(playlistId, userIds) }
   }
 
-  object users {
-    def getUserProfile[E](userId: SpotifyUserId)(
+  object tracks {
+    def getTracks[DE](ids: TrackIds, market: Option[Market])(
       implicit
-      tokenHandler: ResponseHandler[E, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[E, PublicUser]
-    ): F[Response[Either[ResponseException[String, E], PublicUser]]] =
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, FullTracksResponse]
+    ): F[SttpResponse[DE, List[FullTrack]]] = withToken { client.tracks.getTracks(ids, market) }
+
+    def getTrack[DE](id: SpotifyTrackId, market: Option[Market])(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, FullTrack]
+    ): F[SttpResponse[DE, FullTrack]] = withToken { client.tracks.getTrack(id, market) }
+
+    def getAudioFeatures[DE](ids: AudioFeaturesTrackIds)(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, AudioFeaturesResponse]
+    ): F[SttpResponse[DE, List[AudioFeatures]]] =
+      withToken { client.tracks.getAudioFeatures(ids) }
+
+    def getAudioFeatures[DE](id: SpotifyTrackId)(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, AudioFeatures]
+    ): F[SttpResponse[DE, AudioFeatures]] =
+      withToken { client.tracks.getAudioFeatures(id) }
+
+    def getAudioAnalysis[DE](
+      id: SpotifyTrackId
+    )(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, AudioAnalysis]
+    ): F[SttpResponse[DE, AudioAnalysis]] =
+      withToken { client.tracks.getAudioAnalysis(id) }
+  }
+
+  object users {
+    def getUserProfile[DE](userId: SpotifyUserId)(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, PublicUser]
+    ): F[Response[Either[ResponseException[String, DE], PublicUser]]] =
       withToken { client.users.getUserProfile(userId) }
   }
 }

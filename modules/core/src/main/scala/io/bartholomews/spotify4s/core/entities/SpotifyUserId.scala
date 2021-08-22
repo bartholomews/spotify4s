@@ -61,6 +61,11 @@ object SpotifyId {
   final case class SpotifyUserId(value: String) extends AnyVal
   final case class SpotifyAlbumId(value: String) extends AnyVal
   final case class SpotifyPlaylistId(value: String) extends AnyVal
+  final case class SpotifyTrackId(value: String) extends AnyVal
+  object SpotifyTrackId {
+    implicit val ordering: Ordering[SpotifyTrackId] = Ordering.String.on(_.value)
+    implicit val order: Order[SpotifyTrackId] = Order.fromOrdering
+  }
 }
 
 /**

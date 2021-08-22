@@ -37,7 +37,7 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param market An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.
     * @param signer A valid user access token or your client credentials.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK
     *         and the response body contains an object whose key is "albums"
     *         and whose value is an array of album objects in JSON format.
@@ -47,9 +47,9 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         On error, the header status code is an error code
     *         and the response body contains an error object.
     */
-  def getAlbums[E](ids: AlbumIds, market: Option[CountryCodeAlpha2])(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, FullAlbumsResponse]
-  ): F[SttpResponse[E, List[FullAlbum]]] = {
+  def getAlbums[DE](ids: AlbumIds, market: Option[CountryCodeAlpha2])(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, FullAlbumsResponse]
+  ): F[SttpResponse[DE, List[FullAlbum]]] = {
     val uri: Uri = basePath
       .withQueryParam("ids", ids.value.toList.map(_.value).mkString(","))
       .withOptionQueryParam("market", market.map(_.value))
@@ -72,15 +72,15 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param market The market you’d like to request. Synonym for `country`.
     * @param signer A valid user access token or your client credentials.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK
     *         and the response body contains an album object in JSON format.
     *         On error, the header status code is an error code
     *         and the response body contains an error object.
     */
-  def getAlbum[E](id: SpotifyAlbumId, market: Option[CountryCodeAlpha2])(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, FullAlbum]
-  ): F[SttpResponse[E, FullAlbum]] = {
+  def getAlbum[DE](id: SpotifyAlbumId, market: Option[CountryCodeAlpha2])(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, FullAlbum]
+  ): F[SttpResponse[DE, FullAlbum]] = {
     val uri: Uri = (basePath / id.value)
       .withOptionQueryParam("market", market.map(_.value))
 
@@ -104,19 +104,19 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param offset The index of the first track to return. Default: 0 (the first object). Use with limit to get the next set of tracks.
     * @param signer A valid user access token or your client credentials.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK
     *         and the response body contains an album object in JSON format.
     *         On error, the header status code is an error code and the response body contains an error object.
     */
-  def getAlbumTracks[E](
+  def getAlbumTracks[DE](
     id: SpotifyAlbumId,
     market: Option[CountryCodeAlpha2],
     limit: AlbumsApi.TracksLimit = 20,
     offset: Offset = 0
   )(
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, Page[SimpleTrack]]): F[SttpResponse[E, Page[SimpleTrack]]] = {
+  )(implicit responseHandler: ResponseHandler[DE, Page[SimpleTrack]]): F[SttpResponse[DE, Page[SimpleTrack]]] = {
     val uri: Uri = (basePath / id.value / "tracks")
       .withOptionQueryParam("market", market.map(_.value))
       .withQueryParam("limit", limit.value.toString)

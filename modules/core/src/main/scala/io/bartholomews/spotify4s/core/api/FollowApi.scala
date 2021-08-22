@@ -103,12 +103,12 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param userIds A list of Spotify User IDs; the ids of the users that you want to check to see if they follow the playlist. Maximum: 5 ids.
     * @param signer A valid user access token or your client credentials. Requires the playlist-read-private scope if a private playlist is requested.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK and the response body contains a JSON array of true or false values, in the same order in which the ids were specified. On error, the header status code is an error code and the response body contains an error object.
     */
-  def usersFollowingPlaylist[E](playlistId: SpotifyPlaylistId, userIds: UserIdsFollowingPlaylist)(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, List[Boolean]]
-  ): F[Response[Either[ResponseException[String, E], Map[SpotifyUserId, Boolean]]]] = {
+  def usersFollowingPlaylist[DE](playlistId: SpotifyPlaylistId, userIds: UserIdsFollowingPlaylist)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, List[Boolean]]
+  ): F[Response[Either[ResponseException[String, DE], Map[SpotifyUserId, Boolean]]]] = {
     val uri = (basePath / "playlists" / playlistId.value / "followers" / "contains")
       .withQueryParam("ids", userIds.value.map(_.value).toList.mkString(","))
 
@@ -131,14 +131,14 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
     * @param signer A valid user access token. Requires the user-follow-modify scope.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK and the response body contains an artists object.
     *         The artists object in turn contains a cursor-based paging object of Artists.
     *         On error, the header status code is an error code and the response body contains an error object.
     */
-  def getFollowedArtists[E](after: Option[SpotifyArtistId] = None, limit: FollowedArtists.Limit = 20)(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, ArtistsResponse]
-  ): F[Response[Either[ResponseException[String, E], CursorPage[SpotifyArtistId, FullArtist]]]] = {
+  def getFollowedArtists[DE](after: Option[SpotifyArtistId] = None, limit: FollowedArtists.Limit = 20)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, ArtistsResponse]
+  ): F[Response[Either[ResponseException[String, DE], CursorPage[SpotifyArtistId, FullArtist]]]] = {
     val uri = (basePath / "me" / "following")
       .withQueryParam("type", "artist")
       .withQueryParam("limit", limit.value.toString)
@@ -247,12 +247,12 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param ids A comma-separated list of the artist Spotify IDs to check. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.
     * @param signer A valid user access token. Requires the user-follow-read scope.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK and the response body contains a JSON array of true or false values, in the same order in which the ids were specified. On error, the header status code is an error code and the response body contains an error object.
     */
-  def isFollowingArtists[E](ids: ArtistsFollowingIds)(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, List[Boolean]]
-  ): F[Response[Either[ResponseException[String, E], Map[SpotifyArtistId, Boolean]]]] = {
+  def isFollowingArtists[DE](ids: ArtistsFollowingIds)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, List[Boolean]]
+  ): F[Response[Either[ResponseException[String, DE], Map[SpotifyArtistId, Boolean]]]] = {
     val uri = (basePath / "me" / "following" / "contains")
       .withQueryParam("type", "artist")
       .withQueryParam("ids", ids.value.toList.map(_.value).mkString(","))
@@ -275,12 +275,12 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
     * @param ids A comma-separated list of the user Spotify IDs to check. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.
     * @param signer A valid user access token. Requires the user-follow-read scope.
     * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam E the Deserialization Error type
+    * @tparam DE the Deserialization Error type
     * @return On success, the HTTP status code in the response header is 200 OK and the response body contains a JSON array of true or false values, in the same order in which the ids were specified. On error, the header status code is an error code and the response body contains an error object.
     */
-  def isFollowingUsers[E](ids: UsersFollowingIds)(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, List[Boolean]]
-  ): F[Response[Either[ResponseException[String, E], Map[SpotifyUserId, Boolean]]]] = {
+  def isFollowingUsers[DE](ids: UsersFollowingIds)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, List[Boolean]]
+  ): F[Response[Either[ResponseException[String, DE], Map[SpotifyUserId, Boolean]]]] = {
     val uri = (basePath / "me" / "following" / "contains")
       .withQueryParam("type", "user")
       .withQueryParam("ids", ids.value.toList.map(_.value).mkString(","))

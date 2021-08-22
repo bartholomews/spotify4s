@@ -2,7 +2,7 @@ package io.bartholomews.spotify4s.circe
 
 import io.bartholomews.fsclient.circe.FsClientCirceApi
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyTrackId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
@@ -76,6 +76,7 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val spotifyAlbumIdCodec: Codec[SpotifyAlbumId] = deriveUnwrappedCodec
   implicit val spotifyUserIdCodec: Codec[SpotifyUserId] = deriveUnwrappedCodec
   implicit val spotifyPlaylistIdCodec: Codec[SpotifyPlaylistId] = deriveUnwrappedCodec
+  implicit val spotifyTrackIdCodec: Codec[SpotifyTrackId] = deriveUnwrappedCodec
   implicit val spotifyImageCodec: Codec[SpotifyImage] = deriveConfiguredCodec
   implicit val spotifyUriCodec: Codec[SpotifyUri] = deriveUnwrappedCodec
   implicit val spotifyUrlCodec: Codec[SpotifyUrl] = deriveUnwrappedCodec

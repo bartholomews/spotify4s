@@ -44,9 +44,9 @@ private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S])
    *            (wrapped in a paging object) in JSON format.
    *            On error, the header status code is an error code and the response body contains an error object.
    */
-  def getPlaylists[E](limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, Page[SimplePlaylist]]
-  ): F[SttpResponse[E, Page[SimplePlaylist]]] = {
+  def getPlaylists[DE](limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(signer: SignerV2)(
+    implicit responseHandler: ResponseHandler[DE, Page[SimplePlaylist]]
+  ): F[SttpResponse[DE, Page[SimplePlaylist]]] = {
     val uri: Uri = (basePath / "me" / "playlists")
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.toString)
@@ -126,9 +126,9 @@ private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S])
     *            (wrapped in a paging object) in JSON format.
     *            On error, the header status code is an error code and the response body contains an error object.
     */
-  def getUserPlaylists[E](userId: SpotifyUserId, limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(
+  def getUserPlaylists[DE](userId: SpotifyUserId, limit: SimplePlaylist.Limit = 20, offset: Offset = 0)(
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, Page[SimplePlaylist]]): F[SttpResponse[E, Page[SimplePlaylist]]] = {
+  )(implicit responseHandler: ResponseHandler[DE, Page[SimplePlaylist]]): F[SttpResponse[DE, Page[SimplePlaylist]]] = {
     val uri: Uri = (basePath / "users" / userId.value / "playlists")
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.toString)
@@ -227,14 +227,14 @@ private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S])
     *         Trying to add an item when you do not have the user’s authorization,
     *         or when there are more than 10.000 items in the playlist, returns error 403 Forbidden.
     */
-  def addTracksToPlaylist[E](
+  def addTracksToPlaylist[DE](
     playlistId: SpotifyId,
     uris: SpotifyUris,
     position: Option[TracksPosition]
   )(signer: SignerV2)(
     implicit bodySerializer: BodySerializer[AddTracksToPlaylistRequest],
-    responseHandler: ResponseHandler[E, SnapshotIdResponse]
-  ): F[SttpResponse[E, SnapshotId]] = {
+    responseHandler: ResponseHandler[DE, SnapshotIdResponse]
+  ): F[SttpResponse[DE, SnapshotId]] = {
     val uri: Uri = basePath / "playlists" / playlistId.value / "tracks"
 
     baseRequest(client.userAgent)
@@ -329,9 +329,9 @@ private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S])
     *         On error, the header status code is an error code and the response body contains an error object.
     *         Requesting playlists that you do not have the user’s authorization to access returns error 403 Forbidden.
     */
-  def getPlaylistFields[E, PartialPlaylist](playlistId: SpotifyId, fields: String, market: Option[Market] = None)(
+  def getPlaylistFields[DE, PartialPlaylist](playlistId: SpotifyId, fields: String, market: Option[Market] = None)(
     signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[E, PartialPlaylist]): F[SttpResponse[E, PartialPlaylist]] = {
+  )(implicit responseHandler: ResponseHandler[DE, PartialPlaylist]): F[SttpResponse[DE, PartialPlaylist]] = {
     val uri: Uri = (basePath / "playlists" / playlistId.value)
       .withQueryParam("fields", fields)
       .withOptionQueryParam("market", market.map(_.value))
@@ -354,14 +354,14 @@ private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S])
     * @param signer Required. A valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details. Both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
     * @return On success, the response body contains an array of track objects and episode objects (depends on the additional_types parameter), wrapped in a paging object in JSON format and the HTTP status code in the response header is 200 OK. If an episode is unavailable in the given market, its information will not be included in the response. On error, the header status code is an error code and the response body contains an error object. Requesting playlists that you do not have the user’s authorization to access returns error 403 Forbidden.
     */
-  def getPlaylistItems[E](
+  def getPlaylistItems[DE](
     playlistId: SpotifyId,
     market: Market,
     limit: SimplePlaylistItem.Limit = 100,
     offset: Offset = 0
   )(signer: SignerV2)(
-    implicit responseHandler: ResponseHandler[E, Page[SimplePlaylistItem]]
-  ): F[SttpResponse[E, Page[SimplePlaylistItem]]] = {
+    implicit responseHandler: ResponseHandler[DE, Page[SimplePlaylistItem]]
+  ): F[SttpResponse[DE, Page[SimplePlaylistItem]]] = {
     val uri: Uri = (basePath / "playlists" / playlistId.value / "tracks")
       .withQueryParam("market", market.value)
       .withQueryParam("limit", limit.value.toString)
@@ -417,7 +417,7 @@ private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S])
     *         Trying to create a playlist when you do not have the user’s authorization
     *         returns error 403 Forbidden.
     */
-  def createPlaylist[E](
+  def createPlaylist[DE](
     userId: SpotifyUserId,
     playlistName: String,
     public: Boolean = true,
@@ -425,8 +425,8 @@ private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S])
     description: Option[String] = None
   )(signer: SignerV2)(
     implicit bodySerializer: BodySerializer[CreatePlaylistRequest],
-    responseHandler: ResponseHandler[E, FullPlaylist]
-  ): F[SttpResponse[E, FullPlaylist]] = {
+    responseHandler: ResponseHandler[DE, FullPlaylist]
+  ): F[SttpResponse[DE, FullPlaylist]] = {
     val uri: Uri = basePath / "users" / userId.value / "playlists"
 
     baseRequest(client.userAgent)

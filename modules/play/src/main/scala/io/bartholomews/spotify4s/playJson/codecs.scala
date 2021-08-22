@@ -3,7 +3,7 @@ package io.bartholomews.spotify4s.playJson
 import enumeratum.EnumFormats
 import io.bartholomews.fsclient.play.FsClientPlayApi
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyTrackId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
@@ -69,6 +69,7 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val spotifyAlbumIdCodec: Format[SpotifyAlbumId] = Json.valueFormat[SpotifyAlbumId]
   implicit val spotifyUserIdCodec: Format[SpotifyUserId] = Json.valueFormat[SpotifyUserId]
   implicit val spotifyPlaylistIdCodec: Format[SpotifyPlaylistId] = Json.valueFormat[SpotifyPlaylistId]
+  implicit val spotifyTrackIdCodec: Format[SpotifyTrackId] = Json.valueFormat[SpotifyTrackId]
   implicit val spotifyImageCodec: Format[SpotifyImage] = Json.format[SpotifyImage]
   implicit val spotifyUriCodec: Format[SpotifyUri] = Json.valueFormat[SpotifyUri]
   implicit val confidenceCodec: Format[Confidence] = Json.valueFormat[Confidence]

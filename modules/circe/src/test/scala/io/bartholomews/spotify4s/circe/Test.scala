@@ -8,11 +8,12 @@ import io.bartholomews.fsclient.core.oauth.{AccessTokenSigner, RedirectUri, Scop
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.circe.Test._
 import io.bartholomews.spotify4s.circe.codecs._
-import io.bartholomews.spotify4s.core.{SpotifyAuthClient, SpotifySimpleClient}
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.AuthApi.SpotifyUserAuthorizationRequest
-import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyAlbumId
-import io.bartholomews.spotify4s.core.entities.{SpotifyId, SpotifyScope}
+import io.bartholomews.spotify4s.core.api.TracksApi.TrackIds
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyTrackId}
+import io.bartholomews.spotify4s.core.entities.SpotifyScope
+import io.bartholomews.spotify4s.core.{SpotifyAuthClient, SpotifySimpleClient}
 import sttp.client3.{HttpURLConnectionBackend, Identity, Response, ResponseException, UriContext}
 
 object Test {
@@ -132,11 +133,15 @@ object AuthorizationCodeFlow_3_UseAccessToken extends App {
   printBody {
     // FIXME: Deserialization error
     sttpClient.tracks.getTracks(
-      ids = NonEmptySet.of(
-        SpotifyId("458LTQbp2xTIIBtguCOFbU"),
-        SpotifyId("2Eg21mDTQ3tk1OiPSnONwq")
-//        SpotifyId("") // FIXME: I think SpotifyId needs to be nonEmpty otherwise troubles (400)
-      ),
+      ids = TrackIds
+        .fromNes(
+          NonEmptySet.of(
+            SpotifyTrackId("458LTQbp2xTIIBtguCOFbU"),
+            SpotifyTrackId("2Eg21mDTQ3tk1OiPSnONwq")
+//        SpotifyTrackId("") // FIXME: I think SpotifyId needs to be nonEmpty otherwise troubles (400)
+          )
+        )
+        .getOrElse(throw new Exception("2 > 50 ? W.T.F.")),
       market = None
     )(authorizationCodeResponse)
   }
