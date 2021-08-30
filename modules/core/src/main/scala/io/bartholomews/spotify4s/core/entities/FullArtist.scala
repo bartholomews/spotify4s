@@ -7,7 +7,7 @@ import sttp.model.Uri
 final case class FullArtist(
   externalUrls: ExternalResourceUrl,
   followers: Followers,
-  genres: List[String],
+  genres: List[SpotifyGenre],
   href: Uri,
   id: SpotifyArtistId,
   images: List[SpotifyImage],

@@ -80,6 +80,7 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val spotifyImageCodec: Codec[SpotifyImage] = deriveConfiguredCodec
   implicit val spotifyUriCodec: Codec[SpotifyUri] = deriveUnwrappedCodec
   implicit val spotifyUrlCodec: Codec[SpotifyUrl] = deriveUnwrappedCodec
+  implicit val spotifyGenreCodec: Codec[SpotifyGenre] = deriveUnwrappedCodec
   implicit val subscriptionLevelCodec: Codec[SubscriptionLevel] = SubscriptionLevelCirce.codec
   implicit val barCodec: Codec[Bar] = TimeIntervalCirce.barCodec
   implicit val beatCodec: Codec[Beat] = TimeIntervalCirce.beatCodec

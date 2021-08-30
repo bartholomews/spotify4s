@@ -12,7 +12,7 @@ final case class FullAlbum(
   copyrights: List[Copyright],
   externalIds: ExternalIds,
   externalUrls: ExternalResourceUrl,
-  genres: List[String],
+  genres: List[SpotifyGenre],
   href: Uri,
   id: SpotifyAlbumId,
   images: List[SpotifyImage],

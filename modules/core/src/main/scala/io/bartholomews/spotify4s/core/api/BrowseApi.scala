@@ -1,17 +1,25 @@
 package io.bartholomews.spotify4s.core.api
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
-import eu.timepit.refined.api.Refined
+import eu.timepit.refined.api.Validate.Plain
+import eu.timepit.refined.api.{Refined, Validate}
+import eu.timepit.refined.collection.MaxSize
 import eu.timepit.refined.numeric.{GreaterEqual, Interval}
+import eu.timepit.refined.predicates.all.Size
+import eu.timepit.refined.refineV
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.iso.CountryCodeAlpha2
+import io.bartholomews.spotify4s.core.api.BrowseApi.RecommendationSeedRequest
 import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
+import io.bartholomews.spotify4s.core.entities.AudioFeaturesQuery.toParams
 import io.bartholomews.spotify4s.core.entities._
+import shapeless.Nat._0
+import shapeless.Witness
 import sttp.model.Uri
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 // TODO: Tidy up docs
 // https://developer.spotify.com/documentation/web-api/reference/#category-browse
@@ -46,7 +54,9 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         Once you have retrieved the list, you can use Get an Album’s Tracks to drill down further.
     *         The results are returned in an order reflected within the Spotify clients, and therefore may not be ordered by date.
     */
-  def getAllNewReleases[DE](country: Option[CountryCodeAlpha2], limit: Limit = 20, offset: Offset = 0)(signer: SignerV2)(
+  def getAllNewReleases[DE](country: Option[CountryCodeAlpha2], limit: Limit = 20, offset: Offset = 0)(
+    signer: SignerV2
+  )(
     implicit responseHandler: ResponseHandler[DE, NewReleases]
   ): F[SttpResponse[DE, NewReleases]] = {
     val uri: Uri = (basePath / "new-releases")
@@ -62,8 +72,10 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   }
 
   /**
-    * Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
+    * Get All Featured Playlists
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-featured-playlists
+    * Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
     *
     * @param country Optional. A country: an ISO 3166-1 alpha-2 country code.
     *                (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
@@ -125,8 +137,10 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   }
 
   /**
-    * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
+    * Get All Categories
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-categories
+    * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
     *
     * @param country Optional. A country: an ISO 3166-1 alpha-2 country code.
     *                Provide this parameter if you want to narrow the list of returned categories
@@ -175,8 +189,10 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   }
 
   /**
-    * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
+    * Get a Category
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category
+    * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
     *
     * @param categoryId Required. The Spotify category ID for the category.
     * @param country Optional. A country: an ISO 3166-1 alpha-2 country code. Provide this parameter to ensure that the category exists for a particular country.
@@ -213,8 +229,10 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   }
 
   /**
-    * Get a list of Spotify playlists tagged with a particular category.
+    * Get a Category's Playlists
+    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-categories-playlists
+    * Get a list of Spotify playlists tagged with a particular category.
     *
     * @param categoryId Required. The Spotify category ID for the category.
     * @param country Optional. A country: an ISO 3166-1 alpha-2 country code.
@@ -253,42 +271,42 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
       .send(client.backend)
   }
 
-  // TODO[FB] could improve the query with a min/max/target grouping
   def getRecommendations[DE](
     limit: RecommendationsLimit = 20,
     market: Option[Market],
-    seedArtists: List[SpotifyId],
-    seedGenres: List[String],
-    seedTracks: List[SpotifyId],
-    acousticnessQuery: Option[AcousticnessQuery] = None,
-    danceabilityQuery: Option[DanceabilityQuery] = None,
-    durationQuery: Option[DurationQuery] = None,
-    energyQuery: Option[EnergyQuery] = None,
-    instrumentalnessQuery: Option[InstrumentalnessQuery] = None,
-    keyQuery: Option[KeyQuery] = None,
-    livenessQuery: Option[LivenessQuery] = None,
-    loudnessQuery: Option[LoudnessQuery] = None,
-    modeQuery: Option[ModeQuery] = None,
-    popularityQuery: Option[PopularityQuery] = None,
-    speechinessQuery: Option[SpeechinessQuery] = None,
-    tempoQuery: Option[TempoQuery] = None,
-    timeSignatureQuery: Option[TimeSignatureQuery] = None,
-    valenceQuery: Option[ValenceQuery] = None
+    recommendationSeedRequest: RecommendationSeedRequest = Refined.unsafeApply(Set.empty[RecommendationSeedQuery]),
+    audioFeaturesQuery: AudioFeaturesQuery = AudioFeaturesQuery.empty
   )(
     signer: SignerV2
   )(implicit responseHandler: ResponseHandler[DE, Recommendations]): F[SttpResponse[DE, Recommendations]] = {
     val uri: Uri = (basePath / "recommendations")
-      .withQueryParam("seed_artists", seedArtists.mkString(","))
-      .withQueryParam("seed_genres", seedGenres.mkString(","))
-      .withQueryParam("seed_tracks", seedTracks.mkString(","))
       .withQueryParam("limit", limit.value.toString)
       .withOptionQueryParam("market", market.map(_.value))
-    // TODO[FB] all those audio features
+      .addParams(recommendationSeedRequest.value.toList.groupMapReduce(_.key)(_.strValue)((v1, v2) => s"$v1,$v2"))
+      .addParams(toParams(audioFeaturesQuery): _*)
 
     baseRequest(client.userAgent)
       .get(uri)
       .sign(signer)
       .response(responseHandler)
       .send(client.backend)
+  }
+}
+
+object BrowseApi {
+  type RecommendationSeedRequest = Refined[Set[RecommendationSeedQuery], MaxSize[5]]
+  object RecommendationSeedRequest {
+    import io.bartholomews.spotify4s.core.validators.RefinedValidators._
+    private def validateRecommendationSeedQuery: Plain[Set[RecommendationSeedQuery], MaxSize[5]] = {
+      Validate
+        .fromPredicate(
+          (d: Set[RecommendationSeedQuery]) => d.size <= 5,
+          (_: Set[RecommendationSeedQuery]) => "a maximum of 5 values can be set in one request",
+          Size[Interval.Closed[_0, Witness.`5`.T]](maxSizeP)
+        )
+    }
+
+    def fromSet(xs: Set[RecommendationSeedQuery]): Either[String, RecommendationSeedRequest] =
+      refineV[MaxSize[5]](xs)(validateRecommendationSeedQuery)
   }
 }

@@ -19,7 +19,7 @@ object FullAlbumPlayJson {
     .and((JsPath \ "copyrights").read[List[Copyright]])
     .and((JsPath \ "external_ids").read[ExternalIds])
     .and((JsPath \ "external_urls").read[ExternalResourceUrl](externalResourceUrlCodec))
-    .and((JsPath \ "genres").read[List[String]])
+    .and((JsPath \ "genres").read[List[SpotifyGenre]])
     .and((JsPath \ "href").read[Uri])
     .and((JsPath \ "id").read[SpotifyAlbumId])
     .and((JsPath \ "images").read[List[SpotifyImage]](Reads.list(spotifyImageCodec)))

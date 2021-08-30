@@ -80,3 +80,5 @@ final case class SpotifyCategoryId(value: String) extends AnyVal
   *               example: "http://open.spotify.com/track/6rqhFgbbKwnb9MLmUQDhG6"
   */
 final case class SpotifyUrl(value: Uri) extends AnyVal
+
+final case class SpotifyGenre(value: String) extends AnyVal

@@ -72,6 +72,7 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val spotifyTrackIdCodec: Format[SpotifyTrackId] = Json.valueFormat[SpotifyTrackId]
   implicit val spotifyImageCodec: Format[SpotifyImage] = Json.format[SpotifyImage]
   implicit val spotifyUriCodec: Format[SpotifyUri] = Json.valueFormat[SpotifyUri]
+  implicit val spotifyGenreCodec: Format[SpotifyGenre] = Json.valueFormat[SpotifyGenre]
   implicit val confidenceCodec: Format[Confidence] = Json.valueFormat[Confidence]
   implicit val barCodec: Format[Bar] = TimeIntervalPlayJson.barFormat
   implicit val beatCodec: Format[Beat] = TimeIntervalPlayJson.beatFormat
