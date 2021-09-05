@@ -1,0 +1,85 @@
+{
+  "message": "Ny dag, nya tag",
+  "playlists": {
+    "href": "https://api.spotify.com/v1/browse/featured-playlists?country=SE&locale=es_mx&timestamp=2014-10-23T09%3A00%3A00&offset=5&limit=2",
+    "items": [
+      {
+        "collaborative": false,
+        "description": "00-talet, ny teknologi, super-producenter och massor av hits.",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/37i9dQZF1DXdyYEYhToczp"
+        },
+        "href": "https://api.spotify.com/v1/playlists/37i9dQZF1DXdyYEYhToczp",
+        "id": "37i9dQZF1DXdyYEYhToczp",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706f0000000375c094fe7a75d4c5914f0879",
+            "width": null
+          }
+        ],
+        "name": "Det svenska NollNolltalet",
+        "owner": {
+          "display_name": "Spotify",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/spotify"
+          },
+          "href": "https://api.spotify.com/v1/users/spotify",
+          "id": "spotify",
+          "type": "user",
+          "uri": "spotify:user:spotify"
+        },
+        "primary_color": null,
+        "public": null,
+        "snapshot_id": "MTYzMDg1OTUzMiwwMDAwMDAwMGQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0Mjdl",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/37i9dQZF1DXdyYEYhToczp/tracks",
+          "total": 50
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:37i9dQZF1DXdyYEYhToczp"
+      },
+      {
+        "collaborative": false,
+        "description": "We goin' lit.",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/37i9dQZF1DX1BNoP9erXlf"
+        },
+        "href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX1BNoP9erXlf",
+        "id": "37i9dQZF1DX1BNoP9erXlf",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706f0000000365766fb0331ea6c0e8a162ff",
+            "width": null
+          }
+        ],
+        "name": "Liiit",
+        "owner": {
+          "display_name": "Spotify",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/spotify"
+          },
+          "href": "https://api.spotify.com/v1/users/spotify",
+          "id": "spotify",
+          "type": "user",
+          "uri": "spotify:user:spotify"
+        },
+        "primary_color": null,
+        "public": null,
+        "snapshot_id": "MTYzMDg1OTUyNiwwMDAwMDAwMGQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0Mjdl",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX1BNoP9erXlf/tracks",
+          "total": 80
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:37i9dQZF1DX1BNoP9erXlf"
+      }
+    ],
+    "limit": 2,
+    "next": "https://api.spotify.com/v1/browse/featured-playlists?country=SE&locale=es_mx&timestamp=2014-10-23T09%3A00%3A00&offset=7&limit=2",
+    "offset": 5,
+    "previous": "https://api.spotify.com/v1/browse/featured-playlists?country=SE&locale=es_mx&timestamp=2014-10-23T09%3A00%3A00&offset=3&limit=2",
+    "total": 11
+  }
+}

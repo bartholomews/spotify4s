@@ -25,7 +25,7 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
-  private[api] val basePath: Uri = apiUri / "v1" / "albums"
+  private[api] val albumsPath: Uri = apiUri / "v1" / "albums"
 
   /**
     * Get Multiple Albums
@@ -50,7 +50,7 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   def getAlbums[DE](ids: AlbumIds, market: Option[CountryCodeAlpha2])(signer: SignerV2)(
     implicit responseHandler: ResponseHandler[DE, FullAlbumsResponse]
   ): F[SttpResponse[DE, List[FullAlbum]]] = {
-    val uri: Uri = basePath
+    val uri: Uri = albumsPath
       .withQueryParam("ids", ids.value.toList.map(_.value).mkString(","))
       .withOptionQueryParam("market", market.map(_.value))
 
@@ -81,7 +81,7 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   def getAlbum[DE](id: SpotifyAlbumId, market: Option[CountryCodeAlpha2])(signer: SignerV2)(
     implicit responseHandler: ResponseHandler[DE, FullAlbum]
   ): F[SttpResponse[DE, FullAlbum]] = {
-    val uri: Uri = (basePath / id.value)
+    val uri: Uri = (albumsPath / id.value)
       .withOptionQueryParam("market", market.map(_.value))
 
     baseRequest(client.userAgent)
@@ -117,7 +117,7 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   )(
     signer: SignerV2
   )(implicit responseHandler: ResponseHandler[DE, Page[SimpleTrack]]): F[SttpResponse[DE, Page[SimpleTrack]]] = {
-    val uri: Uri = (basePath / id.value / "tracks")
+    val uri: Uri = (albumsPath / id.value / "tracks")
       .withOptionQueryParam("market", market.map(_.value))
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.value.toString)

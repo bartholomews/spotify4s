@@ -1,0 +1,84 @@
+{
+  "playlists": {
+    "href": "https://api.spotify.com/v1/browse/categories/workout/playlists?country=SE&offset=5&limit=2",
+    "items": [
+      {
+        "collaborative": false,
+        "description": "Uplifting and energetic music that helps you stay motivated.",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/37i9dQZF1DXdxcBWuJkbcy"
+        },
+        "href": "https://api.spotify.com/v1/playlists/37i9dQZF1DXdxcBWuJkbcy",
+        "id": "37i9dQZF1DXdxcBWuJkbcy",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706f00000003a088a35ef6e638c42f88deda",
+            "width": null
+          }
+        ],
+        "name": "Motivation Mix",
+        "owner": {
+          "display_name": "Spotify",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/spotify"
+          },
+          "href": "https://api.spotify.com/v1/users/spotify",
+          "id": "spotify",
+          "type": "user",
+          "uri": "spotify:user:spotify"
+        },
+        "primary_color": null,
+        "public": null,
+        "snapshot_id": "MTYzMDg2MTY5MSwwMDAwMDAwMGQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0Mjdl",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/37i9dQZF1DXdxcBWuJkbcy/tracks",
+          "total": 100
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:37i9dQZF1DXdxcBWuJkbcy"
+      },
+      {
+        "collaborative": false,
+        "description": "New age music for balancing mind and body.",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/37i9dQZF1DX9uKNf5jGX6m"
+        },
+        "href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX9uKNf5jGX6m",
+        "id": "37i9dQZF1DX9uKNf5jGX6m",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706f000000034ba00eaa7b36e3001a201f8f",
+            "width": null
+          }
+        ],
+        "name": "Yoga & Meditation",
+        "owner": {
+          "display_name": "Spotify",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/spotify"
+          },
+          "href": "https://api.spotify.com/v1/users/spotify",
+          "id": "spotify",
+          "type": "user",
+          "uri": "spotify:user:spotify"
+        },
+        "primary_color": null,
+        "public": null,
+        "snapshot_id": "MTYzMDY2NTkwMCwwMDAwMDA4NjAwMDAwMTdiYWI0MzAwM2QwMDAwMDE2ZDE1MzJkNWUy",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX9uKNf5jGX6m/tracks",
+          "total": 209
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:37i9dQZF1DX9uKNf5jGX6m"
+      }
+    ],
+    "limit": 2,
+    "next": "https://api.spotify.com/v1/browse/categories/workout/playlists?country=SE&offset=7&limit=2",
+    "offset": 5,
+    "previous": "https://api.spotify.com/v1/browse/categories/workout/playlists?country=SE&offset=3&limit=2",
+    "total": 64
+  }
+}

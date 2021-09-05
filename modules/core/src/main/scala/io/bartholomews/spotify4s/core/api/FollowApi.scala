@@ -11,22 +11,19 @@ import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.ResponseHandler
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.spotify4s.core.api.FollowApi.{ArtistsFollowingIds, UserIdsFollowingPlaylist, UsersFollowingIds}
-import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
+import io.bartholomews.spotify4s.core.api.SpotifyApi.basePath
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.{ArtistsResponse, CursorPage, FullArtist}
 import io.bartholomews.spotify4s.core.validators.RefinedValidators.{maxSizeP, NelMaxSizeValidators}
 import shapeless.Nat._0
 import shapeless.Witness
 import sttp.client3.{Response, ResponseException}
-import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/#category-follow
 private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import FollowApi.FollowedArtists
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
-
-  private[api] val basePath: Uri = apiUri / "v1"
 
   /**
     * Follow a Playlist
@@ -136,7 +133,9 @@ private[spotify4s] class FollowApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         The artists object in turn contains a cursor-based paging object of Artists.
     *         On error, the header status code is an error code and the response body contains an error object.
     */
-  def getFollowedArtists[DE](after: Option[SpotifyArtistId] = None, limit: FollowedArtists.Limit = 20)(signer: SignerV2)(
+  def getFollowedArtists[DE](after: Option[SpotifyArtistId] = None, limit: FollowedArtists.Limit = 20)(
+    signer: SignerV2
+  )(
     implicit responseHandler: ResponseHandler[DE, ArtistsResponse]
   ): F[Response[Either[ResponseException[String, DE], CursorPage[SpotifyArtistId, FullArtist]]]] = {
     val uri = (basePath / "me" / "following")

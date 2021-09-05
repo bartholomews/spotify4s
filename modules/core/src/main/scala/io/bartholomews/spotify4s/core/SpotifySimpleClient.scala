@@ -1,16 +1,18 @@
 package io.bartholomews.spotify4s.core
 
 import cats.Monad
+import eu.timepit.refined.api.Refined
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
 import io.bartholomews.fsclient.core.oauth.{ClientPasswordAuthentication, NonRefreshableTokenSigner, TokenSignerV2}
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.api.AlbumsApi
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
+import io.bartholomews.spotify4s.core.api.BrowseApi.{Limit, RecommendationSeedRequest, RecommendationsLimit}
 import io.bartholomews.spotify4s.core.api.FollowApi.UserIdsFollowingPlaylist
 import io.bartholomews.spotify4s.core.api.SpotifyApi.Offset
 import io.bartholomews.spotify4s.core.api.TracksApi.{AudioFeaturesTrackIds, TrackIds}
+import io.bartholomews.spotify4s.core.api.{AlbumsApi, BrowseApi}
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{
   SpotifyAlbumId,
   SpotifyPlaylistId,
@@ -22,6 +24,7 @@ import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
 import sttp.client3.{Response, ResponseException, SttpBackend}
 
+import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicReference
 
 /**
@@ -90,6 +93,87 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       responseHandler: ResponseHandler[DE, Page[SimpleTrack]]
     ): F[SttpResponse[DE, Page[SimpleTrack]]] =
       withToken { client.albums.getAlbumTracks(id, market, limit, offset) }
+  }
+
+  object browse {
+    def getAllNewReleases[DE](country: Option[CountryCodeAlpha2], limit: BrowseApi.Limit = 20, offset: Offset = 0)(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, NewReleases]
+    ): F[SttpResponse[DE, NewReleases]] = withToken { client.browse.getAllNewReleases(country, limit, offset) }
+
+    def getAllFeaturedPlaylists[DE](
+      country: Option[CountryCodeAlpha2],
+      locale: Option[Locale],
+      timestamp: Option[LocalDateTime],
+      limit: BrowseApi.Limit = 20,
+      offset: Offset = 0
+    )(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, FeaturedPlaylists]
+    ): F[SttpResponse[DE, FeaturedPlaylists]] = withToken {
+      client.browse.getAllFeaturedPlaylists(country, locale, timestamp, limit, offset)
+    }
+
+    def getAllCategories[DE](
+      country: Option[CountryCodeAlpha2],
+      locale: Option[Locale],
+      limit: BrowseApi.Limit = 20,
+      offset: Offset = 0
+    )(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, CategoriesResponse]
+    ): F[SttpResponse[DE, Page[Category]]] = withToken {
+      client.browse.getAllCategories(country, locale, limit, offset)
+    }
+
+    def getCategory[DE](
+      categoryId: SpotifyCategoryId,
+      country: Option[CountryCodeAlpha2],
+      locale: Option[Locale]
+    )(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, Category]
+    ): F[SttpResponse[DE, Category]] = withToken {
+      client.browse.getCategory(categoryId, country, locale)
+    }
+
+    def getCategoryPlaylists[DE](
+      categoryId: SpotifyCategoryId,
+      country: Option[CountryCodeAlpha2],
+      limit: Limit = 20,
+      offset: Offset = 0
+    )(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, PlaylistsResponse]
+    ): F[SttpResponse[DE, Page[SimplePlaylist]]] = withToken {
+      client.browse.getCategoryPlaylists(categoryId, country, limit, offset)
+    }
+
+    def getRecommendations[DE](
+      limit: RecommendationsLimit = 20,
+      market: Option[Market],
+      recommendationSeedRequest: RecommendationSeedRequest = Refined.unsafeApply(List.empty[RecommendationSeedQuery]),
+      audioFeaturesQuery: AudioFeaturesQuery = AudioFeaturesQuery.empty
+    )(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, Recommendations]
+    ): F[SttpResponse[DE, Recommendations]] = withToken {
+      client.browse.getRecommendations(limit, market, recommendationSeedRequest, audioFeaturesQuery)
+    }
+
+    def getRecommendationGenres[DE]()(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, SpotifyGenresResponse]
+    ): F[SttpResponse[DE, List[SpotifyGenre]]] = withToken { signer =>
+      client.browse.getRecommendationGenres(signer)
+    }
   }
 
   object follow {

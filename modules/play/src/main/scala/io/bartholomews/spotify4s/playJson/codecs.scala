@@ -3,12 +3,12 @@ package io.bartholomews.spotify4s.playJson
 import enumeratum.EnumFormats
 import io.bartholomews.fsclient.play.FsClientPlayApi
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyTrackId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyPlaylistName, SpotifyTrackId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.{Bar, Beat, Tatum}
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
 import play.api.libs.json.JsonConfiguration.Aux
-import play.api.libs.json.JsonNaming.SnakeCase
+import play.api.libs.json.JsonNaming.{Identity, SnakeCase}
 import play.api.libs.json._
 
 object codecs extends SpotifyPlayJsonApi
@@ -36,14 +36,6 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
     )
   }
 
-  /*
-    override implicit def fullAlbumCodec: Reads[FullAlbum] = ???
-
-  override implicit def fullAlbumsResponseCodec: Reads[FullAlbumsResponse] = ???
-
-  override implicit def simpleTrackCodec: Reads[SimpleTrack] = ???
-   */
-
   implicit def pageEncoder[T](implicit encoder: Writes[T]): Writes[Page[T]] = Json.writes[Page[T]]
   implicit def pageDecoder[T](implicit decoder: Reads[T]): Reads[Page[T]] = Json.reads[Page[T]]
   implicit def cursorEncoder[Id](implicit encoder: Writes[Id]): Writes[Cursor[Id]] = Json.writes[Cursor[Id]]
@@ -60,20 +52,24 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val createPlaylistRequestEncoder: Writes[CreatePlaylistRequest] = Json.writes
   implicit val addTracksToPlaylistRequestEncoder: Writes[AddTracksToPlaylistRequest] = Json.writes
 
-  implicit val copyrightCodec: Format[Copyright] = Json.format[Copyright]
+  implicit val copyrightCodec: Format[Copyright] = Json.format
   implicit val snapshotIdCodec: Format[SnapshotId] = Json.valueFormat
   implicit val snapshotIdResponseCodec: Format[SnapshotIdResponse] = Json.format
   implicit val spotifyErrorCodec: Format[SpotifyError] = SpotifyErrorPlayJson.spotifyErrorFormat
-  implicit val spotifyIdCodec: Format[SpotifyId] = Json.valueFormat[SpotifyId]
-  implicit val spotifyArtistIdCodec: Format[SpotifyArtistId] = Json.valueFormat[SpotifyArtistId]
-  implicit val spotifyAlbumIdCodec: Format[SpotifyAlbumId] = Json.valueFormat[SpotifyAlbumId]
-  implicit val spotifyUserIdCodec: Format[SpotifyUserId] = Json.valueFormat[SpotifyUserId]
-  implicit val spotifyPlaylistIdCodec: Format[SpotifyPlaylistId] = Json.valueFormat[SpotifyPlaylistId]
-  implicit val spotifyTrackIdCodec: Format[SpotifyTrackId] = Json.valueFormat[SpotifyTrackId]
-  implicit val spotifyImageCodec: Format[SpotifyImage] = Json.format[SpotifyImage]
-  implicit val spotifyUriCodec: Format[SpotifyUri] = Json.valueFormat[SpotifyUri]
-  implicit val spotifyGenreCodec: Format[SpotifyGenre] = Json.valueFormat[SpotifyGenre]
-  implicit val confidenceCodec: Format[Confidence] = Json.valueFormat[Confidence]
+  implicit val spotifyIdCodec: Format[SpotifyId] = Json.valueFormat
+  implicit val spotifyArtistIdCodec: Format[SpotifyArtistId] = Json.valueFormat
+  implicit val spotifyAlbumIdCodec: Format[SpotifyAlbumId] = Json.valueFormat
+  implicit val spotifyUserIdCodec: Format[SpotifyUserId] = Json.valueFormat
+  implicit val spotifyPlaylistIdCodec: Format[SpotifyPlaylistId] = Json.valueFormat
+  implicit val spotifyPlaylistNameCodec: Format[SpotifyPlaylistName] = Json.valueFormat
+  implicit val spotifyTrackIdCodec: Format[SpotifyTrackId] = Json.valueFormat
+  implicit val spotifyCategoryIdCodec: Format[SpotifyCategoryId] = Json.valueFormat
+  implicit val spotifyCategoryNameCodec: Format[CategoryName] = Json.valueFormat
+  implicit val spotifyImageCodec: Format[SpotifyImage] = Json.format
+  implicit val spotifyUriCodec: Format[SpotifyUri] = Json.valueFormat
+  implicit val spotifyGenreCodec: Format[SpotifyGenre] = Json.valueFormat
+  implicit val spotifyGenresResponseCodec: Format[SpotifyGenresResponse] = Json.format
+  implicit val confidenceCodec: Format[Confidence] = Json.valueFormat
   implicit val barCodec: Format[Bar] = TimeIntervalPlayJson.barFormat
   implicit val beatCodec: Format[Beat] = TimeIntervalPlayJson.beatFormat
   implicit val tatumCodec: Format[Tatum] = TimeIntervalPlayJson.tatumFormat
@@ -81,35 +77,44 @@ trait SpotifyPlayJsonApi extends FsClientPlayApi {
   implicit val audioSectionCodec: Format[AudioSection] = AudioSectionPlayJson.format
   implicit val audioSegmentCodec: Format[AudioSegment] = AudioSegmentPlayJson.format
   implicit val modalityCodec: Format[Modality] = ModalityPlayJson.format
-  implicit val pitchClassCodec: Format[PitchClass] = Json.valueFormat[PitchClass]
-  implicit val audioFeaturesCodec: Format[AudioFeatures] = Json.format[AudioFeatures]
-  implicit val audioAnalysisCodec: Format[AudioAnalysis] = Json.format[AudioAnalysis]
+  implicit val pitchClassCodec: Format[PitchClass] = Json.valueFormat
+  implicit val audioFeaturesCodec: Format[AudioFeatures] = Json.format
+  implicit val audioAnalysisCodec: Format[AudioAnalysis] = Json.format
   implicit val albumGroupCodec: Format[AlbumGroup] = EnumFormats.formats(AlbumGroup)
   implicit val albumTypeCodec: Format[AlbumType] = EnumFormats.formats(AlbumType)
-  implicit val audioFeaturesResponseCodec: Format[AudioFeaturesResponse] = Json.format[AudioFeaturesResponse]
+  implicit val audioFeaturesResponseCodec: Format[AudioFeaturesResponse] = Json.format
   implicit val apiErrorCodec: Format[ApiError] = SpotifyErrorPlayJson.apiErrorFormat
   implicit val authErrorCodec: Format[AuthError] = SpotifyErrorPlayJson.authErrorFormat
   implicit val countryCodeAlpha2Codec: Format[CountryCodeAlpha2] = CountryCodeAlpha2PlayJson.format
   implicit val externalIdsCodec: Format[ExternalIds] = ExternalIdsPlayJson.format
   implicit val externalResourceUrlCodec: Format[ExternalResourceUrl] = ExternalResourceUrlPlayJson.format
-  implicit val followersCodec: Format[Followers] = Json.format[Followers]
-  implicit val linkedTrackCodec: Format[LinkedTrack] = Json.format[LinkedTrack]
-  implicit val restrictionsCodec: Format[Restrictions] = Json.format[Restrictions]
+  implicit val followersCodec: Format[Followers] = Json.format
+  implicit val linkedTrackCodec: Format[LinkedTrack] = Json.format
+  implicit val restrictionsCodec: Format[Restrictions] = Json.format
   implicit val simpleAlbumCodec: Format[SimpleAlbum] = SimpleAlbumPlayJson.format
   implicit val simpleArtistCodec: Format[SimpleArtist] = SimpleArtistPlayJson.format
   implicit val publicUserCodec: Format[PublicUser] = PublicUserPlayJson.format
   implicit val fullTrackCodec: Format[FullTrack] = FullTrackPlayJson.format
   implicit val playlistTrackCodec: Format[PlaylistTrack] = Json.format
-  implicit val fullPlaylistCodec: Format[FullPlaylist] = Json.format[FullPlaylist]
-  implicit val fullTracksResponseCodec: Format[FullTracksResponse] = Json.format[FullTracksResponse]
+  implicit val fullPlaylistCodec: Format[FullPlaylist] = Json.format
+  implicit val fullTracksResponseCodec: Format[FullTracksResponse] = Json.format
   implicit val subscriptionLevelCodec: Format[SubscriptionLevel] = EnumFormats.formats(SubscriptionLevel)
-  implicit val privateUserCodec: Format[PrivateUser] = Json.format[PrivateUser]
-  implicit val collectionLinkCodec: Format[CollectionLink] = Json.format[CollectionLink]
-  implicit val newReleasesCodec: Format[NewReleases] = Json.format[NewReleases]
-  implicit val simplePlaylistCodec: Format[SimplePlaylist] = Json.format[SimplePlaylist]
+  implicit val privateUserCodec: Format[PrivateUser] = Json.format
+  implicit val collectionLinkCodec: Format[CollectionLink] = Json.format
+  implicit val newReleasesCodec: Format[NewReleases] = Json.format
+  implicit val simplePlaylistCodec: Format[SimplePlaylist] = Json.format
+  implicit val featuredPlaylistsCodec: Format[FeaturedPlaylists] = Json.format
+  implicit val playlistsResponseCodec: Format[PlaylistsResponse] = Json.format
   implicit val simpleTrackCodec: Format[SimpleTrack] = SimpleTrackPlayJson.format
-  implicit val fullArtistCodec: Format[FullArtist] = Json.format[FullArtist]
-  implicit val artistsResponseCodec: Format[ArtistsResponse] = Json.format[ArtistsResponse]
+  implicit val fullArtistCodec: Format[FullArtist] = Json.format
+  implicit val artistsResponseCodec: Format[ArtistsResponse] = Json.format
   implicit val fullAlbumCodec: Format[FullAlbum] = FullAlbumPlayJson.format
-  implicit val fullAlbumsResponseCodec: Format[FullAlbumsResponse] = Json.format[FullAlbumsResponse]
+  implicit val fullAlbumsResponseCodec: Format[FullAlbumsResponse] = Json.format
+  implicit val categoryCodec: Format[Category] = Json.format
+  implicit val categoriesResponseCodec: Format[CategoriesResponse] = Json.format
+  implicit val recommendationSeedCodec: Format[RecommendationSeed] = {
+    implicit val config: Aux[Json.MacroOptions] = JsonConfiguration(Identity)
+    Json.format
+  }
+  implicit val recommendationsCodec: Format[Recommendations] = Json.format
 }

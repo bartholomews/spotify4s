@@ -14,7 +14,7 @@ import io.bartholomews.spotify4s.core.api.PlaylistApiSpec.{PartialPlaylist, Part
 import io.bartholomews.spotify4s.core.api.SpotifyApi.SpotifyUris
 import io.bartholomews.spotify4s.core.diff.SpotifyDiffDerivations
 import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
-import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyPlaylistName, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
@@ -66,7 +66,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
       "return the correct entity" in matchResponseBody(stub, request) {
         case Right(playlistsPage) =>
           playlistsPage.items.size shouldBe 2
-          playlistsPage.items(1).name shouldBe "😗👌💨"
+          playlistsPage.items(1).name shouldBe SpotifyPlaylistName("😗👌💨")
       }
     }
   }
@@ -187,7 +187,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
                       width = Some(60)
                     )
                   ),
-                  name = "Barney's Get Psyched Mix",
+                  name = SpotifyPlaylistName("Barney's Get Psyched Mix"),
                   owner = PublicUser(
                     displayName = Some("Ronald Pompa"),
                     externalUrls = SpotifyResourceUrl(uri"https://open.spotify.com/user/wizzler"),
@@ -220,7 +220,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
                       width = None
                     )
                   ),
-                  name = "😗👌💨",
+                  name = SpotifyPlaylistName("😗👌💨"),
                   owner = PublicUser(
                     displayName = Some("Ronald Pompa"),
                     externalUrls = SpotifyResourceUrl(uri"https://open.spotify.com/user/wizzler"),

@@ -7,10 +7,10 @@ final case class Recommendations(seeds: List[RecommendationSeed], tracks: List[S
 
 // https://developer.spotify.com/documentation/web-api/reference/#object-recommendationseedobject
 final case class RecommendationSeed(
+  initialPoolSize: Int,
   afterFilteringSize: Int,
   afterRelinkingSize: Int,
-  href: Uri,
+  href: Option[Uri],
   id: SpotifyId,
-  initialPoolSize: Int,
   `type`: String // FIXME[FB] ADT
 )

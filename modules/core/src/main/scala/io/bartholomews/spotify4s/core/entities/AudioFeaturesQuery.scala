@@ -3,7 +3,7 @@ package io.bartholomews.spotify4s.core.entities
 import scala.concurrent.duration.FiniteDuration
 
 final case class AudioFeaturesQuery(
-  acousticness: AudioFeatureParams[Double] = AudioFeatureParams(),
+  acousticness: AudioFeatureParams[Confidence] = AudioFeatureParams(),
   danceability: AudioFeatureParams[Confidence] = AudioFeatureParams(),
   duration: AudioFeatureParams[FiniteDuration] = AudioFeatureParams(),
   energy: AudioFeatureParams[Confidence] = AudioFeatureParams(),
@@ -12,7 +12,7 @@ final case class AudioFeaturesQuery(
   liveness: AudioFeatureParams[Confidence] = AudioFeatureParams(),
   loudness: AudioFeatureParams[Double] = AudioFeatureParams(),
   mode: AudioFeatureParams[Int] = AudioFeatureParams(),
-  popularity: AudioFeatureParams[Confidence] = AudioFeatureParams(),
+  popularity: AudioFeatureParams[Int] = AudioFeatureParams(),
   speechiness: AudioFeatureParams[Confidence] = AudioFeatureParams(),
   tempo: AudioFeatureParams[Double] = AudioFeatureParams(), // TODO bpm type
   timeSignature: AudioFeatureParams[Int] = AudioFeatureParams(),

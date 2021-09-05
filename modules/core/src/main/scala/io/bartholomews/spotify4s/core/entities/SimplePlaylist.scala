@@ -2,6 +2,7 @@ package io.bartholomews.spotify4s.core.entities
 
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Interval
+import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyPlaylistName
 import sttp.model.Uri
 
 final case class SimplePlaylist(
@@ -11,7 +12,7 @@ final case class SimplePlaylist(
   href: Uri,
   id: SpotifyId,
   images: List[SpotifyImage],
-  name: String,
+  name: SpotifyPlaylistName,
   owner: PublicUser,
   public: Option[Boolean],
   snapshotId: String,

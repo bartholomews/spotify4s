@@ -3,15 +3,15 @@ package io.bartholomews.spotify4s.core.api
 import eu.timepit.refined.api.Validate.Plain
 import eu.timepit.refined.api.{Refined, Validate}
 import eu.timepit.refined.collection.MaxSize
-import eu.timepit.refined.numeric.{GreaterEqual, Interval}
+import eu.timepit.refined.numeric.Interval
 import eu.timepit.refined.predicates.all.Size
 import eu.timepit.refined.refineV
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.api.BrowseApi.RecommendationSeedRequest
-import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
+import io.bartholomews.spotify4s.core.api.BrowseApi.{Limit, RecommendationSeedRequest, RecommendationsLimit}
+import io.bartholomews.spotify4s.core.api.SpotifyApi.{basePath, Offset}
 import io.bartholomews.spotify4s.core.entities.AudioFeaturesQuery.toParams
 import io.bartholomews.spotify4s.core.entities._
 import shapeless.Nat._0
@@ -21,17 +21,13 @@ import sttp.model.Uri
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-// TODO: Tidy up docs
 // https://developer.spotify.com/documentation/web-api/reference/#category-browse
 private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
-  private[api] val basePath: Uri = apiUri / "v1" / "browse"
-
-  type Limit = Int Refined Interval.Closed[1, 50]
-  type RecommendationsLimit = Int Refined Interval.Closed[1, 1000]
-  type Offset = Int Refined GreaterEqual[0]
+  private[api] val browsePath: Uri = basePath / "browse"
+  private[api] val recommendationsPath: Uri = basePath / "recommendations"
 
   /**
     * Get All New Releases
@@ -59,7 +55,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   )(
     implicit responseHandler: ResponseHandler[DE, NewReleases]
   ): F[SttpResponse[DE, NewReleases]] = {
-    val uri: Uri = (basePath / "new-releases")
+    val uri: Uri = (browsePath / "new-releases")
       .withOptionQueryParam("country", country.map(_.value))
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.value.toString)
@@ -113,7 +109,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *          Once you have retrieved the list of playlist objects,
     *          you can use Get a Playlist and Get a Playlist’s Tracks to drill down further.
     */
-  def getFeaturedPlaylists[DE](
+  def getAllFeaturedPlaylists[DE](
     country: Option[CountryCodeAlpha2],
     locale: Option[Locale],
     timestamp: Option[LocalDateTime],
@@ -122,7 +118,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   )(
     signer: SignerV2
   )(implicit responseHandler: ResponseHandler[DE, FeaturedPlaylists]): F[SttpResponse[DE, FeaturedPlaylists]] = {
-    val uri: Uri = (basePath / "featured-playlists")
+    val uri: Uri = (browsePath / "featured-playlists")
       .withOptionQueryParam("country", country.map(_.value))
       .withOptionQueryParam("locale", locale.map(_.value))
       .withOptionQueryParam("timestamp", timestamp.map(_.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
@@ -174,7 +170,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   )(
     signer: SignerV2
   )(implicit responseHandler: ResponseHandler[DE, CategoriesResponse]): F[SttpResponse[DE, Page[Category]]] = {
-    val uri: Uri = (basePath / "categories")
+    val uri: Uri = (browsePath / "categories")
       .withOptionQueryParam("country", country.map(_.value))
       .withOptionQueryParam("locale", locale.map(_.value))
       .withQueryParam("limit", limit.value.toString)
@@ -217,7 +213,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   )(
     signer: SignerV2
   )(implicit responseHandler: ResponseHandler[DE, Category]): F[SttpResponse[DE, Category]] = {
-    val uri: Uri = (basePath / "categories" / categoryId.value)
+    val uri: Uri = (browsePath / "categories" / categoryId.value)
       .withOptionQueryParam("country", country.map(_.value))
       .withOptionQueryParam("locale", locale.map(_.value))
 
@@ -258,7 +254,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   )(
     signer: SignerV2
   )(implicit responseHandler: ResponseHandler[DE, PlaylistsResponse]): F[SttpResponse[DE, Page[SimplePlaylist]]] = {
-    val uri: Uri = (basePath / "categories" / categoryId.value)
+    val uri: Uri = (browsePath / "categories" / categoryId.value / "playlists")
       .withOptionQueryParam("country", country.map(_.value))
       .withQueryParam("limit", limit.value.toString)
       .withQueryParam("offset", offset.value.toString)
@@ -271,18 +267,51 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
       .send(client.backend)
   }
 
+  /**
+    * Get Recommendations
+    *
+    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendations
+    * Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks.
+    * If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.
+    * For artists and tracks that are very new or obscure there might not be enough data to generate a list of tracks.
+    *
+    * @param limit The target size of the list of recommended tracks.
+    *              For seeds with unusually small pools or when highly restrictive filtering is applied,
+    *              it may be impossible to generate the requested number of recommended tracks.
+    *              Debugging information for such cases is available in the response. Default: 20. Minimum: 1. Maximum: 100.
+    * @param market An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.
+    *               Because min_*, max_* and target_* are applied to pools before relinking,
+    *               the generated results may not precisely match the filters applied.
+    *               Original, non-relinked tracks are available via the linked_from attribute of the relinked track response.
+    * @param recommendationSeedRequest A list of Spotify IDs for seed artists/genres/tracks.
+    *                                  Up to 5 seed values may be provided in any combination of seed_artists, seed_tracks and seed_genres.
+    * @param audioFeaturesQuery min_* - For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided.
+    *                           For example, min_tempo=140 would restrict results to only those tracks with a tempo of greater than 140 beats per minute.
+    *                           max_* - For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided.
+    *                           For example, max_instrumentalness=0.35 would filter out most tracks that are likely to be instrumental.
+    *                           target_* - For each of the tunable track attributes (below) a target value may be provided.
+    *                           Tracks with the attribute values nearest to the target values will be preferred.
+    *                           For example, you might request target_energy=0.6 and target_danceability=0.8. All target values will be weighed equally in ranking results.
+    *                           See tunable track attributes below for the list of available options.
+    * @param signer A valid user access token or your client credentials.
+    * @param responseHandler The sttp `ResponseAs` handler
+    * @tparam DE the Deserialization Error type
+    * @return On success, the HTTP status code in the response header is 200 OK and the response body contains an array of simplified playlist objects (wrapped in a paging object) in JSON format.
+    *         On error, the header status code is an error code and the response body contains an error object.
+    *         Once you have retrieved the list, you can use Get a Playlist and Get a Playlist’s Tracks to drill down further.
+    */
   def getRecommendations[DE](
     limit: RecommendationsLimit = 20,
     market: Option[Market],
-    recommendationSeedRequest: RecommendationSeedRequest = Refined.unsafeApply(Set.empty[RecommendationSeedQuery]),
+    recommendationSeedRequest: RecommendationSeedRequest = Refined.unsafeApply(List.empty[RecommendationSeedQuery]),
     audioFeaturesQuery: AudioFeaturesQuery = AudioFeaturesQuery.empty
   )(
     signer: SignerV2
   )(implicit responseHandler: ResponseHandler[DE, Recommendations]): F[SttpResponse[DE, Recommendations]] = {
-    val uri: Uri = (basePath / "recommendations")
+    val uri: Uri = recommendationsPath
       .withQueryParam("limit", limit.value.toString)
       .withOptionQueryParam("market", market.map(_.value))
-      .addParams(recommendationSeedRequest.value.toList.groupMapReduce(_.key)(_.strValue)((v1, v2) => s"$v1,$v2"))
+      .addParams(recommendationSeedRequest.value.groupMapReduce(_.key)(_.strValue)((v1, v2) => s"$v1,$v2"))
       .addParams(toParams(audioFeaturesQuery): _*)
 
     baseRequest(client.userAgent)
@@ -291,22 +320,46 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
       .response(responseHandler)
       .send(client.backend)
   }
+
+  /**
+    * Get Recommendation Genres
+    *
+    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendation-genres
+    * Retrieve a list of available genres seed parameter values for recommendations.
+    *
+    * @param signer A valid user access token or your client credentials.
+    * @param responseHandler The sttp `ResponseAs` handler
+    * @tparam DE the Deserialization Error type
+    * @return On success, the HTTP status code in the response header is 200 OK
+    *         and the response body contains a recommendations response object in JSON format.
+    */
+  def getRecommendationGenres[DE](
+    signer: SignerV2
+  )(implicit responseHandler: ResponseHandler[DE, SpotifyGenresResponse]): F[SttpResponse[DE, List[SpotifyGenre]]] =
+    baseRequest(client.userAgent)
+      .get(recommendationsPath / "available-genre-seeds")
+      .sign(signer)
+      .response(responseHandler)
+      .mapResponseRight(_.genres)
+      .send(client.backend)
 }
 
 object BrowseApi {
-  type RecommendationSeedRequest = Refined[Set[RecommendationSeedQuery], MaxSize[5]]
+  type Limit = Int Refined Interval.Closed[1, 50]
+  type RecommendationsLimit = Int Refined Interval.Closed[1, 1000]
+  type RecommendationSeedRequest = Refined[List[RecommendationSeedQuery], MaxSize[5]]
   object RecommendationSeedRequest {
     import io.bartholomews.spotify4s.core.validators.RefinedValidators._
-    private def validateRecommendationSeedQuery: Plain[Set[RecommendationSeedQuery], MaxSize[5]] = {
+    private def validateRecommendationSeedQuery: Plain[List[RecommendationSeedQuery], MaxSize[5]] = {
       Validate
         .fromPredicate(
-          (d: Set[RecommendationSeedQuery]) => d.size <= 5,
-          (_: Set[RecommendationSeedQuery]) => "a maximum of 5 values can be set in one request",
+          (d: List[RecommendationSeedQuery]) => d.size <= 5,
+          (_: List[RecommendationSeedQuery]) => "a maximum of 5 values can be set in one request",
           Size[Interval.Closed[_0, Witness.`5`.T]](maxSizeP)
         )
     }
 
-    def fromSet(xs: Set[RecommendationSeedQuery]): Either[String, RecommendationSeedRequest] =
+    def fromList(xs: List[RecommendationSeedQuery]): Either[String, RecommendationSeedRequest] =
       refineV[MaxSize[5]](xs)(validateRecommendationSeedQuery)
   }
 }

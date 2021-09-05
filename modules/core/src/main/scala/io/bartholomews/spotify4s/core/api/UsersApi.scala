@@ -3,17 +3,14 @@ package io.bartholomews.spotify4s.core.api
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
-import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
+import io.bartholomews.spotify4s.core.api.SpotifyApi.basePath
 import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
 import io.bartholomews.spotify4s.core.entities.{PrivateUser, PublicUser}
 import sttp.client3.{Response, ResponseException}
-import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/users-profile
 private[spotify4s] class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
-
-  private[api] val basePath: Uri = apiUri / "v1"
 
   /**
     * Get Current User's Profile

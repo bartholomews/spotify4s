@@ -14,12 +14,12 @@
 
 - **Browse** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-browse)  
   ✅ [Get All New Releases](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-new-releases)    
-  ❌ [Get All Featured Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-featured-playlists)  
-  ❌ [Get All Categories](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-categories)  
-  ❌ [Get a Category](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category)  
-  ❌ [Get a Category's Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-categories-playlists)  
-  ❌ [Get Recommendations](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendations)  
-  ❌ [Get Recommendation Genres](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendation-genres)  
+  ✅ [Get All Featured Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-featured-playlists)  
+  ✅ [Get All Categories](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-categories)  
+  ✅ [Get a Category](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category)  
+  ✅ [Get a Category's Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-categories-playlists)  
+  ✅ [Get Recommendations](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendations)  
+  ✅ [Get Recommendation Genres](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendation-genres)  
 
 - **Episodes** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-episodes)  
   ❌ [Get Multiple Episodes](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-multiple-episodes)  

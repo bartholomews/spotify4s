@@ -1,0 +1,122 @@
+{
+  "tracks": [
+    {
+      "album": {
+        "album_type": "ALBUM",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/4NMgXxIMZeiJ5PqxdA0t6q"
+            },
+            "href": "https://api.spotify.com/v1/artists/4NMgXxIMZeiJ5PqxdA0t6q",
+            "id": "4NMgXxIMZeiJ5PqxdA0t6q",
+            "name": "Skalpel",
+            "type": "artist",
+            "uri": "spotify:artist:4NMgXxIMZeiJ5PqxdA0t6q"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/5hUjimESHfgftKXaM5nk7E"
+        },
+        "href": "https://api.spotify.com/v1/albums/5hUjimESHfgftKXaM5nk7E",
+        "id": "5hUjimESHfgftKXaM5nk7E",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b273acaacb1b74595b5b24ec27ee",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e02acaacb1b74595b5b24ec27ee",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d00004851acaacb1b74595b5b24ec27ee",
+            "width": 64
+          }
+        ],
+        "name": "Transit",
+        "release_date": "2014-11-10",
+        "release_date_precision": "day",
+        "total_tracks": 12,
+        "type": "album",
+        "uri": "spotify:album:5hUjimESHfgftKXaM5nk7E"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/4NMgXxIMZeiJ5PqxdA0t6q"
+          },
+          "href": "https://api.spotify.com/v1/artists/4NMgXxIMZeiJ5PqxdA0t6q",
+          "id": "4NMgXxIMZeiJ5PqxdA0t6q",
+          "name": "Skalpel",
+          "type": "artist",
+          "uri": "spotify:artist:4NMgXxIMZeiJ5PqxdA0t6q"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 275935,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "PLK281400008"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/3j76McoUI18gDoqxYE14Bu"
+      },
+      "href": "https://api.spotify.com/v1/tracks/3j76McoUI18gDoqxYE14Bu",
+      "id": "3j76McoUI18gDoqxYE14Bu",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Sea",
+      "popularity": 18,
+      "preview_url": "https://p.scdn.co/mp3-preview/d154ecaf7df8206c02223394a92b1707efe2a5a0?cid=07f5f9e97a9a4fddba3d205d19fcd21e",
+      "track_number": 8,
+      "type": "track",
+      "uri": "spotify:track:3j76McoUI18gDoqxYE14Bu"
+    }
+  ],
+  "seeds": [
+    {
+      "initialPoolSize": 0,
+      "afterFilteringSize": 0,
+      "afterRelinkingSize": 0,
+      "id": "workout",
+      "type": "GENRE",
+      "href": null
+    },
+    {
+      "initialPoolSize": 0,
+      "afterFilteringSize": 0,
+      "afterRelinkingSize": 0,
+      "id": "drone",
+      "type": "GENRE",
+      "href": null
+    },
+    {
+      "initialPoolSize": 250,
+      "afterFilteringSize": 0,
+      "afterRelinkingSize": 0,
+      "id": "0kbYTNQb4Pb1rPbbaF0pT4",
+      "type": "ARTIST",
+      "href": "https://api.spotify.com/v1/artists/0kbYTNQb4Pb1rPbbaF0pT4"
+    },
+    {
+      "initialPoolSize": 277,
+      "afterFilteringSize": 0,
+      "afterRelinkingSize": 0,
+      "id": "267lVml7gJ9xefwgO6E2Ag",
+      "type": "TRACK",
+      "href": "https://api.spotify.com/v1/tracks/267lVml7gJ9xefwgO6E2Ag"
+    },
+    {
+      "initialPoolSize": 553,
+      "afterFilteringSize": 1,
+      "afterRelinkingSize": 1,
+      "id": "jazz",
+      "type": "GENRE",
+      "href": null
+    }
+  ]
+}

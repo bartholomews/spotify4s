@@ -11,7 +11,7 @@ case object FromToken extends Market {
   final val value = "from_token"
 }
 
-case class IsoCountry private (value: String, name: String) extends Market
+final case class IsoCountry private (value: String, name: String) extends Market
 
 object IsoCountry {
   def apply(alpha2: CountryCodeAlpha2): IsoCountry = IsoCountry(alpha2.value, alpha2.name)

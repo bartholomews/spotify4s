@@ -11,20 +11,17 @@ import eu.timepit.refined.refineV
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
-import io.bartholomews.spotify4s.core.api.SpotifyApi.apiUri
+import io.bartholomews.spotify4s.core.api.SpotifyApi.basePath
 import io.bartholomews.spotify4s.core.api.TracksApi.{AudioFeaturesTrackIds, TrackIds}
 import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyTrackId
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.validators.RefinedValidators.{maxSizeP, NesMaxSizeValidators}
 import shapeless.Nat._0
 import shapeless.Witness
-import sttp.model.Uri
 
 // https://developer.spotify.com/documentation/web-api/reference/#category-tracks
 private[spotify4s] class TracksApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
-
-  private[api] val basePath: Uri = apiUri / "v1"
 
   /**
     * Get Several Tracks
@@ -134,18 +131,18 @@ private[spotify4s] class TracksApi[F[_], S <: Signer](client: FsClient[F, S]) {
       .send(client.backend)
 
   /**
-   * Get Audio Analysis for a Track
-   *
-   * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-analysis
-   * Get a detailed audio analysis for a single track identified by its unique Spotify ID.
-   *
-   * @param id The Spotify ID for the track.
-   * @param signer valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details.
-   * @param responseHandler The sttp `ResponseAs` handler
-   * @tparam DE the Deserialization Error type
-   * @return On success, the HTTP status code in the response header is 200 OK and the response body contains an audio analysis object in JSON format.
-   *         On error, the header status code is an error code and the response body contains an error object.
-   */
+    * Get Audio Analysis for a Track
+    *
+    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-analysis
+    * Get a detailed audio analysis for a single track identified by its unique Spotify ID.
+    *
+    * @param id The Spotify ID for the track.
+    * @param signer valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details.
+    * @param responseHandler The sttp `ResponseAs` handler
+    * @tparam DE the Deserialization Error type
+    * @return On success, the HTTP status code in the response header is 200 OK and the response body contains an audio analysis object in JSON format.
+    *         On error, the header status code is an error code and the response body contains an error object.
+    */
   def getAudioAnalysis[DE](
     id: SpotifyTrackId
   )(

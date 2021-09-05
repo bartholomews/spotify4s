@@ -1,13 +1,14 @@
 package io.bartholomews.spotify4s.core.diff
 
-import java.time.Month
 import com.softwaremill.diffx.{Derived, Diff}
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.diff.DiffDerivations
 import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyPlaylistName, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.Bar
 import io.bartholomews.spotify4s.core.entities._
+
+import java.time.Month
 
 trait SpotifyDiffDerivations extends DiffDerivations {
   implicit def pageDiff[A](implicit diff: Diff[A]): Diff[Page[A]] = Diff.derived[Page[A]]
@@ -20,6 +21,7 @@ trait SpotifyDiffDerivations extends DiffDerivations {
   implicit val spotifyArtistIdDiff: Diff[SpotifyArtistId] = Diff.derived[SpotifyArtistId]
   implicit val spotifyAlbumIdDiff: Diff[SpotifyAlbumId] = Diff.derived[SpotifyAlbumId]
   implicit val spotifyUserIdDiff: Diff[SpotifyUserId] = Diff.derived[SpotifyUserId]
+  implicit val spotifyGenreDiff: Diff[SpotifyGenre] = Diff.derived[SpotifyGenre]
   implicit val spotifyPlaylistIdDiff: Diff[SpotifyPlaylistId] = Diff.derived[SpotifyPlaylistId]
   implicit val spotifyImageDiff: Diff[SpotifyImage] = Diff.derived[SpotifyImage]
   implicit val copyrightDiff: Diff[Copyright] = Diff.derived[Copyright]
@@ -40,6 +42,7 @@ trait SpotifyDiffDerivations extends DiffDerivations {
   implicit val simpleArtistDiff: Diff[SimpleArtist] = Diff.derived[SimpleArtist]
   implicit val simpleTrackDiff: Diff[SimpleTrack] = Diff.derived[SimpleTrack]
   implicit val publicUserDiff: Diff[PublicUser] = Diff.derived[PublicUser]
+  implicit val spotifyPlaylistNameDiff: Diff[SpotifyPlaylistName] = Diff.derived[SpotifyPlaylistName]
   implicit val simplePlaylistDiff: Diff[SimplePlaylist] = Diff.derived[SimplePlaylist]
 
   implicit val albumTypeDiff: Diff[AlbumType] = Diff.diffForString.contramap[AlbumType](_.entryName)

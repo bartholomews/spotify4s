@@ -1,0 +1,36 @@
+{
+  "categories": {
+    "href": "https://api.spotify.com/v1/browse/categories?offset=5&limit=2",
+    "items": [
+      {
+        "href": "https://api.spotify.com/v1/browse/categories/decades",
+        "icons": [
+          {
+            "height": null,
+            "url": "https://t.scdn.co/images/b611cf5145764c64b80e91ccd5f357c8",
+            "width": null
+          }
+        ],
+        "id": "decades",
+        "name": "Decades"
+      },
+      {
+        "href": "https://api.spotify.com/v1/browse/categories/hiphop",
+        "icons": [
+          {
+            "height": 274,
+            "url": "https://t.scdn.co/media/original/hip-274_0a661854d61e29eace5fe63f73495e68_274x274.jpg",
+            "width": 274
+          }
+        ],
+        "id": "hiphop",
+        "name": "Hip Hop"
+      }
+    ],
+    "limit": 2,
+    "next": "https://api.spotify.com/v1/browse/categories?offset=7&limit=2",
+    "offset": 5,
+    "previous": "https://api.spotify.com/v1/browse/categories?offset=3&limit=2",
+    "total": 42
+  }
+}

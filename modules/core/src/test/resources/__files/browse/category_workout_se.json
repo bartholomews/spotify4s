@@ -1,0 +1,12 @@
+{
+  "href": "https://api.spotify.com/v1/browse/categories/workout",
+  "icons": [
+    {
+      "height": null,
+      "url": "https://t.scdn.co/media/links/workout-274x274.jpg",
+      "width": null
+    }
+  ],
+  "id": "workout",
+  "name": "Entrenamiento"
+}
