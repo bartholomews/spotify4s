@@ -14,11 +14,11 @@ Pick one module:
 
 ```
 // circe codecs
-libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-841d0138-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-ee326457-SNAPSHOT"
 // play-json codecs
-libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-841d0138-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-ee326457-SNAPSHOT"
 // no codecs (you need to provide your own)
-libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-841d0138-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-ee326457-SNAPSHOT"
 
 resolvers +=
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
