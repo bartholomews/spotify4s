@@ -4,7 +4,13 @@ import com.softwaremill.diffx.{Derived, Diff}
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.scalatestudo.diff.DiffDerivations
 import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyArtistId, SpotifyPlaylistId, SpotifyPlaylistName, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{
+  SpotifyAlbumId,
+  SpotifyArtistId,
+  SpotifyPlaylistId,
+  SpotifyPlaylistName,
+  SpotifyUserId
+}
 import io.bartholomews.spotify4s.core.entities.TimeInterval.Bar
 import io.bartholomews.spotify4s.core.entities._
 

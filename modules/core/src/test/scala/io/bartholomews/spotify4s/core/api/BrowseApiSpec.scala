@@ -407,23 +407,23 @@ abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
     def endpointRequest: MappingBuilder = get(urlPathEqualTo(s"$basePath/recommendations/available-genre-seeds"))
 
     def request: SttpResponse[DE, List[SpotifyGenre]] =
-        sampleClient.browse.getRecommendationGenres[DE](signer)
+      sampleClient.browse.getRecommendationGenres[DE](signer)
 
-      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+    behave like clientReceivingUnexpectedResponse(endpointRequest, request)
 
-      def stub: StubMapping =
-        stubFor(
-          endpointRequest
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBodyFile("browse/recommendation_genres.json")
-            )
-        )
+    def stub: StubMapping =
+      stubFor(
+        endpointRequest
+          .willReturn(
+            aResponse()
+              .withStatus(200)
+              .withBodyFile("browse/recommendation_genres.json")
+          )
+      )
 
-      "return the correct entity" in matchResponseBody(stub, request) {
-        case Right(genres) =>
-          genres should contain(SpotifyGenre("death-metal"))
-      }
+    "return the correct entity" in matchResponseBody(stub, request) {
+      case Right(genres) =>
+        genres should contain(SpotifyGenre("death-metal"))
+    }
   }
 }

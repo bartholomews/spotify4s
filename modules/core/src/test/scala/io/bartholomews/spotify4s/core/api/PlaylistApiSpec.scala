@@ -16,7 +16,11 @@ import io.bartholomews.spotify4s.core.diff.SpotifyDiffDerivations
 import io.bartholomews.spotify4s.core.entities.ExternalResourceUrl.SpotifyResourceUrl
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyPlaylistName, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities._
-import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
+import io.bartholomews.spotify4s.core.entities.requests.{
+  AddTracksToPlaylistRequest,
+  CreatePlaylistRequest,
+  ModifyPlaylistRequest
+}
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.{Identity, UriContext}
 import sttp.model.{StatusCode, Uri}

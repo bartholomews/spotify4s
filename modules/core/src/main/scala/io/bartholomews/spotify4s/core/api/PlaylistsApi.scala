@@ -6,10 +6,14 @@ import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.spotify4s.core.api.PlaylistsApi.TracksPosition
-import io.bartholomews.spotify4s.core.api.SpotifyApi.{Offset, SpotifyUris, apiUri, basePath}
+import io.bartholomews.spotify4s.core.api.SpotifyApi.{apiUri, basePath, Offset, SpotifyUris}
 import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
 import io.bartholomews.spotify4s.core.entities._
-import io.bartholomews.spotify4s.core.entities.requests.{AddTracksToPlaylistRequest, CreatePlaylistRequest, ModifyPlaylistRequest}
+import io.bartholomews.spotify4s.core.entities.requests.{
+  AddTracksToPlaylistRequest,
+  CreatePlaylistRequest,
+  ModifyPlaylistRequest
+}
 import sttp.client3.BodySerializer
 import sttp.model.Uri
 

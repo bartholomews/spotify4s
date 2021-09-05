@@ -2,8 +2,18 @@ package io.bartholomews.spotify4s.playJson
 
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyAlbumId
-import io.bartholomews.spotify4s.core.entities.{AlbumGroup, AlbumType, ExternalResourceUrl, Restrictions, SimpleAlbum, SimpleArtist, SpotifyId, SpotifyImage, SpotifyUri}
-import io.bartholomews.spotify4s.playJson.ReleaseDatePlayJson.{ReleaseDatePrecision, releaseDatePrecisionFormat}
+import io.bartholomews.spotify4s.core.entities.{
+  AlbumGroup,
+  AlbumType,
+  ExternalResourceUrl,
+  Restrictions,
+  SimpleAlbum,
+  SimpleArtist,
+  SpotifyId,
+  SpotifyImage,
+  SpotifyUri
+}
+import io.bartholomews.spotify4s.playJson.ReleaseDatePlayJson.{releaseDatePrecisionFormat, ReleaseDatePrecision}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import sttp.model.Uri
 

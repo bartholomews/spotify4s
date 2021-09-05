@@ -3,7 +3,7 @@ package io.bartholomews.spotify4s.playJson
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyAlbumId
 import io.bartholomews.spotify4s.core.entities._
-import io.bartholomews.spotify4s.playJson.ReleaseDatePlayJson.{ReleaseDatePrecision, releaseDatePrecisionFormat}
+import io.bartholomews.spotify4s.playJson.ReleaseDatePlayJson.{releaseDatePrecisionFormat, ReleaseDatePrecision}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.{Format, JsObject, JsPath, JsString, Json, Reads, Writes}
 import sttp.model.Uri
