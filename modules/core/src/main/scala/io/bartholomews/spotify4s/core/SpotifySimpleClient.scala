@@ -83,25 +83,25 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
     ): F[SttpResponse[DE, FullAlbum]] = withToken { client.albums.getAlbum(id, country) }
 
     def getAlbumTracks[DE](
-      id: SpotifyAlbumId,
-      market: Option[CountryCodeAlpha2],
-      limit: AlbumsApi.TracksLimit = 20,
-      offset: Offset = 0
+                            id: SpotifyAlbumId,
+                            market: Option[CountryCodeAlpha2],
+                            limit: AlbumsApi.Limit = 20,
+                            offset: Offset = 0
     )(
       implicit
       tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[DE, Page[SimpleTrack]]
     ): F[SttpResponse[DE, Page[SimpleTrack]]] =
       withToken { client.albums.getAlbumTracks(id, market, limit, offset) }
-  }
 
-  object browse {
-    def getAllNewReleases[DE](country: Option[CountryCodeAlpha2], limit: BrowseApi.Limit = 20, offset: Offset = 0)(
+    def getNewReleases[DE](country: Option[CountryCodeAlpha2], limit: BrowseApi.Limit = 20, offset: Offset = 0)(
       implicit
       tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[DE, NewReleases]
-    ): F[SttpResponse[DE, NewReleases]] = withToken { client.browse.getAllNewReleases(country, limit, offset) }
+    ): F[SttpResponse[DE, NewReleases]] = withToken { client.albums.getNewReleases(country, limit, offset) }
+  }
 
+  object browse {
     def getAllFeaturedPlaylists[DE](
       country: Option[CountryCodeAlpha2],
       locale: Option[Locale],

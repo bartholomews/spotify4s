@@ -13,7 +13,6 @@ import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistName, SpotifyTrackId}
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
-import sttp.client3.UriContext
 
 import java.time.{LocalDateTime, Month}
 import scala.concurrent.duration.DurationInt
@@ -22,57 +21,12 @@ abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
   import eu.timepit.refined.auto.autoRefineV
 
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
-  implicit def newReleasesCodec: D[NewReleases]
   implicit def featuredPlaylistsCodec: D[FeaturedPlaylists]
   implicit def categoriesResponseCodec: D[CategoriesResponse]
   implicit def categoryCodec: D[Category]
   implicit def playlistsResponseCodec: D[PlaylistsResponse]
   implicit def recommendationsCodec: D[Recommendations]
   implicit def spotifyGenresResponseCodec: D[SpotifyGenresResponse]
-
-  "getAllNewReleases" when {
-    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/new-releases"))
-
-    "all query parameters are defined" should {
-      def request: SttpResponse[DE, NewReleases] =
-        sampleClient.browse
-          .getAllNewReleases[DE](country = Some(CountryCodeAlpha2.SWEDEN), limit = 2, offset = 5)(signer)
-
-      val endpointRequest =
-        endpoint
-          .withQueryParam("country", equalTo("SE"))
-          .withQueryParam("limit", equalTo("2"))
-          .withQueryParam("offset", equalTo("5"))
-
-      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
-
-      def stub: StubMapping =
-        stubFor(
-          endpointRequest
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBodyFile("browse/new_releases_se.json")
-            )
-        )
-
-      "return the correct entity" in matchResponseBody(stub, request) {
-        case Right(NewReleases(albums)) =>
-          albums.href shouldBe uri"https://api.spotify.com/v1/browse/new-releases?country=SE&offset=5&limit=2"
-          albums.next shouldBe Some("https://api.spotify.com/v1/browse/new-releases?country=SE&offset=7&limit=2")
-          albums.items.size shouldBe 2
-          albums.items.head.albumType shouldBe Some(AlbumType.Single)
-          albums.items.head.availableMarkets.head shouldBe CountryCodeAlpha2.ANDORRA
-          albums.items.map(_.releaseDate).head shouldBe Some(
-            ReleaseDate(
-              year = 2020,
-              month = Some(Month.APRIL),
-              dayOfMonth = Some(17)
-            )
-          )
-      }
-    }
-  }
 
   "getAllFeaturedPlaylists" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/featured-playlists"))

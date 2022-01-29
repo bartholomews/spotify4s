@@ -1,9 +1,14 @@
-## Endpoints Task list [🔗](https://developer.spotify.com/documentation/web-api/reference/#reference-index)
+## Endpoints Task list [🔗](https://developer.spotify.com/documentation/web-api/reference/#/)
 
-- **Albums** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-albums)  
-  ✅ [Get Multiple Albums](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-multiple-albums)  
-  ✅ [Get an Album](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-album)  
-  ✅ [Get an Album's Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-albums-tracks)
+- **Albums**
+  ✅ [Get an Album](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-album)  
+  ✅ [Get Multiple Albums](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-multiple-albums)  
+  ✅ [Get an Album's Tracks](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-albums-tracks)
+  ❌ [Get Saved Albums](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-users-saved-albums)
+  ❌ [Save Albums](https://developer.spotify.com/documentation/web-api/reference/#/operations/save-albums-user)
+  ❌ [Remove Albums](https://developer.spotify.com/documentation/web-api/reference/#/operations/remove-albums-user)
+  ❌ [Check Saved Albums](https://developer.spotify.com/documentation/web-api/reference/#/operations/check-users-saved-albums)
+  ✅ [Get New Releases](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-new-releases)
 
 - **Artists** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-artists)  
   ❌ [Get Multiple Artists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-multiple-artists)  
@@ -13,7 +18,6 @@
   ❌ [Get an Artist's Albums](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-artists-albums)  
 
 - **Browse** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-browse)  
-  ✅ [Get All New Releases](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-new-releases)    
   ✅ [Get All Featured Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-featured-playlists)  
   ✅ [Get All Categories](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-categories)  
   ✅ [Get a Category](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category)  

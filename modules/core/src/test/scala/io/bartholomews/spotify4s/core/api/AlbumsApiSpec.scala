@@ -17,14 +17,19 @@ import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.UriContext
 
+import java.time.Month
+
 abstract class AlbumsApiSpec[E[_], D[_], DE, J]
     extends WireWordSpec
     with SpotifyServerBehaviours[E, D, DE, J]
     with SpotifyDiffDerivations {
+  import eu.timepit.refined.auto.autoRefineV
+
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
   implicit def fullAlbumCodec: D[FullAlbum]
   implicit def fullAlbumsResponseCodec: D[FullAlbumsResponse]
   implicit def simpleTrackCodec: D[SimpleTrack]
+  implicit def newReleasesCodec: D[NewReleases]
 
   private val UK = CountryCodeAlpha2.UNITED_KINGDOM_OF_GREAT_BRITAIN_AND_NORTHERN_IRELAND
 
@@ -141,6 +146,50 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J]
               offset = Some(0),
               previous = None,
               total = 2
+            )
+          )
+      }
+    }
+  }
+
+  "getNewReleases" when {
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/new-releases"))
+
+    "all query parameters are defined" should {
+      def request: SttpResponse[DE, NewReleases] =
+        sampleClient.albums
+          .getNewReleases[DE](country = Some(CountryCodeAlpha2.SWEDEN), limit = 2, offset = 5)(signer)
+
+      val endpointRequest =
+        endpoint
+          .withQueryParam("country", equalTo("SE"))
+          .withQueryParam("limit", equalTo("2"))
+          .withQueryParam("offset", equalTo("5"))
+
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("browse/new_releases_se.json")
+            )
+        )
+
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(NewReleases(albums)) =>
+          albums.href shouldBe uri"https://api.spotify.com/v1/browse/new-releases?country=SE&offset=5&limit=2"
+          albums.next shouldBe Some("https://api.spotify.com/v1/browse/new-releases?country=SE&offset=7&limit=2")
+          albums.items.size shouldBe 2
+          albums.items.head.albumType shouldBe Some(AlbumType.Single)
+          albums.items.head.availableMarkets.head shouldBe CountryCodeAlpha2.ANDORRA
+          albums.items.map(_.releaseDate).head shouldBe Some(
+            ReleaseDate(
+              year = 2020,
+              month = Some(Month.APRIL),
+              dayOfMonth = Some(17)
             )
           )
       }

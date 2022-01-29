@@ -30,44 +30,6 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   private[api] val recommendationsPath: Uri = basePath / "recommendations"
 
   /**
-    * Get All New Releases
-    *
-    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-new-releases
-    * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
-    *
-    * @param country A country: an ISO 3166-1 alpha-2 country code.
-    *                 Provide this parameter if you want the list of returned items to be relevant to a particular country.
-    *                 If omitted, the returned items will be relevant to all countries.
-    * @param limit   The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
-    * @param offset  The index of the first item to return. Default: 0 (the first object).
-    *                 Use with limit to get the next set of items.
-    * @param signer The OAuth V2 Signer
-    * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam DE the Deserialization Error type
-    * @return On success, the HTTP status code in the response header is 200 OK and the response body contains a message and an albums object.
-    *          The albums object contains an array of simplified album objects (wrapped in a paging object) in JSON format.
-    *          On error, the header status code is an error code and the response body contains an error object.
-    *         Once you have retrieved the list, you can use Get an Album’s Tracks to drill down further.
-    *         The results are returned in an order reflected within the Spotify clients, and therefore may not be ordered by date.
-    */
-  def getAllNewReleases[DE](country: Option[CountryCodeAlpha2], limit: Limit = 20, offset: Offset = 0)(
-    signer: SignerV2
-  )(
-    implicit responseHandler: ResponseHandler[DE, NewReleases]
-  ): F[SttpResponse[DE, NewReleases]] = {
-    val uri: Uri = (browsePath / "new-releases")
-      .withOptionQueryParam("country", country.map(_.value))
-      .withQueryParam("limit", limit.value.toString)
-      .withQueryParam("offset", offset.value.toString)
-
-    baseRequest(client.userAgent)
-      .get(uri)
-      .sign(signer)
-      .response(responseHandler)
-      .send(client.backend)
-  }
-
-  /**
     * Get All Featured Playlists
     *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-featured-playlists
