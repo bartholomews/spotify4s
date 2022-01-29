@@ -3,9 +3,9 @@ import sbt._
 object Dependencies {
   object Versions {
     // https://github.com/typelevel/cats
-    val cats = "2.6.0"
+    val cats = "2.7.0"
     // https://github.com/fthomas/refined
-    val refined = "0.9.24"
+    val refined = "0.9.28"
     // https://github.com/bartholomews/fsclient
     val fsClient = "0.1.2+10-69b86071-SNAPSHOT"
     // https://github.com/bartholomews/scala-iso
