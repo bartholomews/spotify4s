@@ -29,8 +29,8 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get an Album
-    *
     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-album
+    *
     * Get Spotify catalog information for a single album.
     *
     * @param id The Spotify ID of the album.
@@ -58,8 +58,8 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get Several Albums
-    *
     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-multiple-albums
+    *
     * Get Spotify catalog information for multiple albums identified by their Spotify IDs.
     *
     * @param ids A list of the Spotify IDs for the albums. Maximum: 20 IDs.
@@ -93,8 +93,8 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get an Album's Tracks
-    *
     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-albums-tracks
+    *
     * Get Spotify catalog information about an album’s tracks.
     * Optional parameters can be used to limit the number of tracks returned.
     *
@@ -131,8 +131,8 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
   /**
     * Get New Releases
-    *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-new-releases
+    *
     * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
     *
     * @param country A country: an ISO 3166-1 alpha-2 country code.

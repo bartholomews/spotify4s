@@ -119,7 +119,10 @@ trait SpotifyCirceApi extends FsClientCirceApi {
   implicit val artistsResponseCodec: Codec[ArtistsResponse] = deriveConfiguredCodec
   implicit val fullAlbumCodec: Codec[FullAlbum] = FullAlbumCirce.codec
 
-  implicit val recommendationSeedCodec: Codec[RecommendationSeed] = deriveConfiguredCodec
+  implicit val recommendationSeedCodec: Codec[RecommendationSeed] = {
+    implicit val config: Configuration = Configuration.default.withDefaults
+    deriveConfiguredCodec
+  }
   implicit val recommendationsCodec: Codec[Recommendations] = deriveConfiguredCodec
 
   implicit val fullAlbumsResponseCodec: Codec[FullAlbumsResponse] = deriveConfiguredCodec

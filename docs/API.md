@@ -38,12 +38,24 @@
   ❌ [Check User's Saved Episodes](https://developer.spotify.com/documentation/web-api/reference/#/operations/check-users-saved-episodes)  
 
 
+- **Tracks**  
+  ✅ [Get Track](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-track)  
+  ✅ [Get Several Tracks](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-several-tracks)  
+  ❌ [Get User's Saved Tracks](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-users-saved-tracks)  
+  ❌ [Save Tracks for Current User](https://developer.spotify.com/documentation/web-api/reference/#/operations/save-tracks-user)  
+  ❌ [Remove Tracks for Current User](https://developer.spotify.com/documentation/web-api/reference/#/operations/remove-tracks-user)  
+  ❌ [Check User's Saved Tracks](https://developer.spotify.com/documentation/web-api/reference/#/operations/check-users-saved-tracks)  
+  ✅ [Get Tracks' Audio Features](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-several-audio-features)  
+  ✅ [Get Track's Audio Features](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-audio-features)  
+  ✅ [Get Track's Audio Analysis](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-audio-analysis)  
+  ✅ [Get Recommendations](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-recommendations)  
+
+
 - **Browse** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-browse)  
   ✅ [Get All Featured Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-featured-playlists)  
   ✅ [Get All Categories](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-categories)  
   ✅ [Get a Category](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category)  
   ✅ [Get a Category's Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-categories-playlists)  
-  ✅ [Get Recommendations](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendations)  
   ✅ [Get Recommendation Genres](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendation-genres)  
 
 
@@ -79,12 +91,6 @@
 
 - **Search** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-search)  
 
-- **Tracks** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-tracks)  
-  ✅ [Get Several Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-several-tracks)  
-  ✅ [Get a Track](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-track)  
-  ✅ [Get Audio Features for Several Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-several-audio-features)  
-  ✅ [Get Audio Features for a Track](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features)  
-  ✅ [Get Audio Analysis for a Track](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-analysis)  
 
 - **Users Profile** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-users-profile)  
   ✅ [Get Current User's Profile](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-current-users-profile)  

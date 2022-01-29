@@ -10,9 +10,8 @@ import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.api.BrowseApi.{Limit, RecommendationSeedRequest, RecommendationsLimit}
+import io.bartholomews.spotify4s.core.api.BrowseApi.Limit
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{basePath, Offset}
-import io.bartholomews.spotify4s.core.entities.AudioFeaturesQuery.toParams
 import io.bartholomews.spotify4s.core.entities._
 import shapeless.Nat._0
 import shapeless.Witness
@@ -230,60 +229,6 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   }
 
   /**
-    * Get Recommendations
-    *
-    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendations
-    * Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks.
-    * If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.
-    * For artists and tracks that are very new or obscure there might not be enough data to generate a list of tracks.
-    *
-    * @param limit The target size of the list of recommended tracks.
-    *              For seeds with unusually small pools or when highly restrictive filtering is applied,
-    *              it may be impossible to generate the requested number of recommended tracks.
-    *              Debugging information for such cases is available in the response. Default: 20. Minimum: 1. Maximum: 100.
-    * @param market An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.
-    *               Because min_*, max_* and target_* are applied to pools before relinking,
-    *               the generated results may not precisely match the filters applied.
-    *               Original, non-relinked tracks are available via the linked_from attribute of the relinked track response.
-    * @param recommendationSeedRequest A list of Spotify IDs for seed artists/genres/tracks.
-    *                                  Up to 5 seed values may be provided in any combination of seed_artists, seed_tracks and seed_genres.
-    * @param audioFeaturesQuery min_* - For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided.
-    *                           For example, min_tempo=140 would restrict results to only those tracks with a tempo of greater than 140 beats per minute.
-    *                           max_* - For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided.
-    *                           For example, max_instrumentalness=0.35 would filter out most tracks that are likely to be instrumental.
-    *                           target_* - For each of the tunable track attributes (below) a target value may be provided.
-    *                           Tracks with the attribute values nearest to the target values will be preferred.
-    *                           For example, you might request target_energy=0.6 and target_danceability=0.8. All target values will be weighed equally in ranking results.
-    *                           See tunable track attributes below for the list of available options.
-    * @param signer A valid user access token or your client credentials.
-    * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam DE the Deserialization Error type
-    * @return On success, the HTTP status code in the response header is 200 OK and the response body contains an array of simplified playlist objects (wrapped in a paging object) in JSON format.
-    *         On error, the header status code is an error code and the response body contains an error object.
-    *         Once you have retrieved the list, you can use Get a Playlist and Get a Playlist’s Tracks to drill down further.
-    */
-  def getRecommendations[DE](
-    limit: RecommendationsLimit = 20,
-    market: Option[Market],
-    recommendationSeedRequest: RecommendationSeedRequest = Refined.unsafeApply(List.empty[RecommendationSeedQuery]),
-    audioFeaturesQuery: AudioFeaturesQuery = AudioFeaturesQuery.empty
-  )(
-    signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[DE, Recommendations]): F[SttpResponse[DE, Recommendations]] = {
-    val uri: Uri = recommendationsPath
-      .withQueryParam("limit", limit.value.toString)
-      .withOptionQueryParam("market", market.map(_.value))
-      .addParams(recommendationSeedRequest.value.groupMapReduce(_.key)(_.strValue)((v1, v2) => s"$v1,$v2"))
-      .addParams(toParams(audioFeaturesQuery): _*)
-
-    baseRequest(client.userAgent)
-      .get(uri)
-      .sign(signer)
-      .response(responseHandler)
-      .send(client.backend)
-  }
-
-  /**
     * Get Recommendation Genres
     *
     * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendation-genres
@@ -308,20 +253,4 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
 
 object BrowseApi {
   type Limit = Int Refined Interval.Closed[1, 50]
-  type RecommendationsLimit = Int Refined Interval.Closed[1, 1000]
-  type RecommendationSeedRequest = Refined[List[RecommendationSeedQuery], MaxSize[5]]
-  object RecommendationSeedRequest {
-    import io.bartholomews.spotify4s.core.validators.RefinedValidators._
-    private def validateRecommendationSeedQuery: Plain[List[RecommendationSeedQuery], MaxSize[5]] = {
-      Validate
-        .fromPredicate(
-          (d: List[RecommendationSeedQuery]) => d.size <= 5,
-          (_: List[RecommendationSeedQuery]) => "a maximum of 5 values can be set in one request",
-          Size[Interval.Closed[_0, Witness.`5`.T]](maxSizeP)
-        )
-    }
-
-    def fromList(xs: List[RecommendationSeedQuery]): Either[String, RecommendationSeedRequest] =
-      refineV[MaxSize[5]](xs)(validateRecommendationSeedQuery)
-  }
 }

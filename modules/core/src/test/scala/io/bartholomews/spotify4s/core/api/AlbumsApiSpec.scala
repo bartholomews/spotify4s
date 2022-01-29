@@ -174,7 +174,7 @@ abstract class AlbumsApiSpec[E[_], D[_], DE, J]
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBodyFile("browse/new_releases_se.json")
+                .withBodyFile("albums/new_releases_se.json")
             )
         )
 
