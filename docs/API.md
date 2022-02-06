@@ -85,9 +85,12 @@
 
 
 - **Categories**
-  ✅ [Get All Categories]
-  ✅ [Get a Category]
-  ✅ [Get Recommendation Genres]
+  ✅ [Get Several Browse Categories](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-categories)  
+  ✅ [Get Single Browse Category](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-a-category)  
+
+
+- **Genres**
+  ✅ [Get Available Genre Seeds](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-recommendation-genres)  
 
 
 - **Player**

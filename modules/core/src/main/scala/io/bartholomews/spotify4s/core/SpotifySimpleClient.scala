@@ -9,10 +9,20 @@ import io.bartholomews.fsclient.core.oauth.{ClientPasswordAuthentication, NonRef
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.SpotifyApi.Offset
-import io.bartholomews.spotify4s.core.api.TracksApi.{AudioFeaturesTrackIds, RecommendationSeedRequest, RecommendationsLimit, TrackIds}
+import io.bartholomews.spotify4s.core.api.TracksApi.{
+  AudioFeaturesTrackIds,
+  RecommendationSeedRequest,
+  RecommendationsLimit,
+  TrackIds
+}
 import io.bartholomews.spotify4s.core.api.UsersApi.UserIdsFollowingPlaylist
 import io.bartholomews.spotify4s.core.api.{AlbumsApi, CategoriesApi}
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyPlaylistId, SpotifyTrackId, SpotifyUserId}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{
+  SpotifyAlbumId,
+  SpotifyPlaylistId,
+  SpotifyTrackId,
+  SpotifyUserId
+}
 import io.bartholomews.spotify4s.core.entities._
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures

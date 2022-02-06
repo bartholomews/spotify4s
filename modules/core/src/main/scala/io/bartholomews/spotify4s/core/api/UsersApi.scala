@@ -14,7 +14,7 @@ import io.bartholomews.spotify4s.core.api.SpotifyApi.basePath
 import io.bartholomews.spotify4s.core.api.UsersApi._
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyArtistId, SpotifyPlaylistId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities._
-import io.bartholomews.spotify4s.core.validators.RefinedValidators.{NelMaxSizeValidators, maxSizeP}
+import io.bartholomews.spotify4s.core.validators.RefinedValidators.{maxSizeP, NelMaxSizeValidators}
 import shapeless.Nat._0
 import shapeless.Witness
 import sttp.client3.{Response, ResponseException}
