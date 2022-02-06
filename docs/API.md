@@ -55,7 +55,7 @@
   ❌ [Search for Item](https://developer.spotify.com/documentation/web-api/reference/#/operations/search)  
 
 
-- **Users**
+- **Users**  
   ✅ [Get Current User's Profile](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-current-users-profile)  
   ❌ [Get User's Top Items](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-users-top-artists-and-tracks)  
   ✅ [Get User's Profile](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-users-profile)  
@@ -84,12 +84,12 @@
   ❌ [Add Custom Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#/operations/upload-custom-playlist-cover)
 
 
-- **Categories**
+- **Categories**  
   ✅ [Get Several Browse Categories](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-categories)  
   ✅ [Get Single Browse Category](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-a-category)  
 
 
-- **Genres**
+- **Genres**  
   ✅ [Get Available Genre Seeds](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-recommendation-genres)  
 
 
