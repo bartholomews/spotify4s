@@ -4,7 +4,7 @@ import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth.ClientPasswordAuthentication
 import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
-import io.bartholomews.spotify4s.core.api.{AlbumsApi, _}
+import io.bartholomews.spotify4s.core.api._
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
 import sttp.client3.SttpBackend
@@ -17,7 +17,6 @@ class SpotifyAuthClient[F[_]] private (client: FsClient[F, ClientPasswordAuthent
   object auth extends AuthApi[F](client)
   object albums extends AlbumsApi[F, S](client)
   object browse extends BrowseApi[F, S](client)
-  object follow extends FollowApi[F, S](client)
   object playlists extends PlaylistsApi[F, S](client)
   object tracks extends TracksApi[F, S](client)
   object users extends UsersApi[F, S](client)

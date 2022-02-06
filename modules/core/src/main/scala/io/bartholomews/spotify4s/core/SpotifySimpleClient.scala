@@ -8,7 +8,6 @@ import io.bartholomews.fsclient.core.oauth.v2.ClientPassword
 import io.bartholomews.fsclient.core.oauth.{ClientPasswordAuthentication, NonRefreshableTokenSigner, TokenSignerV2}
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
-import io.bartholomews.spotify4s.core.api.FollowApi.UserIdsFollowingPlaylist
 import io.bartholomews.spotify4s.core.api.SpotifyApi.Offset
 import io.bartholomews.spotify4s.core.api.TracksApi.{
   AudioFeaturesTrackIds,
@@ -16,6 +15,7 @@ import io.bartholomews.spotify4s.core.api.TracksApi.{
   RecommendationsLimit,
   TrackIds
 }
+import io.bartholomews.spotify4s.core.api.UsersApi.UserIdsFollowingPlaylist
 import io.bartholomews.spotify4s.core.api.{AlbumsApi, BrowseApi}
 import io.bartholomews.spotify4s.core.entities.SpotifyId.{
   SpotifyAlbumId,
@@ -140,15 +140,6 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
     }
   }
 
-  object follow {
-    def usersFollowingPlaylist[DE](playlistId: SpotifyPlaylistId, userIds: UserIdsFollowingPlaylist)(
-      implicit
-      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[DE, List[Boolean]]
-    ): F[SttpResponse[DE, Map[SpotifyUserId, Boolean]]] =
-      withToken { client.follow.usersFollowingPlaylist(playlistId, userIds) }
-  }
-
   object playlists {
     def getFeaturedPlaylists[DE](
       country: Option[CountryCodeAlpha2],
@@ -235,6 +226,13 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       responseHandler: ResponseHandler[DE, PublicUser]
     ): F[Response[Either[ResponseException[String, DE], PublicUser]]] =
       withToken { client.users.getUserProfile(userId) }
+
+    def usersFollowingPlaylist[DE](playlistId: SpotifyPlaylistId, userIds: UserIdsFollowingPlaylist)(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, List[Boolean]]
+    ): F[SttpResponse[DE, Map[SpotifyUserId, Boolean]]] =
+      withToken { client.users.usersFollowingPlaylist(playlistId, userIds) }
   }
 }
 

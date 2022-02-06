@@ -55,20 +55,17 @@
   ❌ [Search for Item](https://developer.spotify.com/documentation/web-api/reference/#/operations/search)  
 
 
-- **Browse**
-  ✅ [Get All Categories]
-  ✅ [Get a Category]
-  ✅ [Get Recommendation Genres]
-
-
-- **Follow**  
-  ✅ [Follow a Playlist]
-  ✅ [Unfollow a Playlist]
-  ✅ [Check if Users Follow a Playlist]
-  ✅ [Get User's Followed Artists]
-  ✅ [Follow Artists or Users]
-  ✅ [Unfollow Artists or Users]
-  ✅ [Get Following State for Artists/Users]
+- **Users**
+  ✅ [Get Current User's Profile](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-current-users-profile)  
+  ❌ [Get User's Top Items](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-users-top-artists-and-tracks)  
+  ✅ [Get User's Profile](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-users-profile)  
+  ✅ [Follow Playlist](https://developer.spotify.com/documentation/web-api/reference/#/operations/follow-playlist)  
+  ✅ [Unfollow Playlist](https://developer.spotify.com/documentation/web-api/reference/#/operations/unfollow-playlist)  
+  ✅ [Get Followed Artists](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-followed)    
+  ✅ [Follow Artists or Users](https://developer.spotify.com/documentation/web-api/reference/#/operations/follow-artists-users)    
+  ✅ [Unfollow Artists or Users](https://developer.spotify.com/documentation/web-api/reference/#/operations/unfollow-artists-users)    
+  ✅ [Check If User Follows Artists or Users](https://developer.spotify.com/documentation/web-api/reference/#/operations/check-current-user-follows)    
+  ✅ [Check If Users Follow Playlist](https://developer.spotify.com/documentation/web-api/reference/#/operations/check-if-user-follows-playlist)  
 
 
 - **Playlists**  
@@ -84,12 +81,13 @@
   ✅ [Get Featured Playlists](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-featured-playlists)  
   ✅ [Get Category's Playlists](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-a-categories-playlists)  
   ❌ [Get Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-playlist-cover)  
-  ❌ [Add Custom Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#/operations/upload-custom-playlist-cover)  
+  ❌ [Add Custom Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#/operations/upload-custom-playlist-cover)
 
 
-- **Users Profile** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-users-profile)  
-  ✅ [Get Current User's Profile](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-current-users-profile)  
-  ✅ [Get a User's Profile](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-profile)  
+- **Browse**
+  ✅ [Get All Categories]
+  ✅ [Get a Category]
+  ✅ [Get Recommendation Genres]
 
 
 - **Player** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-player)
