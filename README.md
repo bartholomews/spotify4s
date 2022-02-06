@@ -13,15 +13,18 @@ so you can use any effect type providing the relevant [backend](https://sttp.sof
 Pick one module:
 
 ```
-// circe codecs
-libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-ee326457-SNAPSHOT"
-// play-json codecs
-libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-ee326457-SNAPSHOT"
-// no codecs (you need to provide your own)
-libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-ee326457-SNAPSHOT"
-
+// Add this for now (until the first regular release is published)
 resolvers +=
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+
+// circe codecs
+libraryDependencies += "io.bartholomews" %% "spotify4s-circe" % "0.0.0+1-ee326457-SNAPSHOT"
+
+// play-json codecs
+libraryDependencies += "io.bartholomews" %% "spotify4s-play" % "0.0.0+1-ee326457-SNAPSHOT"
+
+// no codecs (you need to provide your own)
+libraryDependencies += "io.bartholomews" %% "spotify4s-core" % "0.0.0+1-ee326457-SNAPSHOT"
 ```
 
 ## Setup
