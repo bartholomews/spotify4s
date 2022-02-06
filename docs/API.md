@@ -84,14 +84,14 @@
   ❌ [Add Custom Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#/operations/upload-custom-playlist-cover)
 
 
-- **Browse**
+- **Categories**
   ✅ [Get All Categories]
   ✅ [Get a Category]
   ✅ [Get Recommendation Genres]
 
 
-- **Player** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-player)
+- **Player**
 
 
-- **Markets** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-markets)
+- **Markets**
 

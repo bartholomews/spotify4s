@@ -11,6 +11,7 @@ class PlaylistApiPlaySpec
     extends PlaylistApiSpec[Writes, Reads, JsError, JsValue]
     with PlayServerBehaviours
     with PlayEntityCodecs {
+
   implicit val partialTrackReads: Reads[PartialTrack] =
     (JsPath \ "track" \ "name")
       .read[String]

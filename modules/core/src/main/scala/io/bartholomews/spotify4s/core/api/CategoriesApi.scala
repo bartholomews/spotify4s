@@ -1,37 +1,27 @@
 package io.bartholomews.spotify4s.core.api
 
-import eu.timepit.refined.api.Validate.Plain
-import eu.timepit.refined.api.{Refined, Validate}
-import eu.timepit.refined.collection.MaxSize
+import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Interval
-import eu.timepit.refined.predicates.all.Size
-import eu.timepit.refined.refineV
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.api.BrowseApi.Limit
+import io.bartholomews.spotify4s.core.api.CategoriesApi.Limit
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{basePath, Offset}
 import io.bartholomews.spotify4s.core.entities._
-import shapeless.Nat._0
-import shapeless.Witness
 import sttp.model.Uri
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 // https://developer.spotify.com/documentation/web-api/reference/#category-browse
-private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
+private[spotify4s] class CategoriesApi[F[_], S <: Signer](client: FsClient[F, S]) {
   import eu.timepit.refined.auto.autoRefineV
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private[api] val browsePath: Uri = basePath / "browse"
-  private[api] val recommendationsPath: Uri = basePath / "recommendations"
 
   /**
-    * Get All Categories
+    * Get Several Browse Categories
+    * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-categories
     *
-    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-categories
     * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
     *
     * @param country Optional. A country: an ISO 3166-1 alpha-2 country code.
@@ -58,7 +48,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         On error, the header status code is an error code and the response body contains an error object.
     *         Once you have retrieved the list, you can use `getCategory` to drill down further.
     */
-  def getAllCategories[DE](
+  def getBrowseCategories[DE](
     country: Option[CountryCodeAlpha2],
     locale: Option[Locale],
     limit: Limit = 20,
@@ -81,9 +71,9 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
   }
 
   /**
-    * Get a Category
+    * Get Single Browse Category
+    * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-a-category
     *
-    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category
     * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
     *
     * @param categoryId Required. The Spotify category ID for the category.
@@ -102,7 +92,7 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
     *         On error, the header status code is an error code and the response body contains an error object.
     *         Once you have retrieved the category, you can use `getCategoryPlaylists` to drill down further.
     */
-  def getCategory[DE](
+  def getBrowseCategory[DE](
     categoryId: SpotifyCategoryId,
     country: Option[CountryCodeAlpha2],
     locale: Option[Locale]
@@ -119,30 +109,8 @@ private[spotify4s] class BrowseApi[F[_], S <: Signer](client: FsClient[F, S]) {
       .response(responseHandler)
       .send(client.backend)
   }
-
-  /**
-    * Get Recommendation Genres
-    *
-    * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendation-genres
-    * Retrieve a list of available genres seed parameter values for recommendations.
-    *
-    * @param signer A valid user access token or your client credentials.
-    * @param responseHandler The sttp `ResponseAs` handler
-    * @tparam DE the Deserialization Error type
-    * @return On success, the HTTP status code in the response header is 200 OK
-    *         and the response body contains a recommendations response object in JSON format.
-    */
-  def getRecommendationGenres[DE](
-    signer: SignerV2
-  )(implicit responseHandler: ResponseHandler[DE, SpotifyGenresResponse]): F[SttpResponse[DE, List[SpotifyGenre]]] =
-    baseRequest(client.userAgent)
-      .get(recommendationsPath / "available-genre-seeds")
-      .sign(signer)
-      .response(responseHandler)
-      .mapResponseRight(_.genres)
-      .send(client.backend)
 }
 
-object BrowseApi {
+object CategoriesApi {
   type Limit = Int Refined Interval.Closed[1, 50]
 }

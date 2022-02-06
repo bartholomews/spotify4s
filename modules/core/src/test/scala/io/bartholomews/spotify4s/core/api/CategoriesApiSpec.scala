@@ -12,20 +12,19 @@ import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
 import io.bartholomews.spotify4s.core.entities._
 import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 
-abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with SpotifyServerBehaviours[E, D, DE, J] {
+abstract class CategoriesApiSpec[E[_], D[_], DE, J] extends WireWordSpec with SpotifyServerBehaviours[E, D, DE, J] {
   import eu.timepit.refined.auto.autoRefineV
 
   implicit val signer: NonRefreshableTokenSigner = sampleNonRefreshableToken
   implicit def categoriesResponseCodec: D[CategoriesResponse]
   implicit def categoryCodec: D[Category]
-  implicit def spotifyGenresResponseCodec: D[SpotifyGenresResponse]
 
-  "getAllCategories" when {
+  "getBrowseCategories" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/categories"))
 
     "all query parameters are defined" should {
       def request: SttpResponse[DE, Page[Category]] =
-        sampleClient.browse.getAllCategories[DE](
+        sampleClient.categories.getBrowseCategories[DE](
           country = Some(CountryCodeAlpha2.SWEDEN),
           locale = Some(Locale(LanguageCode.SPANISH, CountryCodeAlpha2.MEXICO)),
           limit = 2,
@@ -58,12 +57,12 @@ abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
     }
   }
 
-  "getCategory" when {
+  "getBrowseCategory" when {
     def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/categories/workout"))
 
     "all query parameters are defined" should {
       def request: SttpResponse[DE, Category] =
-        sampleClient.browse.getCategory[DE](
+        sampleClient.categories.getBrowseCategory[DE](
           categoryId = SpotifyCategoryId("workout"),
           country = Some(CountryCodeAlpha2.SWEDEN),
           locale = Some(Locale(LanguageCode.SPANISH, CountryCodeAlpha2.MEXICO))
@@ -90,30 +89,6 @@ abstract class BrowseApiSpec[E[_], D[_], DE, J] extends WireWordSpec with Spotif
         case Right(category) =>
           category.name shouldBe CategoryName("Entrenamiento")
       }
-    }
-  }
-
-  "getRecommendationGenres" should {
-    def endpointRequest: MappingBuilder = get(urlPathEqualTo(s"$basePath/recommendations/available-genre-seeds"))
-
-    def request: SttpResponse[DE, List[SpotifyGenre]] =
-      sampleClient.browse.getRecommendationGenres[DE](signer)
-
-    behave like clientReceivingUnexpectedResponse(endpointRequest, request)
-
-    def stub: StubMapping =
-      stubFor(
-        endpointRequest
-          .willReturn(
-            aResponse()
-              .withStatus(200)
-              .withBodyFile("browse/recommendation_genres.json")
-          )
-      )
-
-    "return the correct entity" in matchResponseBody(stub, request) {
-      case Right(genres) =>
-        genres should contain(SpotifyGenre("death-metal"))
     }
   }
 }

@@ -9,20 +9,10 @@ import io.bartholomews.fsclient.core.oauth.{ClientPasswordAuthentication, NonRef
 import io.bartholomews.iso.CountryCodeAlpha2
 import io.bartholomews.spotify4s.core.api.AlbumsApi.AlbumIds
 import io.bartholomews.spotify4s.core.api.SpotifyApi.Offset
-import io.bartholomews.spotify4s.core.api.TracksApi.{
-  AudioFeaturesTrackIds,
-  RecommendationSeedRequest,
-  RecommendationsLimit,
-  TrackIds
-}
+import io.bartholomews.spotify4s.core.api.TracksApi.{AudioFeaturesTrackIds, RecommendationSeedRequest, RecommendationsLimit, TrackIds}
 import io.bartholomews.spotify4s.core.api.UsersApi.UserIdsFollowingPlaylist
-import io.bartholomews.spotify4s.core.api.{AlbumsApi, BrowseApi}
-import io.bartholomews.spotify4s.core.entities.SpotifyId.{
-  SpotifyAlbumId,
-  SpotifyPlaylistId,
-  SpotifyTrackId,
-  SpotifyUserId
-}
+import io.bartholomews.spotify4s.core.api.{AlbumsApi, CategoriesApi}
+import io.bartholomews.spotify4s.core.entities.SpotifyId.{SpotifyAlbumId, SpotifyPlaylistId, SpotifyTrackId, SpotifyUserId}
 import io.bartholomews.spotify4s.core.entities._
 import pureconfig.ConfigSource
 import pureconfig.error.ConfigReaderFailures
@@ -98,25 +88,25 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
     ): F[SttpResponse[DE, Page[SimpleTrack]]] =
       withToken { client.albums.getAlbumTracks(id, market, limit, offset) }
 
-    def getNewReleases[DE](country: Option[CountryCodeAlpha2], limit: BrowseApi.Limit = 20, offset: Offset = 0)(
+    def getNewReleases[DE](country: Option[CountryCodeAlpha2], limit: CategoriesApi.Limit = 20, offset: Offset = 0)(
       implicit
       tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[DE, NewReleases]
     ): F[SttpResponse[DE, NewReleases]] = withToken { client.albums.getNewReleases(country, limit, offset) }
   }
 
-  object browse {
+  object categories {
     def getAllCategories[DE](
       country: Option[CountryCodeAlpha2],
       locale: Option[Locale],
-      limit: BrowseApi.Limit = 20,
+      limit: CategoriesApi.Limit = 20,
       offset: Offset = 0
     )(
       implicit
       tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[DE, CategoriesResponse]
     ): F[SttpResponse[DE, Page[Category]]] = withToken {
-      client.browse.getAllCategories(country, locale, limit, offset)
+      client.categories.getBrowseCategories(country, locale, limit, offset)
     }
 
     def getCategory[DE](
@@ -128,15 +118,17 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[DE, Category]
     ): F[SttpResponse[DE, Category]] = withToken {
-      client.browse.getCategory(categoryId, country, locale)
+      client.categories.getBrowseCategory(categoryId, country, locale)
     }
+  }
 
-    def getRecommendationGenres[DE]()(
+  object genres {
+    def getAvailableGenreSeeds[DE]()(
       implicit
       tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
       responseHandler: ResponseHandler[DE, SpotifyGenresResponse]
     ): F[SttpResponse[DE, List[SpotifyGenre]]] = withToken { signer =>
-      client.browse.getRecommendationGenres(signer)
+      client.genres.getAvailableGenreSeeds(signer)
     }
   }
 
@@ -145,7 +137,7 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       country: Option[CountryCodeAlpha2],
       locale: Option[Locale],
       timestamp: Option[LocalDateTime],
-      limit: BrowseApi.Limit = 20,
+      limit: CategoriesApi.Limit = 20,
       offset: Offset = 0
     )(
       implicit
@@ -158,7 +150,7 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
     def getCategoryPlaylists[DE](
       categoryId: SpotifyCategoryId,
       country: Option[CountryCodeAlpha2],
-      limit: BrowseApi.Limit = 20,
+      limit: CategoriesApi.Limit = 20,
       offset: Offset = 0
     )(
       implicit

@@ -1,13 +1,12 @@
 package io.bartholomews.spotify4s.core.api
 
 import eu.timepit.refined.api.Refined
-import eu.timepit.refined.numeric.GreaterEqual
+import eu.timepit.refined.numeric.{GreaterEqual, Interval}
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{Signer, SignerV2}
 import io.bartholomews.iso.CountryCodeAlpha2
-import io.bartholomews.spotify4s.core.api.BrowseApi.Limit
-import io.bartholomews.spotify4s.core.api.PlaylistsApi.TracksPosition
+import io.bartholomews.spotify4s.core.api.PlaylistsApi._
 import io.bartholomews.spotify4s.core.api.SpotifyApi.{basePath, Offset, SpotifyUris}
 import io.bartholomews.spotify4s.core.entities.SpotifyId.SpotifyUserId
 import io.bartholomews.spotify4s.core.entities._
@@ -577,5 +576,6 @@ private[spotify4s] class PlaylistsApi[F[_], S <: Signer](client: FsClient[F, S])
 }
 
 object PlaylistsApi {
+  type Limit = Int Refined Interval.Closed[1, 50]
   type TracksPosition = Refined[Int, GreaterEqual[0]]
 }
