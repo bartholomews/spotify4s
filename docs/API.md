@@ -55,36 +55,36 @@
   ❌ [Search for Item](https://developer.spotify.com/documentation/web-api/reference/#/operations/search)  
 
 
-- **Browse** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-browse)  
-  ✅ [Get All Featured Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-featured-playlists)  
-  ✅ [Get All Categories](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-categories)  
-  ✅ [Get a Category](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category)  
-  ✅ [Get a Category's Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-categories-playlists)  
-  ✅ [Get Recommendation Genres](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recommendation-genres)  
+- **Browse**
+  ✅ [Get All Categories]
+  ✅ [Get a Category]
+  ✅ [Get Recommendation Genres]
 
 
-- **Follow** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-follow)  
-  ✅ [Follow a Playlist](https://developer.spotify.com/documentation/web-api/reference/#endpoint-follow-playlist)  
-  ✅ [Unfollow a Playlist](https://developer.spotify.com/documentation/web-api/reference/#endpoint-unfollow-playlist)  
-  ✅ [Check if Users Follow a Playlist](https://developer.spotify.com/documentation/web-api/reference/#endpoint-check-if-user-follows-playlist)  
-  ✅ [Get User's Followed Artists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-followed)  
-  ✅ [Follow Artists or Users](https://developer.spotify.com/documentation/web-api/reference/#endpoint-follow-artists-users)  
-  ✅ [Unfollow Artists or Users](https://developer.spotify.com/documentation/web-api/reference/#endpoint-unfollow-artists-users)  
-  ✅ [Get Following State for Artists/Users](https://developer.spotify.com/documentation/web-api/reference/#endpoint-check-current-user-follows)  
+- **Follow**  
+  ✅ [Follow a Playlist]
+  ✅ [Unfollow a Playlist]
+  ✅ [Check if Users Follow a Playlist]
+  ✅ [Get User's Followed Artists]
+  ✅ [Follow Artists or Users]
+  ✅ [Unfollow Artists or Users]
+  ✅ [Get Following State for Artists/Users]
 
 
-- **Playlists** - [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-playlists)    
-  ✅ [Get a List of Current User's Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-list-of-current-users-playlists)    
-  ✅ [Get a List of a User's Playlists](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-list-users-playlists)  
-  ✅ [Create a Playlist](https://developer.spotify.com/documentation/web-api/reference/#endpoint-create-playlist)  
-  ✅ [Get a Playlist](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlist)  
-  ✅ [Change a Playlist's Details](https://developer.spotify.com/documentation/web-api/reference/#endpoint-change-playlist-details)  
-  ❌ [Get a Playlist's Items](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlists-tracks)  
-  ✅ [Add Items to a Playlist](https://developer.spotify.com/documentation/web-api/reference/#endpoint-add-tracks-to-playlist)  
-  ❌ [Reorder or Replace a Playlist's Items](https://developer.spotify.com/documentation/web-api/reference/#endpoint-reorder-or-replace-playlists-tracks)  
-  ❌ [Remove Items from a Playlist](https://developer.spotify.com/documentation/web-api/reference/#endpoint-remove-tracks-playlist)  
-  ❌ [Get a Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlist-cover)  
-  ❌ [Upload a Custom Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#endpoint-upload-custom-playlist-cover)
+- **Playlists**  
+  ✅ [Get Playlist](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-playlist)  
+  ✅ [Change Playlist Details](https://developer.spotify.com/documentation/web-api/reference/#/operations/change-playlist-details)  
+  ✅ [Get Playlist Items](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-playlists-tracks)  
+  ✅ [Add Items to Playlist](https://developer.spotify.com/documentation/web-api/reference/#/operations/add-tracks-to-playlist)  
+  ✅ [Update Playlist Items](https://developer.spotify.com/documentation/web-api/reference/#/operations/reorder-or-replace-playlists-tracks)  
+  ❌ [Remove Playlist Items](https://developer.spotify.com/documentation/web-api/reference/#/operations/remove-tracks-playlist)  
+  ✅ [Get Current User's Playlists](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-a-list-of-current-users-playlists)  
+  ✅ [Get User's Playlists](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-list-users-playlists)  
+  ✅ [Create Playlist](https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist)  
+  ✅ [Get Featured Playlists](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-featured-playlists)  
+  ✅ [Get Category's Playlists](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-a-categories-playlists)  
+  ❌ [Get Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-playlist-cover)  
+  ❌ [Add Custom Playlist Cover Image](https://developer.spotify.com/documentation/web-api/reference/#/operations/upload-custom-playlist-cover)  
 
 
 - **Users Profile** [🔗](https://developer.spotify.com/documentation/web-api/reference/#category-users-profile)  

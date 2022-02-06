@@ -106,20 +106,6 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
   }
 
   object browse {
-    def getAllFeaturedPlaylists[DE](
-      country: Option[CountryCodeAlpha2],
-      locale: Option[Locale],
-      timestamp: Option[LocalDateTime],
-      limit: BrowseApi.Limit = 20,
-      offset: Offset = 0
-    )(
-      implicit
-      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[DE, FeaturedPlaylists]
-    ): F[SttpResponse[DE, FeaturedPlaylists]] = withToken {
-      client.browse.getAllFeaturedPlaylists(country, locale, timestamp, limit, offset)
-    }
-
     def getAllCategories[DE](
       country: Option[CountryCodeAlpha2],
       locale: Option[Locale],
@@ -145,19 +131,6 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       client.browse.getCategory(categoryId, country, locale)
     }
 
-    def getCategoryPlaylists[DE](
-      categoryId: SpotifyCategoryId,
-      country: Option[CountryCodeAlpha2],
-      limit: BrowseApi.Limit = 20,
-      offset: Offset = 0
-    )(
-      implicit
-      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
-      responseHandler: ResponseHandler[DE, PlaylistsResponse]
-    ): F[SttpResponse[DE, Page[SimplePlaylist]]] = withToken {
-      client.browse.getCategoryPlaylists(categoryId, country, limit, offset)
-    }
-
     def getRecommendationGenres[DE]()(
       implicit
       tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
@@ -174,6 +147,35 @@ class SpotifySimpleClient[F[_]: Monad] private (client: SpotifyAuthClient[F]) {
       responseHandler: ResponseHandler[DE, List[Boolean]]
     ): F[SttpResponse[DE, Map[SpotifyUserId, Boolean]]] =
       withToken { client.follow.usersFollowingPlaylist(playlistId, userIds) }
+  }
+
+  object playlists {
+    def getFeaturedPlaylists[DE](
+      country: Option[CountryCodeAlpha2],
+      locale: Option[Locale],
+      timestamp: Option[LocalDateTime],
+      limit: BrowseApi.Limit = 20,
+      offset: Offset = 0
+    )(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, FeaturedPlaylists]
+    ): F[SttpResponse[DE, FeaturedPlaylists]] = withToken {
+      client.playlists.getFeaturedPlaylists(country, locale, timestamp, limit, offset)
+    }
+
+    def getCategoryPlaylists[DE](
+      categoryId: SpotifyCategoryId,
+      country: Option[CountryCodeAlpha2],
+      limit: BrowseApi.Limit = 20,
+      offset: Offset = 0
+    )(
+      implicit
+      tokenHandler: ResponseHandler[DE, NonRefreshableTokenSigner],
+      responseHandler: ResponseHandler[DE, PlaylistsResponse]
+    ): F[SttpResponse[DE, Page[SimplePlaylist]]] = withToken {
+      client.playlists.getCategoryPlaylists(categoryId, country, limit, offset)
+    }
   }
 
   object tracks {

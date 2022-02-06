@@ -28,7 +28,7 @@ private[spotify4s] class AlbumsApi[F[_], S <: Signer](client: FsClient[F, S]) {
   private[api] val browsePath: Uri = basePath / "browse"
 
   /**
-    * Get an Album
+    * Get Album
     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-album
     *
     * Get Spotify catalog information for a single album.

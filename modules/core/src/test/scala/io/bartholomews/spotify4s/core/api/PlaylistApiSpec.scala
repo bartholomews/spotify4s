@@ -6,7 +6,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.NonRefreshableTokenSigner
-import io.bartholomews.iso.CountryCodeAlpha2
+import io.bartholomews.iso.{CountryCodeAlpha2, LanguageCode}
 import io.bartholomews.scalatestudo.WireWordSpec
 import io.bartholomews.scalatestudo.data.ClientData.v2.sampleNonRefreshableToken
 import io.bartholomews.spotify4s.core.SpotifyServerBehaviours
@@ -25,6 +25,8 @@ import io.bartholomews.spotify4s.core.utils.SpotifyClientData.sampleClient
 import sttp.client3.{Identity, UriContext}
 import sttp.model.{StatusCode, Uri}
 
+import java.time.{LocalDateTime, Month}
+
 //noinspection MutatorLikeMethodIsParameterless
 abstract class PlaylistApiSpec[E[_], D[_], DE, J]
     extends WireWordSpec
@@ -41,19 +43,47 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
   implicit def snapshotIdResponseCodec: D[SnapshotIdResponse]
   implicit def modifyPlaylistRequestEncoder: E[ModifyPlaylistRequest]
   implicit def createPlaylistRequestEncoder: E[CreatePlaylistRequest]
+  implicit def featuredPlaylistsCodec: D[FeaturedPlaylists]
+  implicit def playlistsResponseCodec: D[PlaylistsResponse]
   implicit def addTracksToPlaylistRequestEncoder: E[AddTracksToPlaylistRequest]
 
-  "`getPlaylists`" when {
-    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me/playlists"))
+  "`getPlaylist`" when {
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/playlists/3cEYpjA9oz9GiPac4AsH4n"))
 
-    "`limits` and `offset` query parameters are defined" should {
-      def request: Identity[SttpResponse[DE, Page[SimplePlaylist]]] =
-        sampleClient.playlists.getPlaylists[DE](limit = 2, offset = 5)(signer)
+    "optional query parameters are not defined" should {
+      def request: SttpResponse[DE, FullPlaylist] =
+        sampleClient.playlists.getPlaylist[DE](playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"))(signer)
+
+      behave like clientReceivingUnexpectedResponse(endpoint, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpoint
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("playlists/get_playlist.json")
+            )
+        )
+
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(fullPlaylist) =>
+          fullPlaylist.owner.displayName shouldBe Some("JMPerez²")
+      }
+    }
+
+    "`fields` and `market` query parameters are defined" should {
+      def request: SttpResponse[DE, PartialPlaylist] =
+        sampleClient.playlists.getPlaylistFields[DE, PartialPlaylist](
+          playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"),
+          fields = "href,description,tracks.items(added_by(id),track(name))",
+          market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
+        )(signer)
 
       val endpointRequest =
         endpoint
-          .withQueryParam("limit", equalTo("2"))
-          .withQueryParam("offset", equalTo("5"))
+          .withQueryParam("fields", equalTo("href,description,tracks.items(added_by(id),track(name))"))
+          .withQueryParam("market", equalTo("ES"))
 
       behave like clientReceivingUnexpectedResponse(endpointRequest, request)
 
@@ -63,19 +93,141 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBodyFile("playlists/get_user_playlists.json")
+                .withBodyFile("playlists/get_playlist_fields_2.json")
             )
         )
 
       "return the correct entity" in matchResponseBody(stub, request) {
-        case Right(playlistsPage) =>
-          playlistsPage.items.size shouldBe 2
-          playlistsPage.items(1).name shouldBe SpotifyPlaylistName("😗👌💨")
+        case Right(playlist) =>
+          playlist shouldBe PartialPlaylist(
+            description = "A playlist for testing pourposes",
+            href =
+              uri"https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n?fields=href,description,tracks.items(added_by(id),track(name))",
+            tracks = List(
+              PartialTrack(addedBy = "jmperezperez", trackName = "Api"),
+              PartialTrack(addedBy = "jmperezperez", trackName = "Is"),
+              PartialTrack(addedBy = "jmperezperez", trackName = "All I Want"),
+              PartialTrack(addedBy = "jmperezperez", trackName = "Endpoints"),
+              PartialTrack(addedBy = "jmperezperez", trackName = "You Are So Beautiful")
+            )
+          )
+      }
+    }
+
+    "entity has many null fields" should {
+      val customPlaylistId = SpotifyId("4YUV9hthjX0LOvg8Oe8w85")
+      def request: SttpResponse[DE, FullPlaylist] =
+        sampleClient.playlists.getPlaylist[DE](
+          customPlaylistId,
+          market = None
+        )(signer)
+
+      def stub: StubMapping = {
+        stubFor(
+          get(urlPathEqualTo(s"$basePath/playlists/4YUV9hthjX0LOvg8Oe8w85"))
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile(s"playlists/get_playlist_fields.json")
+            )
+        )
+      }
+
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(playlist) =>
+          playlist.uri.value shouldBe "spotify:playlist:4YUV9hthjX0LOvg8Oe8w85"
       }
     }
   }
 
-  "`replacePlaylistItems`" when {
+  "`changePlaylistDetails`" when {
+    def endpoint: MappingBuilder =
+      put(urlPathEqualTo(s"$basePath/playlists/2LZYIzBoCXAdx8buWmUwQe"))
+        .withRequestBody(equalToJson("""
+                                       |{
+                                       | "name": "New name for Playlist",
+                                       | "public": false
+                                       |}
+                                       |""".stripMargin))
+
+    "updating `name` and `public` fields" should {
+      def request: Identity[SttpResponse[Nothing, Unit]] =
+        sampleClient.playlists.changePlaylistDetails(
+          playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+          playlistName = Some("New name for Playlist"),
+          public = Some(false),
+          collaborative = None,
+          description = None
+        )(signer)
+
+      behave like clientReceivingUnexpectedResponse[Nothing, Unit](endpoint, request, decodingBody = false)
+
+      def stub: StubMapping =
+        stubFor(
+          endpoint
+            .willReturn(aResponse().withStatus(200))
+        )
+
+      "return the correct entity" in matchIdResponse[Nothing, Unit](stub, request) {
+        case response =>
+          response.body shouldBe Right(())
+          response.code shouldBe StatusCode.Ok
+      }
+    }
+  }
+
+  "`getPlaylistItems`" ignore {}
+
+  "`addItemsToPlaylist`" when {
+    val uriTrack1 = SpotifyUri("spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
+    val uriTrack2 = SpotifyUri("spotify:track:1301WleyT98MSxVHPZCA6M")
+    val uriTrack3 = SpotifyUri("spotify:episode:512ojhOuo1ktJprKbVcKyQ")
+    def endpoint: MappingBuilder =
+      post(urlPathEqualTo(s"$basePath/playlists/2LZYIzBoCXAdx8buWmUwQe/tracks"))
+        .withRequestBody(equalToJson(s"""
+                                        |{
+                                        | "uris": [
+                                        |    "${uriTrack1.value}",
+                                        |    "${uriTrack2.value}",
+                                        |    "${uriTrack3.value}"
+                                        |  ],
+                                        |  "position": 1
+                                        |}
+                                        |""".stripMargin))
+
+    "adding tracks to a playlist at specified position" should {
+      val maybeUris: Either[Throwable, SpotifyUris] =
+        SpotifyUri
+          .fromNel(NonEmptyList.of(uriTrack1, uriTrack2, uriTrack3))
+          .leftMap(msg => new Exception(msg))
+
+      def request: SttpResponse[DE, SnapshotId] =
+        sampleClient.playlists.addItemsToPlaylist[DE](
+          playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
+          uris = maybeUris.getOrElse(fail(maybeUris.toString)),
+          position = Some(1)
+        )(signer)
+
+      behave like clientReceivingUnexpectedResponse(endpoint, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpoint
+            .willReturn(
+              aResponse()
+                .withStatus(201)
+                .withBodyFile("playlists/add_tracks_to_playlist.json")
+            )
+        )
+
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(snapshotId) =>
+          snapshotId shouldBe SnapshotId("JbtmHBDBAYu3/bt8BOXKjzKx3i0b6LCa/wVjyl6qQ2Yf6nFXkbmzuEa+ZI/U1yF+")
+      }
+    }
+  }
+
+  "`updatePlaylistItems`" when {
     def endpoint: MappingBuilder = put(urlPathEqualTo(s"$basePath/users/playlists"))
 
     "`uris` query parameter is correct" should {
@@ -86,7 +238,7 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
         SpotifyUri.fromNel(NonEmptyList.of(uri1, uri2)).leftMap(msg => new Exception(msg))
 
       def request: SttpResponse[Nothing, Unit] =
-        sampleClient.playlists.replacePlaylistItems(
+        sampleClient.playlists.updatePlaylistItems(
           playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
           uris = maybeUris.getOrElse(fail(s"$maybeUris"))
         )(signer)
@@ -123,6 +275,40 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
         inside(SpotifyUri.fromList(tooManyUris)) {
           case Left(error) => error shouldBe "Predicate failed: a maximum of 100 uris can be set in one request."
         }
+      }
+    }
+  }
+
+  "`removePlaylistItems`" ignore {}
+
+  "`getMyPlaylists`" when {
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/me/playlists"))
+
+    "`limits` and `offset` query parameters are defined" should {
+      def request: Identity[SttpResponse[DE, Page[SimplePlaylist]]] =
+        sampleClient.playlists.getMyPlaylists[DE](limit = 2, offset = 5)(signer)
+
+      val endpointRequest =
+        endpoint
+          .withQueryParam("limit", equalTo("2"))
+          .withQueryParam("offset", equalTo("5"))
+
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("playlists/get_user_playlists.json")
+            )
+        )
+
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(playlistsPage) =>
+          playlistsPage.items.size shouldBe 2
+          playlistsPage.items(1).name shouldBe SpotifyPlaylistName("😗👌💨")
       }
     }
   }
@@ -254,194 +440,16 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
     }
   }
 
-  "`changePlaylistDetails`" when {
-    def endpoint: MappingBuilder =
-      put(urlPathEqualTo(s"$basePath/playlists/2LZYIzBoCXAdx8buWmUwQe"))
-        .withRequestBody(equalToJson("""
-                                       |{
-                                       | "name": "New name for Playlist",
-                                       | "public": false
-                                       |}
-                                       |""".stripMargin))
-
-    "updating `name` and `public` fields" should {
-      def request: Identity[SttpResponse[Nothing, Unit]] =
-        sampleClient.playlists.changePlaylistDetails(
-          playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
-          playlistName = Some("New name for Playlist"),
-          public = Some(false),
-          collaborative = None,
-          description = None
-        )(signer)
-
-      behave like clientReceivingUnexpectedResponse[Nothing, Unit](endpoint, request, decodingBody = false)
-
-      def stub: StubMapping =
-        stubFor(
-          endpoint
-            .willReturn(aResponse().withStatus(200))
-        )
-
-      "return the correct entity" in matchIdResponse[Nothing, Unit](stub, request) {
-        case response =>
-          response.body shouldBe Right(())
-          response.code shouldBe StatusCode.Ok
-      }
-    }
-  }
-
-  "`addTracksToPlaylist`" when {
-    val uriTrack1 = SpotifyUri("spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
-    val uriTrack2 = SpotifyUri("spotify:track:1301WleyT98MSxVHPZCA6M")
-    val uriTrack3 = SpotifyUri("spotify:episode:512ojhOuo1ktJprKbVcKyQ")
-    def endpoint: MappingBuilder =
-      post(urlPathEqualTo(s"$basePath/playlists/2LZYIzBoCXAdx8buWmUwQe/tracks"))
-        .withRequestBody(equalToJson(s"""
-                                       |{
-                                       | "uris": [
-                                       |    "${uriTrack1.value}",
-                                       |    "${uriTrack2.value}",
-                                       |    "${uriTrack3.value}"
-                                       |  ],
-                                       |  "position": 1
-                                       |}
-                                       |""".stripMargin))
-
-    "adding tracks to a playlist at specified position" should {
-      val maybeUris: Either[Throwable, SpotifyUris] =
-        SpotifyUri
-          .fromNel(NonEmptyList.of(uriTrack1, uriTrack2, uriTrack3))
-          .leftMap(msg => new Exception(msg))
-
-      def request: SttpResponse[DE, SnapshotId] =
-        sampleClient.playlists.addTracksToPlaylist[DE](
-          playlistId = SpotifyId("2LZYIzBoCXAdx8buWmUwQe"),
-          uris = maybeUris.getOrElse(fail(maybeUris.toString)),
-          position = Some(1)
-        )(signer)
-
-      behave like clientReceivingUnexpectedResponse(endpoint, request)
-
-      def stub: StubMapping =
-        stubFor(
-          endpoint
-            .willReturn(
-              aResponse()
-                .withStatus(201)
-                .withBodyFile("playlists/add_tracks_to_playlist.json")
-            )
-        )
-
-      "return the correct entity" in matchResponseBody(stub, request) {
-        case Right(snapshotId) =>
-          snapshotId shouldBe SnapshotId("JbtmHBDBAYu3/bt8BOXKjzKx3i0b6LCa/wVjyl6qQ2Yf6nFXkbmzuEa+ZI/U1yF+")
-      }
-    }
-  }
-
-  "`getPlaylist`" when {
-    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/playlists/3cEYpjA9oz9GiPac4AsH4n"))
-
-    "optional query parameters are not defined" should {
-      def request: SttpResponse[DE, FullPlaylist] =
-        sampleClient.playlists.getPlaylist[DE](playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"))(signer)
-
-      behave like clientReceivingUnexpectedResponse(endpoint, request)
-
-      def stub: StubMapping =
-        stubFor(
-          endpoint
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBodyFile("playlists/get_playlist.json")
-            )
-        )
-
-      "return the correct entity" in matchResponseBody(stub, request) {
-        case Right(fullPlaylist) =>
-          fullPlaylist.owner.displayName shouldBe Some("JMPerez²")
-      }
-    }
-
-    "`fields` and `market` query parameters are defined" should {
-      def request: SttpResponse[DE, PartialPlaylist] =
-        sampleClient.playlists.getPlaylistFields[DE, PartialPlaylist](
-          playlistId = SpotifyId("3cEYpjA9oz9GiPac4AsH4n"),
-          fields = "href,description,tracks.items(added_by(id),track(name))",
-          market = Some(IsoCountry(CountryCodeAlpha2.SPAIN))
-        )(signer)
-
-      val endpointRequest =
-        endpoint
-          .withQueryParam("fields", equalTo("href,description,tracks.items(added_by(id),track(name))"))
-          .withQueryParam("market", equalTo("ES"))
-
-      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
-
-      def stub: StubMapping =
-        stubFor(
-          endpointRequest
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBodyFile("playlists/get_playlist_fields_2.json")
-            )
-        )
-
-      "return the correct entity" in matchResponseBody(stub, request) {
-        case Right(playlist) =>
-          playlist shouldBe PartialPlaylist(
-            description = "A playlist for testing pourposes",
-            href =
-              uri"https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n?fields=href,description,tracks.items(added_by(id),track(name))",
-            tracks = List(
-              PartialTrack(addedBy = "jmperezperez", trackName = "Api"),
-              PartialTrack(addedBy = "jmperezperez", trackName = "Is"),
-              PartialTrack(addedBy = "jmperezperez", trackName = "All I Want"),
-              PartialTrack(addedBy = "jmperezperez", trackName = "Endpoints"),
-              PartialTrack(addedBy = "jmperezperez", trackName = "You Are So Beautiful")
-            )
-          )
-      }
-    }
-
-    "entity has many null fields" should {
-      val customPlaylistId = SpotifyId("4YUV9hthjX0LOvg8Oe8w85")
-      def request: SttpResponse[DE, FullPlaylist] =
-        sampleClient.playlists.getPlaylist[DE](
-          customPlaylistId,
-          market = None
-        )(signer)
-
-      def stub: StubMapping = {
-        stubFor(
-          get(urlPathEqualTo(s"$basePath/playlists/4YUV9hthjX0LOvg8Oe8w85"))
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBodyFile(s"playlists/get_playlist_fields.json")
-            )
-        )
-      }
-
-      "return the correct entity" in matchResponseBody(stub, request) {
-        case Right(playlist) =>
-          playlist.uri.value shouldBe "spotify:playlist:4YUV9hthjX0LOvg8Oe8w85"
-      }
-    }
-  }
-
   "`createPlaylist`" when {
     def endpoint: MappingBuilder =
       post(urlPathEqualTo(s"$basePath/users/thelinmichael/playlists"))
         .withRequestBody(equalToJson("""
-            |{
-            | "name": "A New Playlist",
-            | "public": false,
-            | "collaborative": false
-            |}
-            |""".stripMargin))
+                                       |{
+                                       | "name": "A New Playlist",
+                                       | "public": false,
+                                       | "collaborative": false
+                                       |}
+                                       |""".stripMargin))
 
     "creating a private playlist with default parameters" should {
       def request: SttpResponse[DE, FullPlaylist] =
@@ -469,6 +477,87 @@ abstract class PlaylistApiSpec[E[_], D[_], DE, J]
           fullPlaylist.description shouldBe None
           fullPlaylist.owner.id shouldBe SpotifyUserId("thelinmichael")
           fullPlaylist.tracks.items shouldBe List.empty
+      }
+    }
+  }
+
+  "getFeaturedPlaylists" when {
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/featured-playlists"))
+
+    "all query parameters are defined" should {
+      def request: SttpResponse[DE, FeaturedPlaylists] =
+        sampleClient.playlists.getFeaturedPlaylists[DE](
+          country = Some(CountryCodeAlpha2.SWEDEN),
+          locale = Some(Locale(LanguageCode.SPANISH, CountryCodeAlpha2.MEXICO)),
+          timestamp = Some(LocalDateTime.of(2014, Month.OCTOBER, 23, 9, 0)),
+          limit = 2,
+          offset = 5
+        )(signer)
+
+      val endpointRequest =
+        endpoint
+          .withQueryParam("country", equalTo("SE"))
+          .withQueryParam("locale", equalTo("es_MX"))
+          .withQueryParam("timestamp", equalTo("2014-10-23T09:00:00"))
+          .withQueryParam("limit", equalTo("2"))
+          .withQueryParam("offset", equalTo("5"))
+
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("browse/featured_playlists_se.json")
+            )
+        )
+
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(FeaturedPlaylists(message, playlists)) =>
+          message shouldBe "Ny dag, nya tag"
+          playlists.items.size shouldBe 2
+      }
+    }
+  }
+
+  "getCategoryPlaylists" when {
+    def endpoint: MappingBuilder = get(urlPathEqualTo(s"$basePath/browse/categories/workout/playlists"))
+
+    "all query parameters are defined" should {
+      def request: SttpResponse[DE, Page[SimplePlaylist]] =
+        sampleClient.playlists.getCategoryPlaylists[DE](
+          categoryId = SpotifyCategoryId("workout"),
+          country = Some(CountryCodeAlpha2.SWEDEN),
+          limit = 2,
+          offset = 5
+        )(signer)
+
+      val endpointRequest =
+        endpoint
+          .withQueryParam("country", equalTo("SE"))
+          .withQueryParam("limit", equalTo("2"))
+          .withQueryParam("offset", equalTo("5"))
+
+      behave like clientReceivingUnexpectedResponse(endpointRequest, request)
+
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("browse/category_playlists_workout_se.json")
+            )
+        )
+
+      "return the correct entity" in matchResponseBody(stub, request) {
+        case Right(categories) =>
+          categories.items.map(_.name) shouldBe List(
+            SpotifyPlaylistName("Motivation Mix"),
+            SpotifyPlaylistName("Yoga & Meditation")
+          )
       }
     }
   }
